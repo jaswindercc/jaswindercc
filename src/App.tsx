@@ -8,7 +8,7 @@ export default function App() {
     {
       title: "Agentic AI Reasoning Loop for Compliance",
       company: "[Confidential]",
-      value: "Part of a $12M technology portfolio.",
+      value: "Part of a major technology portfolio.",
       problem: "Manual auditing of complex spatial data was slow, prone to human error, and hindered real-time decision-making.",
       solution: "Architected a multi-agent \"Reasoning Loop\" (ReAct) with embedded guardrails to automate spatial analysis.",
       impact: "Reduced manual auditing effort by 70%.",
@@ -17,7 +17,7 @@ export default function App() {
     {
       title: "Enterprise Cloud & DevOps Modernization",
       company: "[Confidential]",
-      value: "$2M+ operational efficiency initiative.",
+      value: "Operational efficiency initiative.",
       problem: "Fragmented legacy codebases and inconsistent CI/CD pipelines created deployment bottlenecks and security risks.",
       solution: "Led the end-to-end migration of 100+ mission-critical repositories to a centralized enterprise platform.",
       impact: "Standardized global deployment blueprints and increased developer velocity through a new Cloud Center of Excellence (CCoE).",
@@ -26,7 +26,7 @@ export default function App() {
     {
       title: "AI Video Spatial Crowd Analytics",
       company: "[Confidential]",
-      value: "$5M+ revenue protection project.",
+      value: "Revenue protection project.",
       problem: "Traditional analytics couldn't accurately detect fare evasion or monitor crowd density in high-concurrency transit environments.",
       solution: "Directed the delivery of a real-time AI spatial analysis system for video feeds.",
       impact: "Optimized revenue protection and improved operational security for public transit systems.",
@@ -35,7 +35,7 @@ export default function App() {
     {
       title: "Regulatory MLOps Project",
       company: "[Confidential]",
-      value: "$1.5M governance and audit-readiness project.",
+      value: "Governance and audit-readiness project.",
       problem: "AI models lacked transparency and automated monitoring, risking non-compliance with provincial and financial (OSFI) standards.",
       solution: "Built an automated MLOps pipeline featuring Model Drift detection and full lineage tracking.",
       impact: "Ensured 100% audit-readiness and met OSFI-level transparency requirements for enterprise AI.",
@@ -44,7 +44,7 @@ export default function App() {
     {
       title: "Enterprise Observability & FinOps Transformation",
       company: "[Confidential]",
-      value: "Optimized $12M multi-cloud spend.",
+      value: "Optimized multi-cloud spend.",
       problem: "High-concurrency systems lacked deep visibility, and cloud costs were scaling inefficiently without governance.",
       solution: "Implemented a unified observability platform and established FinOps guardrails.",
       impact: "Dramatically reduced cloud waste and ensured 99.9% uptime for mission-critical payment systems.",
@@ -53,7 +53,7 @@ export default function App() {
     {
       title: "Retail Banking API Integration Architecture",
       company: "[Confidential]",
-      value: "$10M+ transactional ecosystem.",
+      value: "Transactional ecosystem.",
       problem: "Disconnected retail and banking systems prevented seamless e-commerce transactions and real-time data synchronization.",
       solution: "Designed complex API integrations and high-traffic SQL Server architectures.",
       impact: "Supported the full lifecycle of national retail banking applications with high-concurrency post-launch stability.",
@@ -83,6 +83,39 @@ export default function App() {
     );
   };
 
+  const SocialLinks = ({ delay = "0ms" }: { delay?: string }) => (
+    <nav 
+      className="flex flex-wrap justify-end gap-x-6 md:gap-x-8 gap-y-4 text-xs md:text-sm font-medium reveal-staggered"
+      style={{ animationDelay: delay }}
+      aria-label="Social and Contact Links"
+    >
+      <a 
+        href="https://twitter.com/jaswinder_cc" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="magnetic-link hover:opacity-50 underline-offset-4 hover:underline"
+      >
+        Twitter/X
+      </a>
+      <a 
+        href="https://youtube.com/@jaswinder_cc" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="magnetic-link hover:opacity-50 underline-offset-4 hover:underline"
+      >
+        YouTube
+      </a>
+      <a 
+        href="https://github.com/jaswindercc" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="magnetic-link hover:opacity-50 underline-offset-4 hover:underline"
+      >
+        GitHub
+      </a>
+    </nav>
+  );
+
   return (
     <main
       className="relative min-h-screen w-full flex flex-col p-8 md:p-16 lg:p-24"
@@ -90,17 +123,27 @@ export default function App() {
       aria-label="Jaswinder Singh Executive Technical Portfolio"
     >
       {/* Header */}
-      <header className="z-10 reveal-staggered mb-16 md:mb-24" style={{ animationDelay: '0ms' }}>
-        <h1 className="text-2xl md:text-3xl font-bold tracking-tighter uppercase kinetic-logo">
-          Jaswinder Singh
-        </h1>
-        <p className="text-sm md:text-base opacity-60 font-medium tracking-tight mt-1">
-          AI & Cloud Leader
-        </p>
+      <header className="z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16 md:mb-24">
+        <div className="reveal-staggered" style={{ animationDelay: '0ms' }}>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tighter uppercase kinetic-logo">
+            Jaswinder Singh
+          </h1>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
+            <p className="text-sm md:text-base opacity-60 font-medium tracking-tight">
+              AI & Cloud Leader
+            </p>
+            <span className="hidden md:block w-1 h-1 bg-onyx/20 rounded-full" aria-hidden="true" />
+            <div className="flex items-center gap-2 px-2 py-0.5 bg-success/10 border border-success/20 rounded-full text-success text-xs md:text-sm">
+              <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Contact:</span>
+              <ProtectedEmail />
+            </div>
+          </div>
+        </div>
+        <SocialLinks delay="100ms" />
       </header>
 
       {/* What I Do Section */}
-      <section className="mb-12 md:mb-16 max-w-4xl reveal-staggered" style={{ animationDelay: '100ms' }}>
+      <section className="mb-12 md:mb-16 max-w-4xl reveal-staggered" style={{ animationDelay: '200ms' }}>
         <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase opacity-40 mb-6">
           What I Do
         </h2>
@@ -134,7 +177,7 @@ export default function App() {
 
       {/* Portfolio Title */}
       <section className="mb-6 md:mb-8">
-        <h2 className="inline-block text-xs md:text-sm font-bold tracking-[0.4em] uppercase opacity-60 reveal-staggered border-b border-success/30 pb-1" style={{ animationDelay: '200ms' }}>
+        <h2 className="inline-block text-xs md:text-sm font-bold tracking-[0.4em] uppercase opacity-60 reveal-staggered border-b border-success/30 pb-1" style={{ animationDelay: '300ms' }}>
           Executive Technical Portfolio
         </h2>
       </section>
@@ -145,7 +188,7 @@ export default function App() {
           <article 
             key={index}
             className="bento-card p-8 md:p-10 flex flex-col justify-between reveal-staggered"
-            style={{ animationDelay: `${300 + index * 100}ms` }}
+            style={{ animationDelay: `${400 + index * 100}ms` }}
           >
             <div>
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
@@ -193,36 +236,7 @@ export default function App() {
             <ProtectedEmail />
           </div>
         </div>
-        <nav 
-          className="flex flex-wrap justify-end gap-x-8 gap-y-4 text-sm md:text-base font-medium reveal-staggered"
-          style={{ animationDelay: '1000ms' }}
-          aria-label="Social and Contact Links"
-        >
-          <a 
-            href="https://twitter.com/jaswinder_cc" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="magnetic-link hover:opacity-50 underline-offset-4 hover:underline"
-          >
-            Twitter/X
-          </a>
-          <a 
-            href="https://youtube.com/@jaswinder_cc" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="magnetic-link hover:opacity-50 underline-offset-4 hover:underline"
-          >
-            YouTube
-          </a>
-          <a 
-            href="https://github.com/jaswindercc" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="magnetic-link hover:opacity-50 underline-offset-4 hover:underline"
-          >
-            GitHub
-          </a>
-        </nav>
+        <SocialLinks delay="1200ms" />
       </footer>
     </main>
   );
