@@ -71,14 +71,28 @@ export default function App() {
   ];
 
   const ProtectedEmail = () => {
-    // hello@jaswinder.cc reversed
-    const reversed = "cc.redniwsaj@olleh";
+    const [email, setEmail] = React.useState("");
+    
+    React.useEffect(() => {
+      // Deconstruct to hide from simple string scrapers
+      const u = "hello";
+      const d = "jaswinder.cc";
+      setEmail(`${u}@${d}`);
+    }, []);
+
+    const copyToClipboard = () => {
+      if (email) {
+        navigator.clipboard.writeText(email);
+      }
+    };
+
     return (
       <span 
-        className="inline-block cursor-default select-all font-medium" 
-        style={{ unicodeBidi: 'bidi-override', direction: 'rtl' }}
+        className="inline-block cursor-pointer hover:opacity-70 transition-opacity font-medium" 
+        onClick={copyToClipboard}
+        title="Click to copy email"
       >
-        {reversed}
+        {email || "loading..."}
       </span>
     );
   };
