@@ -100,13 +100,36 @@ export default function App() {
       </header>
 
       {/* What I Do Section */}
-      <section className="mb-12 md:mb-16 max-w-3xl reveal-staggered" style={{ animationDelay: '100ms' }}>
-        <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase opacity-40 mb-4">
+      <section className="mb-12 md:mb-16 max-w-4xl reveal-staggered" style={{ animationDelay: '100ms' }}>
+        <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase opacity-40 mb-6">
           What I Do
         </h2>
-        <p className="text-lg md:text-xl font-medium leading-relaxed opacity-80">
-          Architecting high-concurrency cloud ecosystems and leading the integration of agentic AI to drive enterprise-scale automation. I bridge the gap between complex infrastructure and intelligent reasoning loops.
-        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+          <div className="space-y-2">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-success">Scale Infrastructure</h3>
+            <p className="text-base md:text-lg font-medium opacity-80 leading-snug">
+              Architecting systems that handle high-volume, mission-critical traffic without failing.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-success">Deploy Agentic AI</h3>
+            <p className="text-base md:text-lg font-medium opacity-80 leading-snug">
+              Moving beyond basic prompts to build autonomous AI agents that solve real business problems.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-success">Technical Strategy</h3>
+            <p className="text-base md:text-lg font-medium opacity-80 leading-snug">
+              Translating executive goals into robust technical roadmaps that actually deliver ROI.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-success">Cloud Modernization</h3>
+            <p className="text-base md:text-lg font-medium opacity-80 leading-snug">
+              Leading large-scale migrations and establishing Cloud Centers of Excellence (CCoE) for governed growth.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Portfolio Title */}
