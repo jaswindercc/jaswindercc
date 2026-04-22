@@ -1,0 +1,15 @@
+{
+  "name": "Jaswinder Singh",
+  "title": "AI, Cloud and DevOps Leader",
+  "bio": "Expert in Cloud, AI, DevOps, FinOps, and Scalable Infrastructure. Building high-performance edge-to-hub solutions and bridging the gap between hardware acceleration and cloud-scale intelligence.",
+  "socials": [
+    {"platform": "LinkedIn", "url": "https://linkedin.com/in/jaswindercc"},
+    {"platform": "GitHub", "url": "https://github.com/jaswindercc"},
+    {"platform": "YouTube", "url": "https://youtube.com/@jaswinder_cc"}
+  ],
+  "blogs": [
+    "finops-best-practices.md",
+    "edge-computing-2026.md",
+    "metadata-saturation.md"
+  ]
+}
