@@ -6,10 +6,5 @@
     {"platform": "LinkedIn", "url": "https://linkedin.com/in/jaswindercc"},
     {"platform": "GitHub", "url": "https://github.com/jaswindercc"},
     {"platform": "YouTube", "url": "https://youtube.com/@jaswinder_cc"}
-  ],
-  "blogs": [
-    "finops-best-practices.md",
-    "edge-computing-2026.md",
-    "metadata-saturation.md"
   ]
 }

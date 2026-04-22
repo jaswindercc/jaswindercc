@@ -4,9 +4,8 @@ import config from '../data/config.json';
 import '../styles/global.css';
 
 const allPosts = await getCollection('blog');
-const recentPosts = allPosts
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 3);
+const sortedPosts = allPosts
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 const jsonLdPerson = {
   '@context': 'https://schema.org',
@@ -34,14 +33,14 @@ const jsonLdPerson = {
 				<p class="text-base leading-relaxed text-slate-700">{config.bio}</p>
 			</header>
 
-			{recentPosts.length > 0 && (
+			{sortedPosts.length > 0 && (
 				<section class="mb-16">
-					<h2 class="text-sm font-semibold uppercase tracking-widest text-slate-500 mb-6">Latest Insights</h2>
+					<h2 class="text-sm font-semibold uppercase tracking-widest text-slate-500 mb-6">Blog Posts</h2>
 					<div class="space-y-6">
-						{recentPosts.map((post) => (
+						{sortedPosts.map((post) => (
 							<article class="group border-l-2 border-slate-300 hover:border-slate-600 transition-colors pl-6 py-2">
 								<h3 class="text-lg font-semibold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
-									<a href={`/blog/${post.slug}`}>{post.data.title}</a>
+									<a href={`/blog/${post.id.replace('.md', '')}`}>{post.data.title}</a>
 								</h3>
 								<p class="text-sm text-slate-600 mb-2">
 									{post.data.date.toLocaleDateString('en-US', {
