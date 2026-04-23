@@ -1,0 +1,344 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="index, follow"><meta name="description" content="A deep-dive into building a production-grade FinOps practice using native AWS and Azure tooling, covering cost visibility, optimization, governance, and cultural change at scale."><meta name="keywords" content="FinOps, AWS, Azure, Cloud Cost, Optimization"><link rel="canonical" href="https://jaswinder.cc/blog/finops-best-practices/"><!-- Open Graph --><meta property="og:type" content="article"><meta property="og:title" content="Running a Mature FinOps Practice on AWS and Azure in the Enterprise"><meta property="og:description" content="A deep-dive into building a production-grade FinOps practice using native AWS and Azure tooling, covering cost visibility, optimization, governance, and cultural change at scale."><meta property="og:url" content="https://jaswinder.cc/blog/finops-best-practices/"><meta property="og:site_name" content="Jaswinder Singh"><meta property="article:published_time" content="2026-04-10T00:00:00.000Z"><meta property="article:author" content="Jaswinder Singh"><meta property="article:section" content="FinOps"><meta property="article:tag" content="FinOps"><meta property="article:tag" content="AWS"><meta property="article:tag" content="Azure"><meta property="article:tag" content="Cloud Cost"><meta property="article:tag" content="Optimization"><!-- Twitter --><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Running a Mature FinOps Practice on AWS and Azure in the Enterprise"><meta name="twitter:description" content="A deep-dive into building a production-grade FinOps practice using native AWS and Azure tooling, covering cost visibility, optimization, governance, and cultural change at scale."><title>Running a Mature FinOps Practice on AWS and Azure in the Enterprise | Jaswinder Singh</title><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Running a Mature FinOps Practice on AWS and Azure in the Enterprise","description":"A deep-dive into building a production-grade FinOps practice using native AWS and Azure tooling, covering cost visibility, optimization, governance, and cultural change at scale.","datePublished":"2026-04-10T00:00:00.000Z","dateModified":"2026-04-10T00:00:00.000Z","url":"https://jaswinder.cc/blog/finops-best-practices/","mainEntityOfPage":{"@type":"WebPage","@id":"https://jaswinder.cc/blog/finops-best-practices/"},"author":{"@type":"Person","name":"Jaswinder Singh","url":"https://jaswinder.cc"},"keywords":"FinOps, AWS, Azure, Cloud Cost, Optimization","about":[{"@type":"Thing","name":"FinOps"},{"@type":"Thing","name":"AWS"},{"@type":"Thing","name":"Azure"},{"@type":"Thing","name":"Cloud Cost"},{"@type":"Thing","name":"Optimization"}],"articleSection":"FinOps"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://jaswinder.cc"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://jaswinder.cc/blog/"},{"@type":"ListItem","position":3,"name":"Running a Mature FinOps Practice on AWS and Azure in the Enterprise","item":"https://jaswinder.cc/blog/finops-best-practices/"}]}</script><link rel="stylesheet" href="/_astro/global.B5TWTrlM.css">
+<style>.prose{max-width:42rem}.prose p{margin-bottom:1rem;font-size:1rem;line-height:1.5rem;line-height:1.625;--tw-text-opacity: 1;color:rgb(51 65 85 / var(--tw-text-opacity, 1))}.prose h1{margin-top:2rem;margin-bottom:1rem;font-size:2.25rem;line-height:2.5rem;font-weight:700;--tw-text-opacity: 1;color:rgb(2 6 23 / var(--tw-text-opacity, 1))}.prose h1:first-child{display:none}.prose h2{margin-top:1.5rem;margin-bottom:.75rem;font-size:1.5rem;line-height:2rem;font-weight:700;--tw-text-opacity: 1;color:rgb(2 6 23 / var(--tw-text-opacity, 1))}.prose h3{margin-top:1rem;margin-bottom:.5rem;font-size:1.25rem;line-height:1.75rem;font-weight:600;--tw-text-opacity: 1;color:rgb(15 23 42 / var(--tw-text-opacity, 1))}.prose code{border-radius:.25rem;--tw-bg-opacity: 1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1));padding:.25rem .5rem;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-size:.875rem;line-height:1.25rem;--tw-text-opacity: 1;color:rgb(15 23 42 / var(--tw-text-opacity, 1))}.prose pre{margin-bottom:1rem;overflow-x:auto;border-radius:.5rem;--tw-bg-opacity: 1;background-color:rgb(15 23 42 / var(--tw-bg-opacity, 1));padding:1rem;--tw-text-opacity: 1;color:rgb(248 250 252 / var(--tw-text-opacity, 1))}.prose pre code{border-radius:0;background-color:transparent;padding:0;color:inherit}.prose a{--tw-text-opacity: 1;color:rgb(37 99 235 / var(--tw-text-opacity, 1))}.prose a:hover{text-decoration-line:underline}.prose ul,.prose ol{margin-left:1.5rem;margin-bottom:1rem}.prose li{margin-bottom:.5rem}.prose blockquote{margin-top:1rem;margin-bottom:1rem;border-left-width:4px;--tw-border-opacity: 1;border-color:rgb(203 213 225 / var(--tw-border-opacity, 1));padding-left:1rem;font-style:italic;--tw-text-opacity: 1;color:rgb(71 85 105 / var(--tw-text-opacity, 1))}
+</style></head> <body class="bg-slate-50 text-slate-900 font-sans"> <div class="gradient-bar"></div> <main class="max-w-2xl mx-auto py-16 px-6"> <header class="mb-12"> <a href="/" class="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors mb-6">
+← Back to Home
+</a> <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 sm:p-8"> <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-3 text-slate-950">Running a Mature FinOps Practice on AWS and Azure in the Enterprise</h1> <div class="flex items-center gap-3 text-sm text-slate-500"> <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white font-bold text-xs">JS</div> <span>Jaswinder Singh</span> </div> </div> </header> <article class="prose prose-slate bg-white rounded-xl border border-slate-200 shadow-sm p-6 sm:p-8"> <h1 id="running-a-mature-finops-practice-on-aws-and-azure-in-the-enterprise">Running a Mature FinOps Practice on AWS and Azure in the Enterprise</h1>
+<p>Cloud spending in the enterprise is no longer a line item you can ignore. In 2026, the average Fortune 500 company is spending north of $50 million annually across AWS and Azure combined—and a disturbing amount of that is waste. Idle resources, oversized instances, orphaned storage volumes, and forgotten dev environments silently bleed budgets dry every single month.</p>
+<p>FinOps—Financial Operations for the Cloud—is the discipline that fixes this. But reading a blog post about “the three pillars” isn’t enough. What actually works in practice? How do you wire up AWS and Azure’s native tooling into a real, functioning cost management machine? This guide breaks it down.</p>
+<hr>
+<h2 id="why-most-finops-initiatives-fail">Why Most FinOps Initiatives Fail</h2>
+<p>Let’s start with the uncomfortable truth. Most enterprises that “adopt FinOps” don’t actually change anything. They install a dashboard, hold a quarterly meeting, and call it a day. Six months later, the cloud bill is higher than ever.</p>
+<p>The failure modes are predictable:</p>
+<ul>
+<li><strong>No ownership.</strong> Nobody’s job is to care about cloud costs.</li>
+<li><strong>No feedback loop.</strong> Engineers never see the cost impact of their decisions.</li>
+<li><strong>Tool sprawl.</strong> Teams buy third-party platforms before using what the cloud providers already give them for free.</li>
+<li><strong>No tagging discipline.</strong> Without consistent resource tags, cost attribution is impossible.</li>
+</ul>
+<p>A mature FinOps practice solves all four of these. Here’s how.</p>
+<hr>
+<h2 id="phase-1-build-the-foundation--visibility-and-tagging">Phase 1: Build the Foundation — Visibility and Tagging</h2>
+<p>You can’t optimize what you can’t see. Before you touch a single resource, you need two things: a tagging strategy and a cost visibility layer.</p>
+<h3 id="tagging-strategy">Tagging Strategy</h3>
+<p>Every resource across both clouds must be tagged with at minimum:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Tag Key</th><th>Purpose</th><th>Example</th></tr></thead><tbody><tr><td><code>cost-center</code></td><td>Maps to a finance cost center</td><td><code>CC-4200</code></td></tr><tr><td><code>environment</code></td><td>Dev, staging, prod</td><td><code>production</code></td></tr><tr><td><code>team</code></td><td>Owning team</td><td><code>platform-eng</code></td></tr><tr><td><code>project</code></td><td>Business initiative</td><td><code>checkout-v3</code></td></tr><tr><td><code>owner</code></td><td>Individual accountable</td><td><code>j.singh@corp.com</code></td></tr></tbody></table>
+<h4 id="enforcing-tags-on-aws">Enforcing Tags on AWS</h4>
+<p>AWS Organizations provides Tag Policies that enforce tagging at the organizational level. Combine this with AWS Config rules to detect and flag non-compliant resources.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "tags"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "cost-center"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">      "tag_key"</span><span style="color:#E1E4E8">: { </span><span style="color:#79B8FF">"@@assign"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"cost-center"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#79B8FF">      "enforced_for"</span><span style="color:#E1E4E8">: { </span><span style="color:#79B8FF">"@@assign"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"ec2:instance"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"rds:db"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"s3:bucket"</span><span style="color:#E1E4E8">] }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Use AWS Config with the <code>required-tags</code> managed rule to trigger alerts or even auto-remediation via Lambda when untagged resources appear.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> configservice</span><span style="color:#9ECBFF"> put-config-rule</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --config-rule</span><span style="color:#9ECBFF"> '{</span></span>
+<span class="line"><span style="color:#9ECBFF">    "ConfigRuleName": "required-tags-check",</span></span>
+<span class="line"><span style="color:#9ECBFF">    "Source": {</span></span>
+<span class="line"><span style="color:#9ECBFF">      "Owner": "AWS",</span></span>
+<span class="line"><span style="color:#9ECBFF">      "SourceIdentifier": "REQUIRED_TAGS"</span></span>
+<span class="line"><span style="color:#9ECBFF">    },</span></span>
+<span class="line"><span style="color:#9ECBFF">    "InputParameters": "{\"tag1Key\":\"cost-center\",\"tag2Key\":\"environment\",\"tag3Key\":\"team\"}"</span></span>
+<span class="line"><span style="color:#9ECBFF">  }'</span></span></code></pre>
+<h4 id="enforcing-tags-on-azure">Enforcing Tags on Azure</h4>
+<p>Azure Policy is the equivalent. Create a policy definition that denies resource creation without required tags:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "if"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "anyOf"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#E1E4E8">      { </span><span style="color:#79B8FF">"field"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"tags['cost-center']"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"exists"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"false"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">      { </span><span style="color:#79B8FF">"field"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"tags['environment']"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"exists"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"false"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">      { </span><span style="color:#79B8FF">"field"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"tags['team']"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"exists"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"false"</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">    ]</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#79B8FF">  "then"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "effect"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"deny"</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Assign this at the Management Group level so it cascades across all subscriptions. No exceptions.</p>
+<h3 id="cost-visibility">Cost Visibility</h3>
+<h4 id="aws-cost-explorer--cur">AWS: Cost Explorer + CUR</h4>
+<p>AWS Cost Explorer is your starting point. It gives you out-of-the-box views by service, account, region, and tag. But the real power comes from the <strong>Cost and Usage Report (CUR)</strong>.</p>
+<p>CUR is a detailed, line-item-level export of every charge on your account. Export it to S3, then query it with Athena:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">SELECT</span></span>
+<span class="line"><span style="color:#E1E4E8">  line_item_product_code,</span></span>
+<span class="line"><span style="color:#E1E4E8">  product_region,</span></span>
+<span class="line"><span style="color:#E1E4E8">  resource_tags_user_cost_center,</span></span>
+<span class="line"><span style="color:#79B8FF">  SUM</span><span style="color:#E1E4E8">(line_item_unblended_cost) </span><span style="color:#F97583">AS</span><span style="color:#E1E4E8"> total_cost</span></span>
+<span class="line"><span style="color:#F97583">FROM</span><span style="color:#79B8FF"> cur_database</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">cur_table</span></span>
+<span class="line"><span style="color:#F97583">WHERE</span><span style="color:#F97583"> month</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> '4'</span><span style="color:#F97583"> AND</span><span style="color:#F97583"> year</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> '2026'</span></span>
+<span class="line"><span style="color:#F97583">GROUP BY</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span></span>
+<span class="line"><span style="color:#F97583">ORDER BY</span><span style="color:#E1E4E8"> total_cost </span><span style="color:#F97583">DESC</span></span>
+<span class="line"><span style="color:#F97583">LIMIT</span><span style="color:#79B8FF"> 20</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<p>This gives you granular, queryable cost data that no dashboard can match. Build QuickSight dashboards on top of this for executive reporting.</p>
+<h4 id="azure-cost-management--exports">Azure: Cost Management + Exports</h4>
+<p>Azure Cost Management is built directly into the portal. Use <strong>Cost Analysis</strong> to slice spending by subscription, resource group, tag, or meter category.</p>
+<p>For programmatic access, configure <strong>Scheduled Exports</strong> to push cost data to a Storage Account in CSV format, then query it with Azure Data Explorer or Synapse Analytics:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="kql"><code><span class="line"><span style="color:#E1E4E8">CostData</span></span>
+<span class="line"><span style="color:#E1E4E8">| </span><span style="color:#F97583">where</span><span style="color:#E1E4E8"> Timestamp > </span><span style="color:#79B8FF">ago</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">30d</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">| </span><span style="color:#F97583">summarize</span><span style="color:#E1E4E8"> TotalCost = </span><span style="color:#79B8FF">sum</span><span style="color:#E1E4E8">(Cost) </span><span style="color:#F97583">by</span><span style="color:#E1E4E8"> ResourceGroup, TagCostCenter</span></span>
+<span class="line"><span style="color:#E1E4E8">| </span><span style="color:#F97583">order</span><span style="color:#F97583"> by</span><span style="color:#E1E4E8"> TotalCost </span><span style="color:#F97583">desc</span></span>
+<span class="line"><span style="color:#E1E4E8">| </span><span style="color:#F97583">take</span><span style="color:#79B8FF"> 20</span></span></code></pre>
+<p>Set up <strong>Budgets</strong> with action groups to alert teams when they hit 75%, 90%, and 100% of their allocated spend.</p>
+<hr>
+<h2 id="phase-2-optimize--the-big-wins">Phase 2: Optimize — The Big Wins</h2>
+<p>Once you have visibility, optimization follows a predictable pattern. The biggest savings almost always come from three areas: <strong>rightsizing, reservations, and waste elimination.</strong></p>
+<h3 id="rightsizing">Rightsizing</h3>
+<h4 id="aws">AWS</h4>
+<p>AWS Compute Optimizer analyzes your EC2, EBS, Lambda, and ECS workloads and recommends instance types based on actual utilization. Most enterprises find that 30-40% of their instances are oversized.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> compute-optimizer</span><span style="color:#9ECBFF"> get-ec2-instance-recommendations</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --filters</span><span style="color:#9ECBFF"> "name=Finding,values=OVER_PROVISIONED"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --query</span><span style="color:#9ECBFF"> 'instanceRecommendations[*].{</span></span>
+<span class="line"><span style="color:#9ECBFF">    ID: instanceArn,</span></span>
+<span class="line"><span style="color:#9ECBFF">    Current: currentInstanceType,</span></span>
+<span class="line"><span style="color:#9ECBFF">    Recommended: recommendationOptions[0].instanceType,</span></span>
+<span class="line"><span style="color:#9ECBFF">    Savings: recommendationOptions[0].estimatedMonthlySavings.value</span></span>
+<span class="line"><span style="color:#9ECBFF">  }'</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --output</span><span style="color:#9ECBFF"> table</span></span></code></pre>
+<p>Act on the top recommendations immediately. A single <code>m5.4xlarge</code> running at 8% CPU that should be a <code>m5.large</code> saves you roughly $350/month. Multiply that across hundreds of instances.</p>
+<h4 id="azure">Azure</h4>
+<p>Azure Advisor provides equivalent rightsizing recommendations. Query them programmatically:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">az</span><span style="color:#9ECBFF"> advisor</span><span style="color:#9ECBFF"> recommendation</span><span style="color:#9ECBFF"> list</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --category</span><span style="color:#9ECBFF"> Cost</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --query</span><span style="color:#9ECBFF"> "[?shortDescription.solution=='Right-size or shutdown underutilized virtual machines']"</span></span></code></pre>
+<p>Azure also offers <strong>VM Insights</strong> backed by Azure Monitor Agent, which gives you deep utilization data (CPU, memory, disk, network) to make informed downsizing decisions.</p>
+<h3 id="reserved-instances-and-savings-plans">Reserved Instances and Savings Plans</h3>
+<p>This is where the big money is. On-demand pricing is the cloud equivalent of paying rack rate at a hotel.</p>
+<h4 id="aws-savings-plans">AWS Savings Plans</h4>
+<p>AWS Savings Plans offer up to 72% savings over On-Demand pricing. There are two types:</p>
+<ul>
+<li><strong>Compute Savings Plans:</strong> Flexible across instance families, regions, and even services (EC2, Fargate, Lambda). Best for dynamic workloads.</li>
+<li><strong>EC2 Instance Savings Plans:</strong> Locked to a specific instance family in a specific region. Deeper discount but less flexibility.</li>
+</ul>
+<p>Use the <strong>Savings Plans Purchase Recommendations</strong> in Cost Explorer. It analyzes your last 7, 30, or 60 days of usage and tells you exactly what commitment will yield the best return.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> ce</span><span style="color:#9ECBFF"> get-savings-plans-purchase-recommendation</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --savings-plans-type</span><span style="color:#9ECBFF"> COMPUTE_SP</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --term-in-years</span><span style="color:#9ECBFF"> ONE_YEAR</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --payment-option</span><span style="color:#9ECBFF"> NO_UPFRONT</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --lookback-period-in-days</span><span style="color:#9ECBFF"> THIRTY_DAYS</span></span></code></pre>
+<h4 id="azure-reservations">Azure Reservations</h4>
+<p>Azure Reservations cover VMs, SQL Database, Cosmos DB, Storage, and more. Use the <strong>Reservation Recommendations</strong> in the Azure portal or API:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">az</span><span style="color:#9ECBFF"> consumption</span><span style="color:#9ECBFF"> reservation</span><span style="color:#9ECBFF"> recommendation</span><span style="color:#9ECBFF"> list</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --scope</span><span style="color:#9ECBFF"> "shared"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --look-back-period</span><span style="color:#9ECBFF"> "Last30Days"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --resource-type</span><span style="color:#9ECBFF"> "VirtualMachines"</span></span></code></pre>
+<p>A common enterprise pattern: purchase <strong>1-year no-upfront</strong> reservations to start, covering your baseline steady-state workloads. As confidence grows, move to <strong>3-year all-upfront</strong> for the deepest discounts on truly stable infrastructure.</p>
+<h3 id="waste-elimination">Waste Elimination</h3>
+<p>The low-hanging fruit that every enterprise has:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Waste Type</th><th>AWS Detection</th><th>Azure Detection</th></tr></thead><tbody><tr><td>Unattached EBS/Disks</td><td><code>aws ec2 describe-volumes --filters Name=status,Values=available</code></td><td><code>az disk list --query "[?diskState=='Unattached']"</code></td></tr><tr><td>Idle Load Balancers</td><td>CloudWatch <code>RequestCount = 0</code> for 7+ days</td><td>Azure Monitor zero-request metrics</td></tr><tr><td>Old Snapshots</td><td><code>aws ec2 describe-snapshots --owner-ids self --query "sort_by(Snapshots, &#x26;StartTime)[:10]"</code></td><td><code>az snapshot list --query "sort_by([], &#x26;timeCreated)[:10]"</code></td></tr><tr><td>Unused Elastic IPs</td><td><code>aws ec2 describe-addresses --query "Addresses[?AssociationId==null]"</code></td><td>N/A (Azure doesn’t charge for unattached PIPs the same way)</td></tr><tr><td>Dev environments running 24/7</td><td>Instance Scheduler</td><td>Start/Stop VMs v2 (Azure Automation)</td></tr></tbody></table>
+<p><strong>The dev environment problem is universal.</strong> Engineering teams spin up environments Monday morning and forget about them. They run all weekend. AWS Instance Scheduler or Azure’s Start/Stop VMs solution can automatically shut down non-production workloads outside business hours, saving 65%+ on those resources alone.</p>
+<hr>
+<h2 id="phase-3-govern--sustained-cost-discipline">Phase 3: Govern — Sustained Cost Discipline</h2>
+<p>Optimization without governance is a one-time cleanup. Governance makes it permanent.</p>
+<h3 id="budgets-and-alerts">Budgets and Alerts</h3>
+<h4 id="aws-budgets">AWS Budgets</h4>
+<p>Create budgets per account, per tag, or per service. Set up alerts at multiple thresholds:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> budgets</span><span style="color:#9ECBFF"> create-budget</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --account-id</span><span style="color:#79B8FF"> 123456789012</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --budget</span><span style="color:#9ECBFF"> '{</span></span>
+<span class="line"><span style="color:#9ECBFF">    "BudgetName": "platform-eng-monthly",</span></span>
+<span class="line"><span style="color:#9ECBFF">    "BudgetLimit": { "Amount": "25000", "Unit": "USD" },</span></span>
+<span class="line"><span style="color:#9ECBFF">    "TimeUnit": "MONTHLY",</span></span>
+<span class="line"><span style="color:#9ECBFF">    "BudgetType": "COST",</span></span>
+<span class="line"><span style="color:#9ECBFF">    "CostFilters": { "TagKeyValue": ["user:team$platform-eng"] }</span></span>
+<span class="line"><span style="color:#9ECBFF">  }'</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --notifications-with-subscribers</span><span style="color:#9ECBFF"> '[</span></span>
+<span class="line"><span style="color:#9ECBFF">    {</span></span>
+<span class="line"><span style="color:#9ECBFF">      "Notification": { "NotificationType": "ACTUAL", "ComparisonOperator": "GREATER_THAN", "Threshold": 80 },</span></span>
+<span class="line"><span style="color:#9ECBFF">      "Subscribers": [{ "SubscriptionType": "EMAIL", "Address": "platform-eng@corp.com" }]</span></span>
+<span class="line"><span style="color:#9ECBFF">    }</span></span>
+<span class="line"><span style="color:#9ECBFF">  ]'</span></span></code></pre>
+<h4 id="azure-budgets">Azure Budgets</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">az</span><span style="color:#9ECBFF"> consumption</span><span style="color:#9ECBFF"> budget</span><span style="color:#9ECBFF"> create</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --budget-name</span><span style="color:#9ECBFF"> "platform-eng-monthly"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --amount</span><span style="color:#79B8FF"> 25000</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --category</span><span style="color:#9ECBFF"> Cost</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --time-grain</span><span style="color:#9ECBFF"> Monthly</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --start-date</span><span style="color:#9ECBFF"> 2026-04-01</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --end-date</span><span style="color:#9ECBFF"> 2027-03-31</span></span></code></pre>
+<p>Wire Azure Budgets to <strong>Action Groups</strong> that send emails, trigger Logic Apps, or even invoke Azure Functions to automatically scale down resources when budgets are breached.</p>
+<h3 id="anomaly-detection">Anomaly Detection</h3>
+<h4 id="aws-cost-anomaly-detection">AWS Cost Anomaly Detection</h4>
+<p>AWS offers a native anomaly detection service that uses machine learning to identify unusual spending patterns. Create monitors per account, service, or cost allocation tag:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> ce</span><span style="color:#9ECBFF"> create-anomaly-monitor</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --anomaly-monitor</span><span style="color:#9ECBFF"> '{</span></span>
+<span class="line"><span style="color:#9ECBFF">    "MonitorName": "production-spend",</span></span>
+<span class="line"><span style="color:#9ECBFF">    "MonitorType": "DIMENSIONAL",</span></span>
+<span class="line"><span style="color:#9ECBFF">    "MonitorDimension": "SERVICE"</span></span>
+<span class="line"><span style="color:#9ECBFF">  }'</span></span></code></pre>
+<p>It flags spikes like “Your RDS spending increased 340% day-over-day” before they become month-end surprises.</p>
+<h4 id="azure-cost-alerts">Azure Cost Alerts</h4>
+<p>Azure Cost Management includes <strong>Anomaly Alerts</strong> as part of its alerting framework. Configure them through the portal under Cost Management > Cost Alerts. They detect unusual spending patterns and notify via Action Groups.</p>
+<h3 id="account-and-subscription-structure">Account and Subscription Structure</h3>
+<p>Mature FinOps practices use the cloud account/subscription as a <strong>governance boundary</strong>:</p>
+<ul>
+<li><strong>AWS:</strong> Use AWS Organizations with separate accounts per environment (dev, staging, prod) and per business unit. Apply Service Control Policies (SCPs) to restrict expensive instance types in non-production accounts.</li>
+<li><strong>Azure:</strong> Use Management Groups to organize subscriptions. Apply Azure Policy at the management group level. Separate subscriptions for each major workload or team.</li>
+</ul>
+<p>This structure makes cost attribution automatic—you know what each account/subscription costs without relying solely on tags.</p>
+<hr>
+<h2 id="phase-4-culture--the-hardest-part">Phase 4: Culture — The Hardest Part</h2>
+<p>Tools and policies are necessary but not sufficient. The organizations that truly master FinOps change how engineers think about money.</p>
+<h3 id="the-finops-team">The FinOps Team</h3>
+<p>Establish a central FinOps team (even if it’s 2-3 people to start) with this charter:</p>
+<ul>
+<li><strong>Weekly cost reviews</strong> with engineering leads</li>
+<li><strong>Monthly showback reports</strong> per team showing their cloud spend vs. budget</li>
+<li><strong>Quarterly optimization sprints</strong> where teams dedicate time to acting on recommendations</li>
+<li><strong>A Slack/Teams channel</strong> where cost anomalies are posted automatically</li>
+</ul>
+<h3 id="engineer-accountability">Engineer Accountability</h3>
+<p>The most impactful cultural change: <strong>put cost data in front of engineers where they already work.</strong></p>
+<ul>
+<li>Add cost widgets to your internal developer portal</li>
+<li>Include estimated monthly cost in pull request checks for Terraform/IaC changes (tools like Infracost do this)</li>
+<li>Add cloud cost as a metric in your team’s sprint retrospectives</li>
+<li>Celebrate cost savings the same way you celebrate feature launches</li>
+</ul>
+<h3 id="showback-vs-chargeback">Showback vs. Chargeback</h3>
+<p>Most enterprises start with <strong>showback</strong> (showing teams what they spend without billing them internally). This creates awareness. Mature organizations move to <strong>chargeback</strong> (internal billing) to create real accountability.</p>
+<p>The progression looks like this:</p>
+<ol>
+<li><strong>Visibility</strong> (Month 1-3): Dashboards and reports exist. Teams can see their costs.</li>
+<li><strong>Showback</strong> (Month 3-6): Monthly reports sent to team leads with commentary.</li>
+<li><strong>Soft Chargeback</strong> (Month 6-12): Costs are allocated to teams in planning, but don’t directly impact budgets.</li>
+<li><strong>Full Chargeback</strong> (Year 2+): Cloud costs are deducted from team/BU budgets. Engineering decisions now have direct financial consequences.</li>
+</ol>
+<hr>
+<h2 id="a-real-world-enterprise-finops-stack">A Real-World Enterprise FinOps Stack</h2>
+<p>Here’s what a production-grade FinOps setup looks like using native tooling across both clouds:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Layer</th><th>AWS</th><th>Azure</th></tr></thead><tbody><tr><td><strong>Cost Data</strong></td><td>CUR → S3 → Athena</td><td>Cost Exports → Storage → Synapse</td></tr><tr><td><strong>Dashboards</strong></td><td>QuickSight</td><td>Power BI</td></tr><tr><td><strong>Rightsizing</strong></td><td>Compute Optimizer</td><td>Azure Advisor</td></tr><tr><td><strong>Reservations</strong></td><td>Savings Plans</td><td>Azure Reservations</td></tr><tr><td><strong>Budgets</strong></td><td>AWS Budgets</td><td>Azure Budgets</td></tr><tr><td><strong>Anomaly Detection</strong></td><td>Cost Anomaly Detection</td><td>Cost Alerts</td></tr><tr><td><strong>Tagging Enforcement</strong></td><td>Tag Policies + Config Rules</td><td>Azure Policy</td></tr><tr><td><strong>Waste Automation</strong></td><td>Lambda + EventBridge</td><td>Azure Functions + Logic Apps</td></tr><tr><td><strong>IaC Cost Checks</strong></td><td>Infracost in CI/CD</td><td>Infracost in CI/CD</td></tr></tbody></table>
+<p>You don’t need a $200K/year third-party platform to do this. AWS and Azure give you 90% of what you need out of the box. The remaining 10% is process and culture.</p>
+<hr>
+<h2 id="the-bottom-line">The Bottom Line</h2>
+<p>Running a mature FinOps practice in the enterprise isn’t a tooling problem—it’s an organizational one. The cloud providers have built excellent native cost management capabilities. The challenge is wiring them together into a coherent system and building a culture where engineers treat cloud spend as a first-class engineering metric.</p>
+<p>Start with tagging. Build visibility. Optimize the big three (rightsizing, reservations, waste). Govern with budgets and anomaly detection. And above all, make cost a team sport.</p>
+<p>The enterprises that get this right in 2026 aren’t just saving money—they’re building sustainable cloud practices that scale with the business instead of against it.</p> </article> <div class="mt-8 text-center"> <a href="/" class="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors">
+← Back to all posts
+</a> </div> </main> <footer class="border-t border-slate-200 bg-white py-8 mt-8"> <div class="max-w-2xl mx-auto px-6 flex flex-col items-center gap-4"> <div class="flex flex-wrap justify-center gap-3"> <a href="https://linkedin.com/in/jaswindercc" target="_blank" rel="noopener noreferrer" class="social-pill inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 bg-slate-100 hover:bg-blue-50 hover:text-blue-600 px-3 py-1.5 rounded-full transition-colors"> LinkedIn </a><a href="https://github.com/jaswindercc" target="_blank" rel="noopener noreferrer" class="social-pill inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 bg-slate-100 hover:bg-blue-50 hover:text-blue-600 px-3 py-1.5 rounded-full transition-colors"> GitHub </a><a href="https://youtube.com/@jaswinder_cc" target="_blank" rel="noopener noreferrer" class="social-pill inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 bg-slate-100 hover:bg-blue-50 hover:text-blue-600 px-3 py-1.5 rounded-full transition-colors"> YouTube </a><a href="https://x.com/jaswinder_cc" target="_blank" rel="noopener noreferrer" class="social-pill inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 bg-slate-100 hover:bg-blue-50 hover:text-blue-600 px-3 py-1.5 rounded-full transition-colors"> X (Twitter) </a> </div> <p class="text-xs text-slate-400">&copy; 2026 Jaswinder Singh. All rights reserved.</p> </div> </footer> </body></html>

@@ -1,0 +1,611 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="index, follow"><meta name="description" content="Zero Trust is no longer a philosophy — it's a concrete architecture. Here's how to implement it across AWS and Azure with real policies, real tooling, and hard lessons from production."><meta name="keywords" content="Zero Trust, Security, AWS, Azure, IAM"><link rel="canonical" href="https://jaswinder.cc/blog/zero-trust-cloud-security/"><!-- Open Graph --><meta property="og:type" content="article"><meta property="og:title" content="Zero Trust Security Framework for Cloud: The 2026 Implementation Playbook"><meta property="og:description" content="Zero Trust is no longer a philosophy — it's a concrete architecture. Here's how to implement it across AWS and Azure with real policies, real tooling, and hard lessons from production."><meta property="og:url" content="https://jaswinder.cc/blog/zero-trust-cloud-security/"><meta property="og:site_name" content="Jaswinder Singh"><meta property="article:published_time" content="2026-04-23T00:00:00.000Z"><meta property="article:author" content="Jaswinder Singh"><meta property="article:section" content="Security"><meta property="article:tag" content="Zero Trust"><meta property="article:tag" content="Security"><meta property="article:tag" content="AWS"><meta property="article:tag" content="Azure"><meta property="article:tag" content="IAM"><!-- Twitter --><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Zero Trust Security Framework for Cloud: The 2026 Implementation Playbook"><meta name="twitter:description" content="Zero Trust is no longer a philosophy — it's a concrete architecture. Here's how to implement it across AWS and Azure with real policies, real tooling, and hard lessons from production."><title>Zero Trust Security Framework for Cloud: The 2026 Implementation Playbook | Jaswinder Singh</title><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Zero Trust Security Framework for Cloud: The 2026 Implementation Playbook","description":"Zero Trust is no longer a philosophy — it's a concrete architecture. Here's how to implement it across AWS and Azure with real policies, real tooling, and hard lessons from production.","datePublished":"2026-04-23T00:00:00.000Z","dateModified":"2026-04-23T00:00:00.000Z","url":"https://jaswinder.cc/blog/zero-trust-cloud-security/","mainEntityOfPage":{"@type":"WebPage","@id":"https://jaswinder.cc/blog/zero-trust-cloud-security/"},"author":{"@type":"Person","name":"Jaswinder Singh","url":"https://jaswinder.cc"},"keywords":"Zero Trust, Security, AWS, Azure, IAM","about":[{"@type":"Thing","name":"Zero Trust"},{"@type":"Thing","name":"Security"},{"@type":"Thing","name":"AWS"},{"@type":"Thing","name":"Azure"},{"@type":"Thing","name":"IAM"}],"articleSection":"Security"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://jaswinder.cc"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://jaswinder.cc/blog/"},{"@type":"ListItem","position":3,"name":"Zero Trust Security Framework for Cloud: The 2026 Implementation Playbook","item":"https://jaswinder.cc/blog/zero-trust-cloud-security/"}]}</script><link rel="stylesheet" href="/_astro/global.B5TWTrlM.css">
+<style>.prose{max-width:42rem}.prose p{margin-bottom:1rem;font-size:1rem;line-height:1.5rem;line-height:1.625;--tw-text-opacity: 1;color:rgb(51 65 85 / var(--tw-text-opacity, 1))}.prose h1{margin-top:2rem;margin-bottom:1rem;font-size:2.25rem;line-height:2.5rem;font-weight:700;--tw-text-opacity: 1;color:rgb(2 6 23 / var(--tw-text-opacity, 1))}.prose h1:first-child{display:none}.prose h2{margin-top:1.5rem;margin-bottom:.75rem;font-size:1.5rem;line-height:2rem;font-weight:700;--tw-text-opacity: 1;color:rgb(2 6 23 / var(--tw-text-opacity, 1))}.prose h3{margin-top:1rem;margin-bottom:.5rem;font-size:1.25rem;line-height:1.75rem;font-weight:600;--tw-text-opacity: 1;color:rgb(15 23 42 / var(--tw-text-opacity, 1))}.prose code{border-radius:.25rem;--tw-bg-opacity: 1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1));padding:.25rem .5rem;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-size:.875rem;line-height:1.25rem;--tw-text-opacity: 1;color:rgb(15 23 42 / var(--tw-text-opacity, 1))}.prose pre{margin-bottom:1rem;overflow-x:auto;border-radius:.5rem;--tw-bg-opacity: 1;background-color:rgb(15 23 42 / var(--tw-bg-opacity, 1));padding:1rem;--tw-text-opacity: 1;color:rgb(248 250 252 / var(--tw-text-opacity, 1))}.prose pre code{border-radius:0;background-color:transparent;padding:0;color:inherit}.prose a{--tw-text-opacity: 1;color:rgb(37 99 235 / var(--tw-text-opacity, 1))}.prose a:hover{text-decoration-line:underline}.prose ul,.prose ol{margin-left:1.5rem;margin-bottom:1rem}.prose li{margin-bottom:.5rem}.prose blockquote{margin-top:1rem;margin-bottom:1rem;border-left-width:4px;--tw-border-opacity: 1;border-color:rgb(203 213 225 / var(--tw-border-opacity, 1));padding-left:1rem;font-style:italic;--tw-text-opacity: 1;color:rgb(71 85 105 / var(--tw-text-opacity, 1))}
+</style></head> <body class="bg-slate-50 text-slate-900 font-sans"> <div class="gradient-bar"></div> <main class="max-w-2xl mx-auto py-16 px-6"> <header class="mb-12"> <a href="/" class="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors mb-6">
+← Back to Home
+</a> <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 sm:p-8"> <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-3 text-slate-950">Zero Trust Security Framework for Cloud: The 2026 Implementation Playbook</h1> <div class="flex items-center gap-3 text-sm text-slate-500"> <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white font-bold text-xs">JS</div> <span>Jaswinder Singh</span> </div> </div> </header> <article class="prose prose-slate bg-white rounded-xl border border-slate-200 shadow-sm p-6 sm:p-8"> <h1 id="zero-trust-security-framework-for-cloud-the-2026-implementation-playbook">Zero Trust Security Framework for Cloud: The 2026 Implementation Playbook</h1>
+<p>“Never trust, always verify” has been a security slogan since 2010. For most of the last decade, it stayed a slogan. Companies bought a ZTNA product, slapped it on their VPN replacement, and called it done. That’s not Zero Trust — that’s marketing.</p>
+<p>In 2026, the conversation has matured. Zero Trust is now a <strong>concrete, implementable architecture</strong> with well-defined patterns across AWS and Azure. The frameworks exist. The tooling is native. The question is no longer “should we do Zero Trust?” — it’s “how far along are we, and what’s still exposed?”</p>
+<p>This guide breaks down what a production-grade Zero Trust implementation actually looks like in the cloud — the identity layer, the network layer, the data layer, and the operational reality of running it at enterprise scale.</p>
+<hr>
+<h2 id="why-zero-trust-became-non-negotiable">Why Zero Trust Became Non-Negotiable</h2>
+<p>Three things killed the perimeter model:</p>
+<ol>
+<li>
+<p><strong>The perimeter dissolved.</strong> Engineers deploy from home networks, coffee shops, and airports. Workloads run across three clouds, two SaaS platforms, and a partner’s API. There is no “inside” anymore.</p>
+</li>
+<li>
+<p><strong>Lateral movement became the #1 attack pattern.</strong> In 80%+ of breaches analyzed in 2025, the initial compromise was boring — a phished credential, a misconfigured S3 bucket, a leaked API key. The damage happened after, when attackers moved laterally through flat networks and over-permissioned IAM roles.</p>
+</li>
+<li>
+<p><strong>Compliance mandated it.</strong> The US Executive Order 14028 (2021) required federal agencies to adopt Zero Trust architectures. By 2026, that requirement has cascaded into every industry touching government contracts — defense, healthcare, finance, critical infrastructure. NIST SP 800-207 is no longer a suggestion; it’s an audit requirement.</p>
+</li>
+</ol>
+<hr>
+<h2 id="the-five-pillars-of-cloud-zero-trust">The Five Pillars of Cloud Zero Trust</h2>
+<p>CISA’s Zero Trust Maturity Model defines five pillars. Here’s what each one looks like when implemented in AWS and Azure — not in theory, but in actual cloud configurations.</p>
+<h3 id="pillar-1-identity">Pillar 1: Identity</h3>
+<p><strong>Principle:</strong> Every access request is authenticated and authorized based on identity, context, and risk — regardless of network location.</p>
+<h4 id="the-foundation-no-long-lived-credentials">The Foundation: No Long-Lived Credentials</h4>
+<p>The single highest-impact Zero Trust action in any cloud environment: <strong>eliminate long-lived credentials.</strong></p>
+<p>On AWS, this means no IAM user access keys. Period.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "Version"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"2012-10-17"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "Statement"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#79B8FF">      "Sid"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"DenyAccessKeyCreation"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">      "Effect"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Deny"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">      "Action"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#9ECBFF">        "iam:CreateAccessKey"</span></span>
+<span class="line"><span style="color:#E1E4E8">      ],</span></span>
+<span class="line"><span style="color:#79B8FF">      "Resource"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"*"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">      "Condition"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">        "StringNotEquals"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">          "aws:PrincipalTag/exception-approved"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"true"</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Apply this as a Service Control Policy (SCP) at the AWS Organizations root. Every human user authenticates through IAM Identity Center (SSO) backed by your IdP. Every service-to-service call uses IAM roles with temporary credentials from STS.</p>
+<p>On Azure, the equivalent is disabling service principal secrets in favor of <strong>Managed Identities</strong> and <strong>Workload Identity Federation</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Create a user-assigned managed identity for a workload</span></span>
+<span class="line"><span style="color:#B392F0">az</span><span style="color:#9ECBFF"> identity</span><span style="color:#9ECBFF"> create</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --name</span><span style="color:#9ECBFF"> app-payment-processor</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --resource-group</span><span style="color:#9ECBFF"> rg-production</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Assign it to a VM or App Service — no secrets involved</span></span>
+<span class="line"><span style="color:#B392F0">az</span><span style="color:#9ECBFF"> vm</span><span style="color:#9ECBFF"> identity</span><span style="color:#9ECBFF"> assign</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --resource-group</span><span style="color:#9ECBFF"> rg-production</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --name</span><span style="color:#9ECBFF"> vm-processor-01</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --identities</span><span style="color:#9ECBFF"> app-payment-processor</span></span></code></pre>
+<p>Managed Identities use token-based authentication with automatic rotation. No secrets to leak, no keys to rotate, no credentials in environment variables.</p>
+<h4 id="conditional-access-context-aware-authentication">Conditional Access: Context-Aware Authentication</h4>
+<p>Authentication alone isn’t enough. You need <strong>context-aware access decisions</strong> — where is the user? What device are they on? What’s their risk score?</p>
+<p><strong>Azure Conditional Access</strong> is the most mature implementation:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "displayName"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Require compliant device for cloud admin access"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "state"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"enabled"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "conditions"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "applications"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">      "includeApplications"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#9ECBFF">        "797f4846-ba00-4fd7-ba43-dac1f8f63013"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">        "0000000a-0000-0000-c000-000000000000"</span></span>
+<span class="line"><span style="color:#E1E4E8">      ]</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#79B8FF">    "users"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">      "includeRoles"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"62e90394-69f5-4237-9190-012177145e10"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#79B8FF">    "locations"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">      "excludeLocations"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"AllTrusted"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#79B8FF">  "grantControls"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "operator"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"AND"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    "builtInControls"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#9ECBFF">      "compliantDevice"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">      "mfa"</span></span>
+<span class="line"><span style="color:#E1E4E8">    ]</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>This policy says: “If a Global Admin tries to access Azure management from an untrusted location, require both a compliant device AND MFA.” No exceptions.</p>
+<p>On AWS, achieve this with <strong>IAM Identity Center</strong> permission sets combined with <strong>context keys</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "Version"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"2012-10-17"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "Statement"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#79B8FF">      "Effect"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Deny"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">      "Action"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"*"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">      "Resource"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"*"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">      "Condition"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">        "NotIpAddress"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">          "aws:SourceIp"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"203.0.113.0/24"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"198.51.100.0/24"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">        },</span></span>
+<span class="line"><span style="color:#79B8FF">        "BoolIfExists"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">          "aws:MultiFactorAuthPresent"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"false"</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="just-in-time-access">Just-In-Time Access</h4>
+<p>Standing privileges are the enemy of Zero Trust. Nobody should have permanent admin access to production.</p>
+<ul>
+<li><strong>Azure:</strong> Privileged Identity Management (PIM) provides time-boxed role activation. An engineer requests “Contributor” on a production subscription, provides justification, gets approved, and the role auto-expires in 4 hours.</li>
+<li><strong>AWS:</strong> Use IAM Identity Center with permission sets that have session durations. Combine with a custom approval workflow via Step Functions for elevated access.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Azure PIM — activate a role with justification</span></span>
+<span class="line"><span style="color:#B392F0">az</span><span style="color:#9ECBFF"> rest</span><span style="color:#79B8FF"> --method</span><span style="color:#9ECBFF"> POST</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --url</span><span style="color:#9ECBFF"> "https://graph.microsoft.com/v1.0/roleManagement/directory/roleAssignmentScheduleRequests"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --body</span><span style="color:#9ECBFF"> '{</span></span>
+<span class="line"><span style="color:#9ECBFF">    "action": "SelfActivate",</span></span>
+<span class="line"><span style="color:#9ECBFF">    "justification": "Incident INC-4521: investigating production database latency",</span></span>
+<span class="line"><span style="color:#9ECBFF">    "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c",</span></span>
+<span class="line"><span style="color:#9ECBFF">    "directoryScopeId": "/",</span></span>
+<span class="line"><span style="color:#9ECBFF">    "scheduleInfo": {</span></span>
+<span class="line"><span style="color:#9ECBFF">      "startDateTime": "2026-04-23T10:00:00Z",</span></span>
+<span class="line"><span style="color:#9ECBFF">      "expiration": {</span></span>
+<span class="line"><span style="color:#9ECBFF">        "type": "AfterDuration",</span></span>
+<span class="line"><span style="color:#9ECBFF">        "duration": "PT4H"</span></span>
+<span class="line"><span style="color:#9ECBFF">      }</span></span>
+<span class="line"><span style="color:#9ECBFF">    }</span></span>
+<span class="line"><span style="color:#9ECBFF">  }'</span></span></code></pre>
+<hr>
+<h3 id="pillar-2-network">Pillar 2: Network</h3>
+<p><strong>Principle:</strong> Network location grants zero implicit trust. Every flow is authenticated, authorized, and encrypted.</p>
+<h4 id="microsegmentation">Microsegmentation</h4>
+<p>Flat networks are a lateral movement playground. Microsegmentation breaks networks into isolated segments where every flow between workloads is explicitly allowed.</p>
+<p><strong>AWS Security Groups as Microsegmentation:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Web tier — only accepts traffic from ALB on port 443</span></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> ec2</span><span style="color:#9ECBFF"> create-security-group</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --group-name</span><span style="color:#9ECBFF"> sg-web-tier</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --description</span><span style="color:#9ECBFF"> "Web tier - ALB ingress only"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> ec2</span><span style="color:#9ECBFF"> authorize-security-group-ingress</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --group-id</span><span style="color:#9ECBFF"> sg-web-tier</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --protocol</span><span style="color:#9ECBFF"> tcp</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --port</span><span style="color:#79B8FF"> 443</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --source-group</span><span style="color:#9ECBFF"> sg-alb</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># App tier — only accepts traffic from web tier on port 8080</span></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> ec2</span><span style="color:#9ECBFF"> create-security-group</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --group-name</span><span style="color:#9ECBFF"> sg-app-tier</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --description</span><span style="color:#9ECBFF"> "App tier - web tier ingress only"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> ec2</span><span style="color:#9ECBFF"> authorize-security-group-ingress</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --group-id</span><span style="color:#9ECBFF"> sg-app-tier</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --protocol</span><span style="color:#9ECBFF"> tcp</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --port</span><span style="color:#79B8FF"> 8080</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --source-group</span><span style="color:#9ECBFF"> sg-web-tier</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Database tier — only accepts traffic from app tier on port 5432</span></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> ec2</span><span style="color:#9ECBFF"> create-security-group</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --group-name</span><span style="color:#9ECBFF"> sg-db-tier</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --description</span><span style="color:#9ECBFF"> "DB tier - app tier ingress only"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> ec2</span><span style="color:#9ECBFF"> authorize-security-group-ingress</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --group-id</span><span style="color:#9ECBFF"> sg-db-tier</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --protocol</span><span style="color:#9ECBFF"> tcp</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --port</span><span style="color:#79B8FF"> 5432</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --source-group</span><span style="color:#9ECBFF"> sg-app-tier</span></span></code></pre>
+<p>Each tier can only talk to its immediate neighbor. A compromised web server cannot reach the database directly.</p>
+<p><strong>Azure Network Security Groups (NSGs) + Application Security Groups (ASGs):</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Create ASGs for logical grouping</span></span>
+<span class="line"><span style="color:#B392F0">az</span><span style="color:#9ECBFF"> network</span><span style="color:#9ECBFF"> asg</span><span style="color:#9ECBFF"> create</span><span style="color:#79B8FF"> --name</span><span style="color:#9ECBFF"> asg-web</span><span style="color:#79B8FF"> --resource-group</span><span style="color:#9ECBFF"> rg-prod</span></span>
+<span class="line"><span style="color:#B392F0">az</span><span style="color:#9ECBFF"> network</span><span style="color:#9ECBFF"> asg</span><span style="color:#9ECBFF"> create</span><span style="color:#79B8FF"> --name</span><span style="color:#9ECBFF"> asg-app</span><span style="color:#79B8FF"> --resource-group</span><span style="color:#9ECBFF"> rg-prod</span></span>
+<span class="line"><span style="color:#B392F0">az</span><span style="color:#9ECBFF"> network</span><span style="color:#9ECBFF"> asg</span><span style="color:#9ECBFF"> create</span><span style="color:#79B8FF"> --name</span><span style="color:#9ECBFF"> asg-db</span><span style="color:#79B8FF"> --resource-group</span><span style="color:#9ECBFF"> rg-prod</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># NSG rule: only app tier can reach database</span></span>
+<span class="line"><span style="color:#B392F0">az</span><span style="color:#9ECBFF"> network</span><span style="color:#9ECBFF"> nsg</span><span style="color:#9ECBFF"> rule</span><span style="color:#9ECBFF"> create</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --resource-group</span><span style="color:#9ECBFF"> rg-prod</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --nsg-name</span><span style="color:#9ECBFF"> nsg-db-subnet</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --name</span><span style="color:#9ECBFF"> allow-app-to-db</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --priority</span><span style="color:#79B8FF"> 100</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --source-asgs</span><span style="color:#9ECBFF"> asg-app</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --destination-asgs</span><span style="color:#9ECBFF"> asg-db</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --destination-port-ranges</span><span style="color:#79B8FF"> 5432</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --protocol</span><span style="color:#9ECBFF"> Tcp</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --access</span><span style="color:#9ECBFF"> Allow</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># NSG rule: deny everything else to database subnet</span></span>
+<span class="line"><span style="color:#B392F0">az</span><span style="color:#9ECBFF"> network</span><span style="color:#9ECBFF"> nsg</span><span style="color:#9ECBFF"> rule</span><span style="color:#9ECBFF"> create</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --resource-group</span><span style="color:#9ECBFF"> rg-prod</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --nsg-name</span><span style="color:#9ECBFF"> nsg-db-subnet</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --name</span><span style="color:#9ECBFF"> deny-all-inbound</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --priority</span><span style="color:#79B8FF"> 4096</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --source-address-prefixes</span><span style="color:#9ECBFF"> '*'</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --destination-address-prefixes</span><span style="color:#9ECBFF"> '*'</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --destination-port-ranges</span><span style="color:#9ECBFF"> '*'</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --protocol</span><span style="color:#9ECBFF"> '*'</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --access</span><span style="color:#9ECBFF"> Deny</span></span></code></pre>
+<h4 id="private-endpoints-everywhere">Private Endpoints Everywhere</h4>
+<p>In Zero Trust, no cloud service should have a public endpoint unless it absolutely must. Storage accounts, databases, key vaults, container registries — all should be accessible only through private endpoints.</p>
+<p><strong>AWS VPC Endpoints:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Gateway endpoint for S3 (free)</span></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> ec2</span><span style="color:#9ECBFF"> create-vpc-endpoint</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --vpc-id</span><span style="color:#9ECBFF"> vpc-0abc123</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --service-name</span><span style="color:#9ECBFF"> com.amazonaws.us-east-1.s3</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --route-table-ids</span><span style="color:#9ECBFF"> rtb-0abc123</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Interface endpoint for Secrets Manager</span></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> ec2</span><span style="color:#9ECBFF"> create-vpc-endpoint</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --vpc-id</span><span style="color:#9ECBFF"> vpc-0abc123</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --service-name</span><span style="color:#9ECBFF"> com.amazonaws.us-east-1.secretsmanager</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --vpc-endpoint-type</span><span style="color:#9ECBFF"> Interface</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --subnet-ids</span><span style="color:#9ECBFF"> subnet-0abc123</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --security-group-ids</span><span style="color:#9ECBFF"> sg-private-endpoints</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --private-dns-enabled</span></span></code></pre>
+<p><strong>Azure Private Endpoints:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Private endpoint for a Storage Account</span></span>
+<span class="line"><span style="color:#B392F0">az</span><span style="color:#9ECBFF"> network</span><span style="color:#9ECBFF"> private-endpoint</span><span style="color:#9ECBFF"> create</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --name</span><span style="color:#9ECBFF"> pe-storage-prod</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --resource-group</span><span style="color:#9ECBFF"> rg-prod</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --vnet-name</span><span style="color:#9ECBFF"> vnet-prod</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --subnet</span><span style="color:#9ECBFF"> snet-private-endpoints</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --connection-name</span><span style="color:#9ECBFF"> storage-connection</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --private-connection-resource-id</span><span style="color:#9ECBFF"> /subscriptions/.../storageAccounts/stprod</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --group-id</span><span style="color:#9ECBFF"> blob</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Disable public access</span></span>
+<span class="line"><span style="color:#B392F0">az</span><span style="color:#9ECBFF"> storage</span><span style="color:#9ECBFF"> account</span><span style="color:#9ECBFF"> update</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --name</span><span style="color:#9ECBFF"> stprod</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --resource-group</span><span style="color:#9ECBFF"> rg-prod</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --public-network-access</span><span style="color:#9ECBFF"> Disabled</span></span></code></pre>
+<p>Once private endpoints are in place, <strong>disable public access on every service.</strong> This single step eliminates an entire class of data exposure incidents.</p>
+<h4 id="service-mesh-for-workload-to-workload-mtls">Service Mesh for Workload-to-Workload mTLS</h4>
+<p>For Kubernetes workloads, a service mesh enforces Zero Trust at the application layer:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#6A737D"># Istio PeerAuthentication — enforce mTLS across the mesh</span></span>
+<span class="line"><span style="color:#85E89D">apiVersion</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">security.istio.io/v1</span></span>
+<span class="line"><span style="color:#85E89D">kind</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">PeerAuthentication</span></span>
+<span class="line"><span style="color:#85E89D">metadata</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">default</span></span>
+<span class="line"><span style="color:#85E89D">  namespace</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">istio-system</span></span>
+<span class="line"><span style="color:#85E89D">spec</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  mtls</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    mode</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">STRICT</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">---</span></span>
+<span class="line"><span style="color:#6A737D"># Istio AuthorizationPolicy — only payment-service can call database-service</span></span>
+<span class="line"><span style="color:#85E89D">apiVersion</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">security.istio.io/v1</span></span>
+<span class="line"><span style="color:#85E89D">kind</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">AuthorizationPolicy</span></span>
+<span class="line"><span style="color:#85E89D">metadata</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">db-access-policy</span></span>
+<span class="line"><span style="color:#85E89D">  namespace</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">production</span></span>
+<span class="line"><span style="color:#85E89D">spec</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  selector</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    matchLabels</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">      app</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">database-service</span></span>
+<span class="line"><span style="color:#85E89D">  action</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">ALLOW</span></span>
+<span class="line"><span style="color:#85E89D">  rules</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    - </span><span style="color:#85E89D">from</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">        - </span><span style="color:#85E89D">source</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">            principals</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"cluster.local/ns/production/sa/payment-service"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#85E89D">      to</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">        - </span><span style="color:#85E89D">operation</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">            methods</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"GET"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"POST"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#85E89D">            ports</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"5432"</span><span style="color:#E1E4E8">]</span></span></code></pre>
+<p>Every pod-to-pod connection is encrypted with mutual TLS. Every connection is authorized based on workload identity. No network-level trust.</p>
+<hr>
+<h3 id="pillar-3-data">Pillar 3: Data</h3>
+<p><strong>Principle:</strong> Data is classified, labeled, and protected based on sensitivity — at rest, in transit, and in use.</p>
+<h4 id="encryption-the-non-negotiable-baseline">Encryption: The Non-Negotiable Baseline</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Layer</th><th>AWS</th><th>Azure</th></tr></thead><tbody><tr><td>At rest (default)</td><td>SSE-S3, SSE-KMS</td><td>Azure Storage Service Encryption</td></tr><tr><td>At rest (customer-managed key)</td><td>KMS CMK</td><td>Azure Key Vault CMK</td></tr><tr><td>At rest (your own HSM)</td><td>CloudHSM</td><td>Azure Dedicated HSM</td></tr><tr><td>In transit</td><td>TLS 1.2+ everywhere</td><td>TLS 1.2+ everywhere</td></tr><tr><td>In use</td><td>Nitro Enclaves</td><td>Azure Confidential Computing (SGX/SEV-SNP)</td></tr></tbody></table>
+<p>Enforce encryption with policies that make unencrypted resources impossible to create:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "Version"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"2012-10-17"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "Statement"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#79B8FF">      "Sid"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"DenyUnencryptedS3Uploads"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">      "Effect"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Deny"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">      "Action"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"s3:PutObject"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">      "Resource"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"arn:aws:s3:::*/*"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">      "Condition"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">        "StringNotEquals"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">          "s3:x-amz-server-side-encryption"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"aws:kms"</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Azure equivalent using Azure Policy:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "if"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "allOf"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#E1E4E8">      { </span><span style="color:#79B8FF">"field"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"type"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"equals"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Microsoft.Storage/storageAccounts"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">      { </span><span style="color:#79B8FF">"field"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Microsoft.Storage/storageAccounts/minimumTlsVersion"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"notEquals"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"TLS1_2"</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">    ]</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#79B8FF">  "then"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "effect"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"deny"</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="data-classification-and-dlp">Data Classification and DLP</h4>
+<p>Zero Trust requires knowing what data you have and where it lives. Both clouds provide native classification:</p>
+<ul>
+<li><strong>AWS Macie:</strong> Scans S3 buckets using ML to find PII, financial data, credentials, and other sensitive content. Runs continuously and alerts on exposure.</li>
+<li><strong>Azure Purview (now Microsoft Purview):</strong> Classifies data across Azure Storage, SQL, Cosmos DB, and even on-prem data sources. Applies sensitivity labels that travel with the data.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Enable Macie and create a classification job</span></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> macie2</span><span style="color:#9ECBFF"> enable-macie</span></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> macie2</span><span style="color:#9ECBFF"> create-classification-job</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --job-type</span><span style="color:#9ECBFF"> ONE_TIME</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --s3-job-definition</span><span style="color:#9ECBFF"> '{</span></span>
+<span class="line"><span style="color:#9ECBFF">    "bucketDefinitions": [{</span></span>
+<span class="line"><span style="color:#9ECBFF">      "accountId": "123456789012",</span></span>
+<span class="line"><span style="color:#9ECBFF">      "buckets": ["prod-customer-data", "prod-analytics"]</span></span>
+<span class="line"><span style="color:#9ECBFF">    }]</span></span>
+<span class="line"><span style="color:#9ECBFF">  }'</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --name</span><span style="color:#9ECBFF"> "quarterly-pii-scan"</span></span></code></pre>
+<hr>
+<h3 id="pillar-4-workload">Pillar 4: Workload</h3>
+<p><strong>Principle:</strong> Every workload is verified, hardened, and monitored. No implicit trust between services.</p>
+<h4 id="container-image-security">Container Image Security</h4>
+<p>Zero Trust for workloads starts before deployment — at the image build stage:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#6A737D"># GitHub Actions — scan, sign, and gate container images</span></span>
+<span class="line"><span style="color:#E1E4E8">- </span><span style="color:#85E89D">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Build image</span></span>
+<span class="line"><span style="color:#85E89D">  run</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">docker build -t $REGISTRY/app:$SHA .</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">- </span><span style="color:#85E89D">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Scan with Trivy</span></span>
+<span class="line"><span style="color:#85E89D">  uses</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">aquasecurity/trivy-action@master</span></span>
+<span class="line"><span style="color:#85E89D">  with</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    image-ref</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">${{ env.REGISTRY }}/app:${{ env.SHA }}</span></span>
+<span class="line"><span style="color:#85E89D">    exit-code</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span></span>
+<span class="line"><span style="color:#85E89D">    severity</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'CRITICAL,HIGH'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">- </span><span style="color:#85E89D">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Sign with Cosign</span></span>
+<span class="line"><span style="color:#85E89D">  run</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">|</span></span>
+<span class="line"><span style="color:#9ECBFF">    cosign sign --key cosign.key $REGISTRY/app:$SHA</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">- </span><span style="color:#85E89D">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Push to ECR/ACR</span></span>
+<span class="line"><span style="color:#85E89D">  run</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">docker push $REGISTRY/app:$SHA</span></span></code></pre>
+<p>Then enforce that only signed, scanned images can run in production:</p>
+<p><strong>AWS — ECR image scanning + ECS task definition constraints:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Enable enhanced scanning on ECR</span></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> ecr</span><span style="color:#9ECBFF"> put-registry-scanning-configuration</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --scan-type</span><span style="color:#9ECBFF"> ENHANCED</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --rules</span><span style="color:#9ECBFF"> '[{"scanFrequency":"CONTINUOUS_SCAN","repositoryFilters":[{"filter":"prod-","filterType":"WILDCARD"}]}]'</span></span></code></pre>
+<p><strong>Azure — AKS with Azure Policy for signed images:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Enable Azure Policy add-on for AKS</span></span>
+<span class="line"><span style="color:#B392F0">az</span><span style="color:#9ECBFF"> aks</span><span style="color:#9ECBFF"> enable-addons</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --addons</span><span style="color:#9ECBFF"> azure-policy</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --name</span><span style="color:#9ECBFF"> aks-prod</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --resource-group</span><span style="color:#9ECBFF"> rg-prod</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Apply built-in policy: only allow images from trusted registries</span></span>
+<span class="line"><span style="color:#B392F0">az</span><span style="color:#9ECBFF"> policy</span><span style="color:#9ECBFF"> assignment</span><span style="color:#9ECBFF"> create</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --name</span><span style="color:#9ECBFF"> only-trusted-registries</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --policy</span><span style="color:#9ECBFF"> "febd0533-8e55-448f-b837-bd0e06f16469"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --params</span><span style="color:#9ECBFF"> '{"allowedContainerImagesRegex": {"value": "^acr-prod\\.azurecr\\.io/.+$"}}'</span></span></code></pre>
+<h4 id="runtime-protection">Runtime Protection</h4>
+<p>Images pass scanning at build time, but what about runtime exploits? <strong>Cloud-native runtime protection</strong> catches anomalous behavior:</p>
+<ul>
+<li><strong>AWS GuardDuty (EKS Runtime Monitoring):</strong> Detects container-level threats — reverse shells, crypto miners, privilege escalation, DNS exfiltration.</li>
+<li><strong>Microsoft Defender for Containers:</strong> Same capabilities for AKS — behavioral analysis, vulnerability assessment, runtime threat detection.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Enable GuardDuty EKS Runtime Monitoring</span></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> guardduty</span><span style="color:#9ECBFF"> update-detector</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --detector-id</span><span style="color:#E1E4E8"> $DETECTOR_ID </span><span style="color:#79B8FF">\</span></span>
+<span class="line"><span style="color:#79B8FF">  --features</span><span style="color:#9ECBFF"> '[{"Name":"EKS_RUNTIME_MONITORING","Status":"ENABLED","AdditionalConfiguration":[{"Name":"EKS_ADDON_MANAGEMENT","Status":"ENABLED"}]}]'</span></span></code></pre>
+<hr>
+<h3 id="pillar-5-visibility-and-analytics">Pillar 5: Visibility and Analytics</h3>
+<p><strong>Principle:</strong> All activity is logged, correlated, and analyzed. Anomalies trigger automated response.</p>
+<h4 id="centralized-security-logging">Centralized Security Logging</h4>
+<p>Every action, every API call, every network flow — logged and queryable.</p>
+<p><strong>AWS:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Organization-wide CloudTrail</span></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> cloudtrail</span><span style="color:#9ECBFF"> create-trail</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --name</span><span style="color:#9ECBFF"> org-security-trail</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --s3-bucket-name</span><span style="color:#9ECBFF"> security-logs-central</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --is-organization-trail</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --is-multi-region-trail</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --enable-log-file-validation</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --kms-key-id</span><span style="color:#9ECBFF"> arn:aws:kms:us-east-1:123456789012:key/abc-123</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># VPC Flow Logs for network visibility</span></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> ec2</span><span style="color:#9ECBFF"> create-flow-logs</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --resource-type</span><span style="color:#9ECBFF"> VPC</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --resource-ids</span><span style="color:#9ECBFF"> vpc-0abc123</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --traffic-type</span><span style="color:#9ECBFF"> ALL</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --log-destination-type</span><span style="color:#9ECBFF"> s3</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --log-destination</span><span style="color:#9ECBFF"> arn:aws:s3:::security-logs-central/vpc-flow-logs</span></span></code></pre>
+<p><strong>Azure:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Enable Azure Activity Log export to Log Analytics</span></span>
+<span class="line"><span style="color:#B392F0">az</span><span style="color:#9ECBFF"> monitor</span><span style="color:#9ECBFF"> diagnostic-settings</span><span style="color:#9ECBFF"> create</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --name</span><span style="color:#9ECBFF"> security-diagnostics</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --resource</span><span style="color:#9ECBFF"> /subscriptions/</span><span style="color:#E1E4E8">$SUB_ID </span><span style="color:#79B8FF">\</span></span>
+<span class="line"><span style="color:#79B8FF">  --logs</span><span style="color:#9ECBFF"> '[{"category":"Administrative","enabled":true},{"category":"Security","enabled":true},{"category":"Policy","enabled":true}]'</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --workspace</span><span style="color:#9ECBFF"> /subscriptions/</span><span style="color:#E1E4E8">$SUB_ID</span><span style="color:#9ECBFF">/resourceGroups/rg-security/providers/Microsoft.OperationalInsights/workspaces/law-security</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Enable NSG Flow Logs</span></span>
+<span class="line"><span style="color:#B392F0">az</span><span style="color:#9ECBFF"> network</span><span style="color:#9ECBFF"> watcher</span><span style="color:#9ECBFF"> flow-log</span><span style="color:#9ECBFF"> create</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --name</span><span style="color:#9ECBFF"> nsg-flow-prod</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --resource-group</span><span style="color:#9ECBFF"> rg-prod</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --nsg</span><span style="color:#9ECBFF"> nsg-prod-subnet</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --storage-account</span><span style="color:#9ECBFF"> stsecuritylogs</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --workspace</span><span style="color:#9ECBFF"> law-security</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --enabled</span><span style="color:#79B8FF"> true</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --traffic-analytics</span><span style="color:#79B8FF"> true</span></span></code></pre>
+<h4 id="siem-and-automated-response">SIEM and Automated Response</h4>
+<p>Logs without analysis are just storage costs. Feed everything into a SIEM for correlation and automated response:</p>
+<ul>
+<li><strong>AWS Security Hub + EventBridge + Lambda:</strong> Security Hub aggregates findings from GuardDuty, Inspector, Macie, and Config. EventBridge routes high-severity findings to Lambda for automated remediation.</li>
+<li><strong>Microsoft Sentinel:</strong> Cloud-native SIEM built on Log Analytics. KQL queries + automation playbooks (Logic Apps) handle response.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="kql"><code><span class="line"><span style="color:#6A737D">// Sentinel — detect impossible travel (user logs in from two countries within 1 hour)</span></span>
+<span class="line"><span style="color:#E1E4E8">SigninLogs</span></span>
+<span class="line"><span style="color:#E1E4E8">| </span><span style="color:#F97583">where</span><span style="color:#E1E4E8"> TimeGenerated > </span><span style="color:#79B8FF">ago</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1h</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">| </span><span style="color:#F97583">summarize</span><span style="color:#E1E4E8"> Locations = </span><span style="color:#79B8FF">make_set</span><span style="color:#E1E4E8">(LocationDetails.city), </span></span>
+<span class="line"><span style="color:#E1E4E8">            Countries = </span><span style="color:#79B8FF">make_set</span><span style="color:#E1E4E8">(LocationDetails.countryOrRegion),</span></span>
+<span class="line"><span style="color:#E1E4E8">            LoginCount = </span><span style="color:#79B8FF">count()</span><span style="color:#F97583"> by</span><span style="color:#E1E4E8"> UserPrincipalName</span></span>
+<span class="line"><span style="color:#E1E4E8">| </span><span style="color:#F97583">where</span><span style="color:#79B8FF"> array_length</span><span style="color:#E1E4E8">(Countries) > </span><span style="color:#79B8FF">1</span></span>
+<span class="line"><span style="color:#E1E4E8">| </span><span style="color:#F97583">project</span><span style="color:#E1E4E8"> UserPrincipalName, Countries, Locations, LoginCount</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># AWS — auto-quarantine compromised EC2 instance via Lambda</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> boto3</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">ec2 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> boto3.client(</span><span style="color:#9ECBFF">"ec2"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> handler</span><span style="color:#E1E4E8">(event, context):</span></span>
+<span class="line"><span style="color:#E1E4E8">    instance_id </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> event[</span><span style="color:#9ECBFF">"detail"</span><span style="color:#E1E4E8">][</span><span style="color:#9ECBFF">"resource"</span><span style="color:#E1E4E8">][</span><span style="color:#9ECBFF">"instanceDetails"</span><span style="color:#E1E4E8">][</span><span style="color:#9ECBFF">"instanceId"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#6A737D">    # Apply quarantine security group (no inbound/outbound)</span></span>
+<span class="line"><span style="color:#E1E4E8">    ec2.modify_instance_attribute(</span></span>
+<span class="line"><span style="color:#FFAB70">        InstanceId</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">instance_id,</span></span>
+<span class="line"><span style="color:#FFAB70">        Groups</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[</span><span style="color:#9ECBFF">"sg-quarantine-no-access"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">    )</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#6A737D">    # Create forensic snapshot before any changes</span></span>
+<span class="line"><span style="color:#E1E4E8">    volumes </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ec2.describe_volumes(</span></span>
+<span class="line"><span style="color:#FFAB70">        Filters</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">[{</span><span style="color:#9ECBFF">"Name"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"attachment.instance-id"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"Values"</span><span style="color:#E1E4E8">: [instance_id]}]</span></span>
+<span class="line"><span style="color:#E1E4E8">    )</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> vol </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> volumes[</span><span style="color:#9ECBFF">"Volumes"</span><span style="color:#E1E4E8">]:</span></span>
+<span class="line"><span style="color:#E1E4E8">        ec2.create_snapshot(</span></span>
+<span class="line"><span style="color:#FFAB70">            VolumeId</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">vol[</span><span style="color:#9ECBFF">"VolumeId"</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#FFAB70">            Description</span><span style="color:#F97583">=</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"Forensic snapshot - GuardDuty finding - </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">instance_id</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"><span style="color:#E1E4E8">        )</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"statusCode"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">200</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"body"</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"Quarantined </span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">instance_id</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">}</span></span></code></pre>
+<hr>
+<h2 id="the-zero-trust-maturity-roadmap">The Zero Trust Maturity Roadmap</h2>
+<p>You can’t implement everything at once. Here’s a phased approach that delivers value at each stage:</p>
+<h3 id="phase-1-foundation-month-13">Phase 1: Foundation (Month 1–3)</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Eliminate long-lived credentials (IAM users, service principal secrets)</li>
+<li class="task-list-item"><input type="checkbox" disabled> Enable MFA everywhere — no exceptions</li>
+<li class="task-list-item"><input type="checkbox" disabled> Enable CloudTrail/Activity Logs org-wide</li>
+<li class="task-list-item"><input type="checkbox" disabled> Enable GuardDuty/Defender for Cloud</li>
+<li class="task-list-item"><input type="checkbox" disabled> Enforce encryption at rest with customer-managed keys</li>
+</ul>
+<h3 id="phase-2-network-month-36">Phase 2: Network (Month 3–6)</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Deploy private endpoints for all PaaS services</li>
+<li class="task-list-item"><input type="checkbox" disabled> Disable public access on storage, databases, key vaults</li>
+<li class="task-list-item"><input type="checkbox" disabled> Implement microsegmentation with security groups/NSGs</li>
+<li class="task-list-item"><input type="checkbox" disabled> Enable VPC/NSG Flow Logs with traffic analytics</li>
+</ul>
+<h3 id="phase-3-identity-maturity-month-69">Phase 3: Identity Maturity (Month 6–9)</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Deploy Conditional Access / context-aware IAM policies</li>
+<li class="task-list-item"><input type="checkbox" disabled> Implement Just-In-Time access (PIM / custom STS workflows)</li>
+<li class="task-list-item"><input type="checkbox" disabled> Enforce device compliance for admin access</li>
+<li class="task-list-item"><input type="checkbox" disabled> Implement break-glass emergency access procedures</li>
+</ul>
+<h3 id="phase-4-workload-month-912">Phase 4: Workload (Month 9–12)</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Container image scanning in CI/CD with build gates</li>
+<li class="task-list-item"><input type="checkbox" disabled> Image signing and admission control in Kubernetes</li>
+<li class="task-list-item"><input type="checkbox" disabled> Runtime threat detection (GuardDuty EKS / Defender for Containers)</li>
+<li class="task-list-item"><input type="checkbox" disabled> Service mesh with mTLS for inter-service communication</li>
+</ul>
+<h3 id="phase-5-data-and-analytics-month-1218">Phase 5: Data and Analytics (Month 12–18)</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Data classification scanning (Macie / Purview)</li>
+<li class="task-list-item"><input type="checkbox" disabled> DLP policies on sensitive data stores</li>
+<li class="task-list-item"><input type="checkbox" disabled> SIEM deployment with automated response playbooks</li>
+<li class="task-list-item"><input type="checkbox" disabled> Impossible travel, anomalous access, and exfiltration detection rules</li>
+<li class="task-list-item"><input type="checkbox" disabled> Regular red team exercises to validate controls</li>
+</ul>
+<hr>
+<h2 id="the-hard-truths">The Hard Truths</h2>
+<p><strong>Zero Trust slows things down.</strong> MFA prompts, JIT approvals, private endpoint DNS resolution, image scanning gates — every control adds friction. The trade-off is worth it, but be honest about the developer experience impact. Invest in tooling that makes the secure path the easy path.</p>
+<p><strong>You will break things.</strong> Enforcing microsegmentation on an existing environment will break unknown dependencies. Services that “just worked” because the network was flat will fail when you add explicit allow rules. Do this in audit mode first, analyze flow logs, then enforce.</p>
+<p><strong>100% Zero Trust doesn’t exist.</strong> There will always be exceptions — legacy systems that can’t do mTLS, vendors that require public endpoints, emergency access that bypasses JIT. Document every exception, review them quarterly, and treat them as technical debt.</p>
+<p><strong>The biggest risk is partial implementation.</strong> A Zero Trust architecture with one flat subnet, one over-permissioned service account, or one unmonitored API is worse than no Zero Trust at all — because it gives false confidence.</p>
+<hr>
+<h2 id="the-production-zero-trust-stack">The Production Zero Trust Stack</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Layer</th><th>AWS</th><th>Azure</th></tr></thead><tbody><tr><td><strong>Identity Provider</strong></td><td>IAM Identity Center + external IdP</td><td>Entra ID (Azure AD)</td></tr><tr><td><strong>MFA/Passwordless</strong></td><td>FIDO2 via IdP</td><td>Entra ID + Authenticator + FIDO2</td></tr><tr><td><strong>Conditional Access</strong></td><td>IAM context keys + SCPs</td><td>Conditional Access Policies</td></tr><tr><td><strong>JIT Access</strong></td><td>Custom STS + Step Functions</td><td>Privileged Identity Management</td></tr><tr><td><strong>Microsegmentation</strong></td><td>Security Groups + NACLs</td><td>NSGs + ASGs</td></tr><tr><td><strong>Private Connectivity</strong></td><td>VPC Endpoints + PrivateLink</td><td>Private Endpoints + Private Link</td></tr><tr><td><strong>Service Mesh</strong></td><td>App Mesh or Istio on EKS</td><td>Istio on AKS</td></tr><tr><td><strong>Secrets</strong></td><td>Secrets Manager + KMS</td><td>Key Vault</td></tr><tr><td><strong>Image Security</strong></td><td>ECR scanning + Cosign</td><td>ACR scanning + Notation</td></tr><tr><td><strong>Threat Detection</strong></td><td>GuardDuty + Security Hub</td><td>Defender for Cloud + Sentinel</td></tr><tr><td><strong>Logging</strong></td><td>CloudTrail + VPC Flow Logs</td><td>Activity Logs + NSG Flow Logs</td></tr><tr><td><strong>SIEM</strong></td><td>Security Hub + OpenSearch</td><td>Microsoft Sentinel</td></tr><tr><td><strong>Data Classification</strong></td><td>Macie</td><td>Microsoft Purview</td></tr></tbody></table>
+<hr>
+<h2 id="the-bottom-line">The Bottom Line</h2>
+<p>Zero Trust in 2026 isn’t a product you buy. It’s an architecture you build — layer by layer, across identity, network, data, workloads, and visibility. The cloud providers have given us native tooling for every pillar. The frameworks and maturity models exist. The compliance requirements demand it.</p>
+<p>The organizations getting breached in 2026 aren’t the ones without firewalls. They’re the ones with flat networks, standing admin privileges, unscanned container images, and Security Hub findings that nobody reads.</p>
+<p>Zero Trust is the difference between a compromised credential being a security incident and a compromised credential being a catastrophe. Build the architecture. Accept the friction. Close the gaps.</p> </article> <div class="mt-8 text-center"> <a href="/" class="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors">
+← Back to all posts
+</a> </div> </main> <footer class="border-t border-slate-200 bg-white py-8 mt-8"> <div class="max-w-2xl mx-auto px-6 flex flex-col items-center gap-4"> <div class="flex flex-wrap justify-center gap-3"> <a href="https://linkedin.com/in/jaswindercc" target="_blank" rel="noopener noreferrer" class="social-pill inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 bg-slate-100 hover:bg-blue-50 hover:text-blue-600 px-3 py-1.5 rounded-full transition-colors"> LinkedIn </a><a href="https://github.com/jaswindercc" target="_blank" rel="noopener noreferrer" class="social-pill inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 bg-slate-100 hover:bg-blue-50 hover:text-blue-600 px-3 py-1.5 rounded-full transition-colors"> GitHub </a><a href="https://youtube.com/@jaswinder_cc" target="_blank" rel="noopener noreferrer" class="social-pill inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 bg-slate-100 hover:bg-blue-50 hover:text-blue-600 px-3 py-1.5 rounded-full transition-colors"> YouTube </a><a href="https://x.com/jaswinder_cc" target="_blank" rel="noopener noreferrer" class="social-pill inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 bg-slate-100 hover:bg-blue-50 hover:text-blue-600 px-3 py-1.5 rounded-full transition-colors"> X (Twitter) </a> </div> <p class="text-xs text-slate-400">&copy; 2026 Jaswinder Singh. All rights reserved.</p> </div> </footer> </body></html>
