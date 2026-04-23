@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base typography enhancements */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Animated gradient accent line */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-bar {
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899, #f59e0b, #3b82f6);
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
+}
+
+/* Subtle hover lift for cards */
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.08);
+}
+
+/* Blog post row hover */
+.post-row {
+  transition: background-color 0.15s ease;
+}
+.post-row:hover {
+  background-color: rgb(248 250 252); /* slate-50 */
+}
+
+/* Social icon pill style */
+.social-pill {
+  transition: all 0.2s ease;
+}
+.social-pill:hover {
+  transform: translateY(-1px);
+}
+
+/* Section fade-in on scroll */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-section {
+  animation: fade-up 0.5s ease forwards;
+  opacity: 0;
+}
+
+.animate-section:nth-child(1) { animation-delay: 0.05s; }
+.animate-section:nth-child(2) { animation-delay: 0.1s; }
+.animate-section:nth-child(3) { animation-delay: 0.15s; }
+.animate-section:nth-child(4) { animation-delay: 0.2s; }
+.animate-section:nth-child(5) { animation-delay: 0.25s; }
+
+/* Prose styles for blog content */
+@layer components {
+  .prose {
+    @apply max-w-2xl;
+  }
+  
+  .prose p {
+    @apply text-base leading-relaxed text-slate-700 mb-4;
+  }
+  
+  .prose h1 {
+    @apply text-4xl font-bold text-slate-950 mt-8 mb-4;
+  }
+  
+  .prose h2 {
+    @apply text-2xl font-bold text-slate-950 mt-6 mb-3;
+  }
+  
+  .prose h3 {
+    @apply text-xl font-semibold text-slate-900 mt-4 mb-2;
+  }
+  
+  .prose code {
+    @apply bg-slate-100 text-slate-900 px-2 py-1 rounded text-sm font-mono;
+  }
+  
+  .prose pre {
+    @apply bg-slate-900 text-slate-50 p-4 rounded-lg overflow-x-auto mb-4;
+  }
+  
+  .prose pre code {
+    @apply bg-transparent text-inherit px-0 py-0 rounded-none;
+  }
+  
+  .prose a {
+    @apply text-blue-600 hover:underline;
+  }
+  
+  .prose ul,
+  .prose ol {
+    @apply ml-6 mb-4;
+  }
+  
+  .prose li {
+    @apply mb-2;
+  }
+  
+  .prose blockquote {
+    @apply border-l-4 border-slate-300 pl-4 italic text-slate-600 my-4;
+  }
+}
