@@ -2,7 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://jaswinder.cc/</loc>
-    <lastmod>2026-04-24T15:29:28.557Z</lastmod>
+    <lastmod>2026-04-24T15:41:09.843Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jaswinder.cc/blog/</loc>
+    <lastmod>2026-04-24T15:41:09.843Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jaswinder.cc/blog/securing-openclaw/</loc>
+    <lastmod>2026-04-24T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://jaswinder.cc/blog/agentic-ai-compliance/</loc>
@@ -13,20 +21,8 @@
     <lastmod>2026-04-23T00:00:00.000Z</lastmod>
   </url>
   <url>
-    <loc>https://jaswinder.cc/blog/edge-computing-2026/</loc>
-    <lastmod>2026-04-15T00:00:00.000Z</lastmod>
-  </url>
-  <url>
     <loc>https://jaswinder.cc/blog/enterprise-devops-modernization/</loc>
     <lastmod>2026-04-23T00:00:00.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jaswinder.cc/blog/finops-best-practices/</loc>
-    <lastmod>2026-04-10T00:00:00.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jaswinder.cc/blog/metadata-saturation/</loc>
-    <lastmod>2026-04-22T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://jaswinder.cc/blog/retail-banking-api-architecture/</loc>
@@ -35,5 +31,21 @@
   <url>
     <loc>https://jaswinder.cc/blog/zero-trust-cloud-security/</loc>
     <lastmod>2026-04-23T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jaswinder.cc/blog/metadata-saturation/</loc>
+    <lastmod>2026-04-22T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jaswinder.cc/blog/edge-computing-2026/</loc>
+    <lastmod>2026-04-15T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jaswinder.cc/blog/finops-best-practices/</loc>
+    <lastmod>2026-04-10T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jaswinder.cc/blog/2/</loc>
+    <lastmod>2026-04-24T15:41:09.843Z</lastmod>
   </url>
 </urlset>
