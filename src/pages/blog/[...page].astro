@@ -1,0 +1,188 @@
+---
+import { getCollection } from 'astro:content';
+import config from '../../data/config.json';
+import '../../styles/global.css';
+
+export async function getStaticPaths({ paginate }) {
+  const allPosts = await getCollection('blog');
+  const sortedPosts = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+  return paginate(sortedPosts, { pageSize: 6 });
+}
+
+const { page } = Astro.props;
+
+function getCategory(id: string): string {
+	const map: Record<string, string> = {
+		'agentic-ai-compliance': 'AI',
+		'claude-mythos-5': 'AI',
+		'edge-computing-2026': 'Cloud',
+		'enterprise-devops-modernization': 'DevOps',
+		'finops-best-practices': 'FinOps',
+		'metadata-saturation': 'Analytics',
+		'retail-banking-api-architecture': 'Architecture',
+		'securing-openclaw': 'Security',
+		'zero-trust-cloud-security': 'Security',
+	};
+	const slug = id.replace(/\.mdx?$/, '');
+	return map[slug] || 'Tech';
+}
+
+function getCategoryStyle(category: string): { bg: string; text: string; border: string; dot: string } {
+	const styles: Record<string, { bg: string; text: string; border: string; dot: string }> = {
+		'AI': { bg: 'bg-violet-50', text: 'text-violet-700', border: 'border-violet-200', dot: 'bg-violet-500' },
+		'Cloud': { bg: 'bg-sky-50', text: 'text-sky-700', border: 'border-sky-200', dot: 'bg-sky-500' },
+		'DevOps': { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200', dot: 'bg-emerald-500' },
+		'FinOps': { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200', dot: 'bg-amber-500' },
+		'Analytics': { bg: 'bg-rose-50', text: 'text-rose-700', border: 'border-rose-200', dot: 'bg-rose-500' },
+		'Architecture': { bg: 'bg-indigo-50', text: 'text-indigo-700', border: 'border-indigo-200', dot: 'bg-indigo-500' },
+		'Security': { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200', dot: 'bg-red-500' },
+	};
+	return styles[category] || { bg: 'bg-slate-50', text: 'text-slate-700', border: 'border-slate-200', dot: 'bg-slate-500' };
+}
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="index, follow" />
+		<meta name="description" content={`Blog posts by ${config.name} - Page ${page.currentPage}`} />
+		<link rel="canonical" href={`${Astro.site?.href?.replace(/\/$/, '')}${base}blog/${page.currentPage > 1 ? page.currentPage : ''}`} />
+		<title>Blog - {config.name} | {config.title}</title>
+		<!-- Open Graph -->
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={`Blog - ${config.name} | ${config.title}`} />
+		<meta property="og:description" content={`Blog posts by ${config.name} - Page ${page.currentPage}`} />
+		<meta property="og:url" content={`${Astro.site?.href?.replace(/\/$/, '')}${base}blog/${page.currentPage > 1 ? page.currentPage : ''}`} />
+		<meta property="og:site_name" content={config.name} />
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={`Blog - ${config.name} | ${config.title}`} />
+		<meta name="twitter:description" content={`Blog posts by ${config.name} - Page ${page.currentPage}`} />
+	</head>
+	<body class="bg-slate-50 text-slate-900 font-sans">
+		<!-- Top gradient accent bar -->
+		<div class="gradient-bar"></div>
+
+		<main class="max-w-4xl mx-auto py-16 px-6">
+			<!-- Breadcrumb Navigation -->
+			<nav class="mb-8">
+				<a href="/" class="text-sm text-slate-500 hover:text-slate-700 transition-colors">Home</a>
+				<span class="text-sm text-slate-400 mx-2">/</span>
+				<span class="text-sm text-slate-900 font-medium">Blog</span>
+				{page.currentPage > 1 && (
+					<>
+						<span class="text-sm text-slate-400 mx-2">/</span>
+						<span class="text-sm text-slate-900 font-medium">Page {page.currentPage}</span>
+					</>
+				)}
+			</nav>
+
+			<div class="mb-12 text-center">
+				<h1 class="text-4xl font-bold tracking-tight text-slate-950 mb-4">Blog</h1>
+				<p class="text-lg text-slate-600 max-w-2xl mx-auto">Thoughts on technology, AI, and building scalable systems</p>
+			</div>
+
+			<div class="space-y-6">
+				{page.data.map((post) => {
+					const cat = getCategory(post.id);
+					const style = getCategoryStyle(cat);
+					return (
+						<article class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden card-hover">
+							<a href={`${base}blog/${post.id.replace(/\.mdx?$/, "")}`} class="block p-6 no-underline group">
+								<div class="flex items-start justify-between gap-4 mb-4">
+									<div class="flex-1 min-w-0">
+										<h2 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors leading-tight">{post.data.title}</h2>
+										<p class="text-base text-slate-600 mb-4 leading-relaxed">{post.data.description}</p>
+									</div>
+									<span class={`shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full ${style.bg} ${style.text} text-xs font-semibold`}>
+										<span class={`w-2 h-2 rounded-full ${style.dot}`}></span>
+										{cat}
+									</span>
+								</div>
+								<div class="flex items-center justify-between">
+									<time datetime={post.data.date.toISOString()} class="text-sm text-slate-500">
+										{post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+									</time>
+									<span class="text-sm text-blue-600 group-hover:text-blue-700 font-medium transition-colors">
+										Read more →
+									</span>
+								</div>
+							</a>
+						</article>
+					);
+				})}
+			</div>
+
+			<!-- Pagination -->
+			{page.totalPages > 1 && (
+				<div class="mt-16 flex items-center justify-center gap-3">
+					{page.currentPage > 1 && (
+						<a
+							href={page.currentPage === 2 ? `${base}blog/` : `${base}blog/${page.currentPage - 1}`}
+							class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm"
+						>
+							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+							</svg>
+							Previous
+						</a>
+					)}
+
+					<div class="flex items-center gap-2">
+						{Array.from({ length: page.totalPages }, (_, i) => i + 1).map((pageNum) => (
+							<a
+								href={pageNum === 1 ? `${base}blog/` : `${base}blog/${pageNum}`}
+								class={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+									pageNum === page.currentPage
+										? 'bg-blue-600 text-white shadow-md'
+										: 'text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 hover:border-slate-400 shadow-sm'
+								}`}
+							>
+								{pageNum}
+							</a>
+						))}
+					</div>
+
+					{page.currentPage < page.totalPages && (
+						<a
+							href={`${base}blog/${page.currentPage + 1}`}
+							class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm"
+						>
+							Next
+							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+							</svg>
+						</a>
+					)}
+				</div>
+			)}
+		</main>
+
+		<!-- Footer -->
+		<footer class="border-t border-slate-200 bg-white py-8 mt-16">
+			<div class="max-w-4xl mx-auto px-6 flex flex-col items-center gap-4">
+				<div class="flex flex-wrap justify-center gap-3">
+					{config.socials.map((social) => (
+						<a
+							href={social.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="social-pill inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 bg-slate-100 hover:bg-blue-50 hover:text-blue-600 px-3 py-1.5 rounded-full transition-colors"
+						>
+							{social.platform}
+						</a>
+					))}
+				</div>
+				<div class="flex items-center gap-4 text-xs text-slate-400">
+					<a href="/" class="hover:text-slate-600 transition-colors">Home</a>
+					<a href="/sitemap.xml" class="hover:text-slate-600 transition-colors">Sitemap</a>
+					<span>&copy; {new Date().getFullYear()} {config.name}. All rights reserved.</span>
+				</div>
+			</div>
+		</footer>
+	</body>
+</html>
