@@ -12,6 +12,10 @@ export async function getStaticPaths({ paginate }) {
 
 const { page } = Astro.props;
 
+// Calculate total pages manually
+const allPostsForCount = await getCollection('blog');
+const totalPages = Math.ceil(allPostsForCount.length / 6);
+
 function getCategory(id: string): string {
 	const map: Record<string, string> = {
 		'agentic-ai-compliance': 'AI',
@@ -41,7 +45,6 @@ function getCategoryStyle(category: string): { bg: string; text: string; border:
 	return styles[category] || { bg: 'bg-slate-50', text: 'text-slate-700', border: 'border-slate-200', dot: 'bg-slate-500' };
 }
 
-const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 ---
 
 <html lang="en">
@@ -50,13 +53,13 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="robots" content="index, follow" />
 		<meta name="description" content={`Blog posts by ${config.name} - Page ${page.currentPage}`} />
-		<link rel="canonical" href={`${Astro.site?.href?.replace(/\/$/, '')}${base}blog/${page.currentPage > 1 ? page.currentPage : ''}`} />
+		<link rel="canonical" href={`${Astro.site?.href?.replace(/\/$/, '')}/blog/${page.currentPage > 1 ? page.currentPage : ''}`} />
 		<title>Blog - {config.name} | {config.title}</title>
 		<!-- Open Graph -->
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={`Blog - ${config.name} | ${config.title}`} />
 		<meta property="og:description" content={`Blog posts by ${config.name} - Page ${page.currentPage}`} />
-		<meta property="og:url" content={`${Astro.site?.href?.replace(/\/$/, '')}${base}blog/${page.currentPage > 1 ? page.currentPage : ''}`} />
+		<meta property="og:url" content={`${Astro.site?.href?.replace(/\/$/, '')}/blog/${page.currentPage > 1 ? page.currentPage : ''}`} />
 		<meta property="og:site_name" content={config.name} />
 		<!-- Twitter -->
 		<meta name="twitter:card" content="summary" />
@@ -92,7 +95,7 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 					const style = getCategoryStyle(cat);
 					return (
 						<article class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden card-hover">
-							<a href={`${base}blog/${post.id.replace(/\.mdx?$/, "")}`} class="block p-6 no-underline group">
+							<a href={`/blog/${post.id.replace(/\.mdx?$/, "")}`} class="block p-6 no-underline group">
 								<div class="flex items-start justify-between gap-4 mb-4">
 									<div class="flex-1 min-w-0">
 										<h2 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors leading-tight">{post.data.title}</h2>
@@ -118,11 +121,11 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 			</div>
 
 			<!-- Pagination -->
-			{page.totalPages > 1 && (
+			{totalPages > 1 && (
 				<div class="mt-16 flex items-center justify-center gap-3">
 					{page.currentPage > 1 && (
 						<a
-							href={page.currentPage === 2 ? `${base}blog/` : `${base}blog/${page.currentPage - 1}`}
+							href={page.currentPage === 2 ? `/blog/` : `/blog/${page.currentPage - 1}`}
 							class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm"
 						>
 							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -133,9 +136,9 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 					)}
 
 					<div class="flex items-center gap-2">
-						{Array.from({ length: page.totalPages }, (_, i) => i + 1).map((pageNum) => (
+						{Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
 							<a
-								href={pageNum === 1 ? `${base}blog/` : `${base}blog/${pageNum}`}
+								href={pageNum === 1 ? `/blog/` : `/blog/${pageNum}`}
 								class={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
 									pageNum === page.currentPage
 										? 'bg-blue-600 text-white shadow-md'
@@ -147,9 +150,9 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 						))}
 					</div>
 
-					{page.currentPage < page.totalPages && (
+					{page.currentPage < totalPages && (
 						<a
-							href={`${base}blog/${page.currentPage + 1}`}
+							href={`/blog/${page.currentPage + 1}`}
 							class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 shadow-sm"
 						>
 							Next
