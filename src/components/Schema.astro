@@ -1,0 +1,37 @@
+---
+export interface Props {
+  name: string;
+  role: string;
+  company: string;
+  url: string;
+}
+
+const { name, role, company, url } = Astro.props;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      name,
+      jobTitle: role,
+      affiliation: {
+        '@type': 'Organization',
+        name: company,
+      },
+      url,
+    },
+    {
+      '@type': 'ProfessionalService',
+      name: company,
+      serviceType: 'Cloud Architecture, Shopify Expert, Technical Leadership',
+      provider: {
+        '@type': 'Organization',
+        name: company,
+        url,
+      },
+    },
+  ],
+};
+---
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>

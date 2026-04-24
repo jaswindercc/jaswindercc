@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import config from '../data/config.json';
 import '../styles/global.css';
+import MainLayout from '../components/MainLayout.astro';
 
 const allPosts = await getCollection('blog');
 const sortedPosts = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -36,221 +37,124 @@ function getCategoryStyle(category: string): { bg: string; text: string; border:
 	return styles[category] || { bg: 'bg-slate-50', text: 'text-slate-700', border: 'border-slate-200', dot: 'bg-slate-500' };
 }
 
-const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
-const canonicalUrl = Astro.url.href;
-const siteUrl = Astro.site?.href?.replace(/\/$/, '') || '';
-
-const jsonLdPerson = {
-	'@context': 'https://schema.org',
-	'@type': 'Person',
-	name: config.name,
-	jobTitle: config.title,
-	description: config.bio,
-	url: siteUrl,
-	sameAs: config.socials.map(social => social.url),
-};
-
-const jsonLdWebSite = {
-	'@context': 'https://schema.org',
-	'@type': 'WebSite',
-	name: `${config.name} | ${config.title}`,
-	url: siteUrl,
-	description: config.bio,
-	author: { '@type': 'Person', name: config.name },
-};
+const pageTitle = 'Cloud Architecture, Shopify Expert & Technical Leadership | Jaswinder Singh';
+const pageDescription = 'Jaswinder Singh helps companies modernize cloud architecture, Shopify implementations, and technical leadership with secure AI and DevOps solutions.';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="robots" content="index, follow" />
-		<meta name="description" content={config.bio} />
-		<link rel="canonical" href={canonicalUrl} />
-		<!-- Open Graph -->
-		<meta property="og:type" content="website" />
-		<meta property="og:title" content={`${config.name} | ${config.title}`} />
-		<meta property="og:description" content={config.bio} />
-		<meta property="og:url" content={canonicalUrl} />
-		<meta property="og:site_name" content={config.name} />
-		<!-- Twitter -->
-		<meta name="twitter:card" content="summary" />
-		<meta name="twitter:title" content={`${config.name} | ${config.title}`} />
-		<meta name="twitter:description" content={config.bio} />
-		<title>{config.name} | {config.title}</title>
-		<script type="application/ld+json" set:html={JSON.stringify(jsonLdPerson)}></script>
-		<script type="application/ld+json" set:html={JSON.stringify(jsonLdWebSite)}></script>
-	</head>
-	<body class="bg-slate-50 text-slate-900 font-sans">
-		<!-- Top gradient accent bar -->
-		<div class="gradient-bar"></div>
-
-		<main class="max-w-6xl mx-auto py-16 px-6">
-			<div class="flex flex-col lg:flex-row lg:gap-12">
-				<!-- Left Column: Profile, Connect, What I Do -->
-				<div class="lg:w-[420px] lg:shrink-0">
-					<!-- Header -->
-					<header class="mb-14 animate-section">
-						<div class="flex items-center gap-3 mb-4">
-							<div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white font-bold text-lg">JS</div>
-							<div>
-								<h1 class="text-3xl font-bold tracking-tight text-slate-950">{config.name}</h1>
-								<p class="text-sm font-medium text-blue-600">{config.title}</p>
-							</div>
+<MainLayout title={pageTitle} description={pageDescription} keywords={['Cloud Architecture', 'Shopify Expert', 'Technical Leadership', 'AI', 'Cloud', 'DevOps']} canonical="/">
+	<main class="max-w-6xl mx-auto py-16 px-6">
+		<div class="flex flex-col lg:flex-row lg:gap-12">
+			<!-- Left Column: Profile, Connect, What I Do -->
+			<div class="lg:w-[420px] lg:shrink-0">
+				<!-- Header -->
+				<header class="mb-14 animate-section">
+					<div class="flex items-center gap-3 mb-4">
+						<div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white font-bold text-lg">JS</div>
+						<div>
+							<h1 class="text-3xl font-bold tracking-tight text-slate-950">{config.name}</h1>
+							<p class="text-sm font-medium text-blue-600">{config.title}</p>
 						</div>
-						<p class="text-base leading-relaxed text-slate-600">{config.bio}</p>
-					</header>
+					</div>
+					<p class="text-base leading-relaxed text-slate-600">{config.bio}</p>
+				</header>
 
-					<!-- Connect -->
-					<section class="mb-14 animate-section">
-						<h2 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Connect</h2>
-						<div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-							<div class="flex items-center justify-between px-4 py-3 border-b border-slate-100">
-								<span class="text-sm font-medium text-slate-500">Email</span>
-								<button
-									id="email-btn"
-									type="button"
-									class="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors cursor-pointer"
-									data-a="hello"
-									data-b="jaswinder"
-									data-c="cc"
+				<!-- Connect -->
+				<section class="mb-14 animate-section">
+					<h2 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Shopify Expert Connections</h2>
+					<div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+						<div class="flex items-center justify-between px-4 py-3 border-b border-slate-100">
+							<span class="text-sm font-medium text-slate-500">Email</span>
+							<button
+								id="email-btn"
+								type="button"
+								class="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors cursor-pointer"
+								data-a="hello"
+								data-b="jaswinder"
+								data-c="cc"
+							>
+								Click to reveal
+							</button>
+						</div>
+						{config.socials.map((social) => (
+							<div class="flex items-center justify-between px-4 py-3 border-b border-slate-100 last:border-b-0">
+								<span class="text-sm font-medium text-slate-500">{social.platform}</span>
+								<a
+									href={social.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="text-sm text-blue-600 hover:text-blue-800 transition-colors"
 								>
-									Click to reveal
-								</button>
-							</div>
-							{config.socials.map((social) => (
-								<div class="flex items-center justify-between px-4 py-3 border-b border-slate-100 last:border-b-0">
-									<span class="text-sm font-medium text-slate-500">{social.platform}</span>
-									<a
-										href={social.url}
-										target="_blank"
-										rel="noopener noreferrer"
-										class="text-sm text-blue-600 hover:text-blue-800 transition-colors"
-									>
-										{social.url.replace(/^https?:\/\//, '')}
-									</a>
-								</div>
-							))}
-						</div>
-					</section>
-
-					<!-- What I Do -->
-					<section class="mb-14 animate-section">
-						<h2 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">What I Do</h2>
-						<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
-							<div class="card-hover bg-white rounded-xl border border-slate-200 shadow-sm p-5 border-l-4 border-l-blue-500">
-								<div class="flex items-center gap-2 mb-2">
-									<span class="text-lg">⚡</span>
-									<h3 class="text-base font-bold text-slate-950">Scale Infrastructure</h3>
-								</div>
-								<p class="text-sm text-slate-500 leading-relaxed">Architecting systems that handle high-volume, mission-critical traffic without failing.</p>
-							</div>
-							<div class="card-hover bg-white rounded-xl border border-slate-200 shadow-sm p-5 border-l-4 border-l-violet-500">
-								<div class="flex items-center gap-2 mb-2">
-									<span class="text-lg">🤖</span>
-									<h3 class="text-base font-bold text-slate-950">Deploy Agentic AI</h3>
-								</div>
-								<p class="text-sm text-slate-500 leading-relaxed">Moving beyond basic prompts to build autonomous AI agents that solve real business problems.</p>
-							</div>
-							<div class="card-hover bg-white rounded-xl border border-slate-200 shadow-sm p-5 border-l-4 border-l-amber-500">
-								<div class="flex items-center gap-2 mb-2">
-									<span class="text-lg">🗺️</span>
-									<h3 class="text-base font-bold text-slate-950">Technical Strategy</h3>
-								</div>
-								<p class="text-sm text-slate-500 leading-relaxed">Translating executive goals into robust technical roadmaps that actually deliver ROI.</p>
-							</div>
-							<div class="card-hover bg-white rounded-xl border border-slate-200 shadow-sm p-5 border-l-4 border-l-emerald-500">
-								<div class="flex items-center gap-2 mb-2">
-									<span class="text-lg">☁️</span>
-									<h3 class="text-base font-bold text-slate-950">Cloud Modernization</h3>
-								</div>
-								<p class="text-sm text-slate-500 leading-relaxed">Leading large-scale migrations and establishing Cloud Centers of Excellence (CCoE) for governed growth.</p>
-							</div>
-						</div>
-					</section>
-				</div>
-
-				<!-- Right Column: Blog Posts -->
-				<div class="flex-1 min-w-0">
-					{sortedPosts.length > 0 && (
-						<section class="mb-14 animate-section lg:sticky lg:top-8">
-							<h2 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">Blog Posts</h2>
-							<div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden divide-y divide-slate-100">
-								{displayedPosts.map((post) => {
-									const cat = getCategory(post.id);
-									const style = getCategoryStyle(cat);
-									return (
-										<a href={base + "blog/" + post.id.replace(/\.mdx?$/, "")} class="block post-row px-5 py-4 no-underline">
-											<div class="flex items-start justify-between gap-3">
-												<div class="flex-1 min-w-0">
-													<h3 class="text-base font-semibold text-slate-900 mb-1 group-hover:text-blue-600">{post.data.title}</h3>
-													<p class="text-sm text-slate-500 line-clamp-2">{post.data.description}</p>
-												</div>
-												<span class={`shrink-0 inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full ${style.bg} ${style.text}`}>
-													<span class={`w-1.5 h-1.5 rounded-full ${style.dot}`}></span>
-													{cat}
-												</span>
-											</div>
-										</a>
-									);
-								})}
-							</div>
-							<div class="mt-6 text-center">
-								<a href="/blog/" class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors">
-									View All Posts
-									<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-									</svg>
+									{social.url.replace(/^https?:\/\//, '')}
 								</a>
 							</div>
-						</section>
-					)}
-				</div>
-			</div>
-		</main>
+						))}
+					</div>
+				</section>
 
-		<!-- Footer -->
-		<footer class="border-t border-slate-200 bg-white py-8">
-			<div class="max-w-6xl mx-auto px-6 flex flex-col items-center gap-4">
-				<div class="flex flex-wrap justify-center gap-3">
-					{config.socials.map((social) => (
-						<a
-							href={social.url}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="social-pill inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 bg-slate-100 hover:bg-blue-50 hover:text-blue-600 px-3 py-1.5 rounded-full transition-colors"
-						>
-							{social.platform}
-						</a>
-					))}
-				</div>
-				<a href="/sitemap.xml" class="text-xs text-slate-400 hover:text-slate-600 transition-colors">Sitemap</a>
-				<p class="text-xs text-slate-400">&copy; {new Date().getFullYear()} {config.name}. All rights reserved.</p>
+				<!-- What I Do -->
+				<section class="mb-14 animate-section">
+					<h2 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">Cloud Architecture & Technical Leadership</h2>
+					<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+						<div class="card-hover bg-white rounded-xl border border-slate-200 shadow-sm p-5 border-l-4 border-l-blue-500">
+							<div class="flex items-center gap-2 mb-2">
+								<span class="text-lg">⚡</span>
+								<h3 class="text-base font-bold text-slate-950">Scale Infrastructure</h3>
+							</div>
+							<p class="text-sm text-slate-500 leading-relaxed">Architecting systems that handle high-volume, mission-critical traffic without failing.</p>
+						</div>
+						<div class="card-hover bg-white rounded-xl border border-slate-200 shadow-sm p-5 border-l-4 border-l-violet-500">
+							<div class="flex items-center gap-2 mb-2">
+								<span class="text-lg">🤖</span>
+								<h3 class="text-base font-bold text-slate-950">Deploy Agentic AI</h3>
+							</div>
+							<p class="text-sm text-slate-500 leading-relaxed">Moving beyond basic prompts to build autonomous AI agents that solve real business problems.</p>
+						</div>
+						<div class="card-hover bg-white rounded-xl border border-slate-200 shadow-sm p-5 border-l-4 border-l-amber-500">
+							<div class="flex items-center gap-2 mb-2">
+								<span class="text-lg">🗺️</span>
+								<h3 class="text-base font-bold text-slate-950">Technical Leadership</h3>
+							</div>
+							<p class="text-sm text-slate-500 leading-relaxed">Translating executive goals into robust technical roadmaps that actually deliver ROI.</p>
+						</div>
+						<div class="card-hover bg-white rounded-xl border border-slate-200 shadow-sm p-5 border-l-4 border-l-emerald-500">
+							<div class="flex items-center gap-2 mb-2">
+								<span class="text-lg">☁️</span>
+								<h3 class="text-base font-bold text-slate-950">Cloud Modernization</h3>
+							</div>
+							<p class="text-sm text-slate-500 leading-relaxed">Leading large-scale migrations and establishing Cloud Centers of Excellence (CCoE) for governed growth.</p>
+						</div>
+					</div>
+				</section>
 			</div>
-		</footer>
 
-		<script>
-			document.addEventListener('DOMContentLoaded', () => {
-				const btn = document.getElementById('email-btn');
-				if (!btn) return;
-				let revealed = false;
-				btn.addEventListener('click', () => {
-					const a = btn.getAttribute('data-a');
-					const b = btn.getAttribute('data-b');
-					const c = btn.getAttribute('data-c');
-					const email = `${a}@${b}.${c}`;
-					if (!revealed) {
-						btn.textContent = email;
-						revealed = true;
-					} else {
-						navigator.clipboard.writeText(email).then(() => {
-							const orig = btn.textContent;
-							btn.textContent = 'Copied!';
-							setTimeout(() => { btn.textContent = orig; }, 1500);
-						});
-					}
-				});
-			});
-		</script>
-	</body>
-</html>
+			<!-- Right Column: Blog Posts -->
+			<div class="flex-1 min-w-0">
+				{displayedPosts.length > 0 && (
+					<section class="mb-14 animate-section lg:sticky lg:top-8">
+						<h2 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">Blog Posts</h2>
+						<div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden divide-y divide-slate-100">
+							{displayedPosts.map((post) => {
+								const cat = getCategory(post.id);
+								const style = getCategoryStyle(cat);
+								return (
+									<a href={`/blog/${post.id.replace(/\.mdx?$/, '')}`} class="block post-row px-5 py-4 no-underline">
+										<div class="flex items-start justify-between gap-3">
+											<div class="flex-1 min-w-0">
+												<h3 class="text-base font-semibold text-slate-900 mb-1 group-hover:text-blue-600">{post.data.title}</h3>
+												<p class="text-sm text-slate-500 line-clamp-2">{post.data.description}</p>
+											</div>
+											<span class={`shrink-0 inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full ${style.bg} ${style.text}`}>
+												<span class={`w-1.5 h-1.5 rounded-full ${style.dot}`}></span>
+												{cat}
+											</span>
+										</div>
+									</a>
+								);
+							})}
+						</div>
+					</section>
+				)}
+			</div>
+		</div>
+	</main>
+</MainLayout>

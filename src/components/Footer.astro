@@ -1,0 +1,24 @@
+---
+import config from '../data/config.json';
+---
+<footer class="border-t border-slate-200 bg-white py-8">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col items-center gap-4">
+    <div class="flex flex-wrap justify-center gap-3">
+      {config.socials.map((social) => (
+        <a
+          href={social.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-pill inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 bg-slate-100 hover:bg-blue-50 hover:text-blue-600 px-3 py-1.5 rounded-full transition-colors"
+        >
+          {social.platform}
+        </a>
+      ))}
+    </div>
+    <div class="flex items-center gap-4 text-xs text-slate-400">
+      <a href="/" class="hover:text-slate-600 transition-colors">Home</a>
+      <a href="/sitemap.xml" class="hover:text-slate-600 transition-colors">Sitemap</a>
+      <span>&copy; {new Date().getFullYear()} {config.name}. All rights reserved.</span>
+    </div>
+  </div>
+</footer>

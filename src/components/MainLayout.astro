@@ -1,0 +1,46 @@
+---
+import Footer from './Footer.astro';
+import Schema from './Schema.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  keywords?: string[];
+}
+
+const { title, description, canonical, keywords = [] } = Astro.props;
+const siteUrl = Astro.site?.href?.replace(/\/$/, '') || '';
+const canonicalUrl = canonical || `${siteUrl}${Astro.url.pathname}`;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="index, follow" />
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords.join(', ')} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content={siteUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <title>{title}</title>
+    <Schema
+      name="Jaswinder Singh"
+      role="Cloud Architect/Senior Manager"
+      company="Inlowprice"
+      url={canonicalUrl}
+    />
+    <slot name="head" />
+  </head>
+  <body class="bg-slate-50 text-slate-900 font-sans">
+    <div class="gradient-bar"></div>
+    <slot />
+    <Footer />
+  </body>
+</html>
