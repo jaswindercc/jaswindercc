@@ -1,0 +1,206 @@
+---
+// ImpactMetrics.astro — Pure CSS animated bar charts and stats
+// CSS @property for animated counters, bars animate on load
+---
+
+<div class="im-wrap">
+  <h3 class="im-title">What Changes — The Numbers</h3>
+  <p class="im-sub">What a reasoning loop can do when applied to repetitive rule-checking work.</p>
+
+  <!-- Stat cards -->
+  <div class="im-grid">
+    <div class="im-card im-card--green">
+      <div class="im-icon">📉</div>
+      <div class="im-value im-value--green">70<span class="im-unit">%</span></div>
+      <div class="im-label">Manual Work<br/>Reduced</div>
+    </div>
+    <div class="im-card im-card--cyan">
+      <div class="im-icon">🎯</div>
+      <div class="im-value im-value--cyan">94<span class="im-unit">%</span></div>
+      <div class="im-label">Accuracy via<br/>Iterative Loops</div>
+    </div>
+    <div class="im-card im-card--amber">
+      <div class="im-icon">⚡</div>
+      <div class="im-value im-value--amber">12<span class="im-unit">×</span></div>
+      <div class="im-label">Faster Than<br/>Manual Review</div>
+    </div>
+    <div class="im-card im-card--purple">
+      <div class="im-icon">📋</div>
+      <div class="im-value im-value--purple">100<span class="im-unit">%</span></div>
+      <div class="im-label">Every Decision<br/>Logged</div>
+    </div>
+  </div>
+
+  <!-- Before / After comparison bars -->
+  <div class="im-comparison">
+    <div class="im-comp-title">Time per 100 Rule Checks</div>
+
+    <div class="im-bar-group">
+      <div class="im-bar-label">
+        <span class="im-bar-icon">👤</span>
+        <span class="im-bar-name im-bar-name--red">MANUAL</span>
+        <span class="im-bar-val">~40 hours</span>
+      </div>
+      <div class="im-bar-track">
+        <div class="im-bar-fill im-bar-fill--red" style="--target-width: 100%"></div>
+      </div>
+    </div>
+
+    <div class="im-bar-group">
+      <div class="im-bar-label">
+        <span class="im-bar-icon">🤖</span>
+        <span class="im-bar-name im-bar-name--green">AGENT LOOP</span>
+        <span class="im-bar-val">~12 hours</span>
+      </div>
+      <div class="im-bar-track">
+        <div class="im-bar-fill im-bar-fill--green" style="--target-width: 30%"></div>
+      </div>
+    </div>
+
+    <div class="im-savings">
+      <svg width="20" height="20" viewBox="0 0 20 20" class="im-savings-icon"><path d="M10 2 L18 10 L14 10 L14 18 L6 18 L6 10 L2 10 Z" fill="#4ade80" transform="rotate(180,10,10)" opacity="0.6"/></svg>
+      <span>28 hours saved per 100 checks. The human becomes a reviewer, not a processor.</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .im-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid #334155;
+  }
+  .im-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .im-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  /* Stat grid */
+  .im-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+  @media (max-width: 600px) {
+    .im-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .im-card {
+    text-align: center;
+    padding: 16px 8px;
+    border-radius: 12px;
+    border: 1px solid #334155;
+    background: rgba(0,0,0,0.2);
+    transition: transform 0.2s, border-color 0.3s;
+  }
+  .im-card:hover { transform: translateY(-3px); }
+  .im-card--green:hover { border-color: #4ade8040; }
+  .im-card--cyan:hover  { border-color: #06b6d440; }
+  .im-card--amber:hover { border-color: #f59e0b40; }
+  .im-card--purple:hover { border-color: #818cf840; }
+
+  .im-icon { font-size: 1.3rem; margin-bottom: 6px; }
+
+  .im-value {
+    font-family: monospace;
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 6px;
+    animation: im-count-up 1.5s ease-out;
+  }
+  .im-value--green  { color: #4ade80; text-shadow: 0 0 20px rgba(74,222,128,0.3); }
+  .im-value--cyan   { color: #06b6d4; text-shadow: 0 0 20px rgba(6,182,212,0.3); }
+  .im-value--amber  { color: #f59e0b; text-shadow: 0 0 20px rgba(245,158,11,0.3); }
+  .im-value--purple { color: #818cf8; text-shadow: 0 0 20px rgba(129,140,248,0.3); }
+
+  .im-unit { font-size: 1rem; opacity: 0.7; }
+
+  .im-label {
+    font-family: monospace;
+    font-size: 0.55rem;
+    color: #64748b;
+    line-height: 1.4;
+  }
+
+  @keyframes im-count-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Comparison bars */
+  .im-comparison {
+    background: rgba(0,0,0,0.25);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .im-comp-title {
+    font-family: monospace;
+    font-size: 0.7rem;
+    color: #64748b;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .im-bar-group { margin-bottom: 10px; }
+  .im-bar-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 5px;
+  }
+  .im-bar-icon { font-size: 0.8rem; }
+  .im-bar-name {
+    font-family: monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+  }
+  .im-bar-name--red { color: #f87171; }
+  .im-bar-name--green { color: #4ade80; }
+  .im-bar-val {
+    font-family: monospace;
+    font-size: 0.6rem;
+    color: #64748b;
+    margin-left: auto;
+  }
+
+  .im-bar-track {
+    height: 20px;
+    background: #1e293b;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .im-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    width: 0%;
+    animation: im-bar-grow 1.8s ease-out forwards;
+    animation-delay: 0.3s;
+  }
+  .im-bar-fill--red {
+    background: linear-gradient(90deg, #ef4444, #f87171);
+  }
+  .im-bar-fill--green {
+    background: linear-gradient(90deg, #22c55e, #4ade80);
+    animation-delay: 0.6s;
+  }
+
+  @keyframes im-bar-grow {
+    to { width: var(--target-width); }
+  }
+
+  .im-savings {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #334155;
+    font-family: monospace;
+    font-size: 0.7rem;
+    color: #94a3b8;
+    line-height: 1.4;
+  }
+  .im-savings-icon { flex-shrink: 0; }
+</style>

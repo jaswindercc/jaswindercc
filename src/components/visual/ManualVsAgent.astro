@@ -1,0 +1,173 @@
+---
+// ManualVsAgent.astro — Pure CSS side-by-side race animation
+// Zero JS. The animation runs automatically and loops.
+---
+
+<div class="race-wrap">
+  <h3 class="race-title">The Race: Manual vs Agent</h3>
+  <p class="race-sub">Watch both approaches process the same 8 records against a checklist of rules.</p>
+
+  <div class="lanes">
+    <!-- Manual lane -->
+    <div class="lane">
+      <div class="lane-label lane-label--red">👤 Manual Review</div>
+      <div class="track">
+        {[1,2,3,4,5,6,7,8].map(n => (
+          <div class="record record--manual" style={`--i: ${n}`}>
+            <div class="record-id">REC-{n}</div>
+            <div class="record-bar">
+              <div class="record-fill record-fill--red" style={`animation-delay: ${(n - 1) * 1.8}s`}></div>
+            </div>
+            <div class="record-check record-check--red" style={`animation-delay: ${(n - 1) * 1.8 + 1.5}s`}>✓</div>
+          </div>
+        ))}
+      </div>
+      <div class="lane-time">~14.4s total <span class="lane-note">(sequential)</span></div>
+    </div>
+
+    <!-- Agent lane -->
+    <div class="lane">
+      <div class="lane-label lane-label--green">🤖 Agent Loop</div>
+      <div class="track">
+        {[1,2,3,4,5,6,7,8].map(n => (
+          <div class="record record--agent" style={`--i: ${n}`}>
+            <div class="record-id">REC-{n}</div>
+            <div class="record-bar">
+              <div class="record-fill record-fill--green" style={`animation-delay: ${Math.floor((n - 1) / 3) * 1.2}s`}></div>
+            </div>
+            <div class="record-check record-check--green" style={`animation-delay: ${Math.floor((n - 1) / 3) * 1.2 + 0.9}s`}>✓</div>
+          </div>
+        ))}
+      </div>
+      <div class="lane-time">~3.6s total <span class="lane-note">(batched ×3)</span></div>
+    </div>
+  </div>
+
+  <div class="race-insight">
+    <div class="insight-icon">💡</div>
+    <div>The agent processes <strong>3 records at once</strong> and self-corrects between batches. Same work, a fraction of the time.</div>
+  </div>
+</div>
+
+<style>
+  .race-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid #334155;
+    overflow: hidden;
+  }
+  .race-title {
+    color: #f1f5f9;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+  }
+  .race-sub {
+    color: #64748b;
+    font-size: 0.8rem;
+    margin: 0 0 1.5rem;
+    font-family: monospace;
+  }
+  .lanes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  @media (max-width: 640px) {
+    .lanes { grid-template-columns: 1fr; }
+  }
+  .lane {
+    background: rgba(0,0,0,0.25);
+    border-radius: 12px;
+    padding: 1rem;
+  }
+  .lane-label {
+    font-family: monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+    display: inline-block;
+  }
+  .lane-label--red { background: rgba(239,68,68,0.12); color: #f87171; }
+  .lane-label--green { background: rgba(74,222,128,0.12); color: #4ade80; }
+
+  .track { display: flex; flex-direction: column; gap: 6px; }
+
+  .record {
+    display: grid;
+    grid-template-columns: 48px 1fr 24px;
+    align-items: center;
+    gap: 8px;
+  }
+  .record-id {
+    font-family: monospace;
+    font-size: 0.6rem;
+    color: #64748b;
+  }
+  .record-bar {
+    height: 8px;
+    background: #1e293b;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .record-fill {
+    height: 100%;
+    border-radius: 4px;
+    width: 0%;
+    animation: fill-bar 1.2s ease-out forwards;
+  }
+  .record-fill--red {
+    background: linear-gradient(90deg, #ef4444, #f87171);
+    animation-duration: 1.5s;
+  }
+  .record-fill--green {
+    background: linear-gradient(90deg, #22c55e, #4ade80);
+    animation-duration: 0.8s;
+  }
+
+  @keyframes fill-bar {
+    to { width: 100%; }
+  }
+
+  .record-check {
+    font-size: 0.7rem;
+    opacity: 0;
+    animation: pop-in 0.3s ease-out forwards;
+  }
+  .record-check--red { color: #f87171; }
+  .record-check--green { color: #4ade80; }
+
+  @keyframes pop-in {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .lane-time {
+    font-family: monospace;
+    font-size: 0.7rem;
+    color: #94a3b8;
+    margin-top: 0.75rem;
+    text-align: right;
+  }
+  .lane-note { color: #475569; }
+
+  .race-insight {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 1.25rem;
+    padding: 12px 16px;
+    background: rgba(74,222,128,0.06);
+    border: 1px solid rgba(74,222,128,0.15);
+    border-radius: 10px;
+    color: #cbd5e1;
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+  .insight-icon { font-size: 1.1rem; flex-shrink: 0; }
+</style>

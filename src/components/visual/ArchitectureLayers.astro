@@ -1,0 +1,223 @@
+---
+// ArchitectureLayers.astro — Pure CSS/HTML expandable architecture diagram
+// Uses <details>/<summary> for zero-JS interactivity
+---
+
+<div class="arch-wrap">
+  <h3 class="arch-title">The Architecture — 3 Layers</h3>
+  <p class="arch-sub">Click each layer to see what's inside.</p>
+
+  <div class="arch-stack">
+    <!-- Layer 1: Brain -->
+    <details class="layer layer--amber">
+      <summary class="layer-header">
+        <span class="layer-icon">🧠</span>
+        <div class="layer-info">
+          <span class="layer-name">The Brain</span>
+          <span class="layer-tech">LangGraph Orchestrator</span>
+        </div>
+        <div class="layer-pills">
+          <span class="pill pill--amber">Plan Step</span>
+          <span class="pill pill--amber">Act Step</span>
+          <span class="pill pill--amber">Observe</span>
+          <span class="pill pill--amber">Refine</span>
+        </div>
+        <span class="layer-arrow">▼</span>
+      </summary>
+      <div class="layer-body">
+        <p>LangGraph models the reasoning loop as a <strong>state machine</strong>. Each node is a step. Edges define transitions. The graph decides when to loop, when to escalate, and when to stop.</p>
+        <pre class="layer-code"><code>graph = StateGraph(AgentState)
+graph.add_node("plan", plan_step)
+graph.add_node("act", execute_tool)
+graph.add_node("observe", interpret_results)
+graph.add_node("refine", adjust_strategy)
+
+graph.add_conditional_edges("observe",
+  should_refine,
+  {"{"}True: "refine", False: "__end__"{"}"}
+)
+graph.add_edge("refine", "plan")  # ← The loop</code></pre>
+      </div>
+    </details>
+
+    <!-- Connector -->
+    <div class="connector">
+      <svg width="24" height="20" viewBox="0 0 24 20"><path d="M12 0 L12 20 M6 14 L12 20 L18 14" stroke="#475569" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+    </div>
+
+    <!-- Layer 2: Hands -->
+    <details class="layer layer--cyan">
+      <summary class="layer-header">
+        <span class="layer-icon">⚡</span>
+        <div class="layer-info">
+          <span class="layer-name">The Hands</span>
+          <span class="layer-tech">Python Toolset</span>
+        </div>
+        <div class="layer-pills">
+          <span class="pill pill--cyan">Data Validator</span>
+          <span class="pill pill--cyan">Rule Searcher</span>
+          <span class="pill pill--cyan">Limit Checker</span>
+        </div>
+        <span class="layer-arrow">▼</span>
+      </summary>
+      <div class="layer-body">
+        <p>Small Python tools the agent calls during the ACT phase. Each one does one job and returns structured data — no free-text guessing.</p>
+        <pre class="layer-code"><code>@tool
+def check_value(item_id, field, limit):
+    """Check if a field exceeds its limit."""
+    value = database.get(item_id, field)
+    return {"{"}"value": value,
+            "limit": limit,
+            "exceeded": value > limit{"}"}  </code></pre>
+      </div>
+    </details>
+
+    <!-- Connector -->
+    <div class="connector">
+      <svg width="24" height="20" viewBox="0 0 24 20"><path d="M12 0 L12 20 M6 14 L12 20 L18 14" stroke="#475569" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+    </div>
+
+    <!-- Layer 3: Guardrails -->
+    <details class="layer layer--green">
+      <summary class="layer-header">
+        <span class="layer-icon">🛡</span>
+        <div class="layer-info">
+          <span class="layer-name">The Guardrails</span>
+          <span class="layer-tech">Azure AI Search + RAG</span>
+        </div>
+        <div class="layer-pills">
+          <span class="pill pill--green">Vector DB</span>
+          <span class="pill pill--green">Cite-or-Reject</span>
+          <span class="pill pill--green">Decision Logger</span>
+        </div>
+        <span class="layer-arrow">▼</span>
+      </summary>
+      <div class="layer-body">
+        <p>Your rules live in a searchable database. The agent finds the right rule by meaning, not keywords. The <strong>cite-or-reject</strong> guardrail: no rule cited, no flag allowed. Every decision is logged.</p>
+        <pre class="layer-code"><code># Guardrail: reject any flag without a cited rule
+if not result.cited_rule:
+    return "REJECTED: cite which rule was broken"
+
+# If cited → log and flag
+decision_log.record(
+    record_id=item.id,
+    issue=result.description,
+    rule=result.cited_rule,
+    confidence=result.confidence
+)</code></pre>
+      </div>
+    </details>
+  </div>
+</div>
+
+<style>
+  .arch-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid #334155;
+  }
+  .arch-title {
+    color: #f1f5f9; font-size: 1.15rem;
+    font-weight: 700; margin: 0 0 0.25rem;
+  }
+  .arch-sub {
+    color: #64748b; font-size: 0.8rem;
+    margin: 0 0 1.5rem; font-family: monospace;
+  }
+
+  .arch-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .connector {
+    display: flex;
+    justify-content: center;
+    padding: 4px 0;
+  }
+
+  /* Layer (details/summary) */
+  .layer {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid #334155;
+    background: rgba(0,0,0,0.2);
+    transition: border-color 0.3s, background 0.3s;
+    overflow: hidden;
+  }
+  .layer[open] { border-color: #475569; }
+  .layer--amber[open] { border-color: #f59e0b40; background: rgba(245,158,11,0.03); }
+  .layer--cyan[open]  { border-color: #06b6d440; background: rgba(6,182,212,0.03); }
+  .layer--green[open] { border-color: #4ade8040; background: rgba(74,222,128,0.03); }
+
+  .layer-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    cursor: pointer;
+    list-style: none;
+    flex-wrap: wrap;
+  }
+  .layer-header::-webkit-details-marker { display: none; }
+  .layer-header::marker { content: ''; }
+
+  .layer-icon { font-size: 1.3rem; flex-shrink: 0; }
+  .layer-info { display: flex; flex-direction: column; min-width: 120px; }
+  .layer-name { color: #e2e8f0; font-weight: 700; font-size: 0.9rem; }
+  .layer-tech { color: #64748b; font-family: monospace; font-size: 0.6rem; }
+
+  .layer-pills {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    margin-left: auto;
+  }
+  .pill {
+    font-family: monospace; font-size: 0.55rem;
+    padding: 2px 8px; border-radius: 5px;
+  }
+  .pill--amber { background: rgba(245,158,11,0.1); color: #f59e0b; border: 1px solid rgba(245,158,11,0.2); }
+  .pill--cyan  { background: rgba(6,182,212,0.1); color: #06b6d4; border: 1px solid rgba(6,182,212,0.2); }
+  .pill--green { background: rgba(74,222,128,0.1); color: #4ade80; border: 1px solid rgba(74,222,128,0.2); }
+
+  .layer-arrow {
+    color: #475569;
+    font-size: 0.7rem;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+  .layer[open] .layer-arrow { transform: rotate(180deg); }
+
+  .layer-body {
+    padding: 0 16px 16px;
+  }
+  .layer-body p {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    margin: 0 0 12px;
+  }
+  .layer-body strong { color: #e2e8f0; }
+
+  .layer-code {
+    margin: 0;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 0.65rem;
+    line-height: 1.5;
+    overflow-x: auto;
+    border: 1px solid #334155;
+  }
+  .layer--amber .layer-code { background: rgba(245,158,11,0.04); color: #fbbf24; }
+  .layer--cyan .layer-code  { background: rgba(6,182,212,0.04); color: #22d3ee; }
+  .layer--green .layer-code { background: rgba(74,222,128,0.04); color: #86efac; }
+
+  .layer-code code {
+    background: transparent !important;
+    padding: 0 !important;
+    color: inherit !important;
+    font-size: inherit !important;
+  }
+</style>

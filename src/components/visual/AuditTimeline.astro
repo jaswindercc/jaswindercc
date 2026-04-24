@@ -1,0 +1,244 @@
+---
+// AuditTimeline.astro — Pure CSS visual timeline of agent reasoning
+// Shows each step as a colored node on a vertical timeline
+---
+
+<div class="tl-wrap">
+  <h3 class="tl-title">Inside One Agent Check</h3>
+  <p class="tl-sub">Every thought, tool call, and decision — visible and traceable.</p>
+
+  <div class="timeline">
+    <div class="tl-line" aria-hidden="true"></div>
+
+    <div class="tl-step tl-step--amber" style="--delay: 0.1s">
+      <div class="tl-dot tl-dot--amber"></div>
+      <div class="tl-card">
+        <div class="tl-head">
+          <span class="tl-tag tl-tag--amber">THINK</span>
+          <span class="tl-agent">Orchestrator</span>
+          <span class="tl-ts">00:00.12</span>
+        </div>
+        <div class="tl-body">Received ORDER-A7. Breaking it down: check the value → look up the rule → verify the limit.</div>
+      </div>
+    </div>
+
+    <div class="tl-step tl-step--cyan" style="--delay: 0.2s">
+      <div class="tl-dot tl-dot--cyan"></div>
+      <div class="tl-card">
+        <div class="tl-head">
+          <span class="tl-tag tl-tag--cyan">TOOL</span>
+          <span class="tl-agent">Data Checker</span>
+          <span class="tl-ts">00:00.34</span>
+        </div>
+        <div class="tl-body">
+          <code>check_value(item="ORDER-A7", field="discount", limit=20)</code>
+          <div class="tl-result tl-result--red">→ EXCEEDED: discount is 35% (max allowed: 20%)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-step tl-step--amber" style="--delay: 0.3s">
+      <div class="tl-dot tl-dot--amber"></div>
+      <div class="tl-card">
+        <div class="tl-head">
+          <span class="tl-tag tl-tag--amber">THINK</span>
+          <span class="tl-agent">Orchestrator</span>
+          <span class="tl-ts">00:00.41</span>
+        </div>
+        <div class="tl-body">Problem found. Need to find the exact rule before flagging. Searching the rule database.</div>
+      </div>
+    </div>
+
+    <div class="tl-step tl-step--cyan" style="--delay: 0.4s">
+      <div class="tl-dot tl-dot--cyan"></div>
+      <div class="tl-card">
+        <div class="tl-head">
+          <span class="tl-tag tl-tag--cyan">TOOL</span>
+          <span class="tl-agent">Vector Search</span>
+          <span class="tl-ts">00:00.58</span>
+        </div>
+        <div class="tl-body">
+          <code>search_rules("discount limit policy")</code>
+          <div class="tl-result tl-result--blue">→ Rule §3.1: "Max discount for standard orders is 20%"</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-step tl-step--amber" style="--delay: 0.5s">
+      <div class="tl-dot tl-dot--amber"></div>
+      <div class="tl-card">
+        <div class="tl-head">
+          <span class="tl-tag tl-tag--amber">THINK</span>
+          <span class="tl-agent">Orchestrator</span>
+          <span class="tl-ts">00:00.65</span>
+        </div>
+        <div class="tl-body">Rule found: §3.1. Violation confirmed: 35% &gt; 20% max. Citing the rule in the flag.</div>
+      </div>
+    </div>
+
+    <div class="tl-step tl-step--green" style="--delay: 0.6s">
+      <div class="tl-dot tl-dot--green"></div>
+      <div class="tl-card tl-card--highlight">
+        <div class="tl-head">
+          <span class="tl-tag tl-tag--green">LOG</span>
+          <span class="tl-agent">Decision Logger</span>
+          <span class="tl-ts">00:00.72</span>
+        </div>
+        <div class="tl-body">
+          <div class="tl-flag">
+            <div class="tl-flag-row"><span class="tl-flag-key">Record:</span> ORDER-A7</div>
+            <div class="tl-flag-row"><span class="tl-flag-key">Issue:</span> §3.1 — Discount 35% (max: 20%)</div>
+            <div class="tl-flag-row"><span class="tl-flag-key">Confidence:</span> 97%</div>
+            <div class="tl-flag-row"><span class="tl-flag-key">Rule Cited:</span> <span class="tl-flag-yes">✓ Yes</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-insight">
+    <div class="tl-insight-icon">📋</div>
+    <div>This is what makes it trustworthy. Not a black box — a <strong>glass box</strong>. Every step is traceable and explainable.</div>
+  </div>
+</div>
+
+<style>
+  .tl-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid #334155;
+  }
+  .tl-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .tl-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .timeline {
+    position: relative;
+    padding-left: 28px;
+  }
+  .tl-line {
+    position: absolute;
+    left: 9px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, #f59e0b40, #06b6d440, #4ade8040);
+  }
+
+  .tl-step {
+    position: relative;
+    margin-bottom: 10px;
+    animation: tl-fade-in 0.5s ease-out both;
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes tl-fade-in {
+    from { opacity: 0; transform: translateX(-8px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .tl-dot {
+    position: absolute;
+    left: -24px;
+    top: 12px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  .tl-dot--amber { background: #f59e0b; box-shadow: 0 0 8px rgba(245,158,11,0.4); }
+  .tl-dot--cyan  { background: #06b6d4; box-shadow: 0 0 8px rgba(6,182,212,0.4); }
+  .tl-dot--green { background: #4ade80; box-shadow: 0 0 8px rgba(74,222,128,0.4); }
+
+  .tl-card {
+    background: rgba(0,0,0,0.25);
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 10px 14px;
+    transition: border-color 0.3s;
+  }
+  .tl-step--amber .tl-card:hover { border-color: #f59e0b30; }
+  .tl-step--cyan .tl-card:hover  { border-color: #06b6d430; }
+  .tl-step--green .tl-card:hover { border-color: #4ade8030; }
+  .tl-card--highlight {
+    background: rgba(74,222,128,0.04);
+    border-color: #4ade8030;
+  }
+
+  .tl-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .tl-tag {
+    font-family: monospace;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+  .tl-tag--amber { background: rgba(245,158,11,0.12); color: #f59e0b; }
+  .tl-tag--cyan  { background: rgba(6,182,212,0.12); color: #06b6d4; }
+  .tl-tag--green { background: rgba(74,222,128,0.12); color: #4ade80; }
+
+  .tl-agent { font-family: monospace; font-size: 0.6rem; color: #64748b; }
+  .tl-ts { font-family: monospace; font-size: 0.55rem; color: #475569; margin-left: auto; }
+
+  .tl-body {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    line-height: 1.5;
+  }
+  .tl-body code {
+    display: block;
+    font-size: 0.65rem;
+    color: #67e8f9;
+    background: rgba(6,182,212,0.06);
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    font-family: monospace;
+  }
+  .tl-result {
+    font-family: monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding-top: 2px;
+  }
+  .tl-result--red { color: #f87171; }
+  .tl-result--blue { color: #60a5fa; }
+
+  .tl-flag {
+    background: rgba(74,222,128,0.04);
+    border: 1px dashed #4ade8030;
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-top: 4px;
+  }
+  .tl-flag-row {
+    font-family: monospace;
+    font-size: 0.65rem;
+    color: #94a3b8;
+    line-height: 1.7;
+  }
+  .tl-flag-key { color: #64748b; }
+  .tl-flag-yes { color: #4ade80; font-weight: 700; }
+
+  .tl-insight {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: rgba(74,222,128,0.06);
+    border: 1px solid rgba(74,222,128,0.15);
+    border-radius: 10px;
+    color: #cbd5e1;
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+  .tl-insight strong { color: #4ade80; }
+  .tl-insight-icon { font-size: 1.1rem; flex-shrink: 0; }
+</style>

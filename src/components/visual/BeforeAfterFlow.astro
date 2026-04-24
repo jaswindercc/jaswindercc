@@ -1,0 +1,239 @@
+---
+// BeforeAfterFlow.astro — Pure CSS visual comparison of before/after workflows
+// Side-by-side flowchart: old linear process vs new agentic loop
+---
+
+<div class="ba-wrap">
+  <h3 class="ba-title">Before & After — The Workflow Transformation</h3>
+
+  <div class="ba-grid">
+    <!-- BEFORE -->
+    <div class="ba-side ba-side--before">
+      <div class="ba-badge ba-badge--red">BEFORE</div>
+      <div class="ba-flow">
+        <div class="ba-node ba-node--red">
+          <div class="ba-node-icon">📄</div>
+          <div class="ba-node-text">Pick a record</div>
+        </div>
+        <div class="ba-arrow ba-arrow--red">↓</div>
+        <div class="ba-node ba-node--red">
+          <div class="ba-node-icon">📖</div>
+          <div class="ba-node-text">Open the rule book</div>
+        </div>
+        <div class="ba-arrow ba-arrow--red">↓</div>
+        <div class="ba-node ba-node--red">
+          <div class="ba-node-icon">🔍</div>
+          <div class="ba-node-text">Manually search for rule</div>
+        </div>
+        <div class="ba-arrow ba-arrow--red">↓</div>
+        <div class="ba-node ba-node--red">
+          <div class="ba-node-icon">✏️</div>
+          <div class="ba-node-text">Compare values by hand</div>
+        </div>
+        <div class="ba-arrow ba-arrow--red">↓</div>
+        <div class="ba-node ba-node--red">
+          <div class="ba-node-icon">📝</div>
+          <div class="ba-node-text">Write finding in report</div>
+        </div>
+        <div class="ba-arrow ba-arrow--red">↓</div>
+        <div class="ba-node ba-node--red ba-node--dim">
+          <div class="ba-node-icon">🔄</div>
+          <div class="ba-node-text">Repeat × 100 records</div>
+        </div>
+      </div>
+      <div class="ba-verdict ba-verdict--red">
+        <strong>~40 hours</strong> • Sequential • Error-prone • No paper trail
+      </div>
+    </div>
+
+    <!-- Arrow between -->
+    <div class="ba-transform">
+      <svg viewBox="0 0 60 200" class="ba-transform-svg">
+        <line x1="30" y1="40" x2="30" y2="160" stroke="#475569" stroke-width="2" stroke-dasharray="6 4" />
+        <polygon points="22,148 30,165 38,148" fill="#4ade80" />
+      </svg>
+      <div class="ba-transform-label">Agent<br/>Loop</div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="ba-side ba-side--after">
+      <div class="ba-badge ba-badge--green">AFTER</div>
+      <div class="ba-flow">
+        <div class="ba-node ba-node--green">
+          <div class="ba-node-icon">📦</div>
+          <div class="ba-node-text">All records → Agent</div>
+        </div>
+        <div class="ba-arrow ba-arrow--green">↓</div>
+        <div class="ba-node ba-node--amber">
+          <div class="ba-node-icon">🧠</div>
+          <div class="ba-node-text">PLAN: decompose checks</div>
+        </div>
+        <div class="ba-arrow ba-arrow--green">↓</div>
+        <div class="ba-node ba-node--cyan">
+          <div class="ba-node-icon">⚡</div>
+          <div class="ba-node-text">ACT: run tools in parallel</div>
+        </div>
+        <div class="ba-arrow ba-arrow--green">↓</div>
+        <div class="ba-node ba-node--purple">
+          <div class="ba-node-icon">👁</div>
+          <div class="ba-node-text">OBSERVE: check results</div>
+        </div>
+        <div class="ba-loop-arrow">
+          <svg viewBox="0 0 120 40" class="ba-loop-svg">
+            <path d="M 10 20 Q 60 -10 110 20" stroke="#4ade80" stroke-width="1.5" fill="none" stroke-dasharray="4 3" />
+            <polygon points="105,15 115,20 105,25" fill="#4ade80" />
+          </svg>
+          <span class="ba-loop-label">refine & loop if needed</span>
+        </div>
+        <div class="ba-node ba-node--green">
+          <div class="ba-node-icon">📋</div>
+          <div class="ba-node-text">Auto-log with citations</div>
+        </div>
+      </div>
+      <div class="ba-verdict ba-verdict--green">
+        <strong>~12 hours</strong> • Parallel • Self-correcting • Full decision log
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ba-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid #334155;
+  }
+  .ba-title {
+    color: #f1f5f9; font-size: 1.15rem;
+    font-weight: 700; margin: 0 0 1.5rem;
+  }
+
+  .ba-grid {
+    display: grid;
+    grid-template-columns: 1fr 50px 1fr;
+    gap: 0.75rem;
+    align-items: start;
+  }
+  @media (max-width: 640px) {
+    .ba-grid {
+      grid-template-columns: 1fr;
+    }
+    .ba-transform { display: none; }
+  }
+
+  .ba-side {
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+    padding: 14px;
+    border: 1px solid #334155;
+  }
+  .ba-side--before:hover { border-color: #ef444430; }
+  .ba-side--after:hover  { border-color: #4ade8030; }
+
+  .ba-badge {
+    font-family: monospace;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  .ba-badge--red { background: rgba(239,68,68,0.12); color: #f87171; }
+  .ba-badge--green { background: rgba(74,222,128,0.12); color: #4ade80; }
+
+  .ba-flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .ba-node {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: rgba(0,0,0,0.15);
+    transition: transform 0.2s;
+  }
+  .ba-node:hover { transform: translateX(3px); }
+  .ba-node--red    { border-left: 3px solid #ef4444; }
+  .ba-node--green  { border-left: 3px solid #4ade80; }
+  .ba-node--amber  { border-left: 3px solid #f59e0b; }
+  .ba-node--cyan   { border-left: 3px solid #06b6d4; }
+  .ba-node--purple { border-left: 3px solid #818cf8; }
+  .ba-node--dim { opacity: 0.5; }
+
+  .ba-node-icon { font-size: 0.9rem; flex-shrink: 0; }
+  .ba-node-text { font-size: 0.7rem; color: #94a3b8; font-family: monospace; }
+
+  .ba-arrow {
+    font-size: 0.7rem;
+    padding: 2px 0;
+  }
+  .ba-arrow--red { color: #ef444480; }
+  .ba-arrow--green { color: #4ade8080; }
+
+  .ba-loop-arrow {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2px 0;
+  }
+  .ba-loop-svg { width: 100px; height: 30px; }
+  .ba-loop-label {
+    font-family: monospace;
+    font-size: 0.5rem;
+    color: #4ade8080;
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+  }
+
+  .ba-verdict {
+    margin-top: 12px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.65rem;
+    line-height: 1.5;
+    text-align: center;
+  }
+  .ba-verdict--red {
+    background: rgba(239,68,68,0.06);
+    color: #f87171;
+    border: 1px solid rgba(239,68,68,0.15);
+  }
+  .ba-verdict--green {
+    background: rgba(74,222,128,0.06);
+    color: #4ade80;
+    border: 1px solid rgba(74,222,128,0.15);
+  }
+
+  .ba-transform {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding-top: 60px;
+  }
+  .ba-transform-svg { width: 40px; }
+  .ba-transform-label {
+    font-family: monospace;
+    font-size: 0.55rem;
+    color: #4ade80;
+    text-align: center;
+    line-height: 1.3;
+    margin-top: 4px;
+  }
+</style>
