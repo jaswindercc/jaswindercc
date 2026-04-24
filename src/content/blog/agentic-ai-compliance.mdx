@@ -1,0 +1,103 @@
+---
+title: "Learn Agentic Reasoning Loops — The Visual Guide"
+description: "Understand how AI agents think in loops, not lines. An interactive, visual walkthrough of the Plan-Act-Observe-Refine pattern with animated diagrams and real code."
+date: 2026-04-23
+---
+
+import ManualVsAgent from '../../components/visual/ManualVsAgent.astro';
+import ReasoningLoop from '../../components/visual/ReasoningLoop.astro';
+import ArchitectureLayers from '../../components/visual/ArchitectureLayers.astro';
+import AuditTimeline from '../../components/visual/AuditTimeline.astro';
+import ImpactMetrics from '../../components/visual/ImpactMetrics.astro';
+import BeforeAfterFlow from '../../components/visual/BeforeAfterFlow.astro';
+
+# Learn Agentic Reasoning Loops — The Visual Guide
+
+**No jargon. No walls of text. Just visuals.**
+
+Most AI explanations are boring. This one isn't. Every section has an animated diagram, a side-by-side comparison, or a real code example. Scroll through and *see* how reasoning loops actually work.
+
+---
+
+## 1. Why Loops? Because Straight Lines Break
+
+Imagine you have 8 records to check against a set of rules. A human does them one at a time. An AI agent does them in batches — and re-checks its own work.
+
+<ManualVsAgent />
+
+The left side is how most work gets done today: one thing at a time, in order. The right side is what happens when an AI agent takes over the repetitive parts.
+
+---
+
+## 2. How an Agent Thinks: The Reasoning Loop
+
+Regular AI is a straight line: you ask, it answers. One shot. Done.
+
+An agentic AI is different. It **thinks in circles** — planning what to do, doing it, checking the results, and adjusting if something's off. Then it loops again. This is called the **ReAct pattern** (Reasoning + Acting).
+
+<ReasoningLoop />
+
+Watch the dot orbit through the four phases. Each pass makes the answer better. If something doesn't add up, the agent doesn't guess — it **goes back and fixes it**.
+
+---
+
+## 3. Before & After: Old Way vs Agent Way
+
+Here's what a real workflow looks like when you replace manual steps with reasoning loops.
+
+<BeforeAfterFlow />
+
+The big difference: the agent doesn't just do the work faster — it **explains every decision** it makes. That's what makes it trustworthy.
+
+---
+
+## 4. The Architecture: 3 Simple Layers
+
+You only need three things to build this. Click each layer to see the code:
+
+<ArchitectureLayers />
+
+**The Brain** decides what to do next. **The Hands** do the actual work. **The Guardrails** make sure the agent doesn't make stuff up.
+
+---
+
+## 5. See the Agent Think — Step by Step
+
+Here's what happens inside the agent during a single check. Every thought, every tool call, every decision — all logged.
+
+<AuditTimeline />
+
+This is the magic: you can trace *exactly* how the agent reached its conclusion. No guessing. No black boxes.
+
+---
+
+## 6. What Changes When You Use This
+
+<ImpactMetrics />
+
+The person doing manual reviews doesn't disappear — they level up. Instead of grinding through records, they focus on the hard problems the agent flags. The agent handles volume. The human handles judgment.
+
+---
+
+## This Pattern Works Everywhere
+
+The reasoning loop isn't tied to one use case. Change the tools and the rules, and you can apply it to:
+
+- **Finance** — checking transactions against policies
+- **Healthcare** — verifying data flows against privacy rules
+- **Environment** — comparing sensor readings to safety limits
+- **Construction** — reviewing plans against building codes
+
+The loop is the pattern. The domain is just configuration.
+
+---
+
+## Try It Yourself
+
+1. **Pick an orchestrator** — LangGraph is a good start
+2. **Load your rules** into a searchable database (vector DB works great)
+3. **Build 2–3 small tools** the agent can call (checkers, lookups, validators)
+4. **Add the guardrail**: the agent must cite a rule before flagging anything
+5. **Log everything** — the trail of decisions is the real product
+
+The best system isn't one that's always right. It's one that can **show its work**.
