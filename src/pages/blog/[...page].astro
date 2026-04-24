@@ -14,8 +14,8 @@ const { page } = Astro.props;
 const allPosts = await getCollection('blog');
 const sortedPosts = [...allPosts].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 const totalPages = Math.ceil(sortedPosts.length / 6);
-const pageTitle = `Blog - ${config.name} | Cloud Architecture, Shopify Expert & Technical Leadership`;
-const pageDescription = 'Latest insights on cloud architecture, Shopify expertise, and technical leadership from Jaswinder Singh.';
+const pageTitle = `Blog - ${config.name} | Cloud Architecture, AI Expert & Technical Leadership`;
+const pageDescription = 'Latest insights on cloud architecture, AI expertise, and technical leadership from Jaswinder Singh.';
 const canonical = page.currentPage === 1 ? '/blog/' : `/blog/${page.currentPage}/`;
 
 function getCategory(id: string): string {
@@ -48,7 +48,7 @@ function getCategoryStyle(category: string): { bg: string; text: string; border:
 }
 ---
 
-<MainLayout title={pageTitle} description={pageDescription} canonical={canonical} keywords={['Cloud Architecture', 'Shopify Expert', 'Technical Leadership', 'Blog', 'AI', 'Cloud']}>
+<MainLayout title={pageTitle} description={pageDescription} canonical={canonical} keywords={['Cloud Architecture', 'AI Expert', 'Technical Leadership', 'Blog', 'AI', 'Cloud']}>
 	<main class="max-w-4xl mx-auto py-16 px-6">
 		<div class="mb-12 text-center">
 			<div class="mb-8">

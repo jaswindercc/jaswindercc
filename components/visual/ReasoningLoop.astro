@@ -1,0 +1,204 @@
+---
+// ReasoningLoop.astro — Pure CSS animated orbital diagram
+// Shows Plan→Act→Observe→Refine in a continuous loop animation
+---
+
+<div class="loop-wrap">
+  <h3 class="loop-title">The Reasoning Loop</h3>
+  <p class="loop-sub">This is how the agent thinks. Not a straight line — a self-correcting circle.</p>
+
+  <div class="loop-layout">
+    <!-- Orbital SVG diagram -->
+    <div class="orbit-box">
+      <svg viewBox="0 0 300 300" class="orbit-svg" aria-label="Reasoning loop diagram showing Plan, Act, Observe, Refine in a circle">
+        <!-- Orbit ring -->
+        <circle cx="150" cy="150" r="100" fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="8 5" />
+
+        <!-- Connection arcs (directional arrows) -->
+        <path d="M 150 50 A 100 100 0 0 1 250 150" fill="none" stroke="#334155" stroke-width="1" />
+        <path d="M 250 150 A 100 100 0 0 1 150 250" fill="none" stroke="#334155" stroke-width="1" />
+        <path d="M 150 250 A 100 100 0 0 1 50 150" fill="none" stroke="#334155" stroke-width="1" />
+        <path d="M 50 150 A 100 100 0 0 1 150 50" fill="none" stroke="#334155" stroke-width="1" />
+
+        <!-- Arrow heads -->
+        <polygon points="245,140 255,150 245,160" fill="#334155" />
+        <polygon points="160,245 150,255 140,245" fill="#334155" />
+        <polygon points="55,160 45,150 55,140" fill="#334155" />
+        <polygon points="140,55 150,45 160,55" fill="#334155" />
+
+        <!-- PLAN node (top) -->
+        <circle cx="150" cy="50" r="30" fill="#1e1e2e" stroke="#f59e0b" stroke-width="2" class="node node--plan" />
+        <text x="150" y="46" text-anchor="middle" font-size="18" class="node-icon">🧠</text>
+        <text x="150" y="63" text-anchor="middle" font-size="8" font-family="monospace" font-weight="700" fill="#f59e0b">PLAN</text>
+
+        <!-- ACT node (right) -->
+        <circle cx="250" cy="150" r="30" fill="#1e1e2e" stroke="#06b6d4" stroke-width="2" class="node node--act" />
+        <text x="250" y="146" text-anchor="middle" font-size="18" class="node-icon">⚡</text>
+        <text x="250" y="163" text-anchor="middle" font-size="8" font-family="monospace" font-weight="700" fill="#06b6d4">ACT</text>
+
+        <!-- OBSERVE node (bottom) -->
+        <circle cx="150" cy="250" r="30" fill="#1e1e2e" stroke="#818cf8" stroke-width="2" class="node node--observe" />
+        <text x="150" y="246" text-anchor="middle" font-size="18" class="node-icon">👁</text>
+        <text x="150" y="263" text-anchor="middle" font-size="8" font-family="monospace" font-weight="700" fill="#818cf8">OBSERVE</text>
+
+        <!-- REFINE node (left) -->
+        <circle cx="50" cy="150" r="30" fill="#1e1e2e" stroke="#4ade80" stroke-width="2" class="node node--refine" />
+        <text x="50" y="146" text-anchor="middle" font-size="18" class="node-icon">🔄</text>
+        <text x="50" y="163" text-anchor="middle" font-size="8" font-family="monospace" font-weight="700" fill="#4ade80">REFINE</text>
+
+        <!-- Orbiting dot -->
+        <circle r="7" fill="#f59e0b" class="orbiter">
+          <animateMotion dur="6s" repeatCount="indefinite" rotate="auto">
+            <mpath href="#orbitPath" />
+          </animateMotion>
+          <animate attributeName="fill" values="#f59e0b;#06b6d4;#818cf8;#4ade80;#f59e0b" dur="6s" repeatCount="indefinite" />
+        </circle>
+
+        <!-- Hidden path for the orbiter to follow -->
+        <path id="orbitPath" d="M 150 50 A 100 100 0 0 1 250 150 A 100 100 0 0 1 150 250 A 100 100 0 0 1 50 150 A 100 100 0 0 1 150 50" fill="none" stroke="none" />
+
+        <!-- Center label -->
+        <text x="150" y="145" text-anchor="middle" font-size="10" fill="#475569" font-family="monospace">ReAct</text>
+        <text x="150" y="158" text-anchor="middle" font-size="10" fill="#475569" font-family="monospace">Pattern</text>
+      </svg>
+    </div>
+
+    <!-- Phase cards -->
+    <div class="phase-cards">
+      <div class="phase-card phase-card--plan">
+        <div class="phase-header">
+          <span class="phase-icon">🧠</span>
+          <span class="phase-name phase-name--amber">PLAN</span>
+        </div>
+        <p class="phase-text">Break the problem into sub-tasks: check the data, look up the relevant rule, compare values against limits.</p>
+      </div>
+
+      <div class="phase-card phase-card--act">
+        <div class="phase-header">
+          <span class="phase-icon">⚡</span>
+          <span class="phase-name phase-name--cyan">ACT</span>
+        </div>
+        <p class="phase-text">Execute tools: Data Validator, Rule Search, Limit Checker. Real API calls, structured responses.</p>
+      </div>
+
+      <div class="phase-card phase-card--observe">
+        <div class="phase-header">
+          <span class="phase-icon">👁</span>
+          <span class="phase-name phase-name--purple">OBSERVE</span>
+        </div>
+        <p class="phase-text">Interpret results. Does the value exceed the limit? Does it break a rule? How confident is the finding?</p>
+      </div>
+
+      <div class="phase-card phase-card--refine">
+        <div class="phase-header">
+          <span class="phase-icon">🔄</span>
+          <span class="phase-name phase-name--green">REFINE</span>
+        </div>
+        <p class="phase-text">Re-check with a second tool. Confirm or reject the finding. Cite the exact rule. Log the decision. Loop again if needed.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .loop-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid #334155;
+  }
+  .loop-title {
+    color: #f1f5f9;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+  }
+  .loop-sub {
+    color: #64748b;
+    font-size: 0.8rem;
+    margin: 0 0 1.5rem;
+    font-family: monospace;
+  }
+  .loop-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  @media (max-width: 700px) {
+    .loop-layout {
+      grid-template-columns: 1fr;
+    }
+    .orbit-box { max-width: 260px; margin: 0 auto; }
+  }
+  .orbit-svg { width: 100%; height: auto; }
+
+  /* Node pulse animation */
+  .node--plan  { animation: pulse-amber  6s infinite; }
+  .node--act   { animation: pulse-cyan   6s infinite 1.5s; }
+  .node--observe { animation: pulse-purple 6s infinite 3s; }
+  .node--refine  { animation: pulse-green  6s infinite 4.5s; }
+
+  @keyframes pulse-amber {
+    0%, 20%, 100% { filter: drop-shadow(0 0 0 transparent); }
+    10% { filter: drop-shadow(0 0 12px rgba(245,158,11,0.5)); }
+  }
+  @keyframes pulse-cyan {
+    0%, 20%, 100% { filter: drop-shadow(0 0 0 transparent); }
+    10% { filter: drop-shadow(0 0 12px rgba(6,182,212,0.5)); }
+  }
+  @keyframes pulse-purple {
+    0%, 20%, 100% { filter: drop-shadow(0 0 0 transparent); }
+    10% { filter: drop-shadow(0 0 12px rgba(129,140,248,0.5)); }
+  }
+  @keyframes pulse-green {
+    0%, 20%, 100% { filter: drop-shadow(0 0 0 transparent); }
+    10% { filter: drop-shadow(0 0 12px rgba(74,222,128,0.5)); }
+  }
+
+  .phase-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .phase-card {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #334155;
+    background: rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+  }
+  .phase-card:hover {
+    transform: translateX(4px);
+  }
+  .phase-card--plan:hover  { border-color: #f59e0b40; background: rgba(245,158,11,0.05); }
+  .phase-card--act:hover   { border-color: #06b6d440; background: rgba(6,182,212,0.05); }
+  .phase-card--observe:hover { border-color: #818cf840; background: rgba(129,140,248,0.05); }
+  .phase-card--refine:hover { border-color: #4ade8040; background: rgba(74,222,128,0.05); }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .phase-icon { font-size: 1rem; }
+  .phase-name {
+    font-family: monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .phase-name--amber  { color: #f59e0b; }
+  .phase-name--cyan   { color: #06b6d4; }
+  .phase-name--purple { color: #818cf8; }
+  .phase-name--green  { color: #4ade80; }
+
+  .phase-text {
+    color: #94a3b8;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+</style>
