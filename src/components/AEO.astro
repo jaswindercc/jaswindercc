@@ -1,0 +1,11 @@
+---
+import config from '../data/config.json';
+---
+
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Jaswinder Singh",
+  "sameAs": config.socials.map(social => social.url),
+  "description": "AI, Cloud and DevOps Leader."
+})}></script>
