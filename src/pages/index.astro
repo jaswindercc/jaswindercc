@@ -166,3 +166,17 @@ const pageDescription = 'Jaswinder Singh helps companies modernize cloud archite
 		</div>
 	</main>
 </MainLayout>
+<script>
+document.getElementById('email-btn')?.addEventListener('click', function () {
+const btn = this as HTMLButtonElement;
+const email = `${btn.dataset.a}@${btn.dataset.b}.${btn.dataset.c}`;
+btn.textContent = email;
+btn.classList.remove('hover:text-blue-800');
+btn.addEventListener('click', function copyHandler() {
+navigator.clipboard.writeText(email).then(() => {
+btn.textContent = 'Copied!';
+setTimeout(() => { btn.textContent = email; }, 2000);
+});
+});
+}, { once: true });
+</script>
