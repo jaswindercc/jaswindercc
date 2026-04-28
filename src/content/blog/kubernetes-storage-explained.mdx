@@ -1,0 +1,55 @@
+---
+title: "Kubernetes Storage Explained — PV, PVC, and StorageClasses"
+description: "Visual guide to Kubernetes storage. Understand PersistentVolumes, PersistentVolumeClaims, StorageClasses, access modes, and how to choose the right storage for your workloads."
+date: 2026-05-09
+---
+
+import K8sStorageVisual from '../../components/visual/K8sStorageVisual.astro';
+
+Containers are ephemeral by design — when a pod dies, its filesystem dies with it. That's fine for stateless web servers but catastrophic for databases. Kubernetes storage solves this with an abstraction layer that decouples what storage a pod needs from how that storage is provisioned. Understanding this abstraction is the difference between a database that survives pod restarts and one that loses all data.
+
+## The Storage Stack
+
+Kubernetes storage works through a chain of abstractions. Each layer adds flexibility but also adds a concept you need to understand.
+
+<K8sStorageVisual />
+
+The flow is intentionally indirect. The pod doesn't reference physical storage directly — it references a PVC. The PVC doesn't provision storage directly — it matches to a PV. The PV is either pre-created by an admin or dynamically provisioned by a StorageClass. This indirection means you can change the underlying storage without modifying pod specs.
+
+## PersistentVolumeClaims
+
+A PVC is a request for storage. It specifies the size you need, the access mode, and optionally a StorageClass. Think of it as a purchase order — "I need 50Gi of SSD storage that supports read-write by a single node." Kubernetes finds or creates a PV that satisfies the claim and binds them together.
+
+The claim-to-volume binding is one-to-one. A PVC binds to exactly one PV, and that PV is exclusively reserved for that PVC. Even if you only claimed 10Gi and the PV is 100Gi, the remaining 90Gi is unavailable to other claims. This matters for capacity planning — over-provisioned PVs waste money.
+
+Access modes define how the storage can be mounted. ReadWriteOnce (RWO) allows a single node to mount read-write — the most common mode for databases. ReadOnlyMany (ROX) allows multiple nodes to mount read-only — useful for serving static datasets. ReadWriteMany (RWX) allows multiple nodes to mount read-write — required for shared filesystems but only supported by network storage like NFS and EFS.
+
+## StorageClasses and Dynamic Provisioning
+
+Static provisioning means an admin pre-creates PVs, and PVCs bind to available ones. This worked for small clusters but doesn't scale. Dynamic provisioning uses StorageClasses to create PVs on demand. When a PVC references a StorageClass, Kubernetes calls the class's provisioner to create the underlying storage automatically.
+
+Each cloud provider offers multiple StorageClasses. AWS has `gp3` (general purpose SSD), `io2` (high IOPS), and `st1` (throughput-optimized HDD). GCP offers `standard`, `ssd`, and `premium-rwo`. The choice directly impacts performance and cost — a `gp3` volume costs $0.08/GB/month while `io2` costs $0.125/GB plus per-IOPS charges.
+
+Set a default StorageClass for your cluster. PVCs without an explicit StorageClass get the default. Without a default, PVCs without a specified class remain pending forever — a common source of confused debugging sessions.
+
+## Reclaim Policies
+
+When a PVC is deleted, what happens to the underlying PV? The reclaim policy controls this. `Delete` removes the PV and its underlying storage — the default for dynamic provisioning. `Retain` keeps the PV and its data, allowing manual recovery. There's no un-delete for cloud disks, so critical databases should use `Retain`.
+
+For production databases, always use `Retain`. If someone accidentally deletes a PVC (or a Helm uninstall cleans up PVCs), the data survives. You can then manually bind a new PVC to the retained PV and recover. The `Delete` policy is fine for temporary workloads and caches where data loss is acceptable.
+
+## StatefulSets and Volume Templates
+
+StatefulSets create PVCs automatically using `volumeClaimTemplates`. Each pod gets its own PVC with a predictable name: `data-mydb-0`, `data-mydb-1`, etc. When a pod is rescheduled, it reconnects to its specific PVC, preserving its data.
+
+This is why StatefulSets are used for databases while Deployments are used for stateless services. A Deployment's pods are interchangeable — any pod can serve any request. A StatefulSet's pods have identity — `mydb-0` always connects to its specific storage, has its specific network name, and starts/stops in order.
+
+Volume expansion (growing a PVC after creation) is supported by most StorageClasses but requires `allowVolumeExpansion: true` in the StorageClass spec. You can only grow volumes, never shrink them. For filesystems, the pod must restart to resize. Online expansion without pod restart is available on newer CSI drivers but isn't universal.
+
+## Choosing Storage for Your Workload
+
+Databases need high IOPS and low latency: use SSD-backed volumes with RWO access mode. PostgreSQL, MySQL, and MongoDB all work well on `gp3` or equivalent. For high-throughput databases, use provisioned IOPS volumes and benchmark to find the right IOPS/throughput ratio.
+
+Shared filesystems — content management, media processing, legacy applications that use filesystem coordination — need RWX volumes. EFS on AWS, Filestore on GCP, and Azure Files provide managed NFS. Performance is lower than block storage, and per-operation latency is higher. Design your application to minimize filesystem operations if possible.
+
+Ephemeral workloads — build jobs, batch processing, test runners — should use `emptyDir` volumes that disappear when the pod ends. Don't waste money on persistent storage for temporary data. For high-performance ephemeral storage, use `emptyDir` with `medium: Memory` to get a tmpfs-backed volume that's fast but limited by available RAM.

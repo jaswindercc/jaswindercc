@@ -1,0 +1,26 @@
+---
+// TokenStrategies.astro — Strategies for handling token limits
+---
+<div class="ts-wrap">
+  <h3 class="ts-title">Strategies When You Hit the Limit</h3>
+  <div class="ts-list">
+    <div class="ts-item ts-i1"><div class="ts-rank">1</div><div class="ts-body"><span class="ts-nm">Sliding Window</span><span class="ts-d">Keep last N messages, drop oldest. Simple but loses early context. Works for chatbots where recent context matters most.</span><span class="ts-tag ts-tag--green">Simple</span></div></div>
+    <div class="ts-item ts-i2"><div class="ts-rank">2</div><div class="ts-body"><span class="ts-nm">Summarize + Compress</span><span class="ts-d">Periodically summarize older messages into a compact summary. Keep summary + recent messages. 80% context retention at 20% token cost.</span><span class="ts-tag ts-tag--cyan">Balanced</span></div></div>
+    <div class="ts-item ts-i3"><div class="ts-rank">3</div><div class="ts-body"><span class="ts-nm">RAG Instead of Stuffing</span><span class="ts-d">Don't put everything in the context. Retrieve only relevant chunks per query. 10 relevant chunks beats 100 pages of everything.</span><span class="ts-tag ts-tag--purple">Best for knowledge</span></div></div>
+    <div class="ts-item ts-i4"><div class="ts-rank">4</div><div class="ts-body"><span class="ts-nm">Prompt Caching</span><span class="ts-d">Cache the system prompt + static context. Only send dynamic parts fresh. Saves tokens AND reduces latency by 80%+ on cached portions.</span><span class="ts-tag ts-tag--amber">Cost efficient</span></div></div>
+    <div class="ts-item ts-i5"><div class="ts-rank">5</div><div class="ts-body"><span class="ts-nm">Multi-turn with Memory</span><span class="ts-d">Store facts in external memory (database). Inject only relevant memories per turn. Like human working memory — selective recall, not total recall.</span><span class="ts-tag ts-tag--green">Scalable</span></div></div>
+  </div>
+</div>
+<style>
+  .ts-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .ts-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .ts-list{display:flex;flex-direction:column;gap:8px}
+  .ts-item{display:flex;gap:12px;padding:12px 14px;background:rgba(0,0,0,.15);border-radius:10px;border:1px solid #334155;opacity:0;animation:tsIn .4s ease forwards}
+  .ts-i1{animation-delay:.1s}.ts-i2{animation-delay:.2s}.ts-i3{animation-delay:.3s}.ts-i4{animation-delay:.4s}.ts-i5{animation-delay:.5s}
+  @keyframes tsIn{to{opacity:1}}
+  .ts-rank{font-family:monospace;font-size:.7rem;font-weight:800;width:24px;height:24px;border-radius:50%;background:rgba(6,182,212,.1);color:#06b6d4;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .ts-body{flex:1;display:flex;flex-direction:column;gap:3px}
+  .ts-nm{color:#e2e8f0;font-weight:700;font-size:.82rem}.ts-d{color:#94a3b8;font-size:.7rem;line-height:1.5}
+  .ts-tag{font-size:.55rem;padding:2px 6px;border-radius:10px;align-self:flex-start;font-family:monospace}
+  .ts-tag--green{color:#4ade80;background:rgba(74,222,128,.08)}.ts-tag--cyan{color:#06b6d4;background:rgba(6,182,212,.08)}.ts-tag--purple{color:#818cf8;background:rgba(129,140,248,.08)}.ts-tag--amber{color:#f59e0b;background:rgba(245,158,11,.08)}
+</style>

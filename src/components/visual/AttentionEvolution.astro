@@ -1,0 +1,23 @@
+---
+// AttentionEvolution.astro — Evolution of attention mechanisms
+---
+<div class="ae-wrap">
+  <h3 class="ae-title">The Evolution — Getting Faster</h3>
+  <div class="ae-timeline">
+    <div class="ae-item ae-i1"><span class="ae-year">2017</span><div class="ae-body"><span class="ae-nm">Vanilla Attention</span><span class="ae-d">O(n²) memory and compute. Fine for short sequences, impossible for 100K+ tokens.</span></div></div>
+    <div class="ae-item ae-i2"><span class="ae-year">2020</span><div class="ae-body"><span class="ae-nm">Sparse Attention</span><span class="ae-d">Only attend to nearby tokens + fixed stride patterns. GPT-3 used this. Tradeoff: misses some long-range dependencies.</span></div></div>
+    <div class="ae-item ae-i3"><span class="ae-year">2022</span><div class="ae-body"><span class="ae-nm">FlashAttention</span><span class="ae-d">Same math, better hardware utilization. Tiled computation that fits in GPU SRAM. 2-4x faster, exact (not approximate).</span></div></div>
+    <div class="ae-item ae-i4"><span class="ae-year">2023</span><div class="ae-body"><span class="ae-nm">Multi-Query / Grouped-Query</span><span class="ae-d">Share K/V heads across query heads. Llama 2 uses GQA. Fewer KV-cache entries = cheaper inference = longer context.</span></div></div>
+    <div class="ae-item ae-i5"><span class="ae-year">2024+</span><div class="ae-body"><span class="ae-nm">Ring Attention / Infinite Context</span><span class="ae-d">Distribute attention across multiple devices. Sequence length limited by total cluster memory, not single GPU. Enables 1M+ context.</span></div></div>
+  </div>
+</div>
+<style>
+  .ae-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .ae-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .ae-timeline{display:flex;flex-direction:column;gap:6px}
+  .ae-item{display:flex;gap:12px;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border:1px solid #334155;border-left:3px solid #06b6d4;opacity:0;animation:aeIn .4s ease forwards}
+  .ae-i1{animation-delay:.1s}.ae-i2{animation-delay:.2s}.ae-i3{animation-delay:.3s}.ae-i4{animation-delay:.4s}.ae-i5{animation-delay:.5s}
+  @keyframes aeIn{to{opacity:1}}
+  .ae-year{color:#06b6d4;font-size:.7rem;font-weight:800;font-family:monospace;flex-shrink:0;min-width:40px}
+  .ae-body{flex:1}.ae-nm{display:block;color:#e2e8f0;font-weight:700;font-size:.8rem;margin-bottom:2px}.ae-d{display:block;color:#94a3b8;font-size:.68rem;line-height:1.5}
+</style>

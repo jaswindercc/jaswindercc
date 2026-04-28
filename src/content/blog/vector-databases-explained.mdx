@@ -1,0 +1,37 @@
+---
+title: "Vector Databases Explained — The Engine Behind Semantic Search and RAG"
+description: "Visual guide to vector databases. Understand how vector search works, compare Pinecone vs pgvector vs Weaviate, and learn ANN indexing strategies for production RAG systems."
+date: 2026-03-27
+---
+
+import VectorSearchFlow from '../../components/visual/VectorSearchFlow.astro';
+import VectorDBCompare from '../../components/visual/VectorDBCompare.astro';
+import VectorIndexTypes from '../../components/visual/VectorIndexTypes.astro';
+
+Regular databases find rows where `column = value`. Vector databases find rows where `meaning ≈ meaning`. That's the fundamental shift. You're not querying by exact match — you're querying by semantic similarity. "Find me documents that mean something similar to this question."
+
+This is what powers RAG (Retrieval Augmented Generation), semantic search, recommendation engines, and image similarity. Understanding vector databases unlocks understanding modern AI applications.
+
+## 1. How Vector Search Works
+
+Traditional search: "machine learning healthcare" → finds documents containing those exact words. Vector search: "How is AI used in medicine?" → finds documents about ML in healthcare, even if they never mention "AI" or "medicine." The search operates on meaning, not keywords.
+
+<VectorSearchFlow />
+
+The embedding model is the bridge between text and math. It converts human-readable text into a point in high-dimensional space where semantically similar texts are close together. The vector database stores millions of these points and finds the nearest ones to your query in milliseconds.
+
+## 2. Picking a Database
+
+The vector database landscape is crowded. Purpose-built options (Pinecone, Weaviate, Qdrant), Postgres extensions (pgvector), and embedded options (ChromaDB). The right choice depends on your scale, ops capability, and existing infrastructure.
+
+<VectorDBCompare />
+
+The question I get most: "Should I use a purpose-built vector DB or just pgvector?" If you have under 5 million vectors and already run Postgres — pgvector. It's good enough, it's familiar, and it doesn't add another service to manage. Beyond 5M vectors, or if you need advanced filtering + vector search combined, purpose-built databases start to pull ahead in performance.
+
+## 3. Indexing — Speed vs Accuracy
+
+Vector search is fundamentally a nearest-neighbor problem: find the K closest vectors to the query vector. Exact search is O(n) — unusable at scale. Approximate Nearest Neighbor (ANN) algorithms make it fast, trading a tiny accuracy loss for 1000x speed improvement.
+
+<VectorIndexTypes />
+
+HNSW is the index type used by almost every production vector database in 2026. It builds a navigable graph where each node connects to nearby nodes across multiple layers. Search starts at the top layer (sparse, long jumps) and refines at lower layers (dense, short jumps). The search time is O(log n) regardless of dataset size — you can search billions of vectors in single-digit milliseconds.

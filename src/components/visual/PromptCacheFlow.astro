@@ -1,0 +1,127 @@
+---
+/**
+ * PromptCacheFlow.astro
+ * Visual showing how prompt caching works — cache hit vs miss
+ * Pure CSS, dark theme
+ */
+---
+
+<div class="pcf-wrap">
+  <h3 class="pcf-title">How Prompt Caching Works</h3>
+  
+  <div class="pcf-scenarios">
+    <div class="pcf-scenario" style="--i:0;">
+      <div class="pcf-label pcf-miss-label">First Request (Cache Miss)</div>
+      <div class="pcf-flow">
+        <div class="pcf-block pcf-system">System prompt<br/><span>2,000 tokens</span></div>
+        <div class="pcf-arrow">→</div>
+        <div class="pcf-block pcf-context">Context docs<br/><span>8,000 tokens</span></div>
+        <div class="pcf-arrow">→</div>
+        <div class="pcf-block pcf-query">User query<br/><span>100 tokens</span></div>
+        <div class="pcf-arrow">→</div>
+        <div class="pcf-block pcf-process">Full processing<br/><span>10,100 tokens</span></div>
+      </div>
+      <div class="pcf-cost">Cost: $0.030 — all tokens processed from scratch</div>
+    </div>
+    
+    <div class="pcf-scenario" style="--i:1;">
+      <div class="pcf-label pcf-hit-label">Second Request (Cache Hit)</div>
+      <div class="pcf-flow">
+        <div class="pcf-block pcf-cached">System prompt<br/><span>CACHED ✓</span></div>
+        <div class="pcf-arrow">→</div>
+        <div class="pcf-block pcf-cached">Context docs<br/><span>CACHED ✓</span></div>
+        <div class="pcf-arrow">→</div>
+        <div class="pcf-block pcf-query">New query<br/><span>100 tokens</span></div>
+        <div class="pcf-arrow">→</div>
+        <div class="pcf-block pcf-fast">Fast processing<br/><span>100 new tokens</span></div>
+      </div>
+      <div class="pcf-savings">Cost: $0.004 — 90% cached, only new tokens processed</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pcf-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    overflow-x: auto;
+  }
+  .pcf-title {
+    color: #f1f5f9;
+    text-align: center;
+    font-size: 1.25rem;
+    margin: 0 0 1.5rem;
+  }
+  .pcf-scenarios {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .pcf-scenario {
+    opacity: 0;
+    animation: pcfFade 0.6s ease forwards;
+    animation-delay: calc(var(--i) * 0.3s);
+  }
+  @keyframes pcfFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .pcf-label {
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+  }
+  .pcf-miss-label { color: #f59e0b; }
+  .pcf-hit-label { color: #4ade80; }
+  .pcf-flow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 550px;
+  }
+  .pcf-block {
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #f1f5f9;
+    flex: 1;
+  }
+  .pcf-block span {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 400;
+    margin-top: 0.2rem;
+    color: #94a3b8;
+  }
+  .pcf-system { background: rgba(129,140,248,0.15); border: 1px solid rgba(129,140,248,0.3); }
+  .pcf-context { background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.3); }
+  .pcf-query { background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); }
+  .pcf-process { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); }
+  .pcf-cached {
+    background: rgba(74,222,128,0.15);
+    border: 1px solid rgba(74,222,128,0.3);
+    animation: pcfPulse 2s ease-in-out infinite;
+  }
+  .pcf-cached span { color: #4ade80; }
+  @keyframes pcfPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+    50% { box-shadow: 0 0 12px 2px rgba(74,222,128,0.15); }
+  }
+  .pcf-fast { background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.3); }
+  .pcf-arrow { color: #64748b; font-size: 1rem; flex-shrink: 0; }
+  .pcf-cost {
+    color: #f59e0b;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+  .pcf-savings {
+    color: #4ade80;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+</style>

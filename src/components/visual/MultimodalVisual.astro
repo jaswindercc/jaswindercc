@@ -1,0 +1,51 @@
+---
+/**
+ * MultimodalVisual.astro
+ * Multimodal AI modalities visual
+ */
+---
+
+<div class="mm-wrap">
+  <h3 class="mm-title">Multimodal AI — Input Modalities</h3>
+  <div class="mm-modalities">
+    <div class="mm-mod" style="--i:0; --color:#818cf8;">
+      <div class="mm-icon">📝</div>
+      <div class="mm-name">Text</div>
+      <div class="mm-desc">Natural language, code, structured data</div>
+    </div>
+    <div class="mm-mod" style="--i:1; --color:#06b6d4;">
+      <div class="mm-icon">🖼️</div>
+      <div class="mm-name">Vision</div>
+      <div class="mm-desc">Photos, screenshots, diagrams, charts</div>
+    </div>
+    <div class="mm-mod" style="--i:2; --color:#f59e0b;">
+      <div class="mm-icon">🎤</div>
+      <div class="mm-name">Audio</div>
+      <div class="mm-desc">Speech, music, ambient sounds</div>
+    </div>
+    <div class="mm-mod" style="--i:3; --color:#4ade80;">
+      <div class="mm-icon">🎬</div>
+      <div class="mm-name">Video</div>
+      <div class="mm-desc">Temporal visual sequences, screen recordings</div>
+    </div>
+  </div>
+  <div class="mm-output">
+    <div class="mm-arrow">↓ Unified understanding ↓</div>
+    <div class="mm-result">One model reasons across all modalities simultaneously</div>
+  </div>
+</div>
+
+<style>
+  .mm-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .mm-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .mm-modalities{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1.25rem}
+  @media(max-width:600px){.mm-modalities{grid-template-columns:1fr 1fr}}
+  .mm-mod{background:rgba(255,255,255,0.03);border:1px solid var(--color);border-radius:12px;padding:1rem;text-align:center;opacity:0;animation:mmFade .5s ease forwards;animation-delay:calc(var(--i)*.12s)}
+  @keyframes mmFade{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+  .mm-icon{font-size:1.5rem;margin-bottom:.25rem}
+  .mm-name{color:var(--color);font-weight:700;font-size:.9rem}
+  .mm-desc{color:#94a3b8;font-size:.72rem;margin-top:.15rem}
+  .mm-output{text-align:center}
+  .mm-arrow{color:#64748b;font-size:.8rem;margin-bottom:.5rem}
+  .mm-result{color:#4ade80;font-weight:600;font-size:.9rem}
+</style>

@@ -1,0 +1,168 @@
+---
+// StateFlowDiagram.astro — Pure CSS animated state graph
+// Shows state flowing through nodes in a LangGraph StateGraph with orbiting data
+---
+
+<div class="sf-wrap">
+  <h3 class="sf-title">State Flows Through the Graph</h3>
+  <p class="sf-sub">In LangGraph, state is a dictionary that every node can read and write. Watch it move.</p>
+
+  <div class="sf-layout">
+    <!-- The animated graph -->
+    <div class="sf-graph-box">
+      <svg viewBox="0 0 320 280" class="sf-svg" aria-label="State flowing through a LangGraph StateGraph with nodes and conditional edges">
+        <!-- Background grid -->
+        <defs>
+          <pattern id="sfGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+        <rect width="320" height="280" fill="url(#sfGrid)"/>
+
+        <!-- Edges (drawn first, behind nodes) -->
+        <path d="M160 50 L160 90" stroke="#4ade8060" stroke-width="2" />
+        <path d="M160 130 L90 170" stroke="#06b6d460" stroke-width="2" />
+        <path d="M160 130 L230 170" stroke="#f59e0b60" stroke-width="2" />
+        <path d="M90 210 L160 240" stroke="#06b6d460" stroke-width="2" />
+        <path d="M230 210 L160 240" stroke="#f59e0b60" stroke-width="2" />
+
+        <!-- Conditional edge label -->
+        <rect x="120" y="138" width="80" height="16" rx="4" fill="#1e1e2e" stroke="#475569" stroke-width="0.5"/>
+        <text x="160" y="149" text-anchor="middle" font-size="6" fill="#94a3b8" font-family="monospace">needs_review?</text>
+
+        <!-- START node -->
+        <circle cx="160" cy="35" r="14" fill="#1e1e2e" stroke="#4ade80" stroke-width="2"/>
+        <text x="160" y="38" text-anchor="middle" font-size="7" fill="#4ade80" font-family="monospace" font-weight="700">START</text>
+
+        <!-- classify node -->
+        <rect x="120" y="90" width="80" height="40" rx="8" fill="#1e1e2e" stroke="#818cf8" stroke-width="2" class="sf-node sf-node--purple"/>
+        <text x="160" y="106" text-anchor="middle" font-size="16">🏷</text>
+        <text x="160" y="122" text-anchor="middle" font-size="7" fill="#818cf8" font-family="monospace" font-weight="700">classify</text>
+
+        <!-- process node (left) -->
+        <rect x="50" y="170" width="80" height="40" rx="8" fill="#1e1e2e" stroke="#06b6d4" stroke-width="2" class="sf-node sf-node--cyan"/>
+        <text x="90" y="186" text-anchor="middle" font-size="16">⚡</text>
+        <text x="90" y="202" text-anchor="middle" font-size="7" fill="#06b6d4" font-family="monospace" font-weight="700">process</text>
+
+        <!-- review node (right) -->
+        <rect x="190" y="170" width="80" height="40" rx="8" fill="#1e1e2e" stroke="#f59e0b" stroke-width="2" class="sf-node sf-node--amber"/>
+        <text x="230" y="186" text-anchor="middle" font-size="16">👁</text>
+        <text x="230" y="202" text-anchor="middle" font-size="7" fill="#f59e0b" font-family="monospace" font-weight="700">review</text>
+
+        <!-- Loop-back arrow from review to classify -->
+        <path d="M270 190 Q 300 110 200 110" stroke="#f59e0b40" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+        <polygon points="204,106 196,110 204,114" fill="#f59e0b60"/>
+        <text x="295" y="148" text-anchor="middle" font-size="5" fill="#f59e0b60" font-family="monospace">re-classify</text>
+
+        <!-- END node -->
+        <circle cx="160" cy="255" r="14" fill="#1e1e2e" stroke="#4ade80" stroke-width="2"/>
+        <text x="160" y="258" text-anchor="middle" font-size="7" fill="#4ade80" font-family="monospace" font-weight="700">END</text>
+
+        <!-- Orbiting state blob -->
+        <circle r="6" fill="#818cf8" opacity="0.85" class="sf-orbiter">
+          <animateMotion dur="6s" repeatCount="indefinite">
+            <mpath href="#sfPath"/>
+          </animateMotion>
+          <animate attributeName="fill" values="#4ade80;#818cf8;#06b6d4;#f59e0b;#818cf8;#06b6d4;#4ade80" dur="6s" repeatCount="indefinite"/>
+        </circle>
+        <path id="sfPath" d="M160 35 L160 110 L90 190 L160 255 M160 255 L160 110 L230 190 L270 190 Q300 110 200 110 L160 110 L90 190 L160 255" fill="none" stroke="none"/>
+
+        <!-- State label on orbiter -->
+        <text font-size="4" fill="#e2e8f0" font-family="monospace" font-weight="700">
+          <animateMotion dur="6s" repeatCount="indefinite">
+            <mpath href="#sfPath"/>
+          </animateMotion>
+          state{}
+        </text>
+      </svg>
+    </div>
+
+    <!-- State explanation cards -->
+    <div class="sf-cards">
+      <div class="sf-card sf-card--green">
+        <div class="sf-card-header">
+          <span class="sf-card-icon">📦</span>
+          <span class="sf-card-name sf-card-name--green">State = a dictionary</span>
+        </div>
+        <p class="sf-card-text">Every node receives the full state object. It reads what it needs, writes what it changed, and passes it on. No hidden side effects.</p>
+      </div>
+
+      <div class="sf-card sf-card--purple">
+        <div class="sf-card-header">
+          <span class="sf-card-icon">🏷</span>
+          <span class="sf-card-name sf-card-name--purple">Nodes = functions</span>
+        </div>
+        <p class="sf-card-text">Each node is a plain Python function. It takes state in, returns updated state out. That's it. No framework magic.</p>
+      </div>
+
+      <div class="sf-card sf-card--amber">
+        <div class="sf-card-header">
+          <span class="sf-card-icon">🔀</span>
+          <span class="sf-card-name sf-card-name--amber">Edges = conditions</span>
+        </div>
+        <p class="sf-card-text">Conditional edges read the state and decide which node runs next. The graph can branch, loop back, or skip ahead — all based on state.</p>
+      </div>
+
+      <div class="sf-card sf-card--cyan">
+        <div class="sf-card-header">
+          <span class="sf-card-icon">🔄</span>
+          <span class="sf-card-name sf-card-name--cyan">Loops = superpowers</span>
+        </div>
+        <p class="sf-card-text">When a node writes "needs_review: true", the graph loops back. The next iteration sees the updated state. Chains can't do this.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .sf-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .sf-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .sf-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .sf-layout { display: grid; grid-template-columns: 300px 1fr; gap: 1.5rem; align-items: center; }
+  @media (max-width: 700px) {
+    .sf-layout { grid-template-columns: 1fr; }
+    .sf-graph-box { max-width: 280px; margin: 0 auto; }
+  }
+  .sf-svg { width: 100%; height: auto; }
+
+  .sf-node--purple { animation: sf-pulse-purple 6s infinite; }
+  .sf-node--cyan { animation: sf-pulse-cyan 6s infinite 1.5s; }
+  .sf-node--amber { animation: sf-pulse-amber 6s infinite 3s; }
+
+  @keyframes sf-pulse-purple {
+    0%, 20%, 100% { filter: drop-shadow(0 0 0 transparent); }
+    10% { filter: drop-shadow(0 0 10px rgba(129,140,248,0.5)); }
+  }
+  @keyframes sf-pulse-cyan {
+    0%, 20%, 100% { filter: drop-shadow(0 0 0 transparent); }
+    10% { filter: drop-shadow(0 0 10px rgba(6,182,212,0.5)); }
+  }
+  @keyframes sf-pulse-amber {
+    0%, 20%, 100% { filter: drop-shadow(0 0 0 transparent); }
+    10% { filter: drop-shadow(0 0 10px rgba(245,158,11,0.5)); }
+  }
+
+  .sf-cards { display: flex; flex-direction: column; gap: 8px; }
+  .sf-card {
+    padding: 10px 14px; border-radius: 10px; border: 1px solid #334155;
+    background: rgba(0,0,0,0.2); transition: all 0.3s ease;
+  }
+  .sf-card:hover { transform: translateX(4px); }
+  .sf-card--green:hover { border-color: #4ade8040; background: rgba(74,222,128,0.05); }
+  .sf-card--purple:hover { border-color: #818cf840; background: rgba(129,140,248,0.05); }
+  .sf-card--amber:hover { border-color: #f59e0b40; background: rgba(245,158,11,0.05); }
+  .sf-card--cyan:hover { border-color: #06b6d440; background: rgba(6,182,212,0.05); }
+
+  .sf-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .sf-card-icon { font-size: 1rem; }
+  .sf-card-name { font-family: monospace; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px; }
+  .sf-card-name--green { color: #4ade80; }
+  .sf-card-name--purple { color: #818cf8; }
+  .sf-card-name--amber { color: #f59e0b; }
+  .sf-card-name--cyan { color: #06b6d4; }
+  .sf-card-text { color: #94a3b8; font-size: 0.75rem; line-height: 1.5; margin: 0; }
+</style>

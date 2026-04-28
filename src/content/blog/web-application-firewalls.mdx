@@ -1,0 +1,41 @@
+---
+title: "Web Application Firewalls — Rules That Actually Work"
+description: "Practical guide to WAF deployment. Understand rule processing pipelines, OWASP Core Rule Set, false positive management, and where WAFs fit in a defense-in-depth strategy."
+date: 2026-05-14
+---
+
+import WAFVisual from '../../components/visual/WAFVisual.astro';
+
+A WAF sits between the internet and your application, inspecting every HTTP request against a set of rules. When configured well, it blocks SQL injection, cross-site scripting, and automated attacks before they reach your code. When configured poorly, it blocks legitimate users, creates a false sense of security, and generates so many false positives that your team ignores all alerts.
+
+## How WAF Processing Works
+
+WAFs process requests through a pipeline of rule stages. Each stage can allow, block, log, or challenge the request. Understanding this pipeline is essential for writing rules that protect without breaking functionality.
+
+<WAFVisual />
+
+The order matters. IP reputation checks are fastest and cheapest — blocking known-bad IPs before spending CPU on regex matching saves resources during DDoS attacks. Protocol validation catches malformed requests that might exploit parser bugs. Rule matching is the heaviest stage, running requests against hundreds of regex patterns.
+
+## OWASP Core Rule Set
+
+The OWASP Core Rule Set (CRS) is the standard open-source WAF ruleset. It covers SQL injection, XSS, remote code execution, local file inclusion, and dozens of other attack categories. Most commercial WAFs — including AWS WAF, Cloudflare, and Azure Front Door — use CRS-derived rules.
+
+CRS uses anomaly scoring. Each rule that matches adds points to the request's score. When the total exceeds a threshold (default: 5), the request is blocked. This means a single suspicious parameter doesn't trigger a block — it takes multiple indicators. This dramatically reduces false positives compared to blocking on any single rule match.
+
+Start with CRS in detection-only mode. Let it run for two weeks against production traffic, logging what it would block without actually blocking. Review the logs, tune out false positives, and then switch to blocking mode. Skipping this tuning phase guarantees you'll block legitimate users.
+
+## False Positive Management
+
+The most common WAF complaint: "it blocked a legitimate request." This happens because WAF rules pattern-match against request content, and legitimate content sometimes looks like attacks. A blog post about SQL injection will trigger SQL injection rules. A user named `O'Brien` triggers single-quote injection detection.
+
+The fix is targeted exclusions, not rule removal. Exclude specific parameters from specific rules: "Don't check the `blog_content` field against SQLi rules" is much safer than "disable all SQLi rules." AWS WAF and ModSecurity both support field-level exclusions.
+
+Keep a log of every exclusion with a justification. When a false positive appears, determine whether the rule is too broad (fix the rule) or the field needs special handling (add an exclusion). Accumulating exclusions without tracking them erodes your WAF's effectiveness over time.
+
+## Where WAFs Fall Short
+
+WAFs don't understand your application logic. They can't detect business logic flaws — buying a product at a negative price, accessing another user's data through ID enumeration, or exploiting race conditions in payment processing. These attacks use normal HTTP requests with normal-looking parameters.
+
+WAFs also struggle with API-specific attacks. A WAF trained on HTML form submissions doesn't know what a valid JSON API request looks like. API-specific WAFs (or API gateways with security features) use schema validation — comparing each request against your OpenAPI spec — which catches malformed API abuse that traditional WAFs miss.
+
+The right mental model: WAFs are a safety net, not a replacement for secure code. They catch the easy attacks and buy your team time during zero-day exploitation. But the primary defense is always secure application code — input validation, parameterized queries, output encoding, and proper authentication. If your WAF is the only thing preventing SQL injection, one misconfigured rule away from a breach.

@@ -1,0 +1,21 @@
+---
+title: "Chain of Thought Reasoning — Why Thinking Out Loud Works"
+description: "Visual guide to chain of thought prompting. See how step-by-step reasoning transforms LLM accuracy on math, logic, and multi-step problems."
+date: 2026-05-28
+---
+
+import CoTVisual from '../../components/visual/CoTVisual.astro';
+
+"Let's think step by step." Five words that improve LLM accuracy on reasoning tasks by 20-50%. Chain of thought prompting forces the model to show its work — breaking a complex problem into intermediate steps rather than jumping to an answer. It works because language models are next-token predictors: when you make them generate reasoning tokens before the answer token, those reasoning tokens create context that makes the answer more accurate.
+
+## The Difference One Phrase Makes
+
+Without chain of thought, the model generates answers directly from the question. With chain of thought, it generates intermediate reasoning that constrains the final answer. The reasoning serves as a scratchpad — each step provides context for the next.
+
+<CoTVisual />
+
+This isn't a prompting trick — it reflects something fundamental about how transformers work. The model's "thinking" happens in the forward pass through its layers. Each generated token adds information to the context that subsequent tokens can attend to. More reasoning tokens means more intermediate computations, which means harder problems become tractable.
+
+Zero-shot CoT ("Let's think step by step") works surprisingly well, but few-shot CoT (providing example reasoning chains) works even better. When you show the model the format of reasoning you expect — step-by-step calculations, explicit variable tracking, checking intermediate results — it mimics that format and produces more reliable outputs.
+
+The cost tradeoff is real. CoT generates more output tokens, which costs more and takes longer. For simple queries, it's wasteful. For complex reasoning, the accuracy improvement is worth it. A good system uses CoT selectively: classify the query complexity first, then apply CoT only for queries that benefit from it. Simple factual lookups get direct answers. Multi-step math problems get chain of thought.

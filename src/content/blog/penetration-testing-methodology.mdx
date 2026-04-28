@@ -1,0 +1,41 @@
+---
+title: "Penetration Testing Methodology — From Recon to Remediation"
+description: "A visual walkthrough of modern penetration testing methodology. Understand the five phases, key tools, and how pen tests actually find vulnerabilities that scanners miss."
+date: 2026-05-18
+---
+
+import PenTestVisual from '../../components/visual/PenTestVisual.astro';
+
+Automated scanners find known vulnerabilities. Penetration testing finds the vulnerabilities that matter — the ones chained together across systems that a scanner would flag individually as "medium" but together grant full access to your production database. The difference between a vulnerability scan and a pen test is the difference between a spell checker and a human editor.
+
+## The Five Phases
+
+Every professional pen test follows a structured methodology. Skipping phases leads to missed findings. Rushing exploitation before thorough recon means you test what's obvious instead of what's dangerous.
+
+<PenTestVisual />
+
+Reconnaissance is where most of the value lives. A skilled tester spends 60% of their time here. They're building a mental model of your attack surface — every subdomain, every exposed service, every technology choice that narrows the list of probable vulnerabilities. The better the recon, the more targeted and realistic the exploitation phase becomes.
+
+## Black Box vs Gray Box vs White Box
+
+Black box means the tester knows nothing — just a target domain. This simulates an external attacker but wastes time rediscovering things you could just tell them. Gray box gives the tester credentials and architecture docs. This simulates a compromised insider and finds more bugs per hour. White box includes source code access and is the most thorough approach.
+
+Most organizations get the best ROI from gray box testing. You're not paying a pen tester to enumerate your subdomains — you're paying them to find the logic flaw in your payment processing flow that lets someone buy a $2000 laptop for $1.
+
+## Scope and Rules of Engagement
+
+Before any testing begins, you need a signed scope document. It lists which systems are in scope, which are off-limits, testing windows, emergency contacts, and whether social engineering is permitted. Without clear scope, you get either a tester who's too cautious to find anything or one who accidentally takes down your production database.
+
+The rules of engagement also define how findings are communicated. Critical findings — like remote code execution on a production server — get reported immediately, not saved for the final report. The tester calls your security team, confirms the finding, and you patch it before anyone else discovers it.
+
+## What Good Reporting Looks Like
+
+A pen test report that lists 47 findings sorted by CVSS score is technically correct and practically useless. Good reports tell a story. They show attack chains — how the tester went from an exposed admin panel to database access in four steps. They include screenshots, reproduction steps, and specific remediation guidance.
+
+The executive summary matters as much as the technical details. Leadership doesn't need packet captures. They need to understand that an attacker with moderate skill could access customer data within two hours, and here are the three things that would prevent it. The remediation section should prioritize by effort-to-impact ratio, not just severity score.
+
+## Continuous Testing Over Annual Pen Tests
+
+Annual pen tests are a checkbox exercise. Your infrastructure changes weekly, but you're testing it once a year. By the time the report arrives, half the findings are outdated and new vulnerabilities have appeared. Modern organizations combine annual comprehensive tests with continuous approaches — bug bounty programs, automated red team exercises, and quarterly focused tests on new features.
+
+The pen test isn't the security strategy. It's a measurement of how well your existing security controls work. If every test finds critical issues, the problem isn't the test — it's your development and operations practices. Use pen test findings to improve your SDLC, not just to patch individual bugs.

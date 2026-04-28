@@ -1,0 +1,52 @@
+---
+/**
+ * MonorepoVsPolyrepo.astro
+ * Side-by-side comparison
+ */
+---
+
+<div class="mvp-wrap">
+  <h3 class="mvp-title">Monorepo vs Polyrepo</h3>
+  <div class="mvp-grid">
+    <div class="mvp-card" style="--i:0; --color:#4ade80;">
+      <div class="mvp-name">Monorepo</div>
+      <div class="mvp-desc">All projects in one repository</div>
+      <div class="mvp-items">
+        <div class="mvp-pro">✓ Atomic cross-project changes</div>
+        <div class="mvp-pro">✓ Shared tooling and configs</div>
+        <div class="mvp-pro">✓ Code discovery and reuse</div>
+        <div class="mvp-con">✗ CI complexity at scale</div>
+        <div class="mvp-con">✗ Requires specialized tooling (Nx, Turborepo, Bazel)</div>
+        <div class="mvp-con">✗ Git performance at very large scale</div>
+      </div>
+      <div class="mvp-users">Used by: Google, Meta, Microsoft, Uber</div>
+    </div>
+    <div class="mvp-card" style="--i:1; --color:#818cf8;">
+      <div class="mvp-name">Polyrepo</div>
+      <div class="mvp-desc">Each project gets its own repository</div>
+      <div class="mvp-items">
+        <div class="mvp-pro">✓ Clear ownership boundaries</div>
+        <div class="mvp-pro">✓ Independent deploy cycles</div>
+        <div class="mvp-pro">✓ Simple Git operations</div>
+        <div class="mvp-con">✗ Cross-repo changes need coordination</div>
+        <div class="mvp-con">✗ Dependency version drift</div>
+        <div class="mvp-con">✗ Duplicated configs across repos</div>
+      </div>
+      <div class="mvp-users">Used by: Netflix, Amazon (mostly), Spotify</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .mvp-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .mvp-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .mvp-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+  @media(max-width:640px){.mvp-grid{grid-template-columns:1fr}}
+  .mvp-card{background:rgba(255,255,255,0.03);border:1px solid var(--color);border-radius:12px;padding:1.25rem;opacity:0;animation:mvpFade .5s ease forwards;animation-delay:calc(var(--i)*.2s)}
+  @keyframes mvpFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .mvp-name{color:var(--color);font-weight:700;font-size:1.05rem;margin-bottom:.15rem}
+  .mvp-desc{color:#94a3b8;font-size:.8rem;margin-bottom:.75rem}
+  .mvp-items{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.75rem}
+  .mvp-pro{color:#4ade80;font-size:.8rem}.mvp-con{color:#f59e0b;font-size:.8rem}
+  .mvp-users{color:#64748b;font-size:.72rem;padding-top:.5rem;border-top:1px solid #334155}
+</style>

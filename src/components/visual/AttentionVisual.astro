@@ -1,0 +1,37 @@
+---
+// AttentionVisual.astro — How attention scores work
+---
+<div class="av2-wrap">
+  <h3 class="av2-title">Attention — "Which Words Matter for This Word?"</h3>
+  <p class="av2-sub">Each token looks at every other token and decides how much to pay attention to it.</p>
+  <div class="av2-matrix">
+    <div class="av2-sent"><span class="av2-w">The</span><span class="av2-w av2-w--hl">cat</span><span class="av2-w">sat</span><span class="av2-w">on</span><span class="av2-w">the</span><span class="av2-w av2-w--hl2">mat</span></div>
+    <div class="av2-scores">
+      <div class="av2-focus"><span class="av2-fl">When processing "cat", attention scores:</span>
+        <div class="av2-row"><span class="av2-target">The</span><div class="av2-bar-w"><div class="av2-bar" style="--w:15%"></div></div><span class="av2-sc">0.05</span></div>
+        <div class="av2-row"><span class="av2-target av2-target--hl">cat</span><div class="av2-bar-w"><div class="av2-bar av2-bar--green" style="--w:60%"></div></div><span class="av2-sc">0.30</span></div>
+        <div class="av2-row"><span class="av2-target">sat</span><div class="av2-bar-w"><div class="av2-bar av2-bar--amber" style="--w:35%"></div></div><span class="av2-sc">0.20</span></div>
+        <div class="av2-row"><span class="av2-target">on</span><div class="av2-bar-w"><div class="av2-bar" style="--w:10%"></div></div><span class="av2-sc">0.03</span></div>
+        <div class="av2-row"><span class="av2-target">the</span><div class="av2-bar-w"><div class="av2-bar" style="--w:8%"></div></div><span class="av2-sc">0.02</span></div>
+        <div class="av2-row"><span class="av2-target av2-target--hl2">mat</span><div class="av2-bar-w"><div class="av2-bar av2-bar--cyan" style="--w:50%"></div></div><span class="av2-sc">0.40</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="av2-note">"cat" attends strongly to "mat" (semantic relationship: cats sit on mats) and "sat" (action). Attention scores are softmax-normalized: they sum to 1.0 across all tokens.</div>
+</div>
+<style>
+  .av2-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .av2-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.av2-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem}
+  .av2-sent{display:flex;gap:8px;justify-content:center;margin-bottom:1rem}
+  .av2-w{padding:4px 10px;background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:6px;color:#94a3b8;font-family:monospace;font-size:.75rem}
+  .av2-w--hl{color:#4ade80;border-color:#4ade8030;background:rgba(74,222,128,.08)}.av2-w--hl2{color:#06b6d4;border-color:#06b6d430;background:rgba(6,182,212,.08)}
+  .av2-scores{margin-bottom:1rem}.av2-fl{color:#f59e0b;font-size:.68rem;font-family:monospace;display:block;margin-bottom:8px}
+  .av2-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .av2-target{color:#94a3b8;font-size:.68rem;font-family:monospace;min-width:40px}.av2-target--hl{color:#4ade80}.av2-target--hl2{color:#06b6d4}
+  .av2-bar-w{flex:1;height:8px;background:rgba(0,0,0,.3);border-radius:6px;overflow:hidden}
+  .av2-bar{height:100%;border-radius:6px;background:#64748b;width:0;animation:av2Bar 1s ease forwards}
+  .av2-bar--green{background:#4ade80}.av2-bar--amber{background:#f59e0b}.av2-bar--cyan{background:#06b6d4}
+  @keyframes av2Bar{to{width:var(--w)}}
+  .av2-sc{color:#475569;font-size:.6rem;font-family:monospace;min-width:30px;text-align:right}
+  .av2-note{color:#94a3b8;font-size:.7rem;line-height:1.6;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border:1px solid #334155}
+</style>

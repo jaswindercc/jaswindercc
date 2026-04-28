@@ -1,0 +1,21 @@
+---
+title: "Monorepo vs Polyrepo — The Real Tradeoffs"
+description: "Visual comparison of monorepo and polyrepo strategies. Understand the real engineering tradeoffs for code sharing, CI/CD, ownership, and cross-project changes."
+date: 2026-05-27
+---
+
+import MonorepoVsPolyrepo from '../../components/visual/MonorepoVsPolyrepo.astro';
+
+The monorepo vs polyrepo debate generates strong opinions and weak arguments. Both work. Both scale. The choice depends on your team structure, how often you make cross-project changes, and how much you're willing to invest in build tooling.
+
+## The Real Tradeoffs
+
+This isn't about which is "better" — it's about which problems you'd rather have. Monorepos make cross-project changes easy and code sharing natural, but require specialized CI tooling to stay fast. Polyrepos give teams full autonomy, but make coordinated changes across services painful.
+
+<MonorepoVsPolyrepo />
+
+The deciding factor is cross-project change frequency. If your teams frequently change shared libraries, update API contracts, or refactor across service boundaries — monorepo wins. One PR, one review, one merge, one deploy. In a polyrepo world, the same change requires coordinated PRs across multiple repos, versioned releases, and careful rollout ordering.
+
+If your teams are highly independent — different languages, different deploy schedules, minimal shared code — polyrepo is simpler. Each team owns their repo and pipeline end-to-end. No contention on CI resources, no accidental breakages from other teams' changes.
+
+The tooling question is real. A monorepo with 50 projects needs smart build caching (Turborepo, Nx, or Bazel) to avoid rebuilding everything on every commit. Without it, CI becomes a bottleneck that slows everyone down. These tools are mature and reliable, but they add a layer of complexity that someone needs to maintain.

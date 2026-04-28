@@ -1,0 +1,47 @@
+---
+title: "RLHF Visualized — How Language Models Learn Human Preferences"
+description: "A visual explanation of Reinforcement Learning from Human Feedback. Walk through the three-stage RLHF pipeline that transforms base language models into helpful, harmless AI assistants."
+date: 2026-05-12
+---
+
+import RLHFVisual from '../../components/visual/RLHFVisual.astro';
+
+Base language models are impressive pattern completers, but they're not aligned with what humans actually want. Ask a base model a question and it might complete the text with another question, or with harmful content, or with a Wikipedia-style article when you wanted a concise answer. RLHF is the process that turns a capable-but-unaligned base model into something that genuinely tries to be helpful.
+
+## The Three-Stage Pipeline
+
+RLHF isn't a single training step — it's a pipeline where each stage builds on the previous one. Skip a stage and the whole thing falls apart. The magic is in how human preferences get distilled into a mathematical reward signal.
+
+<RLHFVisual />
+
+The intuition: Stage 1 teaches the model what good responses look like. Stage 2 teaches a separate model to distinguish good from bad. Stage 3 uses that distinction to improve the original model's responses at scale — far beyond what human annotation alone could cover.
+
+## Stage 1: Supervised Fine-Tuning
+
+You start with a pre-trained base model and fine-tune it on human-written demonstrations. Human annotators write high-quality responses to a diverse set of prompts. This is expensive — each demonstration costs $5-50 depending on complexity — but the dataset is relatively small. OpenAI's InstructGPT used about 13,000 demonstrations.
+
+After SFT, the model produces reasonable responses most of the time. It follows instructions, maintains a consistent format, and avoids the most obvious failure modes. But it still produces responses that are technically correct but unhelpful — overly verbose, miss the point, or include unnecessary caveats. That's where the reward model comes in.
+
+## Stage 2: Reward Model
+
+The reward model learns to predict which responses humans prefer. Annotators receive a prompt with two model-generated responses and rank them. This is faster and cheaper than writing demonstrations — comparison is easier than creation. A single annotator can rank 50-100 pairs per hour.
+
+The reward model is trained on these comparisons using a Bradley-Terry preference model. It outputs a scalar score for any prompt-response pair, representing predicted human preference. The key insight: you only need relative rankings, not absolute quality scores. Humans are bad at rating quality on a 1-10 scale but consistently good at saying "A is better than B."
+
+Inter-annotator agreement is typically 70-80%, which sounds low but is normal for subjective tasks. Disagreements are handled by majority vote or by filtering out prompts where annotators strongly disagree. Low-agreement examples add noise to training and degrade reward model quality.
+
+## Stage 3: PPO Optimization
+
+Proximal Policy Optimization is a reinforcement learning algorithm that updates the SFT model to maximize the reward model's score. The model generates a response, the reward model scores it, and the policy gradient updates the model's weights to produce higher-scoring responses in the future.
+
+The KL divergence penalty is crucial. Without it, the model exploits the reward model — finding adversarial responses that score high but are actually gibberish. The KL penalty constrains the updated model to stay close to the SFT model, preventing catastrophic reward hacking. It's a leash that lets the model improve within bounds.
+
+The training loop generates thousands of responses, scores them, and updates the model. After sufficient training, the model produces responses that score higher on the reward model — which correlates with genuine human preference improvements. But it's an imperfect proxy, and reward model limitations directly limit RLHF improvements.
+
+## Beyond RLHF: DPO and Constitutional AI
+
+Direct Preference Optimization eliminates the reward model entirely. Instead of training a separate reward model and then optimizing against it, DPO uses the preference data directly to update the base model. This simplifies the pipeline from three stages to two and eliminates reward hacking by construction.
+
+Constitutional AI (Anthropic's approach) adds a self-critique step. The model generates a response, critiques it against a set of principles (the "constitution"), revises the response, and then standard RLHF trains on the revised outputs. This reduces reliance on human annotation for safety alignment — the model uses human-written principles to generate its own training signal.
+
+The field is moving toward approaches that require less human annotation. Self-play, AI feedback, and iterative self-improvement techniques all aim to scale alignment beyond what human annotation budgets allow. But human oversight remains essential — you still need humans to verify that the AI-generated training signals actually correspond to human values.

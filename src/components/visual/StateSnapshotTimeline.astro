@@ -1,0 +1,191 @@
+---
+// StateSnapshotTimeline.astro — Pure CSS timeline showing state mutations at each node
+// Shows the state object evolving as it passes through the graph
+---
+
+<div class="ss-wrap">
+  <h3 class="ss-title">Watch the State Mutate — Node by Node</h3>
+  <p class="ss-sub">Every node reads state, changes something, and passes it on. Here's what that looks like in practice.</p>
+
+  <div class="ss-timeline">
+    <div class="ss-line" aria-hidden="true"></div>
+
+    <!-- Initial state -->
+    <div class="ss-step ss-step--green" style="--delay: 0.1s">
+      <div class="ss-dot ss-dot--green"></div>
+      <div class="ss-card">
+        <div class="ss-head">
+          <span class="ss-tag ss-tag--green">START</span>
+          <span class="ss-node">input</span>
+        </div>
+        <div class="ss-state">
+          <div class="ss-key"><span class="ss-k">query</span><span class="ss-v">"refund for order #412"</span></div>
+          <div class="ss-key"><span class="ss-k">category</span><span class="ss-v ss-v--empty">null</span></div>
+          <div class="ss-key"><span class="ss-k">sentiment</span><span class="ss-v ss-v--empty">null</span></div>
+          <div class="ss-key"><span class="ss-k">response</span><span class="ss-v ss-v--empty">null</span></div>
+          <div class="ss-key"><span class="ss-k">approved</span><span class="ss-v ss-v--empty">false</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- classify node -->
+    <div class="ss-step ss-step--purple" style="--delay: 0.3s">
+      <div class="ss-dot ss-dot--purple"></div>
+      <div class="ss-card">
+        <div class="ss-head">
+          <span class="ss-tag ss-tag--purple">NODE</span>
+          <span class="ss-node">classify</span>
+        </div>
+        <div class="ss-state">
+          <div class="ss-key"><span class="ss-k">query</span><span class="ss-v">"refund for order #412"</span></div>
+          <div class="ss-key ss-key--changed"><span class="ss-k">category</span><span class="ss-v ss-v--new">"billing" ← NEW</span></div>
+          <div class="ss-key ss-key--changed"><span class="ss-k">sentiment</span><span class="ss-v ss-v--new">"frustrated" ← NEW</span></div>
+          <div class="ss-key"><span class="ss-k">response</span><span class="ss-v ss-v--empty">null</span></div>
+          <div class="ss-key"><span class="ss-k">approved</span><span class="ss-v ss-v--empty">false</span></div>
+        </div>
+        <div class="ss-note">classify() read the query, wrote category + sentiment</div>
+      </div>
+    </div>
+
+    <!-- process node -->
+    <div class="ss-step ss-step--cyan" style="--delay: 0.5s">
+      <div class="ss-dot ss-dot--cyan"></div>
+      <div class="ss-card">
+        <div class="ss-head">
+          <span class="ss-tag ss-tag--cyan">NODE</span>
+          <span class="ss-node">process</span>
+        </div>
+        <div class="ss-state">
+          <div class="ss-key"><span class="ss-k">query</span><span class="ss-v">"refund for order #412"</span></div>
+          <div class="ss-key"><span class="ss-k">category</span><span class="ss-v">"billing"</span></div>
+          <div class="ss-key"><span class="ss-k">sentiment</span><span class="ss-v">"frustrated"</span></div>
+          <div class="ss-key ss-key--changed"><span class="ss-k">response</span><span class="ss-v ss-v--new">"Refund initiated for #412..." ← NEW</span></div>
+          <div class="ss-key"><span class="ss-k">approved</span><span class="ss-v ss-v--empty">false</span></div>
+        </div>
+        <div class="ss-note">process() used category + sentiment to draft a response</div>
+      </div>
+    </div>
+
+    <!-- review node -->
+    <div class="ss-step ss-step--amber" style="--delay: 0.7s">
+      <div class="ss-dot ss-dot--amber"></div>
+      <div class="ss-card">
+        <div class="ss-head">
+          <span class="ss-tag ss-tag--amber">NODE</span>
+          <span class="ss-node">review</span>
+        </div>
+        <div class="ss-state">
+          <div class="ss-key"><span class="ss-k">query</span><span class="ss-v">"refund for order #412"</span></div>
+          <div class="ss-key"><span class="ss-k">category</span><span class="ss-v">"billing"</span></div>
+          <div class="ss-key"><span class="ss-k">sentiment</span><span class="ss-v">"frustrated"</span></div>
+          <div class="ss-key"><span class="ss-k">response</span><span class="ss-v">"Refund initiated for #412..."</span></div>
+          <div class="ss-key ss-key--changed"><span class="ss-k">approved</span><span class="ss-v ss-v--yes">true ← UPDATED</span></div>
+        </div>
+        <div class="ss-note">review() checked the response against policies, approved it</div>
+      </div>
+    </div>
+
+    <!-- End -->
+    <div class="ss-step ss-step--green" style="--delay: 0.9s">
+      <div class="ss-dot ss-dot--green ss-dot--glow"></div>
+      <div class="ss-card ss-card--done">
+        <div class="ss-head">
+          <span class="ss-tag ss-tag--green">END</span>
+          <span class="ss-node">output</span>
+        </div>
+        <div class="ss-state">
+          <div class="ss-key ss-key--final"><span class="ss-k">✓ category</span><span class="ss-v">"billing"</span></div>
+          <div class="ss-key ss-key--final"><span class="ss-k">✓ response</span><span class="ss-v">"Refund initiated for #412..."</span></div>
+          <div class="ss-key ss-key--final"><span class="ss-k">✓ approved</span><span class="ss-v ss-v--yes">true</span></div>
+        </div>
+        <div class="ss-note">Full state available. Every mutation traceable.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ss-insight">
+    <div class="ss-insight-icon">💡</div>
+    <div>In a chain, intermediate outputs vanish. In a StateGraph, <strong>every field change is visible</strong>. You can replay, inspect, and debug any node in isolation.</div>
+  </div>
+</div>
+
+<style>
+  .ss-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .ss-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .ss-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .ss-timeline { position: relative; padding-left: 28px; }
+  .ss-line {
+    position: absolute; left: 9px; top: 0; bottom: 0; width: 2px;
+    background: linear-gradient(180deg, #4ade8040, #818cf840, #06b6d440, #f59e0b40, #4ade8040);
+  }
+
+  .ss-step {
+    position: relative; margin-bottom: 12px;
+    animation: ss-fade 0.5s ease-out both;
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes ss-fade { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+
+  .ss-dot {
+    position: absolute; left: -24px; top: 12px;
+    width: 12px; height: 12px; border-radius: 50%;
+  }
+  .ss-dot--green { background: #4ade80; box-shadow: 0 0 8px rgba(74,222,128,0.4); }
+  .ss-dot--purple { background: #818cf8; box-shadow: 0 0 8px rgba(129,140,248,0.4); }
+  .ss-dot--cyan { background: #06b6d4; box-shadow: 0 0 8px rgba(6,182,212,0.4); }
+  .ss-dot--amber { background: #f59e0b; box-shadow: 0 0 8px rgba(245,158,11,0.4); }
+  .ss-dot--glow { animation: ss-glow 2s infinite; }
+  @keyframes ss-glow { 0%,100% { box-shadow: 0 0 8px rgba(74,222,128,0.4); } 50% { box-shadow: 0 0 16px rgba(74,222,128,0.7); } }
+
+  .ss-card {
+    background: rgba(0,0,0,0.25); border: 1px solid #334155;
+    border-radius: 10px; padding: 10px 14px; transition: border-color 0.3s;
+  }
+  .ss-card:hover { border-color: #475569; }
+  .ss-card--done { border-color: #4ade8030; background: rgba(74,222,128,0.04); }
+
+  .ss-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .ss-tag {
+    font-family: monospace; font-size: 0.55rem; font-weight: 700;
+    letter-spacing: 0.5px; padding: 2px 7px; border-radius: 4px;
+  }
+  .ss-tag--green { background: rgba(74,222,128,0.12); color: #4ade80; }
+  .ss-tag--purple { background: rgba(129,140,248,0.12); color: #818cf8; }
+  .ss-tag--cyan { background: rgba(6,182,212,0.12); color: #06b6d4; }
+  .ss-tag--amber { background: rgba(245,158,11,0.12); color: #f59e0b; }
+  .ss-node { font-family: monospace; font-size: 0.65rem; color: #94a3b8; }
+
+  .ss-state {
+    background: rgba(0,0,0,0.2); border-radius: 6px; padding: 8px 10px;
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .ss-key {
+    display: flex; align-items: center; gap: 6px; padding: 2px 4px; border-radius: 3px;
+    font-family: monospace; font-size: 0.6rem;
+  }
+  .ss-key--changed { background: rgba(245,158,11,0.06); border-left: 2px solid #f59e0b; }
+  .ss-key--final { background: rgba(74,222,128,0.06); border-left: 2px solid #4ade80; }
+  .ss-k { color: #64748b; min-width: 70px; }
+  .ss-v { color: #94a3b8; }
+  .ss-v--empty { color: #475569; font-style: italic; }
+  .ss-v--new { color: #f59e0b; font-weight: 600; }
+  .ss-v--yes { color: #4ade80; font-weight: 600; }
+
+  .ss-note {
+    font-family: monospace; font-size: 0.55rem; color: #475569;
+    margin-top: 6px; font-style: italic;
+  }
+
+  .ss-insight {
+    display: flex; align-items: flex-start; gap: 10px; margin-top: 16px;
+    padding: 12px 16px; background: rgba(129,140,248,0.06);
+    border: 1px solid rgba(129,140,248,0.15); border-radius: 10px;
+    color: #cbd5e1; font-size: 0.8rem; line-height: 1.5;
+  }
+  .ss-insight strong { color: #818cf8; }
+  .ss-insight-icon { font-size: 1.1rem; flex-shrink: 0; }
+</style>

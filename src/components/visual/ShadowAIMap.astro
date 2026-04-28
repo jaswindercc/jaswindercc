@@ -1,0 +1,102 @@
+---
+// ShadowAIMap.astro — Interactive map of unauthorized AI usage in enterprise
+---
+
+<div class="sai-wrap">
+  <h3 class="sai-title">🕵️ Shadow AI in Your Organization</h3>
+  <p class="sai-sub">Every department has unauthorized AI. Hover to see what, where, and the risk.</p>
+
+  <div class="sai-grid">
+    <div class="sai-dept" tabindex="0">
+      <div class="sai-dept-head sai-dept--eng">
+        <span class="sai-emoji">💻</span>
+        <span class="sai-dept-name">Engineering</span>
+        <span class="sai-risk sai-risk--high">HIGH</span>
+      </div>
+      <div class="sai-dept-body">
+        <div class="sai-tool">ChatGPT via personal accounts</div>
+        <div class="sai-tool">Local Ollama with company code</div>
+        <div class="sai-tool">Cursor/Continue with cloud models</div>
+        <div class="sai-leak">⚠️ Source code, API keys, architecture docs sent to external LLMs</div>
+      </div>
+    </div>
+
+    <div class="sai-dept" tabindex="0">
+      <div class="sai-dept-head sai-dept--sales">
+        <span class="sai-emoji">📊</span>
+        <span class="sai-dept-name">Sales & Marketing</span>
+        <span class="sai-risk sai-risk--med">MEDIUM</span>
+      </div>
+      <div class="sai-dept-body">
+        <div class="sai-tool">Claude for proposal writing</div>
+        <div class="sai-tool">Jasper AI for content</div>
+        <div class="sai-tool">Custom GPTs with CRM data</div>
+        <div class="sai-leak">⚠️ Customer names, deal values, pricing strategy in prompts</div>
+      </div>
+    </div>
+
+    <div class="sai-dept" tabindex="0">
+      <div class="sai-dept-head sai-dept--legal">
+        <span class="sai-emoji">⚖️</span>
+        <span class="sai-dept-name">Legal & Compliance</span>
+        <span class="sai-risk sai-risk--crit">CRITICAL</span>
+      </div>
+      <div class="sai-dept-body">
+        <div class="sai-tool">GPT-4 for contract review</div>
+        <div class="sai-tool">AI summarization of legal disputes</div>
+        <div class="sai-tool">Translation tools for international filings</div>
+        <div class="sai-leak">⚠️ Attorney-client privilege data, M&A details, litigation strategy exposed</div>
+      </div>
+    </div>
+
+    <div class="sai-dept" tabindex="0">
+      <div class="sai-dept-head sai-dept--hr">
+        <span class="sai-emoji">👥</span>
+        <span class="sai-dept-name">HR & People</span>
+        <span class="sai-risk sai-risk--high">HIGH</span>
+      </div>
+      <div class="sai-dept-body">
+        <div class="sai-tool">Resume screening via ChatGPT</div>
+        <div class="sai-tool">Performance review drafting</div>
+        <div class="sai-tool">Compensation benchmarking prompts</div>
+        <div class="sai-leak">⚠️ Employee PII, salary data, performance ratings in third-party models</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .sai-wrap {
+    background: linear-gradient(135deg, #1a1025 0%, #0f172a 100%);
+    border-radius: 1rem; padding: 2rem; margin: 2rem 0;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+  }
+  .sai-title { color: #f1f5f9; font-size: 1.25rem; margin: 0 0 0.25rem; }
+  .sai-sub { color: #94a3b8; font-size: 0.875rem; margin: 0 0 1.5rem; }
+  .sai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 640px) { .sai-grid { grid-template-columns: 1fr; } }
+  .sai-dept { border-radius: 0.75rem; overflow: hidden; cursor: pointer; transition: all 0.3s; }
+  .sai-dept:hover, .sai-dept:focus { transform: translateY(-2px); }
+  .sai-dept-head {
+    display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem;
+    border: 1px solid transparent; border-radius: 0.75rem; transition: all 0.3s;
+  }
+  .sai-dept--eng { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); }
+  .sai-dept--sales { background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.2); }
+  .sai-dept--legal { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.2); }
+  .sai-dept--hr { background: rgba(249,115,22,0.1); border-color: rgba(249,115,22,0.2); }
+  .sai-emoji { font-size: 1.25rem; }
+  .sai-dept-name { color: #e2e8f0; font-weight: 600; font-size: 0.85rem; flex: 1; }
+  .sai-risk { font-size: 0.6rem; font-weight: 800; padding: 0.2rem 0.4rem; border-radius: 4px; letter-spacing: 0.05em; }
+  .sai-risk--crit { background: rgba(239,68,68,0.2); color: #fca5a5; }
+  .sai-risk--high { background: rgba(249,115,22,0.2); color: #fdba74; }
+  .sai-risk--med { background: rgba(234,179,8,0.2); color: #fde047; }
+  .sai-dept-body {
+    max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s;
+    padding: 0 1rem; background: rgba(0,0,0,0.3);
+  }
+  .sai-dept:hover .sai-dept-body, .sai-dept:focus .sai-dept-body { max-height: 250px; padding: 0.75rem 1rem; }
+  .sai-tool { color: #cbd5e1; font-size: 0.75rem; padding: 0.15rem 0; line-height: 1.5; }
+  .sai-tool::before { content: '• '; color: #64748b; }
+  .sai-leak { color: #fbbf24; font-size: 0.7rem; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(148,163,184,0.1); line-height: 1.4; }
+</style>

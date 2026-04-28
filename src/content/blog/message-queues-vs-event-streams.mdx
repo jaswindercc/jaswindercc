@@ -1,0 +1,21 @@
+---
+title: "Message Queues vs Event Streams — Kafka, SQS, RabbitMQ"
+description: "Visual comparison of Kafka, SQS, and RabbitMQ. Understand when to use event streams vs message queues, and the tradeoffs that determine which messaging tool fits your architecture."
+date: 2026-05-21
+---
+
+import MessageQueueCompare from '../../components/visual/MessageQueueCompare.astro';
+
+"Should I use Kafka or SQS?" is the wrong question. Kafka is an event stream — it stores an ordered log of events that multiple consumers can replay. SQS is a message queue — it delivers messages exactly once and deletes them. They solve different problems. Using Kafka as a task queue adds unnecessary complexity. Using SQS for event sourcing is impossible because consumed messages are deleted.
+
+## Three Tools, Three Philosophies
+
+The fundamental distinction: queues deliver messages to a single consumer and remove them. Streams persist messages and allow multiple consumers to read independently. Brokers add smart routing on top.
+
+<MessageQueueCompare />
+
+**Default to SQS** if you're on AWS and need a simple task queue. It's fully managed, scales to infinity, costs almost nothing at low volume, and handles dead letter queues natively. No brokers to manage, no rebalancing, no disk capacity planning. For async job processing, webhook delivery, or decoupling services — SQS is usually the right answer.
+
+**Use Kafka** when you need message replay, multiple independent consumers reading the same data, or high-throughput event pipelines. Kafka shines when the same event stream feeds multiple downstream systems: real-time analytics, search indexing, notification service, audit logging — all reading independently from the same topic. SQS can't do this because each message is consumed once.
+
+**Use RabbitMQ** when you need complex message routing patterns that neither SQS nor Kafka handles well. Topic-based routing, headers-based filtering, priority queues, and multiple protocol support are RabbitMQ's strengths. It's also the best option for non-AWS environments where SQS isn't available and Kafka's operational overhead isn't justified.

@@ -1,0 +1,126 @@
+---
+/**
+ * IaCToolCompare.astro
+ * Comparison table: Terraform vs Pulumi vs CloudFormation vs CDK
+ * Pure CSS, dark theme
+ */
+---
+
+<div class="iac-wrap">
+  <h3 class="iac-title">IaC Tools Compared</h3>
+  
+  <div class="iac-table">
+    <div class="iac-header">
+      <div class="iac-cell iac-label-cell"></div>
+      <div class="iac-cell" style="--color:#818cf8;">Terraform</div>
+      <div class="iac-cell" style="--color:#f59e0b;">Pulumi</div>
+      <div class="iac-cell" style="--color:#06b6d4;">CloudFormation</div>
+      <div class="iac-cell" style="--color:#4ade80;">CDK</div>
+    </div>
+    
+    <div class="iac-row" style="--i:0;">
+      <div class="iac-cell iac-label-cell">Language</div>
+      <div class="iac-cell">HCL (DSL)</div>
+      <div class="iac-cell">Python, TS, Go</div>
+      <div class="iac-cell">YAML / JSON</div>
+      <div class="iac-cell">TS, Python, Java</div>
+    </div>
+    <div class="iac-row" style="--i:1;">
+      <div class="iac-cell iac-label-cell">Multi-Cloud</div>
+      <div class="iac-cell"><span class="iac-yes">✓ Native</span></div>
+      <div class="iac-cell"><span class="iac-yes">✓ Native</span></div>
+      <div class="iac-cell"><span class="iac-no">✗ AWS only</span></div>
+      <div class="iac-cell"><span class="iac-no">✗ AWS only</span></div>
+    </div>
+    <div class="iac-row" style="--i:2;">
+      <div class="iac-cell iac-label-cell">State Mgmt</div>
+      <div class="iac-cell">Remote backend</div>
+      <div class="iac-cell">Managed service</div>
+      <div class="iac-cell">AWS managed</div>
+      <div class="iac-cell">Via CloudFormation</div>
+    </div>
+    <div class="iac-row" style="--i:3;">
+      <div class="iac-cell iac-label-cell">Learning Curve</div>
+      <div class="iac-cell"><span class="iac-med">Medium</span></div>
+      <div class="iac-cell"><span class="iac-easy">Low</span></div>
+      <div class="iac-cell"><span class="iac-hard">High</span></div>
+      <div class="iac-cell"><span class="iac-med">Medium</span></div>
+    </div>
+    <div class="iac-row" style="--i:4;">
+      <div class="iac-cell iac-label-cell">Ecosystem</div>
+      <div class="iac-cell"><span class="iac-yes">Massive</span></div>
+      <div class="iac-cell"><span class="iac-med">Growing</span></div>
+      <div class="iac-cell"><span class="iac-med">AWS-deep</span></div>
+      <div class="iac-cell"><span class="iac-med">AWS-deep</span></div>
+    </div>
+    <div class="iac-row" style="--i:5;">
+      <div class="iac-cell iac-label-cell">Best For</div>
+      <div class="iac-cell">Multi-cloud teams</div>
+      <div class="iac-cell">Dev-first teams</div>
+      <div class="iac-cell">AWS-only shops</div>
+      <div class="iac-cell">AWS + real code</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .iac-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    overflow-x: auto;
+  }
+  .iac-title {
+    color: #f1f5f9;
+    text-align: center;
+    font-size: 1.25rem;
+    margin: 0 0 1.25rem;
+  }
+  .iac-table {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 600px;
+  }
+  .iac-header, .iac-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 1fr 1fr 1fr;
+    gap: 2px;
+  }
+  .iac-header .iac-cell {
+    background: rgba(255,255,255,0.06);
+    color: var(--color, #f1f5f9);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+  .iac-row {
+    opacity: 0;
+    animation: iacFade 0.4s ease forwards;
+    animation-delay: calc(var(--i) * 0.1s);
+  }
+  @keyframes iacFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .iac-cell {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.8rem;
+    color: #cbd5e1;
+    background: rgba(255,255,255,0.02);
+    border-radius: 4px;
+    text-align: center;
+  }
+  .iac-label-cell {
+    color: #94a3b8;
+    font-weight: 600;
+    text-align: left;
+  }
+  .iac-yes { color: #4ade80; }
+  .iac-no { color: #ef4444; }
+  .iac-med { color: #f59e0b; }
+  .iac-easy { color: #4ade80; }
+  .iac-hard { color: #ef4444; }
+</style>

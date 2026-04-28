@@ -1,0 +1,57 @@
+---
+/**
+ * GuardrailsVisual.astro
+ * AI guardrails defense layers
+ */
+---
+
+<div class="grv-wrap">
+  <h3 class="grv-title">LLM Guardrails — Defense in Depth</h3>
+  <div class="grv-layers">
+    <div class="grv-layer" style="--i:0;--c:#ef4444;">
+      <div class="grv-licon">🛡</div>
+      <div class="grv-linfo">
+        <div class="grv-lname">Input Guardrails</div>
+        <div class="grv-ldesc">Prompt injection detection, PII filtering, topic classification, input length limits</div>
+      </div>
+      <div class="grv-when">Before LLM call</div>
+    </div>
+    <div class="grv-layer" style="--i:1;--c:#f59e0b;">
+      <div class="grv-licon">⚙️</div>
+      <div class="grv-linfo">
+        <div class="grv-lname">System Prompt Controls</div>
+        <div class="grv-ldesc">Role definition, forbidden topics, output format constraints, tool use policies</div>
+      </div>
+      <div class="grv-when">Within LLM context</div>
+    </div>
+    <div class="grv-layer" style="--i:2;--c:#06b6d4;">
+      <div class="grv-licon">🔍</div>
+      <div class="grv-linfo">
+        <div class="grv-lname">Output Validation</div>
+        <div class="grv-ldesc">Toxicity scoring, hallucination detection, format validation, citation verification</div>
+      </div>
+      <div class="grv-when">After LLM response</div>
+    </div>
+    <div class="grv-layer" style="--i:3;--c:#4ade80;">
+      <div class="grv-licon">📊</div>
+      <div class="grv-linfo">
+        <div class="grv-lname">Monitoring & Logging</div>
+        <div class="grv-ldesc">Conversation audit trails, anomaly detection, user feedback loops, drift tracking</div>
+      </div>
+      <div class="grv-when">Continuous</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .grv-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .grv-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .grv-layers{display:flex;flex-direction:column;gap:.6rem}
+  .grv-layer{display:flex;gap:.75rem;align-items:flex-start;background:rgba(0,0,0,.2);border-radius:12px;padding:1rem;border-left:3px solid var(--c);opacity:0;animation:grvSlide .4s ease forwards;animation-delay:calc(var(--i)*.12s)}
+  @keyframes grvSlide{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:translateX(0)}}
+  .grv-licon{font-size:1.3rem;flex-shrink:0;margin-top:.1rem}
+  .grv-linfo{flex:1}
+  .grv-lname{color:var(--c);font-weight:700;font-size:.85rem;margin-bottom:.2rem}
+  .grv-ldesc{color:#94a3b8;font-size:.73rem;line-height:1.4}
+  .grv-when{color:#64748b;font-size:.65rem;background:rgba(255,255,255,.05);padding:.2rem .5rem;border-radius:4px;white-space:nowrap;align-self:center}
+</style>

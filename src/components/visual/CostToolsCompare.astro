@@ -1,0 +1,21 @@
+---
+// CostToolsCompare.astro — Cloud cost management tools
+---
+<div class="ctc-wrap">
+  <h3 class="ctc-title">Cost Management Tools</h3>
+  <div class="ctc-grid">
+    <div class="ctc-card"><span class="ctc-nm">AWS Cost Explorer</span><span class="ctc-price">Free</span><span class="ctc-d">Built-in. Basic but useful. Good for initial visibility. Limited cross-cloud.</span></div>
+    <div class="ctc-card"><span class="ctc-nm">Infracost</span><span class="ctc-price">Free/Paid</span><span class="ctc-d">Cost estimates in PR comments. Know cost impact BEFORE merge. IaC-native.</span></div>
+    <div class="ctc-card"><span class="ctc-nm">Kubecost</span><span class="ctc-price">Free/Paid</span><span class="ctc-d">K8s-native. Per-namespace, per-pod cost allocation. Identifies over-provisioned pods.</span></div>
+    <div class="ctc-card"><span class="ctc-nm">Vantage</span><span class="ctc-price">Paid</span><span class="ctc-d">Multi-cloud cost analytics. Clean dashboards. Auto-detects savings opportunities.</span></div>
+  </div>
+</div>
+<style>
+  .ctc-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .ctc-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .ctc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+  .ctc-card{padding:14px;background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155;display:flex;flex-direction:column;gap:4px;opacity:0;animation:ctcIn .3s ease forwards}
+  .ctc-card:nth-child(1){animation-delay:.1s}.ctc-card:nth-child(2){animation-delay:.15s}.ctc-card:nth-child(3){animation-delay:.2s}.ctc-card:nth-child(4){animation-delay:.25s}
+  @keyframes ctcIn{to{opacity:1}}
+  .ctc-nm{color:#e2e8f0;font-weight:700;font-size:.78rem}.ctc-price{color:#4ade80;font-size:.6rem;font-family:monospace}.ctc-d{color:#94a3b8;font-size:.67rem;line-height:1.5}
+</style>

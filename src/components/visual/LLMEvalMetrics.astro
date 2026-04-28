@@ -1,0 +1,48 @@
+---
+/**
+ * LLMEvalMetrics.astro
+ * Key LLM eval metrics and what they measure
+ */
+---
+
+<div class="lem-wrap">
+  <h3 class="lem-title">LLM Evaluation Metrics</h3>
+  <div class="lem-metrics">
+    <div class="lem-metric" style="--i:0; --color:#818cf8;">
+      <div class="lem-name">Faithfulness</div>
+      <div class="lem-q">Does the answer use only provided context?</div>
+      <div class="lem-how">LLM-as-judge checks each claim against source docs</div>
+    </div>
+    <div class="lem-metric" style="--i:1; --color:#06b6d4;">
+      <div class="lem-name">Relevance</div>
+      <div class="lem-q">Does the answer address the actual question?</div>
+      <div class="lem-how">Semantic similarity between question and answer</div>
+    </div>
+    <div class="lem-metric" style="--i:2; --color:#f59e0b;">
+      <div class="lem-name">Context Precision</div>
+      <div class="lem-q">Are the retrieved chunks relevant to the question?</div>
+      <div class="lem-how">Measures retrieval quality before generation</div>
+    </div>
+    <div class="lem-metric" style="--i:3; --color:#4ade80;">
+      <div class="lem-name">Harmfulness</div>
+      <div class="lem-q">Does the output contain unsafe or biased content?</div>
+      <div class="lem-how">Red-team prompts + toxicity classifiers</div>
+    </div>
+    <div class="lem-metric" style="--i:4; --color:#ef4444;">
+      <div class="lem-name">Latency / Cost</div>
+      <div class="lem-q">Is it fast and cheap enough for production?</div>
+      <div class="lem-how">P50/P99 response time, cost per query</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .lem-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .lem-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.25rem}
+  .lem-metrics{display:flex;flex-direction:column;gap:.75rem}
+  .lem-metric{background:rgba(255,255,255,0.03);border:1px solid var(--color);border-radius:12px;padding:1rem 1.25rem;opacity:0;animation:lemFade .4s ease forwards;animation-delay:calc(var(--i)*.12s)}
+  @keyframes lemFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .lem-name{color:var(--color);font-weight:700;font-size:.95rem;margin-bottom:.15rem}
+  .lem-q{color:#f1f5f9;font-size:.85rem;margin-bottom:.25rem}
+  .lem-how{color:#64748b;font-size:.75rem}
+</style>

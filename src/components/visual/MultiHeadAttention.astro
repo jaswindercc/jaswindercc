@@ -1,0 +1,29 @@
+---
+// MultiHeadAttention.astro — Multi-head attention visualization
+---
+<div class="mha-wrap">
+  <h3 class="mha-title">Multi-Head Attention — Multiple Perspectives</h3>
+  <p class="mha-sub">One attention head looks at one relationship. Multiple heads capture different patterns simultaneously.</p>
+  <div class="mha-heads">
+    <div class="mha-head mha-h1"><span class="mha-hn">Head 1</span><span class="mha-what">Syntactic structure</span><span class="mha-ex">"cat" → "sat" (subject-verb)</span></div>
+    <div class="mha-head mha-h2"><span class="mha-hn">Head 2</span><span class="mha-what">Spatial relationships</span><span class="mha-ex">"cat" → "mat" (on the mat)</span></div>
+    <div class="mha-head mha-h3"><span class="mha-hn">Head 3</span><span class="mha-what">Coreference</span><span class="mha-ex">"it" → "cat" (pronoun resolution)</span></div>
+    <div class="mha-head mha-h4"><span class="mha-hn">Head 4</span><span class="mha-what">Positional proximity</span><span class="mha-ex">"cat" → "The" (adjacent tokens)</span></div>
+  </div>
+  <div class="mha-merge">
+    <span class="mha-ml">All heads concatenated → Linear projection → Combined representation</span>
+  </div>
+  <div class="mha-note">GPT-4 has 96+ attention heads per layer, 120+ layers. That's 11,000+ attention patterns processing every token. Each head specializes in different linguistic relationships through training.</div>
+</div>
+<style>
+  .mha-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .mha-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.mha-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem}
+  .mha-heads{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:1rem}
+  .mha-head{padding:12px;background:rgba(0,0,0,.2);border-radius:10px;border:1px solid #334155;display:flex;flex-direction:column;gap:3px;opacity:0;animation:mhaIn .4s ease forwards}
+  .mha-h1{animation-delay:.1s;border-top:2px solid #f59e0b}.mha-h2{animation-delay:.2s;border-top:2px solid #06b6d4}.mha-h3{animation-delay:.3s;border-top:2px solid #818cf8}.mha-h4{animation-delay:.4s;border-top:2px solid #4ade80}
+  @keyframes mhaIn{to{opacity:1}}
+  .mha-hn{color:#e2e8f0;font-size:.7rem;font-weight:700;font-family:monospace}.mha-what{color:#94a3b8;font-size:.68rem;font-weight:600}.mha-ex{color:#64748b;font-size:.6rem;font-family:monospace;font-style:italic}
+  .mha-merge{text-align:center;margin-bottom:1rem}
+  .mha-ml{color:#4ade80;font-size:.68rem;font-family:monospace;padding:6px 12px;background:rgba(74,222,128,.05);border-radius:6px;border:1px solid #4ade8020;display:inline-block}
+  .mha-note{color:#94a3b8;font-size:.7rem;line-height:1.6;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border:1px solid #334155}
+</style>

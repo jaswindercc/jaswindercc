@@ -1,0 +1,190 @@
+---
+// DebugMaze.astro — Pure CSS visual showing the complexity of debugging non-linear agent loops
+// Contrasts linear pipeline debugging vs non-linear loop debugging
+---
+
+<div class="dm-wrap">
+  <h3 class="dm-title">Debugging a Loop ≠ Debugging a Pipeline</h3>
+  <p class="dm-sub">In a pipeline, you read top-to-bottom. In a loop, the bug could be on iteration 7 of 12 — and it depends on what happened in iteration 3.</p>
+
+  <div class="dm-grid">
+    <!-- Pipeline (easy) -->
+    <div class="dm-side">
+      <div class="dm-badge dm-badge--green">PIPELINE</div>
+      <div class="dm-desc">Linear. Predictable. One path to trace.</div>
+      <div class="dm-path">
+        <div class="dm-node dm-node--green">Input</div>
+        <div class="dm-edge">→</div>
+        <div class="dm-node dm-node--green">Step A</div>
+        <div class="dm-edge">→</div>
+        <div class="dm-node dm-node--green">Step B</div>
+        <div class="dm-edge">→</div>
+        <div class="dm-node dm-node--green">Step C</div>
+        <div class="dm-edge">→</div>
+        <div class="dm-node dm-node--green">Output</div>
+      </div>
+      <div class="dm-verdict dm-verdict--green">
+        Bug in output? Start at C, walk backwards. Done.
+      </div>
+    </div>
+
+    <!-- Loop (hard) -->
+    <div class="dm-side dm-side--complex">
+      <div class="dm-badge dm-badge--red">AGENT LOOP</div>
+      <div class="dm-desc">Non-linear. State-dependent. Path changes every run.</div>
+
+      <div class="dm-loop-viz">
+        <svg viewBox="0 0 300 200" class="dm-loop-svg" aria-label="Non-linear debugging paths through an agent loop">
+          <!-- Background grid -->
+          <defs>
+            <pattern id="debugGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="300" height="200" fill="url(#debugGrid)"/>
+
+          <!-- Loop box -->
+          <rect x="60" y="30" width="180" height="140" rx="10" fill="none" stroke="#334155" stroke-width="1" stroke-dasharray="5 3"/>
+          <text x="150" y="22" text-anchor="middle" font-size="7" fill="#64748b" font-family="monospace">LOOP BOUNDARY</text>
+
+          <!-- Nodes -->
+          <circle cx="30" cy="100" r="14" fill="#1e1e2e" stroke="#4ade80" stroke-width="1.5"/>
+          <text x="30" y="103" text-anchor="middle" font-size="6" fill="#4ade80" font-family="monospace">IN</text>
+
+          <circle cx="100" cy="60" r="14" fill="#1e1e2e" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="100" y="63" text-anchor="middle" font-size="6" fill="#f59e0b" font-family="monospace">PLAN</text>
+
+          <circle cx="190" cy="60" r="14" fill="#1e1e2e" stroke="#06b6d4" stroke-width="1.5"/>
+          <text x="190" y="63" text-anchor="middle" font-size="6" fill="#06b6d4" font-family="monospace">ACT</text>
+
+          <circle cx="190" cy="140" r="14" fill="#1e1e2e" stroke="#818cf8" stroke-width="1.5"/>
+          <text x="190" y="143" text-anchor="middle" font-size="6" fill="#818cf8" font-family="monospace">OBS</text>
+
+          <circle cx="100" cy="140" r="14" fill="#1e1e2e" stroke="#ef4444" stroke-width="1.5"/>
+          <text x="100" y="143" text-anchor="middle" font-size="6" fill="#ef4444" font-family="monospace">REF</text>
+
+          <circle cx="270" cy="100" r="14" fill="#1e1e2e" stroke="#4ade80" stroke-width="1.5"/>
+          <text x="270" y="103" text-anchor="middle" font-size="6" fill="#4ade80" font-family="monospace">OUT</text>
+
+          <!-- Happy path (green, solid) -->
+          <path d="M44 100 L86 65" stroke="#4ade8060" stroke-width="1.5" fill="none"/>
+          <path d="M114 60 L176 60" stroke="#4ade8060" stroke-width="1.5" fill="none"/>
+          <path d="M190 74 L190 126" stroke="#4ade8060" stroke-width="1.5" fill="none"/>
+          <path d="M204 140 L256 105" stroke="#4ade8060" stroke-width="1.5" fill="none"/>
+
+          <!-- Loop-back path (amber, dashed) -->
+          <path d="M176 140 L114 140" stroke="#f59e0b80" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+          <path d="M100 126 L100 74" stroke="#f59e0b80" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+
+          <!-- Error path (red, dotted) -->
+          <path d="M190 74 L150 100 L100 126" stroke="#ef444460" stroke-width="1.5" fill="none" stroke-dasharray="2 3"/>
+          <path d="M100 126 L80 100 L100 74" stroke="#ef444460" stroke-width="1" fill="none" stroke-dasharray="2 3"/>
+
+          <!-- Orbiting debug cursor -->
+          <circle r="5" fill="#f59e0b" opacity="0.8">
+            <animateMotion dur="5s" repeatCount="indefinite">
+              <mpath href="#debugPath"/>
+            </animateMotion>
+            <animate attributeName="fill" values="#4ade80;#f59e0b;#06b6d4;#818cf8;#ef4444;#f59e0b" dur="5s" repeatCount="indefinite"/>
+          </circle>
+          <path id="debugPath" d="M30 100 L100 60 L190 60 L190 140 L100 140 L100 60 L190 60 L190 140 L270 100" fill="none" stroke="none"/>
+
+          <!-- Labels for paths -->
+          <text x="150" y="52" text-anchor="middle" font-size="5" fill="#4ade80" opacity="0.6" font-family="monospace">happy path</text>
+          <text x="138" y="155" text-anchor="middle" font-size="5" fill="#f59e0b" opacity="0.6" font-family="monospace">loop back</text>
+          <text x="128" y="105" text-anchor="middle" font-size="5" fill="#ef4444" opacity="0.6" font-family="monospace">error jump</text>
+        </svg>
+      </div>
+
+      <div class="dm-verdict dm-verdict--red">
+        Bug in output? Which iteration? Which path did it take? Was the state from iteration 3 corrupted?
+      </div>
+    </div>
+  </div>
+
+  <!-- The hard questions -->
+  <div class="dm-questions">
+    <div class="dm-q-title">The Questions That Keep You Up at Night</div>
+    <div class="dm-q-grid">
+      <div class="dm-q">
+        <span class="dm-q-icon">🔄</span>
+        <span>"The output was wrong, but the agent <strong>thought</strong> it was right. Which iteration corrupted the state?"</span>
+      </div>
+      <div class="dm-q">
+        <span class="dm-q-icon">🎲</span>
+        <span>"It works 90% of the time. The other 10%, it takes a different path through the loop. <strong>Why?</strong>"</span>
+      </div>
+      <div class="dm-q">
+        <span class="dm-q-icon">📈</span>
+        <span>"We can't reproduce it. The LLM's temperature means <strong>every run is slightly different.</strong>"</span>
+      </div>
+      <div class="dm-q">
+        <span class="dm-q-icon">🪵</span>
+        <span>"We have logs, but they're 400 lines of JSON. <strong>Which 5 lines matter?</strong>"</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .dm-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .dm-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .dm-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .dm-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 1rem; margin-bottom: 1.5rem; }
+  @media (max-width: 700px) { .dm-grid { grid-template-columns: 1fr; } }
+
+  .dm-side {
+    background: rgba(0,0,0,0.2); border-radius: 12px; padding: 14px; border: 1px solid #334155;
+  }
+  .dm-side--complex:hover { border-color: #ef444430; }
+
+  .dm-badge {
+    font-family: monospace; font-size: 0.6rem; font-weight: 700; letter-spacing: 1.5px;
+    padding: 3px 10px; border-radius: 6px; display: inline-block; margin-bottom: 8px;
+  }
+  .dm-badge--green { background: rgba(74,222,128,0.12); color: #4ade80; }
+  .dm-badge--red { background: rgba(239,68,68,0.12); color: #f87171; }
+
+  .dm-desc { font-family: monospace; font-size: 0.7rem; color: #94a3b8; margin-bottom: 12px; }
+
+  /* Pipeline path */
+  .dm-path { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; margin-bottom: 10px; }
+  .dm-node {
+    font-family: monospace; font-size: 0.6rem; padding: 6px 10px; border-radius: 6px;
+    border: 1px solid #334155; background: rgba(0,0,0,0.2); white-space: nowrap;
+  }
+  .dm-node--green { border-color: #4ade8030; color: #4ade80; }
+  .dm-edge { color: #4ade8060; font-size: 0.7rem; }
+
+  .dm-verdict {
+    font-family: monospace; font-size: 0.65rem; padding: 8px 12px; border-radius: 8px;
+    line-height: 1.5; text-align: center;
+  }
+  .dm-verdict--green { background: rgba(74,222,128,0.06); color: #4ade80; border: 1px solid rgba(74,222,128,0.15); }
+  .dm-verdict--red { background: rgba(239,68,68,0.06); color: #f87171; border: 1px solid rgba(239,68,68,0.15); }
+
+  .dm-loop-viz { margin-bottom: 10px; }
+  .dm-loop-svg { width: 100%; max-width: 360px; height: auto; display: block; margin: 0 auto; }
+
+  /* Questions */
+  .dm-questions {
+    background: rgba(0,0,0,0.2); border-radius: 12px; padding: 14px; border: 1px solid #334155;
+  }
+  .dm-q-title { font-family: monospace; font-size: 0.7rem; color: #94a3b8; font-weight: 700; margin-bottom: 10px; }
+  .dm-q-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (max-width: 600px) { .dm-q-grid { grid-template-columns: 1fr; } }
+
+  .dm-q {
+    display: flex; align-items: flex-start; gap: 8px;
+    font-size: 0.7rem; color: #94a3b8; line-height: 1.5;
+    padding: 10px; border-radius: 8px; border: 1px solid #334155;
+    background: rgba(0,0,0,0.15); transition: border-color 0.3s;
+  }
+  .dm-q:hover { border-color: #f59e0b30; }
+  .dm-q strong { color: #f59e0b; }
+  .dm-q-icon { font-size: 0.9rem; flex-shrink: 0; }
+</style>

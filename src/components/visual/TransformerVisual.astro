@@ -1,0 +1,61 @@
+---
+/**
+ * TransformerVisual.astro
+ * Transformer architecture walkthrough
+ */
+---
+
+<div class="tfv-wrap">
+  <h3 class="tfv-title">Transformer Architecture</h3>
+  <div class="tfv-arch">
+    <div class="tfv-block" style="--i:0;--c:#818cf8;">
+      <div class="tfv-bname">Input Embedding</div>
+      <div class="tfv-bdesc">Tokens → Vectors + Positional Encoding</div>
+    </div>
+    <div class="tfv-conn" style="--i:1;">↓</div>
+    <div class="tfv-block tfv-attn" style="--i:2;--c:#f59e0b;">
+      <div class="tfv-bname">Multi-Head Self-Attention</div>
+      <div class="tfv-bdesc">Each token attends to all other tokens</div>
+      <div class="tfv-qkv">
+        <span class="tfv-q">Q</span>
+        <span class="tfv-k">K</span>
+        <span class="tfv-v">V</span>
+      </div>
+      <div class="tfv-formula">Attention(Q,K,V) = softmax(QK<sup>T</sup>/√d)V</div>
+    </div>
+    <div class="tfv-conn" style="--i:3;">↓ + residual</div>
+    <div class="tfv-block" style="--i:4;--c:#06b6d4;">
+      <div class="tfv-bname">Layer Normalization</div>
+      <div class="tfv-bdesc">Normalize activations for stable training</div>
+    </div>
+    <div class="tfv-conn" style="--i:5;">↓</div>
+    <div class="tfv-block" style="--i:6;--c:#4ade80;">
+      <div class="tfv-bname">Feed-Forward Network</div>
+      <div class="tfv-bdesc">Two linear layers with GeLU activation. Per-position processing.</div>
+    </div>
+    <div class="tfv-conn" style="--i:7;">↓ + residual</div>
+    <div class="tfv-block" style="--i:8;--c:#ef4444;">
+      <div class="tfv-bname">Output Projection</div>
+      <div class="tfv-bdesc">Vectors → Vocabulary logits → Token probabilities</div>
+    </div>
+  </div>
+  <div class="tfv-note">× N layers (GPT-4: ~120 layers, Llama 3 8B: 32 layers)</div>
+</div>
+
+<style>
+  .tfv-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .tfv-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .tfv-arch{display:flex;flex-direction:column;align-items:center;gap:0}
+  .tfv-block{background:rgba(0,0,0,.2);border:1px solid var(--c);border-radius:10px;padding:.7rem 1.2rem;width:100%;max-width:380px;text-align:center;opacity:0;animation:tfvDrop .35s ease forwards;animation-delay:calc(var(--i)*.1s)}
+  @keyframes tfvDrop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+  .tfv-conn{color:#475569;font-size:.65rem;padding:.15rem 0;opacity:0;animation:tfvDrop .3s ease forwards;animation-delay:calc(var(--i)*.1s)}
+  .tfv-bname{color:var(--c);font-weight:700;font-size:.82rem;margin-bottom:.15rem}
+  .tfv-bdesc{color:#94a3b8;font-size:.7rem}
+  .tfv-qkv{display:flex;gap:.5rem;justify-content:center;margin:.4rem 0}
+  .tfv-q,.tfv-k,.tfv-v{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.75rem}
+  .tfv-q{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid #ef4444}
+  .tfv-k{background:rgba(74,222,128,.15);color:#4ade80;border:1px solid #4ade80}
+  .tfv-v{background:rgba(6,182,212,.15);color:#06b6d4;border:1px solid #06b6d4}
+  .tfv-formula{color:#64748b;font-size:.62rem;font-family:monospace;margin-top:.2rem}
+  .tfv-note{color:#64748b;font-size:.68rem;text-align:center;margin-top:.8rem;font-style:italic}
+</style>

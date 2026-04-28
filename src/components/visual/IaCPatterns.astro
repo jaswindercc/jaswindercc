@@ -1,0 +1,127 @@
+---
+/**
+ * IaCPatterns.astro
+ * Visual showing IaC patterns: modular, monolith, layered
+ * Pure CSS, dark theme
+ */
+---
+
+<div class="iacp-wrap">
+  <h3 class="iacp-title">IaC Repository Patterns</h3>
+  
+  <div class="iacp-grid">
+    <div class="iacp-card" style="--i:0; --color:#ef4444;">
+      <div class="iacp-badge">Avoid</div>
+      <div class="iacp-name">Monolith</div>
+      <div class="iacp-desc">One giant config for everything</div>
+      <div class="iacp-tree">
+        <div class="iacp-line">infra/</div>
+        <div class="iacp-line iacp-indent">main.tf (3000 lines)</div>
+        <div class="iacp-line iacp-indent">variables.tf (800 lines)</div>
+      </div>
+      <div class="iacp-verdict">Blast radius = everything</div>
+    </div>
+    
+    <div class="iacp-card" style="--i:1; --color:#f59e0b;">
+      <div class="iacp-badge">Better</div>
+      <div class="iacp-name">Layered</div>
+      <div class="iacp-desc">Separated by lifecycle stage</div>
+      <div class="iacp-tree">
+        <div class="iacp-line">networking/</div>
+        <div class="iacp-line">compute/</div>
+        <div class="iacp-line">database/</div>
+        <div class="iacp-line">monitoring/</div>
+      </div>
+      <div class="iacp-verdict">Change DB without touching network</div>
+    </div>
+    
+    <div class="iacp-card" style="--i:2; --color:#4ade80;">
+      <div class="iacp-badge">Best</div>
+      <div class="iacp-name">Modular + Composition</div>
+      <div class="iacp-desc">Reusable modules, env-specific configs</div>
+      <div class="iacp-tree">
+        <div class="iacp-line">modules/vpc/</div>
+        <div class="iacp-line">modules/eks-cluster/</div>
+        <div class="iacp-line">envs/prod/</div>
+        <div class="iacp-line">envs/staging/</div>
+      </div>
+      <div class="iacp-verdict">DRY, testable, safe</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .iacp-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+  .iacp-title {
+    color: #f1f5f9;
+    text-align: center;
+    font-size: 1.25rem;
+    margin: 0 0 1.5rem;
+  }
+  .iacp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  @media (max-width: 700px) {
+    .iacp-grid { grid-template-columns: 1fr; }
+  }
+  .iacp-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--color);
+    border-radius: 12px;
+    padding: 1.25rem;
+    opacity: 0;
+    animation: iacpFade 0.5s ease forwards;
+    animation-delay: calc(var(--i) * 0.15s);
+  }
+  @keyframes iacpFade {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .iacp-badge {
+    background: var(--color);
+    color: #0f172a;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+  .iacp-name {
+    color: #f1f5f9;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+  .iacp-desc {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+  }
+  .iacp-tree {
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-family: monospace;
+  }
+  .iacp-line {
+    color: #06b6d4;
+    font-size: 0.75rem;
+    line-height: 1.6;
+  }
+  .iacp-indent { padding-left: 1rem; color: #94a3b8; }
+  .iacp-verdict {
+    color: var(--color);
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+</style>

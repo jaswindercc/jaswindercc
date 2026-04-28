@@ -1,0 +1,43 @@
+---
+title: "Cloud Region Strategy — Where You Deploy Changes Everything"
+description: "How to choose cloud regions for latency, compliance, cost, and resilience. A practical framework for multi-region architecture decisions that balance performance with operational complexity."
+date: 2026-05-17
+---
+
+import RegionStrategyVisual from '../../components/visual/RegionStrategyVisual.astro';
+
+Picking a cloud region feels like a simple decision until you realize it affects latency, compliance, cost, disaster recovery, and which services you can actually use. Most teams pick us-east-1 because it was the default and never revisit the decision. Then they wonder why their Australian users complain about 300ms API responses.
+
+## The Decision Framework
+
+Region selection isn't a single variable optimization. You're balancing competing priorities that change as your business grows. A startup serving US customers has different needs than an enterprise with global users subject to GDPR.
+
+<RegionStrategyVisual />
+
+Start with your users. If 80% of your traffic comes from Western Europe, your primary region should be in Europe — regardless of where your office is. Developer convenience is not a valid reason to add 100ms to every user request. Use analytics to map your traffic distribution before choosing regions.
+
+## Latency Math
+
+Light travels through fiber at roughly two-thirds the speed of light in vacuum. That gives you about 5-6 milliseconds per 1000 kilometers of cable distance. US-East to EU-West is approximately 5500km, so the physics floor is around 30ms one-way. Real-world latency adds routing overhead, putting typical RTT at 75-90ms.
+
+For synchronous API calls, that latency multiplies by every dependent service call. If your EU user hits your US API, which calls a US database, which calls a US cache miss, you're stacking 80ms round trips. Three sequential calls and you've burned 240ms before your application code even runs. This is why edge computing and regional deployment matter.
+
+## Compliance Constraints
+
+Data residency laws override all other considerations. GDPR doesn't just prefer EU hosting — it restricts certain data transfers outside the EU unless you have adequate safeguards. Brazil's LGPD, India's DPDP Act, and China's PIPL all have similar provisions. If you serve users in these jurisdictions, you may need regional deployments regardless of cost or complexity.
+
+The practical approach is to keep personally identifiable information in-region while allowing non-sensitive data (static assets, anonymized analytics) to replicate globally. This minimizes the compliance surface area without requiring every service to be deployed in every region.
+
+## Cost Implications
+
+The same EC2 instance can cost 50% more in São Paulo than in Virginia. Data transfer between regions adds up fast — $0.02 per GB between AWS regions. If your services are chatty across regions, the bandwidth bill alone can exceed compute costs.
+
+Smart region strategy minimizes cross-region data transfer. Keep tightly coupled services in the same region. Use CDNs for static content instead of deploying application servers globally. Cache aggressively at the edge. The goal is to serve most requests from a single region while using edge layers for global reach.
+
+## Multi-Region Architecture Patterns
+
+Active-passive is the simplest multi-region pattern. One region handles all traffic while a second region maintains a warm standby. Failover is manual or automated but always involves DNS changes and some downtime. This is appropriate for applications with RTO targets measured in minutes.
+
+Active-active is harder. Both regions serve traffic simultaneously. You need to solve data consistency — either through synchronous replication (adds latency) or eventual consistency (adds complexity). Global databases like CockroachDB or Spanner handle this at the infrastructure level, but they cost more and require specialized operational knowledge.
+
+The pattern most teams should start with: single primary region with CDN for global static content, regional read replicas for database-heavy reads, and a documented failover runbook for disaster recovery. Add active-active when your availability requirements justify the engineering investment.

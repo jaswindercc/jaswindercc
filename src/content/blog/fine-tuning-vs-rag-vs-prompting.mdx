@@ -1,0 +1,69 @@
+---
+title: Fine-Tuning vs RAG vs Prompt Engineering — When to Use What
+description: Stop debating. Use this visual decision tree, side-by-side comparison, and cost analysis to pick the right approach for your LLM use case — or combine them.
+date: 2026-05-08
+---
+
+import MethodDecisionTree from '../../components/visual/MethodDecisionTree.astro';
+import MethodComparison from '../../components/visual/MethodComparison.astro';
+import CostLatencyChart from '../../components/visual/CostLatencyChart.astro';
+import MethodTimeline from '../../components/visual/MethodTimeline.astro';
+import MethodTradeoffs from '../../components/visual/MethodTradeoffs.astro';
+
+# Fine-Tuning vs RAG vs Prompt Engineering — When to Use What
+
+**The answer is almost never "fine-tune."**
+
+Every team building with LLMs hits the same fork: should we engineer better prompts, set up RAG, or fine-tune a model? The internet says "it depends." This guide shows you exactly what it depends on — with visuals, numbers, and a decision tree you can follow right now.
+
+---
+
+## 1. The Decision Tree: Follow the Questions
+
+Don't overthink this. Answer three questions about your problem and the tree tells you where to start. Most teams land on prompt engineering or RAG. Fine-tuning is the last resort, not the default.
+
+<MethodDecisionTree />
+
+If you're not sure, **start with prompt engineering**. It's free, it's fast, and it gives you baseline metrics to compare everything else against. You can always go further later.
+
+---
+
+## 2. Side by Side: Every Metric That Matters
+
+Here's the comparison nobody shows you. Not just "RAG is good for knowledge" — but actual setup time, cost, latency impact, and hallucination control across all three methods.
+
+<MethodComparison />
+
+Notice the pattern: prompt engineering wins on speed and cost. RAG wins on knowledge and hallucination control. Fine-tuning wins on domain accuracy — but at 10x the cost and complexity.
+
+---
+
+## 3. The Numbers: Cost, Latency, Accuracy
+
+Three charts. Three trade-offs. No method wins all three. The question isn't "which is best?" — it's "which trade-off can you live with?"
+
+<CostLatencyChart />
+
+Fine-tuning gets the highest accuracy but at the highest cost. RAG adds latency but crushes hallucinations. Prompt engineering is fast and free but plateaus on domain tasks. **Pick the constraint that matters least to your users.**
+
+---
+
+## 4. The Progression: How Every Team Actually Does It
+
+Nobody starts with fine-tuning. Every successful AI team follows the same path: start simple, measure, then add complexity only when you hit a wall.
+
+<MethodTimeline />
+
+Week 1 is always prompt engineering. If that gets you to 80% accuracy, you might never need RAG. If it gets you to 60%, RAG will probably close the gap. Fine-tuning is for the teams that need 95%+ and have the data to prove it.
+
+---
+
+## 5. The Real Answer: Combine Them
+
+In production, most systems use two or three approaches together. RAG provides the knowledge. Prompts provide the format. Fine-tuning provides the behavior. They're not competitors — they're layers.
+
+<MethodTradeoffs />
+
+The winning formula for most teams: **prompt engineering + RAG**. It covers 80% of use cases at a fraction of the cost. Add fine-tuning later, only if you have 1,000+ examples and a measurable accuracy gap.
+
+---

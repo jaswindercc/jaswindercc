@@ -1,0 +1,35 @@
+---
+// ContextWindowMap.astro — Context window sizes across models
+---
+<div class="cwm-wrap">
+  <h3 class="cwm-title">Context Window Sizes — 2024-2026</h3>
+  <div class="cwm-chart">
+    <div class="cwm-row cwm-r1"><span class="cwm-model">GPT-3 (2020)</span><div class="cwm-bar-wrap"><div class="cwm-bar" style="--w:2%"></div></div><span class="cwm-size">4K tokens</span></div>
+    <div class="cwm-row cwm-r2"><span class="cwm-model">GPT-4 (2023)</span><div class="cwm-bar-wrap"><div class="cwm-bar cwm-bar--amber" style="--w:6%"></div></div><span class="cwm-size">8K / 32K</span></div>
+    <div class="cwm-row cwm-r3"><span class="cwm-model">Claude 3 (2024)</span><div class="cwm-bar-wrap"><div class="cwm-bar cwm-bar--cyan" style="--w:50%"></div></div><span class="cwm-size">200K tokens</span></div>
+    <div class="cwm-row cwm-r4"><span class="cwm-model">Gemini 1.5 (2024)</span><div class="cwm-bar-wrap"><div class="cwm-bar cwm-bar--green" style="--w:75%"></div></div><span class="cwm-size">1M tokens</span></div>
+    <div class="cwm-row cwm-r5"><span class="cwm-model">Gemini 2.0 (2025)</span><div class="cwm-bar-wrap"><div class="cwm-bar cwm-bar--purple" style="--w:100%"></div></div><span class="cwm-size">2M tokens</span></div>
+  </div>
+  <div class="cwm-context">
+    <span class="cwm-cl">What fits in 200K tokens?</span>
+    <div class="cwm-fits"><span class="cwm-fit">~500 pages of text</span><span class="cwm-fit">~150K lines of code</span><span class="cwm-fit">an entire codebase</span><span class="cwm-fit">3 full novels</span></div>
+  </div>
+</div>
+<style>
+  .cwm-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .cwm-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .cwm-chart{display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem}
+  .cwm-row{display:flex;align-items:center;gap:10px;opacity:0;animation:cwmIn .4s ease forwards}
+  .cwm-r1{animation-delay:.1s}.cwm-r2{animation-delay:.2s}.cwm-r3{animation-delay:.3s}.cwm-r4{animation-delay:.4s}.cwm-r5{animation-delay:.5s}
+  @keyframes cwmIn{to{opacity:1}}
+  .cwm-model{color:#94a3b8;font-size:.7rem;font-family:monospace;min-width:120px}
+  .cwm-bar-wrap{flex:1;height:12px;background:rgba(0,0,0,.3);border-radius:8px;overflow:hidden}
+  .cwm-bar{height:100%;border-radius:8px;background:#f87171;width:0;animation:cwmBar 1.2s ease forwards}
+  .cwm-bar--amber{background:#f59e0b}.cwm-bar--cyan{background:#06b6d4}.cwm-bar--green{background:#4ade80}.cwm-bar--purple{background:#818cf8}
+  @keyframes cwmBar{to{width:var(--w)}}
+  .cwm-size{color:#e2e8f0;font-size:.65rem;font-family:monospace;font-weight:600;min-width:80px;text-align:right}
+  .cwm-context{background:rgba(0,0,0,.2);border-radius:10px;padding:12px 14px;border:1px solid #334155}
+  .cwm-cl{color:#06b6d4;font-size:.72rem;font-weight:700;display:block;margin-bottom:6px}
+  .cwm-fits{display:flex;flex-wrap:wrap;gap:6px}
+  .cwm-fit{padding:3px 8px;background:rgba(6,182,212,.08);border:1px solid #06b6d420;border-radius:4px;color:#94a3b8;font-size:.62rem;font-family:monospace}
+</style>

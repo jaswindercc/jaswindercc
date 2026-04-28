@@ -1,0 +1,92 @@
+---
+title: What I Learned Putting an Agentic Loop Into Production
+description: A transparent look at the hidden problems of production AI agents — latency spikes, runaway costs, non-linear debugging — with animated trace views and interactive code examples.
+date: 2026-04-28
+---
+
+import TraceViewError from '../../components/visual/TraceViewError.astro';
+import LatencySpikes from '../../components/visual/LatencySpikes.astro';
+import CostRunaway from '../../components/visual/CostRunaway.astro';
+import DebugMaze from '../../components/visual/DebugMaze.astro';
+import ProductionLessons from '../../components/visual/ProductionLessons.astro';
+
+# What I Learned Putting an Agentic Loop Into Production
+
+**The demo worked great. Production was a different story.**
+
+Everyone shows the happy path — the agent reasons, takes action, delivers the answer. Nobody talks about the 3am page when your agent loop burns through $47 in tokens because it forgot to stop. Or the latency spike that turned a 2-second response into a 14-second loading screen.
+
+This is the post I wish I'd read before deploying. Every problem is real. Every visual is interactive. Scroll through and learn from my mistakes.
+
+---
+
+## 1. The Error Recovery Trace — Watch It Happen
+
+Before we talk about problems, let's see what a production agent trace *actually looks like* when something goes wrong. This isn't a diagram from a textbook — it's modeled after a real incident.
+
+<TraceViewError />
+
+That trace tells you something important: in production, **error handling *is* the product**. The happy path is table stakes. What matters is what your agent does when a tool fails, an API times out, or the data isn't what it expected.
+
+The agent in this trace didn't blindly retry. It reasoned about the failure, picked a cheaper fallback, and logged why it made that choice. That's the difference between a demo and a system you can actually trust.
+
+---
+
+## 2. The Latency Trap — Death by a Thousand Milliseconds
+
+In a regular API, latency is straightforward: request in, response out. In a loop, every millisecond compounds. Your agent calls an LLM to think, then a tool to act, then the LLM again to evaluate — and that's just *one* iteration.
+
+<LatencySpikes />
+
+Here's what surprised me: the LLM calls were the biggest bottleneck — not the tools. Each "thinking" step was 500–900ms. Multiply that by 3 iterations and you're already at several seconds before any tool even runs.
+
+**The real lesson:** Profile your agent like you'd profile a database query. Know where the time goes. Set per-tool timeouts. Parallelize tool calls within each iteration. And if your agent needs more than 5 loops, something is wrong with the prompt — not the system.
+
+---
+
+## 3. The Cost Spiral — When Your Agent Forgot to Stop
+
+This one hurt. It was a Saturday night. The agent was supposed to process customer complaints in batches. Instead, it entered an infinite reasoning loop: each iteration appended its full output to the context window, which made the next iteration more expensive, which produced more output...
+
+<CostRunaway />
+
+The scariest part? The agent *thought it was helping*. Each loop, it honestly concluded there was "more work to do." Why? Because the context window was so bloated that the LLM couldn't parse it correctly — so the "am I done?" check always returned false.
+
+**Three rules I follow now:**
+1. Hard cap on iterations (8 max for any single task)
+2. Sliding context window (keep last 2 iterations, summarize the rest)
+3. Per-run budget with auto-halt ($0.50 default, configurable per use case)
+
+---
+
+## 4. The Debugging Problem — This Isn't a Pipeline Anymore
+
+In a traditional pipeline, debugging is linear: if step 5 is wrong, you check step 4. In an agent loop, the execution path is different every run. The bug might only appear when the agent takes a specific sequence of actions across multiple iterations — a sequence that depends on the LLM's temperature setting.
+
+<DebugMaze />
+
+I spent two entire days debugging an issue where the agent produced correct results 90% of the time but subtly wrong results the other 10%. The root cause? On certain inputs, the OBSERVE step would partially succeed, causing the REFINE step to keep the wrong context, which compounded over the next 3 iterations.
+
+A stack trace doesn't save you here. You need **structured decision logs** that capture the agent's reasoning at every step — not just what it did, but *what it expected to happen* and *whether reality matched*.
+
+---
+
+## 5. The Production Survival Checklist
+
+Everything above boils down to five things I now do on every single agent deployment. Click each one — there's a real story and actual code behind it.
+
+<ProductionLessons />
+
+---
+
+## The Honest Summary
+
+Agentic loops are powerful. They can handle complex, multi-step problems that no single API call can solve. But they're also **non-deterministic, expensive when misconfigured, and hard to debug**.
+
+Here's what I'd tell anyone deploying one for the first time:
+
+- **Start with 3 iterations max.** Increase only when you can prove the extra loops improve quality.
+- **Budget every run.** Token costs compound faster than you think.
+- **Log the reasoning, not just the actions.** When something breaks at 2am, you need to know *why the agent thought it was right*.
+- **Build the kill switch on day one.** Not day two. Not "when we need it." Day one.
+- **Accept non-determinism.** Same input, different paths. Your tests need to account for this.

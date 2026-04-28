@@ -1,0 +1,164 @@
+---
+// RAGPipeline.astro — Animated 6-step RAG pipeline flow
+---
+
+<div class="rp-wrap">
+  <h3 class="rp-title">The RAG Pipeline — 6 Steps, Animated</h3>
+  <p class="rp-sub">Follow the data from question to answer. Each step lights up in sequence.</p>
+
+  <div class="rp-flow">
+    <div class="rp-step rp-step--1">
+      <div class="rp-icon rp-icon--amber">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <div class="rp-num">01</div>
+      <div class="rp-label">Query</div>
+      <div class="rp-desc">User asks a question in natural language</div>
+    </div>
+
+    <div class="rp-arrow rp-arrow--1">
+      <svg viewBox="0 0 40 12"><path d="M0 6h32M28 1l6 5-6 5" fill="none" stroke="#475569" stroke-width="1.5" class="rp-arrow-path"/></svg>
+    </div>
+
+    <div class="rp-step rp-step--2">
+      <div class="rp-icon rp-icon--cyan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+      </div>
+      <div class="rp-num">02</div>
+      <div class="rp-label">Embed</div>
+      <div class="rp-desc">Convert query into a vector embedding</div>
+    </div>
+
+    <div class="rp-arrow rp-arrow--2">
+      <svg viewBox="0 0 40 12"><path d="M0 6h32M28 1l6 5-6 5" fill="none" stroke="#475569" stroke-width="1.5" class="rp-arrow-path"/></svg>
+    </div>
+
+    <div class="rp-step rp-step--3">
+      <div class="rp-icon rp-icon--purple">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>
+      </div>
+      <div class="rp-num">03</div>
+      <div class="rp-label">Retrieve</div>
+      <div class="rp-desc">Search vector DB for top-k similar chunks</div>
+    </div>
+
+    <div class="rp-arrow rp-arrow--3">
+      <svg viewBox="0 0 40 12"><path d="M0 6h32M28 1l6 5-6 5" fill="none" stroke="#475569" stroke-width="1.5" class="rp-arrow-path"/></svg>
+    </div>
+
+    <div class="rp-step rp-step--4">
+      <div class="rp-icon rp-icon--green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+      </div>
+      <div class="rp-num">04</div>
+      <div class="rp-label">Rank</div>
+      <div class="rp-desc">Re-rank results by relevance score</div>
+    </div>
+
+    <div class="rp-arrow rp-arrow--4">
+      <svg viewBox="0 0 40 12"><path d="M0 6h32M28 1l6 5-6 5" fill="none" stroke="#475569" stroke-width="1.5" class="rp-arrow-path"/></svg>
+    </div>
+
+    <div class="rp-step rp-step--5">
+      <div class="rp-icon rp-icon--rose">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      </div>
+      <div class="rp-num">05</div>
+      <div class="rp-label">Augment</div>
+      <div class="rp-desc">Inject retrieved context into the prompt</div>
+    </div>
+
+    <div class="rp-arrow rp-arrow--5">
+      <svg viewBox="0 0 40 12"><path d="M0 6h32M28 1l6 5-6 5" fill="none" stroke="#475569" stroke-width="1.5" class="rp-arrow-path"/></svg>
+    </div>
+
+    <div class="rp-step rp-step--6">
+      <div class="rp-icon rp-icon--amber2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="rp-num">06</div>
+      <div class="rp-label">Generate</div>
+      <div class="rp-desc">LLM produces grounded answer with citations</div>
+    </div>
+  </div>
+
+  <div class="rp-pulse-bar">
+    <div class="rp-pulse"></div>
+  </div>
+</div>
+
+<style>
+  .rp-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+    overflow-x: auto;
+  }
+  .rp-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .rp-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .rp-flow {
+    display: flex; align-items: center; gap: 0; min-width: 900px; padding: 8px 0;
+  }
+
+  .rp-step {
+    flex: 0 0 auto; text-align: center; padding: 12px 8px; border-radius: 12px;
+    border: 1px solid transparent; transition: all 0.3s; min-width: 100px;
+    animation: stepFadeIn 0.5s ease-out both;
+  }
+  .rp-step--1 { animation-delay: 0.1s; }
+  .rp-step--2 { animation-delay: 0.4s; }
+  .rp-step--3 { animation-delay: 0.7s; }
+  .rp-step--4 { animation-delay: 1.0s; }
+  .rp-step--5 { animation-delay: 1.3s; }
+  .rp-step--6 { animation-delay: 1.6s; }
+
+  .rp-step:hover { border-color: #47556940; background: rgba(0,0,0,0.2); }
+
+  .rp-icon {
+    width: 36px; height: 36px; border-radius: 10px; margin: 0 auto 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .rp-icon svg { width: 18px; height: 18px; }
+  .rp-icon--amber { background: rgba(245,158,11,0.12); } .rp-icon--amber svg { stroke: #f59e0b; }
+  .rp-icon--cyan { background: rgba(6,182,212,0.12); } .rp-icon--cyan svg { stroke: #06b6d4; }
+  .rp-icon--purple { background: rgba(129,140,248,0.12); } .rp-icon--purple svg { stroke: #818cf8; }
+  .rp-icon--green { background: rgba(74,222,128,0.12); } .rp-icon--green svg { stroke: #4ade80; }
+  .rp-icon--rose { background: rgba(251,113,133,0.12); } .rp-icon--rose svg { stroke: #fb7185; }
+  .rp-icon--amber2 { background: rgba(251,191,36,0.12); } .rp-icon--amber2 svg { stroke: #fbbf24; }
+
+  .rp-num { color: #475569; font-family: monospace; font-size: 0.5rem; font-weight: 800; margin-bottom: 2px; }
+  .rp-label { color: #e2e8f0; font-size: 0.75rem; font-weight: 700; margin-bottom: 4px; }
+  .rp-desc { color: #64748b; font-size: 0.55rem; line-height: 1.4; max-width: 110px; margin: 0 auto; }
+
+  .rp-arrow {
+    flex: 0 0 40px; display: flex; align-items: center; opacity: 0;
+    animation: arrowIn 0.3s ease-out both;
+  }
+  .rp-arrow--1 { animation-delay: 0.25s; }
+  .rp-arrow--2 { animation-delay: 0.55s; }
+  .rp-arrow--3 { animation-delay: 0.85s; }
+  .rp-arrow--4 { animation-delay: 1.15s; }
+  .rp-arrow--5 { animation-delay: 1.45s; }
+
+  .rp-pulse-bar {
+    margin-top: 16px; height: 3px; background: #1e293b; border-radius: 2px; overflow: hidden;
+  }
+  .rp-pulse {
+    width: 60px; height: 100%; border-radius: 2px;
+    background: linear-gradient(90deg, transparent, #06b6d4, transparent);
+    animation: pulseSlide 3s ease-in-out infinite;
+  }
+
+  @keyframes stepFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes arrowIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes pulseSlide {
+    0% { transform: translateX(-60px); }
+    100% { transform: translateX(calc(100vw)); }
+  }
+</style>

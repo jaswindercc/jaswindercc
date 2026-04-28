@@ -1,0 +1,57 @@
+---
+/**
+ * InjectionDefenses.astro
+ * Defense layers against prompt injection
+ */
+---
+
+<div class="pid-wrap">
+  <h3 class="pid-title">Defense-in-Depth Against Prompt Injection</h3>
+  <div class="pid-layers">
+    <div class="pid-layer" style="--i:0; --color:#818cf8;">
+      <div class="pid-num">1</div>
+      <div class="pid-content">
+        <div class="pid-name">Input Filtering</div>
+        <div class="pid-desc">Detect and block known injection patterns before they reach the model. Regex + classifier-based.</div>
+      </div>
+      <div class="pid-eff">Blocks ~40%</div>
+    </div>
+    <div class="pid-layer" style="--i:1; --color:#06b6d4;">
+      <div class="pid-num">2</div>
+      <div class="pid-content">
+        <div class="pid-name">Prompt Hardening</div>
+        <div class="pid-desc">Delimiters, role separation, explicit instructions to ignore overrides. XML tags for boundaries.</div>
+      </div>
+      <div class="pid-eff">Blocks ~30%</div>
+    </div>
+    <div class="pid-layer" style="--i:2; --color:#f59e0b;">
+      <div class="pid-num">3</div>
+      <div class="pid-content">
+        <div class="pid-name">Output Validation</div>
+        <div class="pid-desc">Check LLM outputs for data leaks, unexpected formats, or policy violations before returning.</div>
+      </div>
+      <div class="pid-eff">Catches ~20%</div>
+    </div>
+    <div class="pid-layer" style="--i:3; --color:#4ade80;">
+      <div class="pid-num">4</div>
+      <div class="pid-content">
+        <div class="pid-name">Least Privilege</div>
+        <div class="pid-desc">Limit what the LLM can access. Read-only data, scoped API keys, no direct DB access.</div>
+      </div>
+      <div class="pid-eff">Limits damage</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pid-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .pid-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .pid-layers{display:flex;flex-direction:column;gap:.75rem}
+  .pid-layer{display:flex;align-items:center;gap:1rem;background:rgba(255,255,255,0.03);border:1px solid var(--color);border-radius:12px;padding:1rem;opacity:0;animation:pidSlide .4s ease forwards;animation-delay:calc(var(--i)*.15s)}
+  @keyframes pidSlide{from{opacity:0;transform:translateX(-15px)}to{opacity:1;transform:translateX(0)}}
+  .pid-num{width:30px;height:30px;border-radius:50%;background:var(--color);color:#0f172a;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0}
+  .pid-content{flex:1}
+  .pid-name{color:var(--color);font-weight:700;font-size:.95rem}
+  .pid-desc{color:#94a3b8;font-size:.8rem;margin-top:.15rem}
+  .pid-eff{color:#64748b;font-size:.7rem;font-weight:600;white-space:nowrap}
+</style>

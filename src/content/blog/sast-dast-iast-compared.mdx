@@ -1,0 +1,25 @@
+---
+title: "SAST vs DAST vs IAST — AppSec Testing Compared"
+description: "Visual comparison of application security testing approaches. Understand when to use static, dynamic, and interactive analysis, and how they complement each other in CI/CD."
+date: 2026-06-03
+---
+
+import AppSecCompare from '../../components/visual/AppSecCompare.astro';
+
+Application security testing isn't one thing — it's three fundamentally different approaches to finding vulnerabilities. SAST reads your code. DAST attacks your running app. IAST watches from inside while tests run. Each finds different classes of bugs, and no single approach catches everything.
+
+The teams that have the best security posture use all three in combination, at different points in the development lifecycle. The teams that get breached usually relied on just one.
+
+## Three Approaches, Different Tradeoffs
+
+The core difference is when and how each approach examines your application. SAST works at build time on source code. DAST works at runtime on the deployed application. IAST works at runtime inside the application during testing.
+
+<AppSecCompare />
+
+Here's how they work together in practice: SAST runs on every pull request in CI. It's fast (seconds to minutes), catches patterns like SQL injection and hardcoded secrets early, and gives developers immediate feedback on the exact line of code. Yes, it has false positives — but catching a real vulnerability in a PR review is 100x cheaper than catching it in production.
+
+DAST runs after deployment to a staging environment. It actually tries to exploit your running application — sending malicious payloads, testing authentication flows, checking for misconfigurations. When DAST finds something, it's a real, exploitable vulnerability. The downside is that it runs late in the pipeline and can't tell you which line of code to fix.
+
+IAST bridges the gap. An agent instruments your application during integration testing. When your test suite exercises a code path that processes user input unsafely, IAST traces the data flow from input to vulnerable function and reports the exact code location. Low false positives, precise results — but it requires adding an agent to your runtime and only covers code paths your tests exercise.
+
+Start with SAST in CI (Semgrep is excellent and free for basic rules). Add DAST for staging environments (OWASP ZAP is free and automatable). Consider IAST when your security program matures and you need the precision.

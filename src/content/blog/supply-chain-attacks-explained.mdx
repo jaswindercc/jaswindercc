@@ -1,0 +1,55 @@
+---
+title: "Supply Chain Attacks Explained — How One Dependency Breaks Everything"
+description: "Visual breakdown of software supply chain attacks. Understand typosquatting, dependency confusion, and build poisoning through animated diagrams and real-world case studies."
+date: 2026-04-24
+---
+
+import SupplyChainFlow from '../../components/visual/SupplyChainFlow.astro';
+import AttackVectors from '../../components/visual/AttackVectors.astro';
+import DefenseChecklist from '../../components/visual/DefenseChecklist.astro';
+import SBOMDiagram from '../../components/visual/SBOMDiagram.astro';
+import SupplyChainMetrics from '../../components/visual/SupplyChainMetrics.astro';
+
+Your application is 20% your code and 80% other people's code. You trust it because it has stars on GitHub and millions of downloads. But what if one of those packages gets compromised?
+
+That's a supply chain attack. And it's the fastest-growing threat category in software security.
+
+## 1. The Attack Path
+
+Most developers think "I don't have vulnerabilities in MY code." They're probably right. But your `node_modules` folder has 1,200 packages you've never opened. The attacker doesn't need YOUR code — they need one package in your dependency tree.
+
+<SupplyChainFlow />
+
+The scary part? This looks like a normal Tuesday. Your CI passes. Your tests pass. The malicious code runs in production for days before anyone notices an outbound connection to a strange IP address.
+
+## 2. How Attackers Get In
+
+Supply chain attacks aren't brute force. They're social engineering meets package management. Each vector exploits a different trust assumption in how we install software.
+
+<AttackVectors />
+
+Notice a pattern? Every attack exploits the fact that developers trust their package manager implicitly. We `npm install` without thinking. We auto-merge Dependabot PRs. We don't read changelogs for patch updates. Attackers know this.
+
+## 3. Defense in Depth
+
+There's no single fix. Supply chain security requires layers — each one catches what the previous one missed. Think of it like airport security: ID check, bag scan, metal detector, random pat-down. Any single layer can be bypassed. Together, they make attacks exponentially harder.
+
+<DefenseChecklist />
+
+The most important shift is mindset. Stop treating dependencies as free, trusted code. Start treating them as third-party code execution — because that's literally what they are. Every `import` statement is a trust decision.
+
+## 4. SBOMs — Know What You Shipped
+
+You can't defend what you can't see. A Software Bill of Materials is your ingredient list. When a CVE drops for `lodash@4.17.20`, you need to know in seconds whether that version is running in production — across all your services.
+
+<SBOMDiagram />
+
+Regulations are catching up. The US Executive Order 14028 now requires SBOMs for software sold to the federal government. The EU Cyber Resilience Act mandates them for all commercial software sold in Europe. This isn't optional anymore — it's compliance.
+
+## 5. The Scale of It
+
+People underestimate how big this problem is. It's not theoretical. It's not "nation-state only." Script kiddies publish typosquats on npm every single day. The math is against us: attackers need to compromise one package. Defenders need to verify thousands.
+
+<SupplyChainMetrics />
+
+The fix isn't to stop using open source. That's unrealistic. The fix is to stop treating your dependency tree like a black box. Pin versions. Verify signatures. Generate SBOMs. Monitor runtime behavior. And assume that at some point, one of your 1,200 packages will be compromised — because statistically, it will.

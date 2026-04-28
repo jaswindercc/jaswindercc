@@ -1,0 +1,40 @@
+---
+// HallucinationCauses.astro — Why models hallucinate (mechanism diagram)
+---
+<div class="hc-wrap">
+  <h3 class="hc-title">Why Models Hallucinate — The Mechanism</h3>
+  <div class="hc-flow">
+    <div class="hc-stage hc-stage--1">
+      <div class="hc-label">Training Objective</div>
+      <div class="hc-content">Predict the next token that maximizes P(token | context). <strong>Not</strong> "predict the true token." Truth and probability aren't the same thing.</div>
+    </div>
+    <div class="hc-arrow"><div class="hc-pulse"></div></div>
+    <div class="hc-stage hc-stage--2">
+      <div class="hc-label">High Confidence ≠ Correctness</div>
+      <div class="hc-content">A model can be 99% confident about a completely wrong answer. Confidence measures token probability distribution, not factual accuracy.</div>
+    </div>
+    <div class="hc-arrow"><div class="hc-pulse"></div></div>
+    <div class="hc-stage hc-stage--3">
+      <div class="hc-label">No "I Don't Know" Signal</div>
+      <div class="hc-content">Models have no internal uncertainty detector. They always produce output. There's no circuit that says "I don't have reliable data for this, refuse to answer."</div>
+    </div>
+    <div class="hc-arrow"><div class="hc-pulse"></div></div>
+    <div class="hc-stage hc-stage--4">
+      <div class="hc-label">RLHF Makes it Worse</div>
+      <div class="hc-content">Human feedback reinforces helpful answers over honest ones. "I don't know" gets downvoted. Confident wrong answers often slip through reward models.</div>
+    </div>
+  </div>
+</div>
+<style>
+  .hc-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .hc-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .hc-flow{display:flex;flex-direction:column;align-items:center;gap:0}
+  .hc-stage{padding:14px 18px;background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155;width:100%;max-width:480px;opacity:0;animation:hcIn .5s ease forwards}
+  .hc-stage--1{animation-delay:.1s}.hc-stage--2{animation-delay:.3s}.hc-stage--3{animation-delay:.5s}.hc-stage--4{animation-delay:.7s}
+  @keyframes hcIn{to{opacity:1}}
+  .hc-label{color:#f59e0b;font-size:.72rem;font-weight:700;font-family:monospace;margin-bottom:4px}
+  .hc-content{color:#94a3b8;font-size:.74rem;line-height:1.6}.hc-content strong{color:#f87171}
+  .hc-arrow{height:20px;display:flex;align-items:center;justify-content:center}
+  .hc-pulse{width:2px;height:100%;background:#334155;position:relative}.hc-pulse::after{content:'';position:absolute;top:0;left:-2px;width:6px;height:6px;border-radius:50%;background:#f59e0b;animation:hcDot 1.5s ease infinite}
+  @keyframes hcDot{0%{top:0;opacity:1}100%{top:100%;opacity:0}}
+</style>

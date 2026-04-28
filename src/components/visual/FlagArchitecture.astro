@@ -1,0 +1,25 @@
+---
+// FlagArchitecture.astro — Feature flag system architecture
+---
+<div class="fa-wrap">
+  <h3 class="fa-title">The Architecture — How Flags Work at Scale</h3>
+  <p class="fa-sub">Three layers: management, delivery, evaluation. Click each to explore.</p>
+  <div class="fa-layers">
+    <details class="fa-layer fa-l--cyan"><summary class="fa-lh"><span class="fa-ln">L1</span><div class="fa-li"><span class="fa-lnm">Management Dashboard</span><span class="fa-lhint">Where you create, toggle, and configure flags</span></div><span class="fa-la">▼</span></summary><div class="fa-lb"><p>The UI where product managers and engineers create flags, set targeting rules, define rollout percentages, and view flag status. Examples: LaunchDarkly, Unleash, Flagsmith, or your own admin panel.</p></div></details>
+    <details class="fa-layer fa-l--green"><summary class="fa-lh"><span class="fa-ln">L2</span><div class="fa-li"><span class="fa-lnm">Flag Delivery Network</span><span class="fa-lhint">CDN-cached configs pushed to every instance</span></div><span class="fa-la">▼</span></summary><div class="fa-lb"><p>Flag configs are cached at the edge. SDK polls for changes every 30 seconds (or streams via SSE). Your app never calls the dashboard directly — it reads from a local cache. Latency impact: near zero.</p></div></details>
+    <details class="fa-layer fa-l--purple"><summary class="fa-lh"><span class="fa-ln">L3</span><div class="fa-li"><span class="fa-lnm">Evaluation Engine</span><span class="fa-lhint">Client-side SDK evaluates flag rules per request</span></div><span class="fa-la">▼</span></summary><div class="fa-lb"><p>The SDK evaluates targeting rules locally: user attributes, percentage rollouts, geographic targeting, custom rules. All evaluation happens in-process — no network call. If the config cache fails, a hardcoded default kicks in.</p></div></details>
+  </div>
+</div>
+<style>
+  .fa-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .fa-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.fa-sub{color:#64748b;font-size:.8rem;margin:0 0 1.5rem;font-family:monospace}
+  .fa-layers{display:flex;flex-direction:column;gap:8px}
+  .fa-layer{border-radius:12px;border:1px solid #334155;overflow:hidden;transition:border-color .3s}
+  .fa-layer[open]{border-color:#475569}.fa-l--cyan[open]{border-color:#06b6d430}.fa-l--green[open]{border-color:#4ade8030}.fa-l--purple[open]{border-color:#818cf830}
+  .fa-lh{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;list-style:none;background:rgba(0,0,0,.15)}.fa-lh::-webkit-details-marker{display:none}.fa-lh::marker{content:''}
+  .fa-ln{font-family:monospace;font-size:.65rem;font-weight:800;width:30px;height:30px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .fa-l--cyan .fa-ln{color:#06b6d4;background:rgba(6,182,212,.1)}.fa-l--green .fa-ln{color:#4ade80;background:rgba(74,222,128,.1)}.fa-l--purple .fa-ln{color:#818cf8;background:rgba(129,140,248,.1)}
+  .fa-li{flex:1}.fa-lnm{display:block;color:#e2e8f0;font-weight:700;font-size:.85rem}.fa-lhint{display:block;color:#64748b;font-family:monospace;font-size:.6rem;margin-top:2px}
+  .fa-la{color:#475569;font-size:.7rem;transition:transform .3s}.fa-layer[open] .fa-la{transform:rotate(180deg)}
+  .fa-lb{padding:16px}.fa-lb p{color:#94a3b8;font-size:.78rem;line-height:1.6;margin:0}
+</style>

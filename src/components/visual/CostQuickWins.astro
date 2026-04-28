@@ -1,0 +1,23 @@
+---
+// CostQuickWins.astro — Fast cost optimization wins
+---
+<div class="cqw-wrap">
+  <h3 class="cqw-title">Quick Wins — 40% Savings, 1 Week of Work</h3>
+  <div class="cqw-items">
+    <div class="cqw-item cqw-i1"><div class="cqw-save">15-25%</div><div class="cqw-body"><span class="cqw-nm">Right-size instances</span><span class="cqw-d">Most instances run at 10-20% CPU. Downsize. AWS Compute Optimizer and GCP Recommender do the analysis for free.</span></div></div>
+    <div class="cqw-item cqw-i2"><div class="cqw-save">20-35%</div><div class="cqw-body"><span class="cqw-nm">Reserved / Committed Use</span><span class="cqw-d">1-year reservations save 30-40%. 3-year saves 50-60%. If the workload is stable, this is free money.</span></div></div>
+    <div class="cqw-item cqw-i3"><div class="cqw-save">60-90%</div><div class="cqw-body"><span class="cqw-nm">Spot / Preemptible for batch</span><span class="cqw-d">Batch jobs, ML training, CI runners — use spot instances. 60-90% cheaper. They can be terminated, but batch is retry-able.</span></div></div>
+    <div class="cqw-item cqw-i4"><div class="cqw-save">10-20%</div><div class="cqw-body"><span class="cqw-nm">Kill zombie resources</span><span class="cqw-d">Unattached EBS volumes, idle load balancers, unused Elastic IPs, forgotten dev environments. They add up silently.</span></div></div>
+    <div class="cqw-item cqw-i5"><div class="cqw-save">30-50%</div><div class="cqw-body"><span class="cqw-nm">S3 lifecycle policies</span><span class="cqw-d">Move old data to Glacier after 90 days. Delete temp data after 30 days. Most S3 buckets never have lifecycle rules.</span></div></div>
+  </div>
+</div>
+<style>
+  .cqw-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .cqw-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .cqw-items{display:flex;flex-direction:column;gap:8px}
+  .cqw-item{display:flex;gap:12px;padding:12px 14px;background:rgba(0,0,0,.15);border-radius:10px;border:1px solid #334155;opacity:0;animation:cqwIn .4s ease forwards}
+  .cqw-i1{animation-delay:.1s}.cqw-i2{animation-delay:.2s}.cqw-i3{animation-delay:.3s}.cqw-i4{animation-delay:.4s}.cqw-i5{animation-delay:.5s}
+  @keyframes cqwIn{to{opacity:1}}
+  .cqw-save{font-family:monospace;font-size:.8rem;font-weight:800;color:#4ade80;background:rgba(74,222,128,.08);padding:4px 8px;border-radius:6px;flex-shrink:0;align-self:flex-start}
+  .cqw-body{flex:1}.cqw-nm{display:block;color:#e2e8f0;font-weight:700;font-size:.82rem;margin-bottom:2px}.cqw-d{display:block;color:#94a3b8;font-size:.7rem;line-height:1.5}
+</style>

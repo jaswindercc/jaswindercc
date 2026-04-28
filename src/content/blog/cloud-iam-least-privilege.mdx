@@ -1,0 +1,23 @@
+---
+title: "Cloud IAM Policies — Least Privilege Done Right"
+description: "Visual guide to Cloud IAM least privilege. Walk through the privilege progression from admin access to minimal custom policies, with practical implementation patterns."
+date: 2026-05-26
+---
+
+import IAMLeastPrivilege from '../../components/visual/IAMLeastPrivilege.astro';
+
+"Just give it admin access and we'll fix it later." Later never comes. That broad IAM role becomes load-bearing — nobody knows what permissions it actually uses, and nobody wants to risk tightening it. Meanwhile, one compromised credential gives an attacker full control of your cloud account.
+
+Least privilege means every identity (user, service, function) gets the minimum permissions needed to do its job and nothing more. It sounds simple. In practice, it's the hardest discipline in cloud security.
+
+## The Privilege Ladder
+
+Most organizations are somewhere on this ladder. The goal is to get every identity as close to "Best" as possible without breaking functionality.
+
+<IAMLeastPrivilege />
+
+The path from "Danger" to "Best" is iterative, not one-shot. Start by auditing which identities have admin or power-user access and why. Most of them don't need it — someone granted broad access during development and never scoped it down. Replace blanket admin policies with service-specific managed policies. Then, over time, refine to custom policies that specify exact actions on exact resources.
+
+Cloud providers offer tools to help: AWS IAM Access Analyzer generates least-privilege policies based on actual API usage. GCP IAM Recommender identifies permissions that haven't been used. Azure Access Reviews periodically verify that access is still needed. Use these tools to ratchet permissions tighter over time.
+
+The biggest mistake organizations make is creating one IAM role per team instead of per service. When a team shares one role across all their services, every service gets the union of all permissions — and each service has far more access than it needs. One service per role, scoped to exactly the AWS resources that service accesses.

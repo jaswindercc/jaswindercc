@@ -1,0 +1,29 @@
+---
+// CloudCostBreakdown.astro — Where cloud money actually goes
+---
+<div class="ccb-wrap">
+  <h3 class="ccb-title">Where Your Cloud Bill Actually Goes</h3>
+  <div class="ccb-chart">
+    <div class="ccb-row ccb-r1"><span class="ccb-lbl">Compute (EC2/GKE/VMs)</span><div class="ccb-bar-w"><div class="ccb-bar" style="--w:65%"></div></div><span class="ccb-pct">~65%</span></div>
+    <div class="ccb-row ccb-r2"><span class="ccb-lbl">Storage (S3/EBS/disks)</span><div class="ccb-bar-w"><div class="ccb-bar ccb-bar--amber" style="--w:15%"></div></div><span class="ccb-pct">~15%</span></div>
+    <div class="ccb-row ccb-r3"><span class="ccb-lbl">Data Transfer</span><div class="ccb-bar-w"><div class="ccb-bar ccb-bar--red" style="--w:10%"></div></div><span class="ccb-pct">~10%</span></div>
+    <div class="ccb-row ccb-r4"><span class="ccb-lbl">Database (RDS/Aurora)</span><div class="ccb-bar-w"><div class="ccb-bar ccb-bar--purple" style="--w:7%"></div></div><span class="ccb-pct">~7%</span></div>
+    <div class="ccb-row ccb-r5"><span class="ccb-lbl">Everything else</span><div class="ccb-bar-w"><div class="ccb-bar ccb-bar--cyan" style="--w:3%"></div></div><span class="ccb-pct">~3%</span></div>
+  </div>
+  <div class="ccb-note">Compute is always #1. If you're only optimizing storage, you're ignoring the largest line item. Start with compute — that's where the money is.</div>
+</div>
+<style>
+  .ccb-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .ccb-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .ccb-chart{display:flex;flex-direction:column;gap:10px;margin-bottom:1rem}
+  .ccb-row{display:flex;align-items:center;gap:10px;opacity:0;animation:ccbIn .4s ease forwards}
+  .ccb-r1{animation-delay:.1s}.ccb-r2{animation-delay:.2s}.ccb-r3{animation-delay:.3s}.ccb-r4{animation-delay:.4s}.ccb-r5{animation-delay:.5s}
+  @keyframes ccbIn{to{opacity:1}}
+  .ccb-lbl{color:#94a3b8;font-size:.7rem;min-width:150px}
+  .ccb-bar-w{flex:1;height:12px;background:rgba(0,0,0,.3);border-radius:8px;overflow:hidden}
+  .ccb-bar{height:100%;border-radius:8px;background:#4ade80;width:0;animation:ccbBar 1.2s ease forwards}
+  .ccb-bar--amber{background:#f59e0b}.ccb-bar--red{background:#f87171}.ccb-bar--purple{background:#818cf8}.ccb-bar--cyan{background:#06b6d4}
+  @keyframes ccbBar{to{width:var(--w)}}
+  .ccb-pct{color:#e2e8f0;font-size:.65rem;font-family:monospace;font-weight:600;min-width:40px;text-align:right}
+  .ccb-note{color:#94a3b8;font-size:.7rem;line-height:1.6;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border-left:3px solid #f59e0b}
+</style>

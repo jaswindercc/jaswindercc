@@ -1,0 +1,111 @@
+---
+// GPUCostDashboard.astro — Interactive GPU cost visualization
+---
+
+<div class="gpu-wrap">
+  <h3 class="gpu-title">💸 GPU Cost Explosion — Real Numbers</h3>
+  <p class="gpu-sub">Watch costs compound as you scale inference. Click each tier.</p>
+
+  <div class="gpu-tiers">
+    <div class="gpu-tier" tabindex="0">
+      <div class="gpu-tier-head">
+        <div class="gpu-bar-wrap">
+          <div class="gpu-bar gpu-bar--1" style="--w: 8%"></div>
+        </div>
+        <span class="gpu-label">Prototype</span>
+        <span class="gpu-cost">$200/mo</span>
+      </div>
+      <div class="gpu-tier-detail">
+        <p>Single A100, spot instances, 100 req/day. Everything looks affordable.</p>
+        <code>1x A100 80GB × $3.50/hr × ~2hrs/day = ~$210/mo</code>
+      </div>
+    </div>
+
+    <div class="gpu-tier" tabindex="0">
+      <div class="gpu-tier-head">
+        <div class="gpu-bar-wrap">
+          <div class="gpu-bar gpu-bar--2" style="--w: 25%"></div>
+        </div>
+        <span class="gpu-label">Staging</span>
+        <span class="gpu-cost">$3,200/mo</span>
+      </div>
+      <div class="gpu-tier-detail">
+        <p>Load testing reveals you need 4 GPUs for acceptable latency. Always-on for reliability.</p>
+        <code>4x A100 × $3.50/hr × 24hrs × 30 days<br/>- spot savings (40%) = ~$3,200/mo</code>
+      </div>
+    </div>
+
+    <div class="gpu-tier" tabindex="0">
+      <div class="gpu-tier-head">
+        <div class="gpu-bar-wrap">
+          <div class="gpu-bar gpu-bar--3" style="--w: 55%"></div>
+        </div>
+        <span class="gpu-label">Production</span>
+        <span class="gpu-cost">$18,500/mo</span>
+      </div>
+      <div class="gpu-tier-detail">
+        <p>Multi-region, redundancy, larger models, autoscaling with minimum always-on capacity.</p>
+        <code>8x A100 base + burst to 16<br/>+ 2 regions × redundancy<br/>+ reserved capacity premium = ~$18,500/mo</code>
+      </div>
+    </div>
+
+    <div class="gpu-tier" tabindex="0">
+      <div class="gpu-tier-head">
+        <div class="gpu-bar-wrap">
+          <div class="gpu-bar gpu-bar--4" style="--w: 100%"></div>
+        </div>
+        <span class="gpu-label">Scale</span>
+        <span class="gpu-cost">$67,000/mo</span>
+      </div>
+      <div class="gpu-tier-detail">
+        <p>Multiple models, fine-tuned variants, real-time inference at 10K+ req/min. The bill that makes CFOs cry.</p>
+        <code>32x H100 cluster + networking<br/>+ 3 model variants running<br/>+ training jobs + storage = ~$67,000/mo</code>
+      </div>
+    </div>
+  </div>
+
+  <div class="gpu-shock">
+    <span class="gpu-shock-icon">📈</span>
+    <span class="gpu-shock-text">335x cost increase from prototype to scale</span>
+  </div>
+</div>
+
+<style>
+  .gpu-wrap {
+    background: linear-gradient(135deg, #1a1505 0%, #0f172a 100%);
+    border-radius: 1rem; padding: 2rem; margin: 2rem 0;
+    border: 1px solid rgba(234, 179, 8, 0.2);
+  }
+  .gpu-title { color: #f1f5f9; font-size: 1.25rem; margin: 0 0 0.25rem; }
+  .gpu-sub { color: #94a3b8; font-size: 0.875rem; margin: 0 0 1.5rem; }
+  .gpu-tiers { display: flex; flex-direction: column; gap: 0.75rem; }
+  .gpu-tier { cursor: pointer; border-radius: 0.75rem; transition: all 0.3s; }
+  .gpu-tier:hover, .gpu-tier:focus { transform: translateX(4px); }
+  .gpu-tier-head {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem 1rem; background: rgba(234,179,8,0.05);
+    border: 1px solid rgba(234,179,8,0.15); border-radius: 0.75rem;
+  }
+  .gpu-bar-wrap { flex: 1; height: 8px; background: rgba(234,179,8,0.1); border-radius: 4px; overflow: hidden; }
+  .gpu-bar { height: 100%; border-radius: 4px; width: var(--w); transition: width 0.5s ease; }
+  .gpu-bar--1 { background: #34d399; }
+  .gpu-bar--2 { background: #fbbf24; }
+  .gpu-bar--3 { background: #f97316; }
+  .gpu-bar--4 { background: #ef4444; }
+  .gpu-label { color: #e2e8f0; font-weight: 600; font-size: 0.8rem; width: 80px; }
+  .gpu-cost { color: #fbbf24; font-weight: 700; font-size: 0.85rem; font-family: monospace; }
+  .gpu-tier-detail {
+    max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s;
+    padding: 0 1rem; background: rgba(0,0,0,0.3); border-radius: 0 0 0.75rem 0.75rem;
+  }
+  .gpu-tier:hover .gpu-tier-detail, .gpu-tier:focus .gpu-tier-detail { max-height: 150px; padding: 0.75rem 1rem; }
+  .gpu-tier-detail p { color: #cbd5e1; font-size: 0.8rem; margin: 0 0 0.5rem; line-height: 1.5; }
+  .gpu-tier-detail code { display: block; color: #a5b4fc; font-size: 0.7rem; background: rgba(0,0,0,0.4); padding: 0.5rem; border-radius: 0.375rem; }
+  .gpu-shock {
+    margin-top: 1.5rem; padding: 0.75rem 1rem; border-radius: 0.75rem;
+    background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .gpu-shock-icon { font-size: 1.25rem; }
+  .gpu-shock-text { color: #fca5a5; font-weight: 700; font-size: 0.85rem; }
+</style>

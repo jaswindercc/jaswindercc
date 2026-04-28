@@ -1,0 +1,74 @@
+---
+// QuantumRoadmap.astro — Quantum computing industry roadmap
+---
+
+<div class="qrd-wrap">
+  <h3 class="qrd-title">The Quantum Roadmap — What's Coming</h3>
+  <p class="qrd-sub">From noisy experiments to fault-tolerant quantum computing.</p>
+
+  <div class="qrd-phases">
+    <div class="qrd-phase" style="--i:0;--c:#38bdf8">
+      <div class="qrd-phase-head">
+        <div class="qrd-badge" style="background:rgba(56,189,248,.1);color:#38bdf8;border-color:rgba(56,189,248,.2)">WE ARE HERE</div>
+        <div class="qrd-phase-name">NISQ Era (Now)</div>
+      </div>
+      <div class="qrd-phase-body">
+        <div class="qrd-point">Noisy Intermediate-Scale Quantum devices</div>
+        <div class="qrd-point">50–1,100+ qubits, but noisy</div>
+        <div class="qrd-point">Limited to short circuits</div>
+        <div class="qrd-point">Useful for research, not production</div>
+      </div>
+    </div>
+    <div class="qrd-phase" style="--i:1;--c:#f59e0b">
+      <div class="qrd-phase-head">
+        <div class="qrd-badge" style="background:rgba(245,158,11,.1);color:#f59e0b;border-color:rgba(245,158,11,.2)">2027–2030</div>
+        <div class="qrd-phase-name">Early Fault Tolerance</div>
+      </div>
+      <div class="qrd-phase-body">
+        <div class="qrd-point">First error-corrected logical qubits</div>
+        <div class="qrd-point">Quantum advantage for specific problems</div>
+        <div class="qrd-point">Hybrid classical-quantum workflows</div>
+        <div class="qrd-point">Drug discovery and materials science applications</div>
+      </div>
+    </div>
+    <div class="qrd-phase" style="--i:2;--c:#a78bfa">
+      <div class="qrd-phase-head">
+        <div class="qrd-badge" style="background:rgba(167,139,250,.1);color:#a78bfa;border-color:rgba(167,139,250,.2)">2030+</div>
+        <div class="qrd-phase-name">Fault-Tolerant Quantum</div>
+      </div>
+      <div class="qrd-phase-body">
+        <div class="qrd-point">Thousands of logical qubits</div>
+        <div class="qrd-point">Run Shor's algorithm at scale</div>
+        <div class="qrd-point">Practical quantum simulations</div>
+        <div class="qrd-point">Quantum-native applications</div>
+      </div>
+    </div>
+    <div class="qrd-phase" style="--i:3;--c:#4ade80">
+      <div class="qrd-phase-head">
+        <div class="qrd-badge" style="background:rgba(74,222,128,.1);color:#4ade80;border-color:rgba(74,222,128,.2)">2035+</div>
+        <div class="qrd-phase-name">Quantum Advantage at Scale</div>
+      </div>
+      <div class="qrd-phase-body">
+        <div class="qrd-point">Million-qubit processors</div>
+        <div class="qrd-point">Quantum internet and networking</div>
+        <div class="qrd-point">Quantum-accelerated AI training</div>
+        <div class="qrd-point">Industry transformation</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .qrd-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .qrd-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .qrd-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .qrd-phases{display:flex;flex-direction:column;gap:10px}
+  .qrd-phase{background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:12px;padding:1.25rem;opacity:0;animation:qrdIn .4s ease forwards;animation-delay:calc(var(--i)*.15s);border-left:3px solid var(--c)}
+  .qrd-phase-head{display:flex;align-items:center;gap:10px;margin-bottom:.5rem;flex-wrap:wrap}
+  .qrd-badge{font-size:.55rem;font-family:monospace;font-weight:700;padding:2px 8px;border-radius:12px;border:1px solid}
+  .qrd-phase-name{color:#f1f5f9;font-size:.8rem;font-weight:600}
+  .qrd-phase-body{display:flex;flex-direction:column;gap:3px;padding-left:4px}
+  .qrd-point{color:#94a3b8;font-size:.68rem;line-height:1.4;padding-left:12px;position:relative}
+  .qrd-point::before{content:"›";position:absolute;left:0;color:var(--c)}
+  @keyframes qrdIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+</style>

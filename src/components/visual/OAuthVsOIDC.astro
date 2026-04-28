@@ -1,0 +1,39 @@
+---
+// OAuthVsOIDC.astro — Side-by-side comparison
+---
+<div class="ovo-wrap">
+  <h3 class="ovo-title">OAuth 2.0 vs OpenID Connect</h3>
+  <p class="ovo-sub">OAuth is Authorization (what can you access). OIDC adds Authentication (who are you).</p>
+  <div class="ovo-grid">
+    <div class="ovo-col ovo-col--oauth">
+      <span class="ovo-hl ovo-hl--amber">OAuth 2.0</span>
+      <div class="ovo-item"><span class="ovo-lbl">Purpose</span><span class="ovo-val">Delegated authorization</span></div>
+      <div class="ovo-item"><span class="ovo-lbl">Question</span><span class="ovo-val">"Can this app access my data?"</span></div>
+      <div class="ovo-item"><span class="ovo-lbl">Token</span><span class="ovo-val">access_token (opaque or JWT)</span></div>
+      <div class="ovo-item"><span class="ovo-lbl">User info</span><span class="ovo-val">Not included — need separate /userinfo call</span></div>
+      <div class="ovo-item"><span class="ovo-lbl">Standard claims</span><span class="ovo-val">None — provider-specific</span></div>
+      <div class="ovo-item"><span class="ovo-lbl">Use case</span><span class="ovo-val">API access, third-party integrations</span></div>
+    </div>
+    <div class="ovo-col ovo-col--oidc">
+      <span class="ovo-hl ovo-hl--cyan">OpenID Connect</span>
+      <div class="ovo-item"><span class="ovo-lbl">Purpose</span><span class="ovo-val">Authentication + authorization</span></div>
+      <div class="ovo-item"><span class="ovo-lbl">Question</span><span class="ovo-val">"Who is this user?"</span></div>
+      <div class="ovo-item"><span class="ovo-lbl">Token</span><span class="ovo-val">id_token (always JWT) + access_token</span></div>
+      <div class="ovo-item"><span class="ovo-lbl">User info</span><span class="ovo-val">Embedded in id_token claims</span></div>
+      <div class="ovo-item"><span class="ovo-lbl">Standard claims</span><span class="ovo-val">sub, email, name, picture, etc.</span></div>
+      <div class="ovo-item"><span class="ovo-lbl">Use case</span><span class="ovo-val">Login/SSO, identity verification</span></div>
+    </div>
+  </div>
+  <div class="ovo-key">OIDC is a layer ON TOP of OAuth 2.0. Every OIDC flow is also a valid OAuth flow — it just adds the id_token and standardized identity claims.</div>
+</div>
+<style>
+  .ovo-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .ovo-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.ovo-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem}
+  .ovo-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem}@media(max-width:600px){.ovo-grid{grid-template-columns:1fr}}
+  .ovo-col{padding:14px;background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155}
+  .ovo-col--oauth{border-top:2px solid #f59e0b}.ovo-col--oidc{border-top:2px solid #06b6d4}
+  .ovo-hl{display:block;font-size:.75rem;font-weight:700;font-family:monospace;margin-bottom:10px}.ovo-hl--amber{color:#f59e0b}.ovo-hl--cyan{color:#06b6d4}
+  .ovo-item{display:flex;flex-direction:column;gap:1px;padding:5px 0;border-bottom:1px solid #1e293b}.ovo-item:last-child{border-bottom:none}
+  .ovo-lbl{color:#64748b;font-size:.58rem;text-transform:uppercase;letter-spacing:.5px;font-weight:600}.ovo-val{color:#e2e8f0;font-size:.7rem}
+  .ovo-key{color:#94a3b8;font-size:.7rem;line-height:1.6;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border:1px solid #334155}
+</style>

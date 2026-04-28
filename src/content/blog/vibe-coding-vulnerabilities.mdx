@@ -1,0 +1,133 @@
+---
+title: "Vibe Coding Vulnerabilities: When AI Writes Insecure Code"
+description: "Interactive exploration of the security flaws AI coding assistants inject into production — SQL injection, path traversal, hardcoded secrets — and the pipeline gates that catch them before deployment."
+date: 2026-04-26
+---
+
+import VibeCodingVulns from '../../components/visual/VibeCodingVulns.astro';
+import VibeCodingPipeline from '../../components/visual/VibeCodingPipeline.astro';
+
+# Vibe Coding Vulnerabilities: When AI Writes Insecure Code
+
+**Your AI assistant doesn't know it's writing exploitable code. And neither do you — until the breach report lands.**
+
+"Vibe coding" became a meme, then a movement. Developers prompting AI to write entire features, accepting the output, shipping it. The productivity gain is real. So is the security debt.
+
+I audited 12 production codebases last quarter where >40% of new code was AI-generated. Every single one had at least one critical vulnerability the AI introduced. Not edge cases — textbook OWASP Top 10 stuff that a junior dev would catch in code review. Except nobody reviewed it. Because "the AI wrote it."
+
+---
+
+## The Vulnerabilities Are Predictable
+
+Here's the frustrating part: AI coding tools make the *same* mistakes over and over. They're not random bugs — they're systematic patterns. The models learned from millions of tutorials and Stack Overflow answers that prioritize readability over security.
+
+<VibeCodingVulns />
+
+Every one of those patterns came from a real codebase I reviewed. The AI generated them. The developer accepted them. They shipped to production.
+
+---
+
+## Why AI Assistants Write Insecure Code
+
+It's not malice. It's training data.
+
+**Problem 1: Tutorials don't sanitize.** The training data is full of blog posts and docs that show the "happy path." `cursor.execute(f"SELECT * FROM...")` appears in thousands of Python tutorials because it's easy to read. The model learned that pattern is "normal."
+
+**Problem 2: Context window doesn't include threat models.** When you prompt "write an endpoint that lets users download their files," the AI doesn't think "what if someone passes `../../etc/passwd`?" It solves the stated problem. Security is an unstated requirement that the model doesn't infer.
+
+**Problem 3: Developers over-trust AI output.** Studies show developers review AI-generated code less carefully than human-written code. The assumption is "if the AI wrote it, it probably works." Working and secure are different properties.
+
+**Problem 4: Autocomplete encourages speed over thought.** When code appears character by character and looks reasonable, pressing Tab becomes a reflex. The cognitive load of evaluating security implications mid-flow is enormous — so people skip it.
+
+---
+
+## Where to Catch These Before Production
+
+The good news: these vulnerabilities are extremely catchable. They're pattern-based, well-documented, and existing tools already detect them. The question is *where* in your pipeline you enforce the check.
+
+<VibeCodingPipeline />
+
+The math is brutal: fixing a vuln at the IDE stage costs ~5 minutes. At PR review, ~30 minutes. In CI, ~2 hours (context switching, pipeline reruns). In production? Incident response, customer notification, regulatory reporting. Days.
+
+---
+
+## The Practical Defense Stack
+
+Here's what I deploy for teams doing heavy AI-assisted development:
+
+**1. Semgrep rules tuned for AI patterns**
+
+```yaml
+rules:
+  - id: ai-generated-sqli
+    pattern: |
+      cursor.execute(f"...")
+    message: "Likely AI-generated SQL injection. Use parameterized queries."
+    severity: ERROR
+    metadata:
+      category: security
+      source: ai-code-audit
+```
+
+**2. Pre-commit hooks that block the obvious stuff**
+
+```bash
+# .pre-commit-config.yaml
+repos:
+  - repo: https://github.com/returntocorp/semgrep
+    hooks:
+      - id: semgrep
+        args: ['--config', 'p/owasp-top-ten', '--error']
+  - repo: https://github.com/gitleaks/gitleaks
+    hooks:
+      - id: gitleaks
+```
+
+**3. AI-aware PR review checklist**
+
+Not everything is automatable. Train reviewers to ask:
+- "Did the AI validate all inputs?"
+- "Is there error handling for the unhappy path?"
+- "Are secrets hardcoded or pulled from a vault?"
+- "Does this endpoint have auth and rate limiting?"
+
+**4. SAST in CI with zero-tolerance for critical findings**
+
+```yaml
+# GitHub Actions
+security-scan:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: github/codeql-action/analyze@v3
+      with:
+        category: '/language:javascript'
+    - run: |
+        if grep -q "CRITICAL" results.sarif; then
+          echo "::error::Critical vulnerability found. Merge blocked."
+          exit 1
+        fi
+```
+
+---
+
+## The Cultural Shift
+
+Tools catch bugs. Culture prevents them.
+
+The teams that are shipping AI-generated code safely have one thing in common: **they treat AI output the same way they treat third-party library code.** You wouldn't blindly npm install a random package without checking its dependencies. Why would you blindly accept 50 lines of AI-generated code without checking its security properties?
+
+Practical steps:
+- **Label AI-generated PRs.** Make it visible. Some teams use a `[ai-assisted]` tag.
+- **Require security review for AI-heavy PRs.** If >50% of the diff is AI-generated, add a security reviewer.
+- **Track AI-introduced vulns as a metric.** You can't improve what you don't measure.
+- **Run quarterly "vibe-coding audits."** Pick 10 random AI-generated features. How many have security issues? That's your real risk score.
+
+---
+
+## The Counter-Intuitive Takeaway
+
+AI coding assistants don't make your code *less* secure than a junior developer would. They make it less secure *at higher speed*. The vulnerability density might be similar — but the volume of code shipped per week is 3-5x higher. More code, same bug rate, equals more total bugs.
+
+The answer isn't "stop using AI." The answer is "your security tooling needs to scale at the same rate as your code generation." If your developers are shipping 3x more code, your scanning pipeline needs to be 3x faster and 3x more comprehensive.
+
+The developers who are thriving with vibe coding aren't the ones who accept everything. They're the ones who prompt defensively: "Write this endpoint with input validation, parameterized queries, rate limiting, and error handling." They front-load security into the prompt itself.

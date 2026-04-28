@@ -1,0 +1,37 @@
+---
+title: "Canary Deployments — Ship Code Without Fear"
+description: "Visual guide to canary deployments. Learn traffic shifting patterns, health signals to monitor, and tools that automate progressive delivery in production."
+date: 2026-06-16
+---
+
+import CanaryFlow from '../../components/visual/CanaryFlow.astro';
+import CanaryChecklist from '../../components/visual/CanaryChecklist.astro';
+import CanaryTools from '../../components/visual/CanaryTools.astro';
+
+You've merged to main. CI is green. You're about to push to 10,000 users. How confident are you that nothing breaks? Canary deployments replace that anxiety with data. Instead of deploying to everyone at once, you send 5% of traffic to the new version, watch the metrics, and gradually shift traffic only if everything looks healthy.
+
+The idea is borrowed from coal miners who carried canaries underground — if the canary stopped singing, the air was toxic. In deployment terms: if the canary version shows errors, you roll back before anyone else is affected.
+
+## 1. How Traffic Shifting Works
+
+A canary deployment is a gradual rollout. You start small — 1-5% of traffic — and increase incrementally. At each step, you compare the canary's metrics against the stable version. If something looks wrong, you instantly shift all traffic back to the stable version.
+
+<CanaryFlow />
+
+The key insight: the rollback is instantaneous because the stable version is still running. You're not replacing anything until you're confident. This is fundamentally different from "deploy and pray" where your only option on failure is to redeploy the old version (which takes minutes, not milliseconds).
+
+## 2. What to Monitor
+
+Canary analysis is only as good as the signals you watch. Error rates and latency are obvious — but the sneaky failures are the ones where technical metrics look fine while business metrics tank. A checkout flow might respond in 50ms with no errors, but if it's returning the wrong price, you need business signal monitoring too.
+
+<CanaryChecklist />
+
+Automate the analysis. Manual canary watching doesn't scale and humans miss gradual degradation. Most canary tools support automated analysis that compares canary metrics to baseline and makes promote/rollback decisions without human intervention. Set the thresholds, let the system decide.
+
+## 3. Tooling Options
+
+You don't need to build canary infrastructure from scratch. The ecosystem has mature tools for every platform — from Kubernetes-native controllers to managed cloud services to feature flag platforms that work anywhere.
+
+<CanaryTools />
+
+If you're on Kubernetes, Argo Rollouts is the standard choice. Define your canary strategy as a Rollout resource: step percentages, pause durations, analysis templates. It integrates with Prometheus for automated metric analysis and rolls back automatically on failure. For non-Kubernetes environments, feature flags with percentage rollouts achieve the same traffic splitting without infrastructure changes.

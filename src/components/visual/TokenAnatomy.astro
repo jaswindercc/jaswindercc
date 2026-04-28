@@ -1,0 +1,53 @@
+---
+// TokenAnatomy.astro — JWT token structure breakdown
+---
+<div class="ta-wrap">
+  <h3 class="ta-title">Inside a JWT — Three Parts, Dot-Separated</h3>
+  <div class="ta-token">
+    <div class="ta-part ta-part--header">
+      <span class="ta-label">Header</span>
+      <span class="ta-dot">.</span>
+    </div>
+    <div class="ta-part ta-part--payload">
+      <span class="ta-label">Payload</span>
+      <span class="ta-dot">.</span>
+    </div>
+    <div class="ta-part ta-part--sig">
+      <span class="ta-label">Signature</span>
+    </div>
+  </div>
+  <div class="ta-details">
+    <div class="ta-detail ta-d1">
+      <span class="ta-dh ta-dh--red">Header (Base64)</span>
+      <div class="ta-code"><span class="ta-k">"alg"</span>: <span class="ta-s">"RS256"</span>,<br/><span class="ta-k">"typ"</span>: <span class="ta-s">"JWT"</span></div>
+      <span class="ta-dn">Tells the server which algorithm to use for signature verification.</span>
+    </div>
+    <div class="ta-detail ta-d2">
+      <span class="ta-dh ta-dh--purple">Payload (Claims)</span>
+      <div class="ta-code"><span class="ta-k">"sub"</span>: <span class="ta-s">"user_123"</span>,<br/><span class="ta-k">"email"</span>: <span class="ta-s">"jas@example.com"</span>,<br/><span class="ta-k">"iat"</span>: <span class="ta-n">1716239022</span>,<br/><span class="ta-k">"exp"</span>: <span class="ta-n">1716242622</span>,<br/><span class="ta-k">"iss"</span>: <span class="ta-s">"https://auth.example.com"</span></div>
+      <span class="ta-dn">Claims are NOT encrypted. Anyone can decode Base64. Never put secrets here.</span>
+    </div>
+    <div class="ta-detail ta-d3">
+      <span class="ta-dh ta-dh--green">Signature</span>
+      <div class="ta-code">HMACSHA256(<br/>&nbsp;&nbsp;base64(header) + "." + base64(payload),<br/>&nbsp;&nbsp;secret_key<br/>)</div>
+      <span class="ta-dn">Proves the token wasn't tampered with. Server verifies using the same key (HMAC) or public key (RSA/ECDSA).</span>
+    </div>
+  </div>
+</div>
+<style>
+  .ta-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .ta-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .ta-token{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:1.5rem;padding:12px;background:rgba(0,0,0,.25);border-radius:10px}
+  .ta-part{display:flex;align-items:center;gap:0;padding:8px 14px;border-radius:6px}
+  .ta-part--header{background:rgba(248,113,113,.1);border:1px solid #f8717130}.ta-part--payload{background:rgba(129,140,248,.1);border:1px solid #818cf830}.ta-part--sig{background:rgba(74,222,128,.1);border:1px solid #4ade8030}
+  .ta-label{font-family:monospace;font-size:.7rem;font-weight:600}.ta-part--header .ta-label{color:#f87171}.ta-part--payload .ta-label{color:#818cf8}.ta-part--sig .ta-label{color:#4ade80}
+  .ta-dot{color:#475569;font-size:1.2rem;font-weight:800;margin:0 2px}
+  .ta-details{display:flex;flex-direction:column;gap:10px}
+  .ta-detail{padding:12px 14px;background:rgba(0,0,0,.15);border-radius:10px;border:1px solid #334155;opacity:0;animation:taIn .4s ease forwards}
+  .ta-d1{animation-delay:.2s}.ta-d2{animation-delay:.4s}.ta-d3{animation-delay:.6s}
+  @keyframes taIn{to{opacity:1}}
+  .ta-dh{font-size:.7rem;font-weight:700;font-family:monospace;display:block;margin-bottom:6px}.ta-dh--red{color:#f87171}.ta-dh--purple{color:#818cf8}.ta-dh--green{color:#4ade80}
+  .ta-code{font-family:monospace;font-size:.65rem;line-height:1.6;color:#94a3b8;padding:8px 10px;background:rgba(0,0,0,.2);border-radius:6px;margin-bottom:6px}
+  .ta-k{color:#06b6d4}.ta-s{color:#4ade80}.ta-n{color:#f59e0b}
+  .ta-dn{color:#64748b;font-size:.65rem;font-style:italic}
+</style>

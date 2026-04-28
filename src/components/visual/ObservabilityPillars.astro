@@ -1,0 +1,24 @@
+---
+// ObservabilityPillars.astro — Three pillars of observability
+---
+<div class="op-wrap">
+  <h3 class="op-title">The Three Pillars</h3>
+  <div class="op-pillars">
+    <div class="op-pillar op-p1"><div class="op-ph"><span class="op-icon">📝</span><span class="op-pnm">Logs</span></div><div class="op-pd"><span class="op-what">Discrete events: "User 123 logged in at 14:32:07"</span><span class="op-when">Debugging specific errors, audit trails, compliance</span><span class="op-tool">ELK, Loki, CloudWatch Logs</span></div></div>
+    <div class="op-pillar op-p2"><div class="op-ph"><span class="op-icon">📊</span><span class="op-pnm">Metrics</span></div><div class="op-pd"><span class="op-what">Numeric time-series: "request_count=1,247 at 14:32"</span><span class="op-when">Dashboards, alerting, capacity planning, SLO tracking</span><span class="op-tool">Prometheus, Datadog, CloudWatch Metrics</span></div></div>
+    <div class="op-pillar op-p3"><div class="op-ph"><span class="op-icon">🔗</span><span class="op-pnm">Traces</span></div><div class="op-pd"><span class="op-what">Request journey: "API → Auth → DB → Cache → Response (342ms)"</span><span class="op-when">Latency debugging, bottleneck identification, distributed systems</span><span class="op-tool">Jaeger, Tempo, Honeycomb, Datadog APM</span></div></div>
+  </div>
+  <div class="op-note">Logs tell you WHAT happened. Metrics tell you HOW MUCH. Traces tell you WHERE and HOW LONG. You need all three to debug production issues effectively.</div>
+</div>
+<style>
+  .op-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .op-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .op-pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:1rem}
+  .op-pillar{padding:14px;background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155;opacity:0;animation:opIn .4s ease forwards}
+  .op-p1{animation-delay:.1s;border-top:2px solid #4ade80}.op-p2{animation-delay:.2s;border-top:2px solid #f59e0b}.op-p3{animation-delay:.3s;border-top:2px solid #06b6d4}
+  @keyframes opIn{to{opacity:1}}
+  .op-ph{display:flex;align-items:center;gap:6px;margin-bottom:8px}.op-icon{font-size:1rem}.op-pnm{color:#e2e8f0;font-size:.85rem;font-weight:700}
+  .op-pd{display:flex;flex-direction:column;gap:6px}
+  .op-what{color:#94a3b8;font-size:.68rem;line-height:1.4}.op-when{color:#64748b;font-size:.62rem;font-style:italic}.op-tool{color:#06b6d4;font-size:.6rem;font-family:monospace}
+  .op-note{color:#94a3b8;font-size:.72rem;line-height:1.6;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border-left:3px solid #f59e0b}
+</style>

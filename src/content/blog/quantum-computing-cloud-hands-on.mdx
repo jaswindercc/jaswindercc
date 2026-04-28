@@ -1,0 +1,90 @@
+---
+title: "Quantum Computing in the Cloud — Hands-On with IBM, AWS, and Azure"
+description: "Visual guide to cloud quantum computing. Compare IBM Quantum, Amazon Braket, and Azure Quantum — with setup instructions and free tier details."
+date: 2026-04-21
+---
+
+import QuantumCloudProviders from '../../components/visual/QuantumCloudProviders.astro';
+import QuantumCloudSetup from '../../components/visual/QuantumCloudSetup.astro';
+import QuantumHardwareTypes from '../../components/visual/QuantumHardwareTypes.astro';
+
+You don't need a multimillion-dollar cryogenic lab to use a quantum computer. Every major cloud provider now offers quantum hardware as a service. Sign up, write Python, run quantum circuits on real processors — from your laptop. Here's how.
+
+---
+
+## 1. Your Cloud Quantum Options
+
+Four major platforms offer cloud-based quantum computing. Each gives you access to different quantum hardware, different SDKs, and different pricing models.
+
+<QuantumCloudProviders />
+
+**Which one should you pick?** If you're learning, start with IBM Quantum. It has the most generous free tier (10 minutes/month of real quantum hardware), the largest community, and the best documentation. You can always explore others later — the concepts transfer directly.
+
+---
+
+## 2. Set Up IBM Quantum in 5 Minutes
+
+Let's go from zero to running on real quantum hardware. This is the practical part — follow along.
+
+<QuantumCloudSetup />
+
+**Common issues:**
+- **Queue times:** Real hardware has a queue. Your job might wait 1–10 minutes. Simulators are instant.
+- **Noisy results:** Real hardware gives noisier results than the simulator. That's normal.
+- **Transpilation:** Your circuit gets automatically rewritten for the specific hardware's native gate set and qubit connectivity. The SDK handles this.
+
+---
+
+## 3. Understanding the Hardware Behind the Cloud
+
+When you run a circuit on IBM Quantum, your code executes on actual quantum hardware. But not all quantum hardware works the same way.
+
+<QuantumHardwareTypes />
+
+**Why this matters:** different hardware types have different error profiles, gate speeds, and connectivity. A circuit that works great on a trapped-ion machine might need modification for a superconducting processor. The cloud platforms handle most of this for you, but understanding the trade-offs helps when results don't match expectations.
+
+---
+
+## 4. Simulator vs Real Hardware — When to Use Which
+
+**Use simulators when:**
+- Developing and debugging circuits
+- Learning the basics
+- Running circuits with >20 qubits (real hardware is limited)
+- You need perfect, noise-free results
+
+**Use real hardware when:**
+- Validating your algorithm works in the real world
+- Studying noise effects and error mitigation
+- Running circuits specifically designed for NISQ devices
+- You want bragging rights ("I ran this on a quantum computer")
+
+```python
+from qiskit_aer import AerSimulator
+from qiskit_ibm_runtime import QiskitRuntimeService
+
+# Simulator: instant, perfect results
+sim = AerSimulator()
+result_sim = sim.run(qc, shots=1000).result()
+
+# Real hardware: queued, noisy results
+service = QiskitRuntimeService()
+backend = service.least_busy(operational=True)
+# Use SamplerV2 for running on real hardware
+```
+
+**Pro tip:** always develop on the simulator first. Only move to real hardware when your circuit works correctly on the simulator. Debugging quantum errors + hardware noise simultaneously is a nightmare.
+
+---
+
+## 5. Cost and Free Tiers
+
+**IBM Quantum:** 10 minutes/month free on real hardware. Unlimited simulator access. Paid plans for research and enterprise use.
+
+**Amazon Braket:** Free simulator hours with AWS Free Tier. Real hardware charged per task ($0.30/task + per-shot fees). $750 credit for new users.
+
+**Azure Quantum:** $500 in free credits for new users. Pay-per-use after that. Q# development tools are free.
+
+**Google Quantum AI:** Cirq is free. Simulator is free. Real hardware access is research-only (apply through their program).
+
+**The honest truth about cost:** for learning and experimentation, the free tiers are more than enough. You won't need paid access until you're running serious research or optimization workloads. Start free. Most of what you need to learn can be done on simulators.

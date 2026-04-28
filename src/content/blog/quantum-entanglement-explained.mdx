@@ -1,0 +1,86 @@
+---
+title: "How Does Quantum Entanglement Work? Simple Explanations & Interactive Demos"
+description: "Visual guide to quantum entanglement. See animated demos of entangled qubits, understand the EPR paradox, and learn why Einstein called it spooky."
+date: 2026-04-26
+---
+
+import EntanglementVisual from '../../components/visual/EntanglementVisual.astro';
+import EntanglementMeasure from '../../components/visual/EntanglementMeasure.astro';
+
+Einstein called it "spooky action at a distance." Decades later, it won the 2022 Nobel Prize in Physics. Entanglement is the most counterintuitive concept in quantum computing — and the most powerful. Let's make it intuitive.
+
+---
+
+## 1. What Entanglement Actually Is
+
+Take two qubits. Apply the right quantum gates (a Hadamard followed by a CNOT). Now these two qubits are **entangled** — their states are correlated in a way that has no classical equivalent.
+
+Measure one and you instantly know the state of the other. Not because they secretly agreed beforehand (that's called a "hidden variable" theory, and experiments have ruled it out). Their fates are genuinely linked at the quantum level.
+
+<EntanglementVisual />
+
+**The crucial point:** entanglement isn't communication. You can't use it to send messages faster than light. The measurement results look random to each observer. You only see the correlation when you compare notes through a classical channel.
+
+---
+
+## 2. What Measurement Looks Like
+
+When you have two entangled qubits in a Bell state and measure both, the results are always correlated. Run it 1,000 times and you'll see something like this:
+
+<EntanglementMeasure />
+
+Each individual result is random — you genuinely cannot predict whether you'll get 0 or 1. But the two qubits **always** agree. That correlation holds whether the qubits are in the same lab or on opposite sides of the planet.
+
+---
+
+## 3. Why Entanglement Matters for Computing
+
+Entanglement isn't just a curiosity — it's a computational resource. Without it, a quantum computer is no more powerful than a classical probabilistic computer. Entanglement is what makes quantum computing actually quantum.
+
+**What entanglement enables:**
+- **Quantum teleportation** — transfer a qubit's state using an entangled pair and classical communication
+- **Superdense coding** — send two classical bits using one qubit (if you share entanglement)
+- **Quantum algorithms** — Shor's and Grover's algorithms both rely on entanglement to outperform classical approaches
+- **Quantum error correction** — entangling physical qubits to protect logical qubit information
+
+**The CNOT gate** is the standard way to create entanglement. Apply a Hadamard to qubit A (creating superposition), then a CNOT with A as control and B as target. Now they're entangled. It's two gates. That's it.
+
+```python
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+qc.h(0)       # Superposition on qubit 0
+qc.cx(0, 1)   # CNOT: entangle qubit 0 and 1
+# Now qubits are in the Bell state |Φ+⟩
+```
+
+---
+
+## 4. Common Misconceptions
+
+**"Entanglement lets you communicate faster than light."**
+No. The measurement results are random. You can't control what you get. You need a classical channel (which is limited to light speed) to compare results and see the correlation.
+
+**"Entangled particles are sending signals to each other."**
+No. There's no signal. The correlation exists because the particles share a single quantum state. Measuring one doesn't "cause" the other to change — they were never independent to begin with.
+
+**"Entanglement breaks down with distance."**
+Not inherently. Entanglement has been demonstrated over 1,200 km using the Micius satellite. The challenge is maintaining the quantum state (avoiding decoherence from environmental interference), not distance itself.
+
+**"You need entanglement for all quantum computing."**
+Technically, there are limited quantum speedups possible without entanglement. But for any meaningful quantum advantage — the kind that beats classical computers at important problems — entanglement is essential.
+
+---
+
+## 5. Making Your First Entangled Pair
+
+The simplest way to experience entanglement hands-on is through IBM Quantum's free platform. Create an account, open the circuit composer, and build this:
+
+1. Place a Hadamard (H) gate on qubit 0
+2. Place a CNOT gate with control on qubit 0 and target on qubit 1
+3. Add measurement on both qubits
+4. Run it on the simulator with 1,000 shots
+
+You'll see approximately 50% `00` and 50% `11` — never `01` or `10`. That perfect correlation, despite each individual outcome being random, is entanglement in action.
+
+Run it on real hardware and you'll see mostly `00` and `11`, but with some `01` and `10` noise mixed in. That noise is quantum decoherence — and it's the biggest engineering challenge in quantum computing today.

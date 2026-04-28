@@ -1,0 +1,25 @@
+---
+title: "AI Agent Memory — Short-Term, Long-Term, and Episodic"
+description: "Visual guide to AI agent memory systems. Understand the three types of memory that make agents useful over time: working memory, semantic long-term, and episodic recall."
+date: 2026-06-01
+---
+
+import AgentMemoryTypes from '../../components/visual/AgentMemoryTypes.astro';
+
+An AI agent without memory is like a goldfish — every conversation starts from zero. It can't remember your preferences, recall past interactions, or learn from its mistakes. Memory is what transforms a chatbot into an assistant that gets better over time.
+
+But "agent memory" isn't one thing. It's at least three different systems, each solving a different problem and requiring different storage and retrieval strategies.
+
+## Three Types of Memory
+
+Human memory is a useful analogy. Working memory is what you're actively thinking about right now. Long-term memory is everything you've learned over your life. Episodic memory is your ability to recall specific experiences — "the last time I went to that restaurant, I ordered the pasta and it was terrible."
+
+<AgentMemoryTypes />
+
+Short-term memory is the simplest — it's just the conversation context. Every message, tool call result, and intermediate thought lives in the context window. The limitation is physical: when the context fills up, old messages get dropped. Strategies like summarizing old messages, keeping only the N most recent turns, or using sliding windows help manage this.
+
+Long-term memory is where things get interesting. After each conversation, the agent extracts key facts ("User prefers Python over JavaScript," "User works on a payments microservice") and stores them in a vector database. On the next conversation, relevant facts are retrieved and injected into the system prompt. The agent appears to "remember" you across sessions.
+
+The hardest part of long-term memory isn't storage — it's deciding what to remember and what to forget. Store everything and retrieval becomes noisy. Store too little and the agent misses important context. The best systems use importance scoring: the agent rates each fact on a 1-10 scale and only stores facts above a threshold. Periodic pruning removes outdated or contradicted facts.
+
+Episodic memory is the frontier. Rather than storing individual facts, it stores complete interaction patterns: "When the user asked me to debug a failing test, I asked for the error message, ran the test, identified the assertion mismatch, and fixed the comparison. It worked." These episodes become templates for future similar tasks.

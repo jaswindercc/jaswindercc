@@ -1,0 +1,23 @@
+---
+title: "Event-Driven Architecture — Building Reactive Systems"
+description: "Visual guide to event-driven architecture patterns. Understand event notifications, event sourcing, CQRS, and when each pattern makes sense for distributed systems."
+date: 2026-06-06
+---
+
+import EventDrivenPatterns from '../../components/visual/EventDrivenPatterns.astro';
+
+In a request-driven architecture, Service A calls Service B and waits for a response. If Service B is slow or down, Service A is stuck. In an event-driven architecture, Service A publishes an event and moves on. Service B consumes the event whenever it's ready. The services are decoupled in time and availability.
+
+This decoupling is what makes event-driven architecture powerful — and what makes it complex. You trade synchronous simplicity for asynchronous resilience. The system becomes more fault-tolerant but harder to reason about.
+
+## The Four Patterns
+
+"Event-driven" isn't one thing — it's a family of patterns with different tradeoffs. Most teams start with event notifications, which is the simplest. Event sourcing and CQRS are powerful but complex, and you should only reach for them when the simpler patterns aren't enough.
+
+<EventDrivenPatterns />
+
+Event notification is where 90% of teams should start. Service A publishes a small event ("OrderCreated, id: 123"). Service B subscribes, receives the event, and fetches additional data from Service A if needed. The events are cheap to produce and consume, and the coupling is minimal.
+
+Event sourcing is a fundamentally different data model. Instead of storing the current state of an entity (Order: status=shipped), you store every event that happened to it (OrderCreated → ItemAdded → PaymentProcessed → Shipped). Current state is derived by replaying events. This gives you a complete audit trail, the ability to rebuild state at any point in time, and the option to create new read models from historical events. But it adds significant complexity: event schema evolution, snapshot management, and eventual consistency everywhere.
+
+The honest advice: use event notifications liberally — they're a proven pattern for decoupling services. Use event sourcing only when you have a genuine need for audit trails, temporal queries, or event replay. Using event sourcing "just because" adds enormous complexity with no payoff.

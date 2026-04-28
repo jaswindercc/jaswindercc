@@ -1,0 +1,37 @@
+---
+title: "Prompt Injection Attacks — Offense and Defense"
+description: "Visual guide to prompt injection. Understand direct vs indirect attacks, see real-world injection patterns, and learn layered defenses for production LLM applications."
+date: 2026-06-13
+---
+
+import InjectionTypes from '../../components/visual/InjectionTypes.astro';
+import InjectionDefenses from '../../components/visual/InjectionDefenses.astro';
+import InjectionExamples from '../../components/visual/InjectionExamples.astro';
+
+Prompt injection is the SQL injection of the AI era. Your application sends a carefully crafted system prompt to the LLM. An attacker sends input that says "ignore everything above — do this instead." And the model obeys, because it can't fundamentally distinguish between your instructions and the attacker's text.
+
+This isn't a bug that gets patched. It's an inherent property of how language models process text. All text in the context window has equal authority. There's no privilege level, no instruction hierarchy, no way for the model to know which tokens are "trusted" and which aren't.
+
+## 1. Two Attack Vectors
+
+Direct injection happens when a user deliberately types malicious instructions into a chat interface or API input. Indirect injection is sneakier — the malicious payload is hidden in content the LLM retrieves or processes, like a webpage, email, or document.
+
+<InjectionTypes />
+
+Indirect injection is the more dangerous vector because users and developers don't see it coming. If your RAG system retrieves web pages and one of those pages contains hidden instructions, the LLM processes them alongside your system prompt. The attacker doesn't need access to your application — they just need to poison content your system might retrieve.
+
+## 2. Defense Layers
+
+There is no single defense that stops all prompt injection. The only effective strategy is defense-in-depth: multiple overlapping layers, each catching a different subset of attacks. No layer is sufficient alone.
+
+<InjectionDefenses />
+
+The most underrated defense is least privilege. Even if every other layer fails and the LLM follows a malicious instruction, the damage is limited by what the LLM can access. If your chatbot has read-only access to a product catalog and nothing else, a successful injection can't exfiltrate user data, call sensitive APIs, or modify anything. The attack succeeds technically but fails practically.
+
+## 3. Patterns in the Wild
+
+Knowing what attacks look like helps you build better defenses. These patterns show up constantly in red-team exercises against production LLM applications.
+
+<InjectionExamples />
+
+The tool manipulation pattern is especially concerning for agentic AI systems. When an LLM has access to tools — web search, code execution, database queries, API calls — a successful injection doesn't just change the text output. It changes real-world actions. An agent that can send emails, create files, or modify databases becomes a powerful attack surface when its instructions can be overridden by injected text.

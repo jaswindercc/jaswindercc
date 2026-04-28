@@ -1,0 +1,38 @@
+---
+// CICDAntiPatterns.astro — CI/CD mistakes to avoid
+---
+<div class="cia-wrap">
+  <h3 class="cia-title">Anti-Patterns That Kill Your Pipeline</h3>
+  <div class="cia-list">
+    <div class="cia-item cia-i1">
+      <div class="cia-header"><span class="cia-x">✗</span><span class="cia-nm">No Caching</span></div>
+      <p class="cia-d">Installing 800MB of node_modules from scratch on every run. Add dependency caching — turns 3-minute installs into 5-second cache restores.</p>
+    </div>
+    <div class="cia-item cia-i2">
+      <div class="cia-header"><span class="cia-x">✗</span><span class="cia-nm">Sequential Everything</span></div>
+      <p class="cia-d">Lint → Type Check → Unit Tests → Integration Tests → Build in series. Lint, type check, and unit tests can run in parallel. That alone saves 40% wall time.</p>
+    </div>
+    <div class="cia-item cia-i3">
+      <div class="cia-header"><span class="cia-x">✗</span><span class="cia-nm">Flaky Tests Without Quarantine</span></div>
+      <p class="cia-d">One flaky test fails randomly, team ignores all red pipelines. Now real failures get missed. Quarantine flaky tests into a separate non-blocking job.</p>
+    </div>
+    <div class="cia-item cia-i4">
+      <div class="cia-header"><span class="cia-x">✗</span><span class="cia-nm">Secrets in Environment</span></div>
+      <p class="cia-d">Hardcoded credentials in pipeline YAML or exposed in build logs. Use secret managers. Never echo secrets. Mask them in output.</p>
+    </div>
+    <div class="cia-item cia-i5">
+      <div class="cia-header"><span class="cia-x">✗</span><span class="cia-nm">No Artifact Promotion</span></div>
+      <p class="cia-d">Building separately for staging and production. Build ONCE, test the artifact, promote the same binary to prod. Different builds = untested code in prod.</p>
+    </div>
+  </div>
+</div>
+<style>
+  .cia-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .cia-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .cia-list{display:flex;flex-direction:column;gap:10px}
+  .cia-item{padding:12px 14px;background:rgba(0,0,0,.15);border-radius:10px;border:1px solid #334155;border-left:3px solid #f87171;opacity:0;animation:ciaIn .4s ease forwards}
+  .cia-i1{animation-delay:.1s}.cia-i2{animation-delay:.2s}.cia-i3{animation-delay:.3s}.cia-i4{animation-delay:.4s}.cia-i5{animation-delay:.5s}
+  @keyframes ciaIn{to{opacity:1}}
+  .cia-header{display:flex;align-items:center;gap:8px;margin-bottom:4px}.cia-x{color:#f87171;font-weight:800;font-size:.9rem}.cia-nm{color:#e2e8f0;font-weight:700;font-size:.82rem}
+  .cia-d{color:#94a3b8;font-size:.72rem;line-height:1.6;margin:0}
+</style>

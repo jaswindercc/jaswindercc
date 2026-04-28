@@ -1,0 +1,48 @@
+---
+/**
+ * LBCompare.astro
+ * L4 vs L7 load balancing comparison
+ */
+---
+
+<div class="lbc-wrap">
+  <h3 class="lbc-title">L4 vs L7 Load Balancing</h3>
+  <div class="lbc-grid">
+    <div class="lbc-card" style="--i:0; --color:#06b6d4;">
+      <div class="lbc-badge">Layer 4 (Transport)</div>
+      <div class="lbc-sees">Sees: IP addresses, TCP/UDP ports</div>
+      <div class="lbc-items">
+        <div class="lbc-item">Routes based on IP + port number</div>
+        <div class="lbc-item">Cannot inspect HTTP headers, paths, or body</div>
+        <div class="lbc-item">Extremely fast — kernel-level forwarding</div>
+        <div class="lbc-item">No SSL termination (pass-through)</div>
+      </div>
+      <div class="lbc-use">Use for: TCP services, databases, gRPC, gaming, IoT</div>
+    </div>
+    <div class="lbc-card" style="--i:1; --color:#f59e0b;">
+      <div class="lbc-badge">Layer 7 (Application)</div>
+      <div class="lbc-sees">Sees: HTTP headers, URL paths, cookies, body</div>
+      <div class="lbc-items">
+        <div class="lbc-item">Route /api/* to backend, /static/* to CDN</div>
+        <div class="lbc-item">SSL termination, header manipulation, compression</div>
+        <div class="lbc-item">Content-based routing, A/B testing, canary</div>
+        <div class="lbc-item">Higher latency — must parse full HTTP request</div>
+      </div>
+      <div class="lbc-use">Use for: web apps, REST APIs, microservices, HTTP routing</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .lbc-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .lbc-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .lbc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+  @media(max-width:640px){.lbc-grid{grid-template-columns:1fr}}
+  .lbc-card{background:rgba(255,255,255,0.03);border:1px solid var(--color);border-radius:12px;padding:1.25rem;opacity:0;animation:lbcFade .5s ease forwards;animation-delay:calc(var(--i)*.2s)}
+  @keyframes lbcFade{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+  .lbc-badge{background:var(--color);color:#0f172a;font-size:.65rem;font-weight:700;padding:.15rem .5rem;border-radius:6px;display:inline-block;margin-bottom:.5rem}
+  .lbc-sees{color:#f1f5f9;font-size:.85rem;font-weight:600;margin-bottom:.75rem}
+  .lbc-items{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.75rem}
+  .lbc-item{color:#94a3b8;font-size:.8rem;padding-left:.75rem;position:relative}.lbc-item::before{content:'→';position:absolute;left:0;color:#64748b}
+  .lbc-use{color:var(--color);font-size:.8rem;font-weight:600}
+</style>

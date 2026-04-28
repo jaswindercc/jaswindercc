@@ -1,0 +1,23 @@
+---
+title: "Model Distillation — Making Giant Models Small"
+description: "Visual guide to knowledge distillation for LLMs. Understand how teacher-student training creates smaller models that retain 90% of the capability at 10% of the cost."
+date: 2026-05-24
+---
+
+import DistillationVisual from '../../components/visual/DistillationVisual.astro';
+
+You've fine-tuned a 70B parameter model and it's amazing. It's also $0.03 per request and takes 2 seconds to respond. For production with 100,000 requests per day, that's $3,000/day and unacceptable latency. Distillation creates a smaller model that captures most of the large model's knowledge at a fraction of the cost and latency.
+
+The idea: train a small "student" model to mimic the outputs of a large "teacher" model. The student never sees the original training data — it learns by studying how the teacher answers questions.
+
+## How Distillation Works
+
+The key insight is that the teacher's probability distribution over all possible outputs contains more information than just the correct answer. When the teacher says "the answer is Paris" with 90% confidence, "Lyon" with 5%, and "Marseille" with 3%, those secondary probabilities encode meaningful relationships between concepts.
+
+<DistillationVisual />
+
+Hard labels say "the answer is Paris." Soft labels say "the answer is probably Paris, but Lyon and Marseille are reasonable too, while Tokyo is definitely not." That nuance — which Hinton called "dark knowledge" — helps the student model learn faster and generalize better than training on hard labels alone.
+
+In practice, distillation for LLMs follows a simple pipeline: generate a large dataset of prompt-completion pairs using the teacher model, then fine-tune the student model on these pairs. The student learns to produce similar outputs for similar inputs, inheriting the teacher's behavior patterns without needing the teacher's parameter count.
+
+The accuracy-cost tradeoff is remarkably favorable. A well-distilled 7B model typically achieves 85-95% of the teacher's quality on the target task at 10x less compute cost. For many production use cases, that 5-15% quality gap is invisible to users while the cost and latency improvements are dramatic.

@@ -1,0 +1,185 @@
+---
+// LangGraphLayers.astro — Pure CSS/HTML expandable architecture showing LangGraph building blocks
+// Uses details/summary for zero-JS interactivity — code in frontmatter to avoid brace issues
+
+const stateCode = `from typing import TypedDict
+
+class AgentState(TypedDict):
+    query: str
+    category: str | None
+    sentiment: str | None
+    response: str | None
+    approved: bool
+    loop_count: int`;
+
+const nodesCode = `def classify(state: AgentState) -> AgentState:
+    result = llm.invoke(f"Classify: {state['query']}")
+    return {
+        **state,
+        "category": result.category,
+        "sentiment": result.sentiment
+    }
+
+def process(state: AgentState) -> AgentState:
+    draft = llm.invoke(
+        f"Draft reply for {state['category']} issue"
+    )
+    return {**state, "response": draft}`;
+
+const edgesCode = `graph = StateGraph(AgentState)
+
+graph.add_node("classify", classify)
+graph.add_node("process", process)
+graph.add_node("review", review)
+
+# Conditional edge: loop or finish
+graph.add_conditional_edges(
+    "review",
+    should_loop,
+    {True: "classify", False: "__end__"}
+)
+
+# The loop: review -> classify -> process -> review
+graph.add_edge("classify", "process")
+graph.add_edge("process", "review")`;
+---
+
+<div class="lg-wrap">
+  <h3 class="lg-title">Building Blocks — 3 Pieces, That's It</h3>
+  <p class="lg-sub">Click each layer to see how it works with real code.</p>
+
+  <div class="lg-stack">
+    <!-- Layer 1: State -->
+    <details class="lg-layer lg-layer--green">
+      <summary class="lg-header">
+        <span class="lg-icon">📦</span>
+        <div class="lg-info">
+          <span class="lg-name">The State</span>
+          <span class="lg-tech">TypedDict — your data contract</span>
+        </div>
+        <div class="lg-pills">
+          <span class="lg-pill lg-pill--green">Typed</span>
+          <span class="lg-pill lg-pill--green">Shared</span>
+          <span class="lg-pill lg-pill--green">Immutable-ish</span>
+        </div>
+        <span class="lg-arrow">▼</span>
+      </summary>
+      <div class="lg-body">
+        <p>Define your state as a TypedDict. Every node sees the same shape. No guessing what data is available.</p>
+        <pre class="lg-code lg-code--green"><code set:html={stateCode} /></pre>
+      </div>
+    </details>
+
+    <div class="lg-connector">
+      <svg width="24" height="20" viewBox="0 0 24 20"><path d="M12 0 L12 20 M6 14 L12 20 L18 14" stroke="#475569" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+    </div>
+
+    <!-- Layer 2: Nodes -->
+    <details class="lg-layer lg-layer--purple">
+      <summary class="lg-header">
+        <span class="lg-icon">⚙️</span>
+        <div class="lg-info">
+          <span class="lg-name">The Nodes</span>
+          <span class="lg-tech">Plain functions — state in, state out</span>
+        </div>
+        <div class="lg-pills">
+          <span class="lg-pill lg-pill--purple">classify</span>
+          <span class="lg-pill lg-pill--purple">process</span>
+          <span class="lg-pill lg-pill--purple">review</span>
+        </div>
+        <span class="lg-arrow">▼</span>
+      </summary>
+      <div class="lg-body">
+        <p>Each node is a regular Python function. Takes state, returns updated state. Testable in isolation — no framework dependency.</p>
+        <pre class="lg-code lg-code--purple"><code set:html={nodesCode} /></pre>
+      </div>
+    </details>
+
+    <div class="lg-connector">
+      <svg width="24" height="20" viewBox="0 0 24 20"><path d="M12 0 L12 20 M6 14 L12 20 L18 14" stroke="#475569" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+    </div>
+
+    <!-- Layer 3: Edges -->
+    <details class="lg-layer lg-layer--amber">
+      <summary class="lg-header">
+        <span class="lg-icon">🔀</span>
+        <div class="lg-info">
+          <span class="lg-name">The Edges</span>
+          <span class="lg-tech">StateGraph — wiring + conditional loops</span>
+        </div>
+        <div class="lg-pills">
+          <span class="lg-pill lg-pill--amber">Wire</span>
+          <span class="lg-pill lg-pill--amber">Branch</span>
+          <span class="lg-pill lg-pill--amber">Loop</span>
+        </div>
+        <span class="lg-arrow">▼</span>
+      </summary>
+      <div class="lg-body">
+        <p>The graph is the orchestrator. Add nodes, connect them with edges, and define conditions for looping. One line creates a loop.</p>
+        <pre class="lg-code lg-code--amber"><code set:html={edgesCode} /></pre>
+      </div>
+    </details>
+  </div>
+</div>
+
+<style>
+  .lg-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .lg-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .lg-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .lg-stack { display: flex; flex-direction: column; align-items: center; }
+  .lg-connector { display: flex; justify-content: center; padding: 4px 0; }
+
+  .lg-layer {
+    width: 100%; border-radius: 12px; border: 1px solid #334155;
+    background: rgba(0,0,0,0.2); transition: border-color 0.3s, background 0.3s; overflow: hidden;
+  }
+  .lg-layer[open] { border-color: #475569; }
+  .lg-layer--green[open] { border-color: #4ade8040; background: rgba(74,222,128,0.03); }
+  .lg-layer--purple[open] { border-color: #818cf840; background: rgba(129,140,248,0.03); }
+  .lg-layer--amber[open] { border-color: #f59e0b40; background: rgba(245,158,11,0.03); }
+
+  .lg-header {
+    display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+    cursor: pointer; list-style: none; flex-wrap: wrap;
+  }
+  .lg-header::-webkit-details-marker { display: none; }
+  .lg-header::marker { content: ''; }
+
+  .lg-icon { font-size: 1.3rem; flex-shrink: 0; }
+  .lg-info { display: flex; flex-direction: column; min-width: 120px; }
+  .lg-name { color: #e2e8f0; font-weight: 700; font-size: 0.9rem; }
+  .lg-tech { color: #64748b; font-family: monospace; font-size: 0.6rem; }
+
+  .lg-pills { display: flex; flex-wrap: wrap; gap: 4px; margin-left: auto; }
+  .lg-pill {
+    font-family: monospace; font-size: 0.55rem; padding: 2px 8px; border-radius: 5px;
+  }
+  .lg-pill--green { background: rgba(74,222,128,0.1); color: #4ade80; border: 1px solid rgba(74,222,128,0.2); }
+  .lg-pill--purple { background: rgba(129,140,248,0.1); color: #818cf8; border: 1px solid rgba(129,140,248,0.2); }
+  .lg-pill--amber { background: rgba(245,158,11,0.1); color: #f59e0b; border: 1px solid rgba(245,158,11,0.2); }
+
+  .lg-arrow {
+    color: #475569; font-size: 0.7rem; transition: transform 0.3s; flex-shrink: 0;
+  }
+  .lg-layer[open] .lg-arrow { transform: rotate(180deg); }
+
+  .lg-body { padding: 0 16px 16px; }
+  .lg-body p { color: #94a3b8; font-size: 0.8rem; line-height: 1.6; margin: 0 0 12px; }
+  .lg-body strong { color: #e2e8f0; }
+
+  .lg-code {
+    margin: 0; padding: 12px 14px; border-radius: 8px; font-size: 0.65rem;
+    line-height: 1.5; overflow-x: auto; border: 1px solid #334155; white-space: pre;
+  }
+  .lg-code--green { background: rgba(74,222,128,0.04); color: #86efac; }
+  .lg-code--purple { background: rgba(129,140,248,0.04); color: #a5b4fc; }
+  .lg-code--amber { background: rgba(245,158,11,0.04); color: #fbbf24; }
+  .lg-code code {
+    background: transparent !important; padding: 0 !important;
+    color: inherit !important; font-size: inherit !important;
+  }
+</style>

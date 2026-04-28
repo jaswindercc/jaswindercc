@@ -1,0 +1,23 @@
+---
+title: "Managed Kubernetes — EKS vs GKE vs AKS Compared"
+description: "Visual comparison of AWS EKS, Google GKE, and Azure AKS. See the tradeoffs in pricing, features, and ecosystem integration for each managed Kubernetes service."
+date: 2026-06-02
+---
+
+import ManagedK8sCompare from '../../components/visual/ManagedK8sCompare.astro';
+
+Running your own Kubernetes control plane is a full-time job. Managed Kubernetes services eliminate that operational burden — the cloud provider handles etcd, the API server, controller manager, and scheduler. You focus on workloads. But the three major managed services aren't identical, and the differences matter when you're committing to one for the next few years.
+
+## The Big Three
+
+All three services give you a managed control plane and node groups. The differences are in pricing, default configurations, ecosystem integration, and how opinionated they are about best practices.
+
+<ManagedK8sCompare />
+
+GKE Autopilot deserves special attention. It's the closest thing to "Kubernetes without managing nodes." You define pods, and GKE handles everything else — provisioning nodes, patching, scaling, bin-packing. You pay per pod resource (CPU + memory), not per node. For teams that want Kubernetes APIs without the node management tax, it's the best option available.
+
+EKS is the safe choice for AWS-heavy organizations. The IAM integration is seamless — pod-level IAM roles (IRSA) let you assign AWS permissions at the pod level without shared credentials. The ALB Ingress Controller integrates directly with AWS Application Load Balancers. EFS CSI driver gives you shared filesystem storage across pods. If you're deep in AWS, EKS is the path of least resistance.
+
+AKS's killer feature is Azure AD integration. In enterprise environments with existing Active Directory infrastructure, AKS lets you use AD groups for Kubernetes RBAC. This is a significant advantage for organizations that already manage access through AD — no need to build a separate identity system for K8s.
+
+My recommendation: go with whichever cloud provider your organization already uses. The operational advantage of staying in one ecosystem (networking, IAM, monitoring integration) outweighs the feature differences between managed K8s services.

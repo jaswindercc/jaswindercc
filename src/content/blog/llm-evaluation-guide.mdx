@@ -1,0 +1,23 @@
+---
+title: "LLM Evaluation — How to Measure What Actually Matters"
+description: "Visual guide to evaluating LLM applications. Learn the key metrics for faithfulness, relevance, and safety, and build an evaluation pipeline that catches regressions before production."
+date: 2026-06-05
+---
+
+import LLMEvalMetrics from '../../components/visual/LLMEvalMetrics.astro';
+
+"It seems to work well" isn't an evaluation strategy. Every team building LLM applications eventually hits the moment where a model update, prompt change, or retrieval tweak breaks something subtle — and they don't notice until users complain. Systematic evaluation is how you catch regressions before they reach production.
+
+The challenge: LLM outputs aren't deterministic, and "correct" is subjective. You can't unit test a chat response the way you test a function return value. But you can build an evaluation framework that catches the most important failure modes.
+
+## What to Measure
+
+Different metrics catch different problems. Faithfulness catches hallucinations. Relevance catches off-topic answers. Context precision catches bad retrieval. Harmfulness catches safety violations. Latency and cost catch production viability issues.
+
+<LLMEvalMetrics />
+
+The most impactful metric for RAG applications is faithfulness — does the answer stick to the provided context, or does the model make things up? This is measurable: extract every claim in the answer, check each claim against the source documents, and calculate the percentage that are supported. Tools like RAGAS and DeepEval automate this with LLM-as-judge patterns.
+
+Build your eval dataset before you build your application. Start with 50-100 question-answer pairs that represent real user queries. Include edge cases: ambiguous questions, questions with no good answer in the corpus, multi-hop questions that require combining information from multiple documents. Run every change through this eval set before deploying.
+
+The LLM-as-judge pattern is the closest thing to scalable evaluation. You use a strong model (like GPT-4 or Claude) to evaluate the outputs of your application model. It's not perfect — judges have biases and blind spots — but it's dramatically better than manual review at scale, and it runs in CI alongside your tests.

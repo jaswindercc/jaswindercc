@@ -1,0 +1,27 @@
+---
+// FlagTypes.astro — Expandable cards for types of feature flags
+---
+<div class="fty-wrap">
+  <h3 class="fty-title">4 Types of Feature Flags</h3>
+  <p class="fty-sub">Not all flags are the same. Click each to see when to use it.</p>
+  <div class="fty-stack">
+    <details class="fty-c fty-c--green"><summary class="fty-h"><span class="fty-n">01</span><div class="fty-i"><span class="fty-nm">Release Flag</span><span class="fty-w">Ship code dark, enable later</span></div><span class="fty-a">▼</span></summary><div class="fty-b"><p>The most common type. Deploy new features behind a flag. Enable gradually. Kill it instantly if something breaks. Short-lived — remove after full rollout.</p><div class="fty-life"><strong>Lifespan:</strong> Days to weeks</div></div></details>
+    <details class="fty-c fty-c--cyan"><summary class="fty-h"><span class="fty-n">02</span><div class="fty-i"><span class="fty-nm">Experiment Flag</span><span class="fty-w">A/B test with real users</span></div><span class="fty-a">▼</span></summary><div class="fty-b"><p>Split traffic between variants. Measure conversion, engagement, or revenue. Let data decide which version wins. Remove the loser, promote the winner.</p><div class="fty-life"><strong>Lifespan:</strong> Weeks to months</div></div></details>
+    <details class="fty-c fty-c--purple"><summary class="fty-h"><span class="fty-n">03</span><div class="fty-i"><span class="fty-nm">Ops Flag</span><span class="fty-w">Kill switch for emergencies</span></div><span class="fty-a">▼</span></summary><div class="fty-b"><p>Disable expensive features during outages. Reduce load during traffic spikes. Turn off non-critical services to protect core functionality. Long-lived — always there.</p><div class="fty-life"><strong>Lifespan:</strong> Permanent</div></div></details>
+    <details class="fty-c fty-c--amber"><summary class="fty-h"><span class="fty-n">04</span><div class="fty-i"><span class="fty-nm">Permission Flag</span><span class="fty-w">Gate features by user tier</span></div><span class="fty-a">▼</span></summary><div class="fty-b"><p>Enterprise users see advanced analytics. Free users don't. Same codebase, different experience based on user attributes. Long-lived — tied to your pricing model.</p><div class="fty-life"><strong>Lifespan:</strong> Permanent</div></div></details>
+  </div>
+</div>
+<style>
+  .fty-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .fty-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.fty-sub{color:#64748b;font-size:.8rem;margin:0 0 1.5rem;font-family:monospace}
+  .fty-stack{display:flex;flex-direction:column;gap:8px}
+  .fty-c{border-radius:12px;border:1px solid #334155;overflow:hidden;transition:border-color .3s}
+  .fty-c[open]{border-color:#475569}.fty-c--green[open]{border-color:#4ade8030}.fty-c--cyan[open]{border-color:#06b6d430}.fty-c--purple[open]{border-color:#818cf830}.fty-c--amber[open]{border-color:#f59e0b30}
+  .fty-h{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;list-style:none;background:rgba(0,0,0,.15)}.fty-h::-webkit-details-marker{display:none}.fty-h::marker{content:''}
+  .fty-n{font-family:monospace;font-size:.65rem;font-weight:800;width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .fty-c--green .fty-n{color:#4ade80;background:rgba(74,222,128,.1)}.fty-c--cyan .fty-n{color:#06b6d4;background:rgba(6,182,212,.1)}.fty-c--purple .fty-n{color:#818cf8;background:rgba(129,140,248,.1)}.fty-c--amber .fty-n{color:#f59e0b;background:rgba(245,158,11,.1)}
+  .fty-i{flex:1}.fty-nm{display:block;color:#e2e8f0;font-weight:700;font-size:.85rem}.fty-w{display:block;color:#64748b;font-family:monospace;font-size:.6rem;margin-top:2px}
+  .fty-a{color:#475569;font-size:.7rem;transition:transform .3s}.fty-c[open] .fty-a{transform:rotate(180deg)}
+  .fty-b{padding:14px 16px}.fty-b p{color:#94a3b8;font-size:.78rem;line-height:1.6;margin:0 0 8px}
+  .fty-life{color:#64748b;font-size:.65rem;font-family:monospace}.fty-life strong{color:#94a3b8}
+</style>

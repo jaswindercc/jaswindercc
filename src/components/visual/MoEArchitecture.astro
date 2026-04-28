@@ -1,0 +1,52 @@
+---
+/**
+ * MoEArchitecture.astro
+ * Visual showing MoE routing with expert selection
+ */
+---
+
+<div class="moe-wrap">
+  <h3 class="moe-title">Mixture of Experts — How Sparse Models Work</h3>
+  <div class="moe-flow">
+    <div class="moe-input" style="--i:0;">
+      <div class="moe-label">Input Token</div>
+    </div>
+    <div class="moe-router" style="--i:1;">
+      <div class="moe-label">Router (Gating Network)</div>
+      <div class="moe-router-desc">Decides which experts handle this token</div>
+    </div>
+    <div class="moe-experts" style="--i:2;">
+      <div class="moe-expert moe-active" style="--c:#4ade80;">Expert 1 <span>ACTIVE</span></div>
+      <div class="moe-expert moe-inactive" style="--c:#334155;">Expert 2</div>
+      <div class="moe-expert moe-active" style="--c:#06b6d4;">Expert 3 <span>ACTIVE</span></div>
+      <div class="moe-expert moe-inactive" style="--c:#334155;">Expert 4</div>
+      <div class="moe-expert moe-inactive" style="--c:#334155;">Expert 5</div>
+      <div class="moe-expert moe-inactive" style="--c:#334155;">Expert 6</div>
+      <div class="moe-expert moe-inactive" style="--c:#334155;">Expert 7</div>
+      <div class="moe-expert moe-inactive" style="--c:#334155;">Expert 8</div>
+    </div>
+    <div class="moe-output" style="--i:3;">
+      <div class="moe-label">Weighted Sum → Output</div>
+      <div class="moe-key">Only 2 of 8 experts computed. 75% less FLOPs.</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .moe-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .moe-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .moe-flow{display:flex;flex-direction:column;align-items:center;gap:1rem}
+  .moe-input,.moe-router,.moe-output{background:rgba(255,255,255,0.03);border:1px solid #334155;border-radius:12px;padding:.75rem 1.5rem;text-align:center;opacity:0;animation:moeFade .5s ease forwards;animation-delay:calc(var(--i)*.2s)}
+  @keyframes moeFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .moe-label{color:#f1f5f9;font-weight:700;font-size:.9rem}
+  .moe-router{border-color:#f59e0b}
+  .moe-router-desc{color:#94a3b8;font-size:.75rem;margin-top:.2rem}
+  .moe-experts{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;width:100%;max-width:500px;opacity:0;animation:moeFade .5s ease forwards;animation-delay:.4s}
+  .moe-expert{padding:.5rem;border-radius:8px;text-align:center;font-size:.7rem;font-weight:600;border:1px solid var(--c);color:var(--c);background:rgba(255,255,255,0.02)}
+  .moe-active{animation:moePulse 2s ease-in-out infinite}
+  .moe-expert span{display:block;font-size:.55rem;margin-top:.1rem}
+  @keyframes moePulse{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}50%{box-shadow:0 0 10px 2px rgba(74,222,128,0.15)}}
+  .moe-inactive{opacity:.4}
+  .moe-output{border-color:#4ade80}
+  .moe-key{color:#4ade80;font-size:.75rem;margin-top:.2rem}
+</style>

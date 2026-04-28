@@ -1,0 +1,74 @@
+---
+/**
+ * CachingVisual.astro
+ * Caching strategies comparison
+ */
+---
+
+<div class="cav-wrap">
+  <h3 class="cav-title">Caching Strategies Compared</h3>
+  <div class="cav-strats">
+    <div class="cav-strat" style="--i:0;--c:#06b6d4;">
+      <div class="cav-sname">Cache-Aside (Lazy)</div>
+      <div class="cav-flow">
+        <span class="cav-step">App checks cache</span>
+        <span class="cav-arrow">→</span>
+        <span class="cav-step">Miss? Read DB</span>
+        <span class="cav-arrow">→</span>
+        <span class="cav-step">Write to cache</span>
+      </div>
+      <div class="cav-pros">Simple, app controls caching, resilient to cache failure</div>
+      <div class="cav-cons">First request always slow (cold cache), possible stale data</div>
+    </div>
+    <div class="cav-strat" style="--i:1;--c:#4ade80;">
+      <div class="cav-sname">Write-Through</div>
+      <div class="cav-flow">
+        <span class="cav-step">App writes cache</span>
+        <span class="cav-arrow">→</span>
+        <span class="cav-step">Cache writes DB</span>
+        <span class="cav-arrow">→</span>
+        <span class="cav-step">Confirm to app</span>
+      </div>
+      <div class="cav-pros">Cache always consistent, reads always fast</div>
+      <div class="cav-cons">Higher write latency, caches data that may never be read</div>
+    </div>
+    <div class="cav-strat" style="--i:2;--c:#f59e0b;">
+      <div class="cav-sname">Write-Behind (Write-Back)</div>
+      <div class="cav-flow">
+        <span class="cav-step">App writes cache</span>
+        <span class="cav-arrow">→</span>
+        <span class="cav-step">Return immediately</span>
+        <span class="cav-arrow">→</span>
+        <span class="cav-step">Async flush to DB</span>
+      </div>
+      <div class="cav-pros">Lowest write latency, batch DB writes</div>
+      <div class="cav-cons">Risk of data loss if cache crashes, complex implementation</div>
+    </div>
+    <div class="cav-strat" style="--i:3;--c:#818cf8;">
+      <div class="cav-sname">Read-Through</div>
+      <div class="cav-flow">
+        <span class="cav-step">App reads cache</span>
+        <span class="cav-arrow">→</span>
+        <span class="cav-step">Cache fetches DB</span>
+        <span class="cav-arrow">→</span>
+        <span class="cav-step">Cache stores + returns</span>
+      </div>
+      <div class="cav-pros">App logic simplified, consistent cache population</div>
+      <div class="cav-cons">Cache must understand data source, less flexible</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cav-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .cav-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .cav-strats{display:flex;flex-direction:column;gap:.75rem}
+  .cav-strat{background:rgba(0,0,0,.2);border-radius:12px;padding:1rem;border-left:3px solid var(--c);opacity:0;animation:cavSlide .35s ease forwards;animation-delay:calc(var(--i)*.1s)}
+  @keyframes cavSlide{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+  .cav-sname{color:var(--c);font-weight:700;font-size:.85rem;margin-bottom:.5rem}
+  .cav-flow{display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;margin-bottom:.5rem}
+  .cav-step{background:rgba(255,255,255,.05);color:#e2e8f0;padding:.2rem .5rem;border-radius:5px;font-size:.7rem}
+  .cav-arrow{color:#475569;font-size:.75rem}
+  .cav-pros{color:#4ade80;font-size:.7rem;margin-bottom:.2rem}.cav-pros::before{content:'✓ '}
+  .cav-cons{color:#f87171;font-size:.7rem}.cav-cons::before{content:'✗ '}
+</style>

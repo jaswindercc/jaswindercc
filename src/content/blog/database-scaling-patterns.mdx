@@ -1,0 +1,23 @@
+---
+title: "Database Scaling Patterns — Reads, Writes, and Sharding"
+description: "Visual guide to database scaling patterns. Understand vertical scaling, read replicas, sharding, and CQRS—when to use each, and the tradeoffs you'll face at every stage."
+date: 2026-05-29
+---
+
+import DBScalingPatterns from '../../components/visual/DBScalingPatterns.astro';
+
+Your database is slow. The question is: why? If reads are slow, add read replicas. If the machine is at capacity, scale vertically. If a single machine can't hold all your data, shard horizontally. If your read and write patterns are fundamentally different, separate them with CQRS. Each pattern solves a specific bottleneck and creates new problems.
+
+The mistake teams make is jumping to sharding when read replicas would have been enough, or implementing CQRS when vertical scaling still had headroom. Always use the simplest pattern that solves your current bottleneck.
+
+## The Scaling Ladder
+
+Database scaling isn't a single technique — it's a ladder you climb one rung at a time. Each rung solves the previous bottleneck but introduces new complexity. Climb only as high as you need to.
+
+<DBScalingPatterns />
+
+Vertical scaling is underrated. Modern cloud instances go up to 24TB of RAM and 448 vCPUs. That handles an enormous amount of data and queries. The cost curve gets steep at the top, but "just get a bigger machine" has zero application complexity — no code changes, no new failure modes, no distributed systems headaches.
+
+Read replicas are the first scaling pattern most teams should reach for. If 80% of your queries are reads (which is typical for web applications), offloading those to replicas is straightforward and well-supported by every major database. The tradeoff is replication lag: a write to the primary might not appear on replicas for hundreds of milliseconds. For most use cases, that's fine. For others (read-after-write consistency), you route those specific reads to the primary.
+
+Sharding is the last resort, not the first. It splits your data across multiple database instances, each holding a subset. Choosing the right shard key is the most consequential database decision you'll make — get it wrong and you can't fix it without a full data migration. A good shard key distributes data evenly and ensures that most queries hit a single shard.

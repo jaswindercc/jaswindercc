@@ -1,0 +1,69 @@
+---
+title: "Feature Flags Done Right — Ship Faster Without Breaking Production"
+description: "Learn how feature flags let you deploy fearlessly with progressive rollouts, instant rollbacks, and A/B testing — all visualized with animated diagrams and real metrics."
+date: 2026-04-26
+---
+
+import FlagToggleFlow from '../../components/visual/FlagToggleFlow.astro';
+import FlagTypes from '../../components/visual/FlagTypes.astro';
+import RolloutStrategy from '../../components/visual/RolloutStrategy.astro';
+import FlagArchitecture from '../../components/visual/FlagArchitecture.astro';
+import FlagMetrics from '../../components/visual/FlagMetrics.astro';
+
+# Feature Flags Done Right — Ship Faster Without Breaking Production
+
+**Deploy 12 times a day. Roll back in 3 seconds. Sleep through the night.**
+
+Feature flags are the simplest idea in software that nobody uses correctly. A boolean check in your code that controls which users see which features. That's it. But when done right, it transforms how you ship — from big-bang releases to continuous, controlled, risk-free deployments.
+
+---
+
+## 1. The Feature Flag — One Toggle, Two Worlds
+
+Same codebase. Same deployment. But some users see the new checkout flow while others see the old one. The flag decides who gets what — and you can change it without touching code.
+
+<FlagToggleFlow />
+
+This is the core concept: **decouple deployment from release**. Your code ships to production every day. But the feature only turns on when you flip the flag. If it breaks, flip it off. No revert commit. No emergency deploy.
+
+---
+
+## 2. Not All Flags Are the Same
+
+A release flag and a kill switch serve completely different purposes. Using the wrong type leads to tech debt, stale flags, and confused teams.
+
+<FlagTypes />
+
+**The most important distinction:** release flags are temporary and should be removed after rollout. Ops flags and permission flags are permanent and part of your architecture. Treat them differently or you'll drown in stale flags.
+
+---
+
+## 3. Progressive Rollout — The Safest Way to Ship
+
+Don't go from 0% to 100% in one shot. Start with 1% (your team), expand to 5% (canary), then 25%, 50%, and 100%. Monitor at every step. Roll back instantly if metrics degrade.
+
+<RolloutStrategy />
+
+This is why feature flags > blue-green deployments for most teams. Blue-green is all-or-nothing at the infrastructure level. Flags give you **user-level granularity**. You can roll out to enterprise customers first, beta users first, or specific regions first.
+
+---
+
+## 4. The Architecture — How Flags Work at Scale
+
+A feature flag system has three layers: the management dashboard, the delivery network, and the evaluation engine. The key insight: evaluation happens locally, not over the network.
+
+<FlagArchitecture />
+
+**Performance impact: near zero.** Flags are cached locally and evaluated in-process. The SDK handles it. Your app never waits on a network call to check a flag. Even if the management server goes down, cached configs keep working.
+
+---
+
+## 5. The Numbers — What Flags Actually Change
+
+Teams with mature feature flag practices deploy more often, recover faster, and break less. These numbers are real — measured across teams before and after flag adoption.
+
+<FlagMetrics />
+
+The biggest win isn't deploy frequency — it's **rollback time**. Going from 45 minutes (emergency revert + deploy + pray) to 3 seconds (flip flag off) changes your relationship with risk entirely. You stop fearing deployments.
+
+---

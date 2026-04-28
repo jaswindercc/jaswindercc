@@ -1,0 +1,37 @@
+---
+title: "Observability — Logs, Metrics, and Traces Explained"
+description: "Visual guide to observability for production systems. Understand the three pillars, RED/USE methods, OpenTelemetry, and modern observability stacks."
+date: 2026-03-31
+---
+
+import ObservabilityPillars from '../../components/visual/ObservabilityPillars.astro';
+import MetricsTypes from '../../components/visual/MetricsTypes.astro';
+import ObservabilityStack from '../../components/visual/ObservabilityStack.astro';
+
+"The service is slow." Three words that start every production investigation. But without observability, you're guessing. Is it the database? The network? A downstream dependency? Memory pressure? You check logs — nothing obvious. You check a dashboard — CPU looks fine. You're flying blind.
+
+Observability isn't about collecting data. It's about being able to ask arbitrary questions about your system's behavior and getting answers — without deploying new code or adding new instrumentation.
+
+## 1. The Three Pillars
+
+Logs, metrics, and traces. Each answers a different question. You need all three because no single pillar gives the complete picture. Logs without metrics means you can't see trends. Metrics without traces means you can't isolate bottlenecks. Traces without logs means you can't see details.
+
+<ObservabilityPillars />
+
+The correlation between them is what creates observability. A high error rate metric triggers an alert. The alert links to traces showing slow database calls. The traces link to logs showing connection pool exhaustion. From alert to root cause in 3 clicks — that's the goal.
+
+## 2. What to Measure
+
+"Instrument everything" is bad advice. You end up with 50,000 metrics that cost a fortune to store and nobody looks at. Instead, use frameworks: RED for your services, USE for your infrastructure. These cover 90% of debugging needs with minimal instrumentation.
+
+<MetricsTypes />
+
+The practical starting point: instrument your API gateway with RED metrics (request rate, error rate, p50/p95/p99 latency). That single data source tells you when something is wrong. Then drill into traces to find where. Then drill into logs to find why. Start broad, go narrow.
+
+## 3. The Stack — Build vs Buy
+
+The tooling landscape has consolidated. OpenTelemetry won the instrumentation war — it's the only standard you need to learn. For the backend, you choose between self-hosted open source (Prometheus + Loki + Tempo + Grafana) or SaaS (Datadog, Honeycomb, New Relic).
+
+<ObservabilityStack />
+
+The honest tradeoff: SaaS is easier but expensive at scale. Datadog bills by host and log volume — at 100+ hosts, costs hit $50K+/year. The Grafana stack (LGTM: Loki, Grafana, Tempo, Mimir) is free but requires operational expertise. If you have a platform team, self-host. If you're a small team that needs answers fast, buy SaaS and revisit when the bill becomes painful.

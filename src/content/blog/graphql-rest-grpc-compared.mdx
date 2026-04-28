@@ -1,0 +1,51 @@
+---
+title: "GraphQL vs REST vs gRPC — Choosing Your API Protocol"
+description: "Practical comparison of GraphQL, REST, and gRPC. Understand when each protocol shines, their performance characteristics, and how to choose the right one for your architecture."
+date: 2026-05-07
+---
+
+import APIProtocolVisual from '../../components/visual/APIProtocolVisual.astro';
+
+Every API conversation starts with "should we use REST or GraphQL?" — which is the wrong framing. The right question is: what are the communication patterns between your services and clients? Public API for third-party developers? REST. Complex frontend with deeply nested data? GraphQL. Internal microservice-to-microservice calls? gRPC. Most mature systems use all three for different purposes.
+
+## Protocol Comparison
+
+Each protocol optimizes for different scenarios. Understanding the trade-offs prevents you from using the wrong tool and blaming the protocol.
+
+<APIProtocolVisual />
+
+The comparison table tells part of the story. The rest comes from understanding each protocol's philosophy and the operational overhead it introduces.
+
+## REST: The Universal Default
+
+REST is the lingua franca of web APIs. Every developer understands it, every tool supports it, and HTTP caching works out of the box. Resource-based URLs with standard HTTP methods (GET, POST, PUT, DELETE) create predictable, discoverable APIs.
+
+REST's biggest weakness is over-fetching and under-fetching. A mobile client that needs a user's name and avatar gets back the user's entire profile — address, preferences, activity history, everything. To get a user's posts with author info, you either embed it all in one response (over-fetching some clients) or require two requests (under-fetching). This is the exact problem GraphQL was invented to solve.
+
+For public APIs, REST remains the best choice. Developers expect it. API documentation tools (Swagger/OpenAPI) generate interactive docs automatically. HTTP caching reduces server load for read-heavy APIs. Authentication via API keys and OAuth is well-understood. The ecosystem is unmatched.
+
+## GraphQL: Client-Controlled Queries
+
+GraphQL lets clients specify exactly what data they need. Instead of calling five endpoints to build a page, the client sends one query that describes the exact shape of the response. No over-fetching, no under-fetching. For complex UIs with diverse data requirements, this dramatically reduces network requests and bandwidth.
+
+The typed schema is GraphQL's underrated superpower. The schema defines every type, field, and relationship in your API. Client developers get autocomplete, validation, and documentation from the schema alone. Breaking changes are caught at build time, not in production. Schema diffing tools flag incompatible changes before they're deployed.
+
+The downsides are real. Every request is a POST (no HTTP caching without extra work), query complexity can blow up without limits, and the N+1 query problem moves from the client to the server. Without DataLoader or similar batching, a query for 100 users with their posts generates 101 database queries. Rate limiting is harder because "one request" might be trivial or absurdly expensive depending on the query depth.
+
+Use GraphQL when your clients have diverse data needs — mobile apps, complex dashboards, and frontend teams that iterate faster than backend can provide specialized endpoints. Don't use it for simple CRUD APIs where REST is simpler and more efficient.
+
+## gRPC: The Performance Protocol
+
+gRPC uses Protocol Buffers (protobuf) for serialization and HTTP/2 for transport. Protobuf is binary, making it 3-10x smaller than JSON and faster to serialize/deserialize. HTTP/2 enables multiplexing, header compression, and bidirectional streaming. The result is significantly lower latency and bandwidth usage than REST.
+
+The `.proto` schema file defines services, methods, and message types. Code generators produce typed client and server stubs in 11+ languages. This means zero hand-written HTTP client code, zero endpoint URL construction, and compile-time type checking for all API calls. Changes to the schema immediately break clients that haven't updated — catching incompatibilities before deployment.
+
+gRPC's streaming support is native and bidirectional. Server streaming (one request, many responses), client streaming (many requests, one response), and bidirectional streaming (both directions simultaneously) are all first-class features. For real-time communication, event sourcing, and long-running operations, gRPC streaming eliminates the need for WebSockets or polling.
+
+The trade-off: gRPC doesn't work in browsers without a proxy (gRPC-Web adds overhead), it's harder to debug (binary protocol), and it requires more tooling setup than a simple HTTP call. Use gRPC for service-to-service communication in microservices where performance matters, and expose REST or GraphQL at the edge for browser clients.
+
+## Picking the Right Protocol
+
+Most teams benefit from a hybrid approach. REST at the API gateway for public consumers and backward compatibility. GraphQL as a BFF (Backend for Frontend) layer that aggregates data from multiple services for complex UIs. gRPC for internal service-to-service communication where latency and bandwidth matter.
+
+Don't choose based on hype. If your API serves simple CRUD operations to a handful of clients, REST with good design is simpler, more cacheable, and easier to maintain than GraphQL. If your microservices are fine with JSON/HTTP performance, gRPC's benefits don't justify its operational complexity. Let the problem guide the protocol, not the resume.

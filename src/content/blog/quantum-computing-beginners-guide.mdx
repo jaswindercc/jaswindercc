@@ -1,0 +1,76 @@
+---
+title: "What Is Quantum Computing? A Beginner's Visual Guide"
+description: "Interactive visual introduction to quantum computing. Understand qubits, superposition, and why quantum matters — no physics degree needed."
+date: 2026-04-28
+---
+
+import QuantumVsClassical from '../../components/visual/QuantumVsClassical.astro';
+import QuantumTimeline from '../../components/visual/QuantumTimeline.astro';
+import QuantumUseCases from '../../components/visual/QuantumUseCases.astro';
+
+You've heard the hype. "Quantum computers will change everything." But when you ask *what* a quantum computer actually is, most explanations drown you in physics jargon. Let's fix that. No equations. No wave functions. Just pictures and plain language.
+
+---
+
+## 1. Classical vs Quantum — The Core Difference
+
+Your laptop runs on bits. Each bit is a 0 or a 1. That's it. Every photo, every app, every calculation — built entirely from zeros and ones.
+
+A quantum computer runs on **qubits**. A qubit can be 0, 1, or — here's the weird part — *both at the same time*. This isn't a metaphor. It's a real physical property called superposition.
+
+<QuantumVsClassical />
+
+Think of it this way: a classical computer solving a maze tries one path at a time. A quantum computer explores many paths simultaneously. That's not magic — it's just how quantum physics works at the atomic level.
+
+---
+
+## 2. How Did We Get Here?
+
+Quantum computing isn't new. The idea has been around since the early 1980s. But turning theory into working hardware took decades of engineering breakthroughs.
+
+<QuantumTimeline />
+
+The important thing to notice: we're still early. Quantum supremacy (2019) proved quantum computers can outperform classical ones on *specific* tasks. But we're years away from quantum computers replacing your laptop for everyday work. They're a specialized tool for specialized problems.
+
+---
+
+## 3. What Problems Does Quantum Actually Solve?
+
+This is where most hype articles get it wrong. Quantum computers won't make your Netflix load faster. They won't speed up your email. They excel at a very specific class of problems that classical computers struggle with.
+
+<QuantumUseCases />
+
+**The pattern:** quantum computers shine when you need to explore enormous numbers of possibilities simultaneously. Molecular simulation? Billions of atomic configurations. Optimization? Millions of possible routes. Cryptography? Factoring huge numbers.
+
+If your problem doesn't have that "exponential explosion" of possibilities, a classical computer is probably faster, cheaper, and more reliable.
+
+---
+
+## 4. Do I Need to Learn Quantum Physics?
+
+No. Seriously. You don't need to understand quantum mechanics to *use* quantum computers any more than you need to understand semiconductor physics to write Python.
+
+Modern quantum SDKs like Qiskit (IBM), Cirq (Google), and PennyLane let you write quantum programs in Python. You describe what gates to apply to which qubits. The physics happens inside the hardware.
+
+**What you do need:**
+- Basic programming skills (Python)
+- Comfort with probability (not certainty — quantum results are probabilistic)
+- Willingness to think differently about computation
+
+**What you don't need:**
+- A physics degree
+- Linear algebra (helpful but not required to start)
+- Access to quantum hardware (simulators are free)
+
+---
+
+## 5. The Honest State of Things
+
+Quantum computing is real. The hardware exists. You can run circuits on IBM's quantum computers for free right now. But let's be honest about where we are:
+
+- **We're in the "NISQ era"** — Noisy Intermediate-Scale Quantum. The qubits are noisy, error-prone, and limited.
+- **Quantum advantage is narrow** — only a handful of problems show real speedup today.
+- **The industry is heavily funded** — billions from Google, IBM, Microsoft, Amazon, and governments worldwide.
+- **The talent gap is real** — fewer quantum programmers than job openings.
+
+If you're a developer curious about the future, now is the time to start learning. Not because quantum will replace everything tomorrow — but because the ecosystem is small enough that early learners have an outsized advantage.

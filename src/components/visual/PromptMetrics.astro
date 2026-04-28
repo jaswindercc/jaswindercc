@@ -1,0 +1,146 @@
+---
+// PromptMetrics.astro — Animated metrics showing prompt engineering impact
+---
+
+<div class="pm-wrap">
+  <h3 class="pm-title">What Changes When You Prompt Better</h3>
+  <p class="pm-sub">Real numbers from switching vague prompts to structured ones across 500 API calls.</p>
+
+  <div class="pm-grid">
+    <div class="pm-card">
+      <div class="pm-icon pm-icon--amber">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <div class="pm-label">Retry Rate</div>
+      <div class="pm-row">
+        <div class="pm-bar-track">
+          <div class="pm-bar pm-bar--red" style="--target-width: 62%;">
+            <span class="pm-val">62%</span>
+          </div>
+        </div>
+        <span class="pm-tag">Before</span>
+      </div>
+      <div class="pm-row">
+        <div class="pm-bar-track">
+          <div class="pm-bar pm-bar--green" style="--target-width: 8%;">
+            <span class="pm-val">8%</span>
+          </div>
+        </div>
+        <span class="pm-tag">After</span>
+      </div>
+    </div>
+
+    <div class="pm-card">
+      <div class="pm-icon pm-icon--cyan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <div class="pm-label">Avg Latency</div>
+      <div class="pm-row">
+        <div class="pm-bar-track">
+          <div class="pm-bar pm-bar--red" style="--target-width: 85%;">
+            <span class="pm-val">4.2s</span>
+          </div>
+        </div>
+        <span class="pm-tag">Before</span>
+      </div>
+      <div class="pm-row">
+        <div class="pm-bar-track">
+          <div class="pm-bar pm-bar--green" style="--target-width: 28%;">
+            <span class="pm-val">1.1s</span>
+          </div>
+        </div>
+        <span class="pm-tag">After</span>
+      </div>
+    </div>
+
+    <div class="pm-card">
+      <div class="pm-icon pm-icon--purple">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/></svg>
+      </div>
+      <div class="pm-label">Cost per Query</div>
+      <div class="pm-row">
+        <div class="pm-bar-track">
+          <div class="pm-bar pm-bar--red" style="--target-width: 90%;">
+            <span class="pm-val">$0.08</span>
+          </div>
+        </div>
+        <span class="pm-tag">Before</span>
+      </div>
+      <div class="pm-row">
+        <div class="pm-bar-track">
+          <div class="pm-bar pm-bar--green" style="--target-width: 20%;">
+            <span class="pm-val">$0.02</span>
+          </div>
+        </div>
+        <span class="pm-tag">After</span>
+      </div>
+    </div>
+
+    <div class="pm-card">
+      <div class="pm-icon pm-icon--green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+      </div>
+      <div class="pm-label">Output Accuracy</div>
+      <div class="pm-row">
+        <div class="pm-bar-track">
+          <div class="pm-bar pm-bar--red" style="--target-width: 41%;">
+            <span class="pm-val">41%</span>
+          </div>
+        </div>
+        <span class="pm-tag">Before</span>
+      </div>
+      <div class="pm-row">
+        <div class="pm-bar-track">
+          <div class="pm-bar pm-bar--green" style="--target-width: 93%;">
+            <span class="pm-val">93%</span>
+          </div>
+        </div>
+        <span class="pm-tag">After</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pm-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .pm-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .pm-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .pm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+
+  .pm-card {
+    background: rgba(0,0,0,0.25); border: 1px solid #334155; border-radius: 12px; padding: 16px;
+  }
+  .pm-icon {
+    width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;
+  }
+  .pm-icon svg { width: 16px; height: 16px; }
+  .pm-icon--amber { background: rgba(245,158,11,0.1); color: #f59e0b; }
+  .pm-icon--amber svg { stroke: #f59e0b; }
+  .pm-icon--cyan { background: rgba(6,182,212,0.1); color: #06b6d4; }
+  .pm-icon--cyan svg { stroke: #06b6d4; }
+  .pm-icon--purple { background: rgba(129,140,248,0.1); color: #818cf8; }
+  .pm-icon--purple svg { stroke: #818cf8; }
+  .pm-icon--green { background: rgba(74,222,128,0.1); color: #4ade80; }
+  .pm-icon--green svg { stroke: #4ade80; }
+
+  .pm-label { color: #94a3b8; font-size: 0.75rem; font-weight: 600; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .pm-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .pm-bar-track { flex: 1; height: 22px; background: rgba(0,0,0,0.3); border-radius: 6px; overflow: hidden; }
+  .pm-bar {
+    height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 8px;
+    width: 0; animation: barGrow 1.5s ease-out forwards;
+  }
+  .pm-bar--red { background: linear-gradient(90deg, #ef4444, #f87171); animation-delay: 0.3s; }
+  .pm-bar--green { background: linear-gradient(90deg, #22c55e, #4ade80); animation-delay: 0.8s; }
+  .pm-val { color: #fff; font-size: 0.6rem; font-weight: 700; font-family: monospace; white-space: nowrap; }
+  .pm-tag { color: #64748b; font-size: 0.55rem; font-family: monospace; min-width: 36px; text-align: right; }
+
+  @keyframes barGrow {
+    to { width: var(--target-width); }
+  }
+</style>

@@ -1,0 +1,54 @@
+---
+/**
+ * SecurityHeadersVisual.astro
+ * Essential security headers every web app needs
+ */
+---
+
+<div class="sh-wrap">
+  <h3 class="sh-title">Essential Security Headers</h3>
+  <div class="sh-headers">
+    <div class="sh-header" style="--i:0; --color:#ef4444;">
+      <div class="sh-name">Content-Security-Policy</div>
+      <div class="sh-val">default-src 'self'; script-src 'self'</div>
+      <div class="sh-why">Prevents XSS by controlling which scripts can execute</div>
+      <div class="sh-impact">Critical</div>
+    </div>
+    <div class="sh-header" style="--i:1; --color:#f59e0b;">
+      <div class="sh-name">Strict-Transport-Security</div>
+      <div class="sh-val">max-age=63072000; includeSubDomains; preload</div>
+      <div class="sh-why">Forces HTTPS. Prevents SSL stripping attacks.</div>
+      <div class="sh-impact">High</div>
+    </div>
+    <div class="sh-header" style="--i:2; --color:#06b6d4;">
+      <div class="sh-name">X-Content-Type-Options</div>
+      <div class="sh-val">nosniff</div>
+      <div class="sh-why">Prevents MIME type sniffing. Browsers respect declared content type.</div>
+      <div class="sh-impact">Medium</div>
+    </div>
+    <div class="sh-header" style="--i:3; --color:#818cf8;">
+      <div class="sh-name">X-Frame-Options</div>
+      <div class="sh-val">DENY</div>
+      <div class="sh-why">Prevents clickjacking by disabling iframe embedding.</div>
+      <div class="sh-impact">Medium</div>
+    </div>
+    <div class="sh-header" style="--i:4; --color:#4ade80;">
+      <div class="sh-name">Permissions-Policy</div>
+      <div class="sh-val">camera=(), microphone=(), geolocation=()</div>
+      <div class="sh-why">Disables browser APIs your app doesn't need.</div>
+      <div class="sh-impact">Medium</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .sh-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .sh-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.25rem}
+  .sh-headers{display:flex;flex-direction:column;gap:.75rem}
+  .sh-header{background:rgba(255,255,255,0.03);border:1px solid #334155;border-radius:10px;padding:1rem;opacity:0;animation:shFade .4s ease forwards;animation-delay:calc(var(--i)*.1s)}
+  @keyframes shFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .sh-name{color:var(--color);font-weight:700;font-size:.9rem;margin-bottom:.2rem}
+  .sh-val{color:#06b6d4;font-family:monospace;font-size:.72rem;background:rgba(0,0,0,.3);padding:.3rem .5rem;border-radius:4px;display:inline-block;margin-bottom:.3rem}
+  .sh-why{color:#94a3b8;font-size:.78rem;margin-bottom:.2rem}
+  .sh-impact{font-size:.65rem;font-weight:700;color:var(--color)}
+</style>

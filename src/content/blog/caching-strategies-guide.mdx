@@ -1,0 +1,55 @@
+---
+title: "Caching Strategies — Write-Through, Write-Back, and Cache-Aside"
+description: "Visual guide to caching strategies. Understand cache-aside, write-through, write-behind, and read-through patterns with practical guidance on when to use each one."
+date: 2026-05-03
+---
+
+import CachingStratVisual from '../../components/visual/CachingStratVisual.astro';
+
+Caching is the most effective performance optimization in computing, and also the most dangerous. "There are only two hard things in computer science: cache invalidation and naming things." The hard part isn't adding a cache — it's deciding when data expires, how stale is acceptable, and what happens when the cache and database disagree.
+
+## The Four Strategies
+
+Each caching strategy makes different trade-offs between consistency, latency, and complexity. The right choice depends on your read/write ratio and tolerance for stale data.
+
+<CachingStratVisual />
+
+Most applications should start with cache-aside. It's the simplest, most flexible, and easiest to reason about. Graduate to write-through when consistency matters more than write latency. Use write-behind only when you've exhausted other optimization options and understand the data loss risk.
+
+## Cache-Aside: The Default Choice
+
+Cache-aside (also called lazy loading) is the most common pattern. The application checks the cache before querying the database. On a hit, it returns the cached data. On a miss, it queries the database, writes the result to the cache, and returns it. The cache only contains data that has been requested at least once.
+
+The beauty is simplicity. The cache is an optimization layer, not a consistency requirement. If the cache goes down, the application still works — requests just hit the database directly. This resilience makes cache-aside appropriate for most read-heavy workloads.
+
+The weakness is cache misses and stale data. First access is always slow because the data isn't cached yet. After a write, the cache holds stale data until the TTL expires or the application explicitly invalidates it. The common pattern is to invalidate (delete) the cache entry on writes, so the next read triggers a fresh database query and cache population.
+
+## Write-Through: Consistency Priority
+
+Write-through writes to both the cache and database on every write operation. The write is only confirmed when both succeed. This guarantees the cache is always consistent with the database — no stale data, ever.
+
+The cost is write latency. Every write now involves two operations: one to the cache and one to the database. If either fails, you need a strategy — retry, compensate, or accept temporary inconsistency. Most write-through implementations use the database as the source of truth and treat cache write failures as non-fatal.
+
+Write-through also caches data that may never be read. If a user updates their profile, the updated profile gets cached even if nobody views it for weeks. This wastes cache memory on data that could be used for hot data that's read frequently.
+
+## Write-Behind: Performance at Risk
+
+Write-behind (write-back) writes to the cache immediately and confirms to the client. The write to the database happens asynchronously — batched and flushed periodically. This provides the lowest possible write latency because the client doesn't wait for the database.
+
+The risk is obvious: if the cache crashes before flushing to the database, those writes are lost. For applications where data loss is catastrophic (financial transactions, user data), write-behind is inappropriate. For applications where some loss is acceptable (analytics counters, session data, activity feeds), the performance benefit is significant.
+
+Write-behind shines when writes are bursty. Instead of 1000 individual database writes, the cache accumulates them and flushes a single batch operation. This reduces database load dramatically and improves throughput.
+
+## Cache Invalidation Strategies
+
+TTL-based expiration is the simplest invalidation. Set a TTL when writing to the cache, and the data automatically expires. Short TTLs (30-300 seconds) minimize staleness but increase cache misses. Long TTLs (hours-days) maximize hit rate but serve potentially outdated data.
+
+Event-based invalidation is more precise. When data changes, publish an event that triggers cache invalidation. Database CDC (Change Data Capture) streams can drive cache invalidation automatically — when a row changes in PostgreSQL, a listener invalidates the corresponding cache key. This provides near-zero staleness without sacrificing cache hit rates.
+
+The safest pattern: invalidate on write, populate on read. When the application writes data, delete the cache entry. The next read will miss, fetch from the database, and repopulate the cache. Never update the cache entry directly — this creates race conditions where concurrent reads and writes produce inconsistent cache state.
+
+## Sizing and Eviction
+
+Cache sizing is about hit rate economics. A cache that's too small evicts hot data, causing misses that negate the cache's benefit. A cache that's too large wastes memory that could serve other purposes. Monitor your hit rate — above 95% for most workloads means the cache is well-sized. Below 80% means either the cache is too small or the access pattern doesn't benefit from caching.
+
+LRU (Least Recently Used) is the standard eviction policy and the right choice for most workloads. LFU (Least Frequently Used) is better when access patterns have stable hot spots — popular products, frequently accessed configurations. Random eviction is surprisingly effective and simpler to implement at scale.

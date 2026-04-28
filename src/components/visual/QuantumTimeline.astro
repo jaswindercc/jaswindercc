@@ -1,0 +1,71 @@
+---
+// QuantumTimeline.astro — Key milestones in quantum computing history
+---
+
+<div class="qtl-wrap">
+  <h3 class="qtl-title">Quantum Computing — A Brief Timeline</h3>
+  <p class="qtl-sub">From theory to real hardware in under 50 years.</p>
+
+  <div class="qtl-track">
+    <div class="qtl-line"></div>
+    <div class="qtl-item" style="--i:0">
+      <div class="qtl-year">1981</div>
+      <div class="qtl-dot"></div>
+      <div class="qtl-body">
+        <div class="qtl-who">Richard Feynman</div>
+        <div class="qtl-what">Proposes using quantum systems to simulate physics problems classical computers can't handle.</div>
+      </div>
+    </div>
+    <div class="qtl-item" style="--i:1">
+      <div class="qtl-year">1994</div>
+      <div class="qtl-dot qtl-dot--amber"></div>
+      <div class="qtl-body">
+        <div class="qtl-who">Peter Shor</div>
+        <div class="qtl-what">Publishes Shor's algorithm — proves quantum computers could break RSA encryption.</div>
+      </div>
+    </div>
+    <div class="qtl-item" style="--i:2">
+      <div class="qtl-year">1996</div>
+      <div class="qtl-dot qtl-dot--green"></div>
+      <div class="qtl-body">
+        <div class="qtl-who">Lov Grover</div>
+        <div class="qtl-what">Grover's algorithm shows quadratic speedup for searching unsorted databases.</div>
+      </div>
+    </div>
+    <div class="qtl-item" style="--i:3">
+      <div class="qtl-year">2019</div>
+      <div class="qtl-dot qtl-dot--cyan"></div>
+      <div class="qtl-body">
+        <div class="qtl-who">Google</div>
+        <div class="qtl-what">Claims "quantum supremacy" — Sycamore processor solves a specific problem faster than any classical computer.</div>
+      </div>
+    </div>
+    <div class="qtl-item" style="--i:4">
+      <div class="qtl-year">2023+</div>
+      <div class="qtl-dot qtl-dot--pink"></div>
+      <div class="qtl-body">
+        <div class="qtl-who">IBM, Google, others</div>
+        <div class="qtl-what">Error correction advances, 1000+ qubit processors, cloud-accessible quantum hardware.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .qtl-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .qtl-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .qtl-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .qtl-track{position:relative;padding-left:2rem}
+  .qtl-line{position:absolute;left:6px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,#334155,#818cf8,#334155)}
+  .qtl-item{display:flex;gap:12px;margin-bottom:1.25rem;align-items:flex-start;opacity:0;animation:qtlIn .4s ease forwards;animation-delay:calc(var(--i)*.15s)}
+  .qtl-year{color:#818cf8;font-size:.7rem;font-family:monospace;font-weight:700;min-width:40px;padding-top:2px}
+  .qtl-dot{width:10px;height:10px;border-radius:50%;background:#818cf8;flex-shrink:0;margin-top:4px;box-shadow:0 0 8px rgba(129,140,248,.4)}
+  .qtl-dot--amber{background:#f59e0b;box-shadow:0 0 8px rgba(245,158,11,.4)}
+  .qtl-dot--green{background:#4ade80;box-shadow:0 0 8px rgba(74,222,128,.4)}
+  .qtl-dot--cyan{background:#06b6d4;box-shadow:0 0 8px rgba(6,182,212,.4)}
+  .qtl-dot--pink{background:#f472b6;box-shadow:0 0 8px rgba(244,114,182,.4)}
+  .qtl-body{background:rgba(0,0,0,.15);border:1px solid #334155;border-radius:8px;padding:10px 14px;flex:1}
+  .qtl-who{color:#f1f5f9;font-size:.75rem;font-weight:600;margin-bottom:2px}
+  .qtl-what{color:#94a3b8;font-size:.7rem;line-height:1.5}
+  @keyframes qtlIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+</style>

@@ -1,0 +1,55 @@
+---
+title: "OAuth 2.0 and OIDC — The Visual Guide You Actually Need"
+description: "Visual walkthrough of OAuth 2.0 and OpenID Connect. Understand authorization flows, JWT structure, grant types, and common security mistakes through animated diagrams."
+date: 2026-04-18
+---
+
+import OAuthFlow from '../../components/visual/OAuthFlow.astro';
+import OAuthVsOIDC from '../../components/visual/OAuthVsOIDC.astro';
+import TokenAnatomy from '../../components/visual/TokenAnatomy.astro';
+import OAuthGrants from '../../components/visual/OAuthGrants.astro';
+import OAuthMistakes from '../../components/visual/OAuthMistakes.astro';
+
+Every developer uses OAuth. Very few actually understand it. You copy the library config from a blog post, it works, and you move on. Until it breaks — and then you're staring at redirect loops, invalid_grant errors, and token validation failures with zero mental model of what's happening.
+
+Let's fix that. From the ground up.
+
+## 1. The Authorization Code Flow
+
+This is the flow that 90% of web applications should use. It's the most secure because the access token never touches the browser — it's exchanged server-to-server using the authorization code.
+
+<OAuthFlow />
+
+Key insight: the authorization code is short-lived (usually 30 seconds) and single-use. Even if someone intercepts it, they can't exchange it without the client_secret (which only your backend knows). That's the security model — separate the user-facing redirect from the secret exchange.
+
+## 2. OAuth vs OIDC — Finally Clear
+
+People use "OAuth" and "OIDC" interchangeably. They're not the same thing. OAuth handles authorization (permissions). OIDC handles authentication (identity). You usually want both — and OIDC gives you both in one flow.
+
+<OAuthVsOIDC />
+
+The practical difference: if you just need "can this app read my Google Calendar?" — that's pure OAuth 2.0 with an access_token. If you need "who is this person logging into my app?" — that's OIDC with an id_token. Most login flows use OIDC because you need the user's identity.
+
+## 3. JWT Anatomy
+
+The id_token (and often the access_token) is a JSON Web Token. It looks like random characters, but it's just Base64-encoded JSON with a cryptographic signature. Understanding the structure makes debugging "invalid token" errors much easier.
+
+<TokenAnatomy />
+
+Critical security point: JWTs are signed, not encrypted. Anyone can decode the payload with Base64. Don't put sensitive data in JWT claims — put identifiers (user_id) not secrets (SSN, credit card). If you need encrypted tokens, use JWE (JSON Web Encryption), but that's rare.
+
+## 4. Grant Types — Picking the Right One
+
+OAuth 2.0 defines multiple "grant types" — different flows for different situations. The wrong choice creates security vulnerabilities. The right choice depends on whether you have a backend, what device you're on, and whether a human is involved.
+
+<OAuthGrants />
+
+The decision tree is simple: human user login? Authorization Code + PKCE. Machine-to-machine? Client Credentials. No browser (TV/CLI)? Device Authorization. That's it. The other grants are deprecated — don't use them in new projects.
+
+## 5. Security Mistakes
+
+I've audited dozens of OAuth implementations. The same five mistakes appear in almost every one. None of them are caught by automated testing — they're logic bugs in the authentication flow that create exploitable vulnerabilities.
+
+<OAuthMistakes />
+
+The meta-lesson: OAuth security isn't about the protocol being insecure. The protocol is well-designed. The vulnerabilities come from implementation shortcuts — skipping state validation, storing tokens insecurely, accepting any redirect_uri. Follow the spec exactly. Every "optional" security feature in the spec exists because someone got hacked without it.

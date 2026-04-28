@@ -1,0 +1,113 @@
+---
+// PromptAntiPatterns.astro — Visual showing common prompt engineering mistakes
+---
+
+<div class="pap-wrap">
+  <h3 class="pap-title">The 4 Mistakes Everyone Makes</h3>
+  <p class="pap-sub">These look harmless. They cost you tokens, time, and accuracy.</p>
+
+  <div class="pap-grid">
+    <div class="pap-card">
+      <div class="pap-badge pap-badge--red">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+      <div class="pap-mistake">The Kitchen Sink</div>
+      <p class="pap-desc">Dumping entire docs into context. "Here's my whole codebase, find the bug." The model gets lost. You get garbage.</p>
+      <div class="pap-example pap-example--bad">
+        <div class="pap-ex-label">What you wrote</div>
+        <div class="pap-ex-text">"Here is my entire project. All 47 files. Please review everything and tell me what's wrong."</div>
+      </div>
+      <div class="pap-example pap-example--good">
+        <div class="pap-ex-label">What works</div>
+        <div class="pap-ex-text">"Here's the auth middleware (42 lines). Users get 401 after token refresh. Find the bug."</div>
+      </div>
+    </div>
+
+    <div class="pap-card">
+      <div class="pap-badge pap-badge--red">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+      <div class="pap-mistake">The Vague Ask</div>
+      <p class="pap-desc">No constraints, no format, no role. "Make this better." Better how? The model guesses. Usually wrong.</p>
+      <div class="pap-example pap-example--bad">
+        <div class="pap-ex-label">What you wrote</div>
+        <div class="pap-ex-text">"Can you improve this function?"</div>
+      </div>
+      <div class="pap-example pap-example--good">
+        <div class="pap-ex-label">What works</div>
+        <div class="pap-ex-text">"Refactor for readability. Keep the same API. Add JSDoc. Max 30 lines."</div>
+      </div>
+    </div>
+
+    <div class="pap-card">
+      <div class="pap-badge pap-badge--red">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+      <div class="pap-mistake">The Double Negative</div>
+      <p class="pap-desc">"Don't not include examples." Models struggle with negation. Say what you want, not what you don't.</p>
+      <div class="pap-example pap-example--bad">
+        <div class="pap-ex-label">What you wrote</div>
+        <div class="pap-ex-text">"Don't use complex language. Don't be too formal. Don't add unnecessary details."</div>
+      </div>
+      <div class="pap-example pap-example--good">
+        <div class="pap-ex-label">What works</div>
+        <div class="pap-ex-text">"Use simple language. Casual tone. Keep each point to one sentence."</div>
+      </div>
+    </div>
+
+    <div class="pap-card">
+      <div class="pap-badge pap-badge--red">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+      <div class="pap-mistake">The One-Shot Prayer</div>
+      <p class="pap-desc">Expecting perfect output on the first try. No iteration, no refinement. Prompt engineering is a loop, not a line.</p>
+      <div class="pap-example pap-example--bad">
+        <div class="pap-ex-label">What you wrote</div>
+        <div class="pap-ex-text">"Write me a complete production-ready API with auth, logging, tests, and deployment config."</div>
+      </div>
+      <div class="pap-example pap-example--good">
+        <div class="pap-ex-label">What works</div>
+        <div class="pap-ex-text">"Step 1: Design the route structure. I'll review before we write code."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pap-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .pap-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .pap-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .pap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+
+  .pap-card {
+    background: rgba(0,0,0,0.25); border: 1px solid #334155; border-radius: 12px; padding: 16px;
+    transition: border-color 0.3s;
+  }
+  .pap-card:hover { border-color: #ef444440; }
+
+  .pap-badge {
+    width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;
+  }
+  .pap-badge svg { width: 14px; height: 14px; }
+  .pap-badge--red { background: rgba(239,68,68,0.12); }
+  .pap-badge--red svg { stroke: #f87171; }
+
+  .pap-mistake { color: #f87171; font-size: 0.9rem; font-weight: 700; margin-bottom: 6px; }
+  .pap-desc { color: #94a3b8; font-size: 0.75rem; line-height: 1.6; margin: 0 0 12px; }
+
+  .pap-example { border-radius: 8px; padding: 10px 12px; margin-bottom: 6px; }
+  .pap-example--bad { background: rgba(239,68,68,0.05); border: 1px solid #ef444420; }
+  .pap-example--good { background: rgba(74,222,128,0.05); border: 1px solid #4ade8020; }
+
+  .pap-ex-label { font-size: 0.55rem; font-family: monospace; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+  .pap-example--bad .pap-ex-label { color: #f87171; }
+  .pap-example--good .pap-ex-label { color: #4ade80; }
+
+  .pap-ex-text { font-size: 0.7rem; line-height: 1.5; font-style: italic; }
+  .pap-example--bad .pap-ex-text { color: #fca5a5; }
+  .pap-example--good .pap-ex-text { color: #86efac; }
+</style>

@@ -1,0 +1,113 @@
+---
+/**
+ * ZeroTrustVsPerimeter.astro
+ * Before/after comparison: perimeter security vs zero trust
+ * Pure CSS, dark theme
+ */
+---
+
+<div class="ztvp-wrap">
+  <h3 class="ztvp-title">Perimeter Security vs Zero Trust</h3>
+  
+  <div class="ztvp-grid">
+    <div class="ztvp-card ztvp-old">
+      <div class="ztvp-label">❌ Castle-and-Moat</div>
+      <div class="ztvp-items">
+        <div class="ztvp-item">Trust everything inside the firewall</div>
+        <div class="ztvp-item">VPN = full network access</div>
+        <div class="ztvp-item">Flat internal network</div>
+        <div class="ztvp-item">Authenticate once at the gate</div>
+        <div class="ztvp-item">Lateral movement is trivial</div>
+      </div>
+      <div class="ztvp-verdict">One breach = game over</div>
+    </div>
+    
+    <div class="ztvp-card ztvp-new">
+      <div class="ztvp-label">✅ Zero Trust</div>
+      <div class="ztvp-items">
+        <div class="ztvp-item">Trust nothing — verify everything</div>
+        <div class="ztvp-item">Per-resource access policies</div>
+        <div class="ztvp-item">Micro-segmented network</div>
+        <div class="ztvp-item">Continuous authentication</div>
+        <div class="ztvp-item">Lateral movement is blocked</div>
+      </div>
+      <div class="ztvp-verdict">Breach is contained</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ztvp-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+  .ztvp-title {
+    color: #f1f5f9;
+    text-align: center;
+    font-size: 1.25rem;
+    margin: 0 0 1.5rem;
+  }
+  .ztvp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  @media (max-width: 640px) {
+    .ztvp-grid { grid-template-columns: 1fr; }
+  }
+  .ztvp-card {
+    border-radius: 12px;
+    padding: 1.25rem;
+    animation: ztvpFade 0.6s ease both;
+  }
+  .ztvp-old {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.3);
+    animation-delay: 0.1s;
+  }
+  .ztvp-new {
+    background: rgba(74,222,128,0.08);
+    border: 1px solid rgba(74,222,128,0.3);
+    animation-delay: 0.3s;
+  }
+  @keyframes ztvpFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .ztvp-label {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .ztvp-old .ztvp-label { color: #ef4444; }
+  .ztvp-new .ztvp-label { color: #4ade80; }
+  .ztvp-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .ztvp-item {
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    padding-left: 1rem;
+    position: relative;
+  }
+  .ztvp-item::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #64748b;
+  }
+  .ztvp-verdict {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #334155;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .ztvp-old .ztvp-verdict { color: #ef4444; }
+  .ztvp-new .ztvp-verdict { color: #4ade80; }
+</style>

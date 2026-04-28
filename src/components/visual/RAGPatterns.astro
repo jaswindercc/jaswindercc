@@ -1,0 +1,57 @@
+---
+/**
+ * RAGPatterns.astro
+ * Visual comparison: Naive RAG vs Advanced RAG patterns
+ * Pure CSS, dark theme
+ */
+---
+
+<div class="ragp-wrap">
+  <h3 class="ragp-title">RAG Architecture Patterns</h3>
+  
+  <div class="ragp-grid">
+    <div class="ragp-card" style="--i:0; --color:#ef4444;">
+      <div class="ragp-badge">Basic</div>
+      <div class="ragp-name">Naive RAG</div>
+      <div class="ragp-flow">
+        <div class="ragp-step">Query → Embed → Top-K → Stuff into prompt → Generate</div>
+      </div>
+      <div class="ragp-pros">Simple, fast to build</div>
+      <div class="ragp-cons">Poor retrieval relevance, no reranking, context window waste</div>
+    </div>
+    
+    <div class="ragp-card" style="--i:1; --color:#f59e0b;">
+      <div class="ragp-badge">Better</div>
+      <div class="ragp-name">Advanced RAG</div>
+      <div class="ragp-flow">
+        <div class="ragp-step">Query rewrite → Hybrid search → Rerank → Compress → Generate</div>
+      </div>
+      <div class="ragp-pros">Better relevance, less noise, smarter context use</div>
+      <div class="ragp-cons">More complexity, added latency from reranking</div>
+    </div>
+    
+    <div class="ragp-card" style="--i:2; --color:#4ade80;">
+      <div class="ragp-badge">Best</div>
+      <div class="ragp-name">Modular RAG</div>
+      <div class="ragp-flow">
+        <div class="ragp-step">Router → Adaptive retrieval → Multi-source → Judge → Generate → Verify</div>
+      </div>
+      <div class="ragp-pros">Production-grade, handles edge cases, self-correcting</div>
+      <div class="ragp-cons">Complex orchestration, higher cost per query</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ragp-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .ragp-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .ragp-grid{display:flex;flex-direction:column;gap:1rem}
+  .ragp-card{background:rgba(255,255,255,0.03);border:1px solid var(--color);border-radius:12px;padding:1.25rem;opacity:0;animation:ragpFade .5s ease forwards;animation-delay:calc(var(--i)*.2s)}
+  @keyframes ragpFade{from{opacity:0;transform:translateX(-15px)}to{opacity:1;transform:translateX(0)}}
+  .ragp-badge{background:var(--color);color:#0f172a;font-size:.65rem;font-weight:700;padding:.15rem .5rem;border-radius:6px;display:inline-block;margin-bottom:.5rem}
+  .ragp-name{color:#f1f5f9;font-weight:700;font-size:1rem;margin-bottom:.5rem}
+  .ragp-flow{background:rgba(0,0,0,.3);border-radius:8px;padding:.6rem .8rem;margin-bottom:.5rem}
+  .ragp-step{color:#06b6d4;font-family:monospace;font-size:.75rem}
+  .ragp-pros{color:#4ade80;font-size:.8rem;margin-bottom:.2rem}.ragp-pros::before{content:'✓ '}
+  .ragp-cons{color:#f59e0b;font-size:.8rem}.ragp-cons::before{content:'⚠ '}
+</style>

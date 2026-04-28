@@ -1,0 +1,69 @@
+---
+title: RAG Pipelines Explained — From Query to Answer in 6 Steps
+description: See how Retrieval-Augmented Generation actually works with animated pipeline flows, chunking strategies, and side-by-side comparisons of RAG vs vanilla LLM responses.
+date: 2026-05-05
+---
+
+import RAGPipeline from '../../components/visual/RAGPipeline.astro';
+import ChunkingStrategy from '../../components/visual/ChunkingStrategy.astro';
+import RAGComparison from '../../components/visual/RAGComparison.astro';
+import RAGArchitecture from '../../components/visual/RAGArchitecture.astro';
+import RAGMetrics from '../../components/visual/RAGMetrics.astro';
+
+# RAG Pipelines Explained — From Query to Answer in 6 Steps
+
+**Your LLM is lying to you. RAG fixes that.**
+
+Large language models are confident. Too confident. Ask about your company's refund policy and the model will invent one that sounds perfect — but is completely wrong. RAG (Retrieval-Augmented Generation) gives the model actual documents to reference instead of making things up.
+
+---
+
+## 1. The Pipeline: 6 Steps From Question to Answer
+
+Every RAG system follows the same flow. The question gets embedded, matched against your documents, and the best chunks become context for the LLM. Watch the whole thing light up step by step.
+
+<RAGPipeline />
+
+This is the 30,000-foot view. Each step is simple on its own. The engineering challenge is making them work together fast and accurately.
+
+---
+
+## 2. Chunking: The Step Everyone Gets Wrong
+
+Before your documents can be searched, they need to be split into chunks. This sounds trivial. It's not. Chunk too big and the model gets noise. Chunk too small and it loses context. The sweet spot is semantic boundaries with overlap.
+
+<ChunkingStrategy />
+
+The key insight: **don't chunk by character count**. Chunk by meaning. Headers, paragraphs, and section breaks are natural boundaries. Add a 50-token overlap so no concept gets cut in half.
+
+---
+
+## 3. With RAG vs Without RAG — The Difference Is Night and Day
+
+Same question, same model. The only difference is whether the model has your actual documents or is relying on its training data. The results aren't even close.
+
+<RAGComparison />
+
+Without RAG, the model gives you plausible-sounding fiction. With RAG, it gives you cited facts from your actual documents. The customer doesn't know the difference — but your legal team does.
+
+---
+
+## 4. The Architecture: Three Layers, One System
+
+A production RAG system has three layers. Each one has its own tooling, its own failure modes, and its own optimization knobs. Click each layer to see what's inside.
+
+<RAGArchitecture />
+
+**The bottom line:** ingestion runs offline (batch it nightly or on document change). Retrieval and generation happen in real-time. If your system is slow, check retrieval first — it's almost always the bottleneck.
+
+---
+
+## 5. What RAG Actually Changes — The Numbers
+
+RAG isn't magic. It adds latency (retrieval takes time) and complexity (more moving parts). But the accuracy gains are massive, and the hallucination drop is what makes it production-ready.
+
+<RAGMetrics />
+
+The 900ms latency increase is the trade-off everyone worries about. In practice, users don't notice 1.8s vs 0.9s — but they absolutely notice a wrong answer. Accuracy wins every time.
+
+---

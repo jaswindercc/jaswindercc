@@ -1,0 +1,170 @@
+---
+// RAGArchitecture.astro — Expandable 3-layer RAG architecture
+---
+
+<div class="ra-wrap">
+  <h3 class="ra-title">The 3-Layer Architecture</h3>
+  <p class="ra-sub">Click each layer to see what goes inside.</p>
+
+  <div class="ra-stack">
+    <details class="ra-layer ra-layer--cyan">
+      <summary class="ra-header">
+        <span class="ra-num">L1</span>
+        <div class="ra-info">
+          <span class="ra-name">Ingestion Layer</span>
+          <span class="ra-hint">Documents → Chunks → Vectors</span>
+        </div>
+        <span class="ra-arrow">▼</span>
+      </summary>
+      <div class="ra-body">
+        <div class="ra-flow-row">
+          <div class="ra-flow-step">
+            <span class="ra-fs-icon">📄</span>
+            <span class="ra-fs-label">Raw Docs</span>
+          </div>
+          <span class="ra-flow-arrow">→</span>
+          <div class="ra-flow-step">
+            <span class="ra-fs-icon">✂️</span>
+            <span class="ra-fs-label">Splitter</span>
+          </div>
+          <span class="ra-flow-arrow">→</span>
+          <div class="ra-flow-step">
+            <span class="ra-fs-icon">🧮</span>
+            <span class="ra-fs-label">Embedder</span>
+          </div>
+          <span class="ra-flow-arrow">→</span>
+          <div class="ra-flow-step">
+            <span class="ra-fs-icon">🗄️</span>
+            <span class="ra-fs-label">Vector DB</span>
+          </div>
+        </div>
+        <p class="ra-note">Run once per document update. Use recursive text splitter with 400-token chunks and 50-token overlap. Embed with text-embedding-3-small for speed, ada-002 for quality.</p>
+      </div>
+    </details>
+
+    <details class="ra-layer ra-layer--purple">
+      <summary class="ra-header">
+        <span class="ra-num">L2</span>
+        <div class="ra-info">
+          <span class="ra-name">Retrieval Layer</span>
+          <span class="ra-hint">Query → Search → Re-rank → Context</span>
+        </div>
+        <span class="ra-arrow">▼</span>
+      </summary>
+      <div class="ra-body">
+        <div class="ra-flow-row">
+          <div class="ra-flow-step">
+            <span class="ra-fs-icon">❓</span>
+            <span class="ra-fs-label">Query</span>
+          </div>
+          <span class="ra-flow-arrow">→</span>
+          <div class="ra-flow-step">
+            <span class="ra-fs-icon">🔍</span>
+            <span class="ra-fs-label">ANN Search</span>
+          </div>
+          <span class="ra-flow-arrow">→</span>
+          <div class="ra-flow-step">
+            <span class="ra-fs-icon">📊</span>
+            <span class="ra-fs-label">Re-ranker</span>
+          </div>
+          <span class="ra-flow-arrow">→</span>
+          <div class="ra-flow-step">
+            <span class="ra-fs-icon">📋</span>
+            <span class="ra-fs-label">Top-K</span>
+          </div>
+        </div>
+        <p class="ra-note">Retrieve 20 candidates, re-rank to top 5. Hybrid search (vector + keyword BM25) outperforms pure vector by 15-20%. Use cross-encoder re-ranker for precision-critical queries.</p>
+      </div>
+    </details>
+
+    <details class="ra-layer ra-layer--amber">
+      <summary class="ra-header">
+        <span class="ra-num">L3</span>
+        <div class="ra-info">
+          <span class="ra-name">Generation Layer</span>
+          <span class="ra-hint">Context + Prompt → Grounded Answer</span>
+        </div>
+        <span class="ra-arrow">▼</span>
+      </summary>
+      <div class="ra-body">
+        <div class="ra-flow-row">
+          <div class="ra-flow-step">
+            <span class="ra-fs-icon">📋</span>
+            <span class="ra-fs-label">Context</span>
+          </div>
+          <span class="ra-flow-arrow">+</span>
+          <div class="ra-flow-step">
+            <span class="ra-fs-icon">📝</span>
+            <span class="ra-fs-label">System Prompt</span>
+          </div>
+          <span class="ra-flow-arrow">→</span>
+          <div class="ra-flow-step">
+            <span class="ra-fs-icon">🤖</span>
+            <span class="ra-fs-label">LLM</span>
+          </div>
+          <span class="ra-flow-arrow">→</span>
+          <div class="ra-flow-step">
+            <span class="ra-fs-icon">✅</span>
+            <span class="ra-fs-label">Answer</span>
+          </div>
+        </div>
+        <p class="ra-note">System prompt must say: "Answer ONLY from the provided context. If the context doesn't contain the answer, say so." This prevents the model from filling gaps with hallucinations. Always include source citations.</p>
+      </div>
+    </details>
+  </div>
+</div>
+
+<style>
+  .ra-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .ra-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .ra-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .ra-stack { display: flex; flex-direction: column; gap: 8px; }
+
+  .ra-layer {
+    border-radius: 12px; border: 1px solid #334155; overflow: hidden; transition: border-color 0.3s;
+  }
+  .ra-layer[open] { border-color: #475569; }
+  .ra-layer--cyan[open] { border-color: #06b6d430; }
+  .ra-layer--purple[open] { border-color: #818cf830; }
+  .ra-layer--amber[open] { border-color: #f59e0b30; }
+
+  .ra-header {
+    display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+    cursor: pointer; list-style: none; background: rgba(0,0,0,0.15);
+  }
+  .ra-header::-webkit-details-marker { display: none; }
+  .ra-header::marker { content: ''; }
+
+  .ra-num {
+    font-family: monospace; font-size: 0.65rem; font-weight: 800;
+    width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ra-layer--cyan .ra-num { color: #06b6d4; background: rgba(6,182,212,0.1); }
+  .ra-layer--purple .ra-num { color: #818cf8; background: rgba(129,140,248,0.1); }
+  .ra-layer--amber .ra-num { color: #f59e0b; background: rgba(245,158,11,0.1); }
+
+  .ra-info { flex: 1; }
+  .ra-name { display: block; color: #e2e8f0; font-weight: 700; font-size: 0.85rem; }
+  .ra-hint { display: block; color: #64748b; font-family: monospace; font-size: 0.6rem; margin-top: 2px; }
+
+  .ra-arrow { color: #475569; font-size: 0.7rem; transition: transform 0.3s; }
+  .ra-layer[open] .ra-arrow { transform: rotate(180deg); }
+
+  .ra-body { padding: 16px; background: rgba(0,0,0,0.1); }
+
+  .ra-flow-row {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    padding: 12px; background: rgba(0,0,0,0.15); border-radius: 8px; margin-bottom: 12px;
+  }
+  .ra-flow-step { text-align: center; }
+  .ra-fs-icon { display: block; font-size: 1.2rem; margin-bottom: 2px; }
+  .ra-fs-label { display: block; color: #94a3b8; font-size: 0.55rem; font-family: monospace; }
+  .ra-flow-arrow { color: #475569; font-family: monospace; font-size: 0.8rem; }
+
+  .ra-note { color: #94a3b8; font-size: 0.72rem; line-height: 1.6; margin: 0; }
+</style>

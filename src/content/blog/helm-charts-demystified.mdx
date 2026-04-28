@@ -1,0 +1,23 @@
+---
+title: "Helm Charts Demystified — Templating K8s Deployments"
+description: "Visual guide to Helm charts. Understand chart structure, values templating, and how Helm simplifies deploying and managing Kubernetes applications across environments."
+date: 2026-05-19
+---
+
+import HelmChartVisual from '../../components/visual/HelmChartVisual.astro';
+
+Raw Kubernetes YAML is verbose and repetitive. Deploying the same application to three environments means maintaining three nearly-identical sets of YAML files that differ only in image tags, replica counts, and resource limits. Helm solves this with templating: write your manifests once with variables, and inject different values per environment.
+
+## Chart Structure
+
+A Helm chart is a directory with a defined structure. The templates contain your Kubernetes manifests with Go template syntax for variable substitution. The values files contain the variables for each environment.
+
+<HelmChartVisual />
+
+The power is in the values override chain. `values.yaml` defines defaults. `values-prod.yaml` overrides only what's different in production. When you run `helm install -f values-prod.yaml`, Helm merges the files and renders your templates with production values. Same templates, different configurations, zero duplication.
+
+The `_helpers.tpl` file is where you define reusable template functions — standard labels, name formatting, selectors. Instead of repeating the same label block in every template, you call a helper function. Change the label format once, and every manifest updates automatically.
+
+Helm's upgrade and rollback capabilities are equally valuable. `helm upgrade` applies changes incrementally. `helm rollback` reverts to any previous revision instantly. Helm tracks every release version, so you can compare what changed between revisions and roll back to any point. Combined with CI/CD, this gives you GitOps-style versioned infrastructure — every deployment is a tracked, reversible operation.
+
+The biggest Helm anti-pattern: charts that expose every Kubernetes field as a Helm value. You end up with a 500-line values.yaml that's harder to understand than raw YAML. Good charts expose only the values that actually change between environments — image tag, replica count, resource limits, feature flags. Everything else is hardcoded in the templates.

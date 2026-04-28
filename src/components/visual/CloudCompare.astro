@@ -1,0 +1,27 @@
+---
+// CloudCompare.astro — Cloud provider comparison
+---
+<div class="clc-wrap">
+  <h3 class="clc-title">Cloud Provider Strengths — Honest Comparison</h3>
+  <div class="clc-table">
+    <div class="clc-row clc-row--h"><span class="clc-c clc-c--nm">Category</span><span class="clc-c">AWS</span><span class="clc-c">GCP</span><span class="clc-c">Azure</span></div>
+    <div class="clc-row clc-r1"><span class="clc-c clc-c--nm">Compute</span><span class="clc-c clc-c--best">Deepest catalog</span><span class="clc-c">Strong K8s</span><span class="clc-c">Good VMs</span></div>
+    <div class="clc-row clc-r2"><span class="clc-c clc-c--nm">AI/ML</span><span class="clc-c">SageMaker</span><span class="clc-c clc-c--best">Vertex AI, TPUs</span><span class="clc-c">OpenAI integration</span></div>
+    <div class="clc-row clc-r3"><span class="clc-c clc-c--nm">Data/Analytics</span><span class="clc-c">Redshift, Athena</span><span class="clc-c clc-c--best">BigQuery</span><span class="clc-c">Synapse</span></div>
+    <div class="clc-row clc-r4"><span class="clc-c clc-c--nm">Enterprise/Hybrid</span><span class="clc-c">Outposts</span><span class="clc-c">Anthos</span><span class="clc-c clc-c--best">Azure Arc, AD</span></div>
+    <div class="clc-row clc-r5"><span class="clc-c clc-c--nm">Serverless</span><span class="clc-c clc-c--best">Lambda (mature)</span><span class="clc-c">Cloud Run</span><span class="clc-c">Functions</span></div>
+    <div class="clc-row clc-r6"><span class="clc-c clc-c--nm">Networking</span><span class="clc-c clc-c--best">Most options</span><span class="clc-c clc-c--best">Best backbone</span><span class="clc-c">Good peering</span></div>
+  </div>
+</div>
+<style>
+  .clc-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .clc-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .clc-table{display:flex;flex-direction:column;gap:3px;overflow-x:auto}
+  .clc-row{display:grid;grid-template-columns:110px 1fr 1fr 1fr;gap:6px;padding:6px 10px;border-radius:6px;align-items:center}
+  .clc-row--h{border-bottom:1px solid #334155;padding-bottom:8px;margin-bottom:3px}
+  .clc-row--h .clc-c{color:#64748b;font-size:.58rem;text-transform:uppercase;letter-spacing:.3px;font-weight:700}
+  .clc-row:not(.clc-row--h){opacity:0;animation:clcIn .3s ease forwards;background:rgba(0,0,0,.06)}
+  .clc-r1{animation-delay:.05s}.clc-r2{animation-delay:.1s}.clc-r3{animation-delay:.15s}.clc-r4{animation-delay:.2s}.clc-r5{animation-delay:.25s}.clc-r6{animation-delay:.3s}
+  @keyframes clcIn{to{opacity:1}}
+  .clc-c{color:#94a3b8;font-size:.66rem}.clc-c--nm{color:#e2e8f0;font-weight:700;font-size:.68rem}.clc-c--best{color:#4ade80}
+</style>

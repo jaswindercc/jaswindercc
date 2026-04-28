@@ -1,0 +1,60 @@
+---
+/**
+ * CDNArch.astro
+ * CDN architecture - edge, origin, caching layers
+ */
+---
+
+<div class="cdn-wrap">
+  <h3 class="cdn-title">CDN Architecture — How Content Reaches Users</h3>
+  <div class="cdn-flow">
+    <div class="cdn-node" style="--i:0; --color:#f59e0b;">
+      <div class="cdn-name">User (Tokyo)</div>
+      <div class="cdn-desc">Requests image.jpg</div>
+    </div>
+    <div class="cdn-arrow">→ 5ms</div>
+    <div class="cdn-node" style="--i:1; --color:#4ade80;">
+      <div class="cdn-name">Edge POP (Tokyo)</div>
+      <div class="cdn-desc">Cache HIT → serve immediately</div>
+    </div>
+  </div>
+  <div class="cdn-miss">
+    <div class="cdn-miss-label">On cache MISS:</div>
+    <div class="cdn-flow">
+      <div class="cdn-node cdn-small" style="--i:2; --color:#06b6d4;">
+        <div class="cdn-name">Edge POP</div>
+      </div>
+      <div class="cdn-arrow">→ 80ms</div>
+      <div class="cdn-node cdn-small" style="--i:3; --color:#818cf8;">
+        <div class="cdn-name">Origin Shield</div>
+      </div>
+      <div class="cdn-arrow">→ 120ms</div>
+      <div class="cdn-node cdn-small" style="--i:4; --color:#ef4444;">
+        <div class="cdn-name">Origin Server</div>
+      </div>
+    </div>
+  </div>
+  <div class="cdn-stats">
+    <div class="cdn-stat"><span class="cdn-val" style="color:#4ade80;">95%</span><span class="cdn-label">Cache hit rate (target)</span></div>
+    <div class="cdn-stat"><span class="cdn-val" style="color:#06b6d4;">5ms</span><span class="cdn-label">Edge latency</span></div>
+    <div class="cdn-stat"><span class="cdn-val" style="color:#f59e0b;">200ms</span><span class="cdn-label">Origin miss latency</span></div>
+  </div>
+</div>
+
+<style>
+  .cdn-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .cdn-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .cdn-flow{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem}
+  .cdn-node{background:rgba(255,255,255,0.03);border:1px solid var(--color);border-radius:12px;padding:.75rem 1.25rem;text-align:center;opacity:0;animation:cdnFade .5s ease forwards;animation-delay:calc(var(--i)*.15s)}
+  @keyframes cdnFade{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+  .cdn-small{padding:.5rem .75rem}
+  .cdn-name{color:var(--color);font-weight:700;font-size:.85rem}
+  .cdn-desc{color:#94a3b8;font-size:.72rem;margin-top:.1rem}
+  .cdn-arrow{color:#64748b;font-size:.8rem;font-family:monospace}
+  .cdn-miss{background:rgba(0,0,0,.15);border-radius:10px;padding:1rem;margin-bottom:1rem}
+  .cdn-miss-label{color:#f59e0b;font-size:.78rem;font-weight:600;margin-bottom:.5rem}
+  .cdn-stats{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+  .cdn-stat{text-align:center;background:rgba(0,0,0,.2);border-radius:8px;padding:.5rem 1rem}
+  .cdn-val{display:block;font-size:1.2rem;font-weight:700}
+  .cdn-label{color:#64748b;font-size:.65rem}
+</style>

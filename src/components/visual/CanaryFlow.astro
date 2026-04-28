@@ -1,0 +1,59 @@
+---
+/**
+ * CanaryFlow.astro
+ * Visual showing canary deployment traffic shifting
+ * Pure CSS, dark theme
+ */
+---
+
+<div class="cnf-wrap">
+  <h3 class="cnf-title">Canary Deployment — Traffic Shifting</h3>
+  
+  <div class="cnf-stages">
+    <div class="cnf-stage" style="--i:0;">
+      <div class="cnf-label">Step 1: Deploy canary</div>
+      <div class="cnf-bars">
+        <div class="cnf-bar cnf-stable" style="width:95%;"><span>v1 Stable — 95%</span></div>
+        <div class="cnf-bar cnf-canary" style="width:5%;"><span>v2 — 5%</span></div>
+      </div>
+    </div>
+    <div class="cnf-stage" style="--i:1;">
+      <div class="cnf-label">Step 2: Monitor & increase</div>
+      <div class="cnf-bars">
+        <div class="cnf-bar cnf-stable" style="width:75%;"><span>v1 — 75%</span></div>
+        <div class="cnf-bar cnf-canary" style="width:25%;"><span>v2 — 25%</span></div>
+      </div>
+    </div>
+    <div class="cnf-stage" style="--i:2;">
+      <div class="cnf-label">Step 3: Promote or rollback</div>
+      <div class="cnf-bars">
+        <div class="cnf-bar cnf-canary" style="width:100%;"><span>v2 — 100% ✓</span></div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="cnf-metrics">
+    <div class="cnf-metric"><span class="cnf-metric-label">Error rate</span><span class="cnf-metric-val cnf-ok">&lt; 0.1%</span></div>
+    <div class="cnf-metric"><span class="cnf-metric-label">P99 latency</span><span class="cnf-metric-val cnf-ok">142ms</span></div>
+    <div class="cnf-metric"><span class="cnf-metric-label">Rollback?</span><span class="cnf-metric-val cnf-ok">Not needed</span></div>
+  </div>
+</div>
+
+<style>
+  .cnf-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .cnf-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .cnf-stages{display:flex;flex-direction:column;gap:1.25rem;margin-bottom:1.5rem}
+  .cnf-stage{opacity:0;animation:cnfFade .5s ease forwards;animation-delay:calc(var(--i)*.2s)}
+  @keyframes cnfFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .cnf-label{color:#94a3b8;font-size:.8rem;margin-bottom:.4rem}
+  .cnf-bars{display:flex;gap:4px;height:36px}
+  .cnf-bar{border-radius:8px;display:flex;align-items:center;justify-content:center;min-width:40px;transition:width .6s ease}
+  .cnf-bar span{font-size:.7rem;font-weight:600;white-space:nowrap}
+  .cnf-stable{background:rgba(129,140,248,0.2);border:1px solid rgba(129,140,248,0.4);color:#818cf8}
+  .cnf-canary{background:rgba(74,222,128,0.2);border:1px solid rgba(74,222,128,0.4);color:#4ade80}
+  .cnf-metrics{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+  .cnf-metric{background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:8px;padding:.5rem 1rem;text-align:center}
+  .cnf-metric-label{color:#64748b;font-size:.7rem;display:block}
+  .cnf-metric-val{font-weight:700;font-size:.85rem}
+  .cnf-ok{color:#4ade80}
+</style>

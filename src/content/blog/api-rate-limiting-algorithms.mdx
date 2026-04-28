@@ -1,0 +1,47 @@
+---
+title: "API Rate Limiting Algorithms — Token Bucket to Sliding Window"
+description: "Visual guide to rate limiting algorithms. Compare fixed window, sliding window, token bucket, and leaky bucket approaches with practical implementation guidance for API protection."
+date: 2026-05-10
+---
+
+import RateLimitVisual from '../../components/visual/RateLimitVisual.astro';
+
+Rate limiting is the bouncer at your API's door. Without it, a single misbehaving client — malicious or buggy — can consume all your server resources and take down the service for everyone. But rate limiting is more nuanced than "block after 100 requests." The algorithm you choose determines whether you handle burst traffic gracefully or frustrate legitimate users with false rejections.
+
+## Algorithm Comparison
+
+Each algorithm makes different trade-offs between precision, memory usage, burst tolerance, and implementation complexity.
+
+<RateLimitVisual />
+
+The fixed window counter is the simplest: divide time into one-minute windows, count requests per window, reject when the count exceeds the limit. But it has a fatal flaw — the boundary burst problem. A client can send 100 requests at 11:59:59 and another 100 at 12:00:01, getting 200 requests through in two seconds while "respecting" a 100/minute limit.
+
+## Token Bucket: The Industry Standard
+
+Token bucket is the most commonly used algorithm for good reason. A bucket starts full of tokens. Each request consumes one token. Tokens are added at a constant rate. If the bucket is empty, the request is rejected. The bucket has a maximum capacity, allowing controlled bursts up to that capacity.
+
+The two parameters — refill rate and bucket size — give you precise control. A bucket with capacity 10 and refill rate 1/second allows bursts of 10 requests, then sustains 1 request per second. This matches real API usage patterns: clients often send a batch of requests, then go quiet, then send another batch.
+
+Redis makes token bucket trivial to implement in distributed systems. A single key stores the bucket state (token count and last refill time). A Lua script atomically checks and decrements tokens, preventing race conditions between multiple application servers.
+
+## Sliding Window Approaches
+
+Sliding window log tracks the timestamp of every request. To check the rate, count timestamps within the trailing window. This is perfectly precise — no boundary issues — but stores every timestamp, using O(n) memory per client where n is the rate limit. At 1000 requests/minute across 100,000 users, that's 100 million timestamps in memory.
+
+Sliding window counter combines fixed windows with interpolation. It keeps counters for the current and previous window, then estimates the current rate using a weighted average. If you're 30% into the current minute and the previous minute had 70 requests while the current has 20, the estimated rate is `70 * 0.7 + 20 = 69`. This uses O(1) memory per client while approximating the accuracy of the log approach.
+
+## Implementation Patterns
+
+Rate limit by user, not by IP. IP-based rate limiting blocks entire offices that share a NAT gateway while letting sophisticated attackers rotate through proxy networks. API key or JWT-based identification gives you accurate per-user limiting.
+
+Return proper headers. `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset` let clients self-regulate. Well-behaved clients check remaining quota and back off before hitting the limit. Without these headers, clients learn their limits by getting rejected — a worse experience for everyone.
+
+The HTTP 429 (Too Many Requests) response should include a `Retry-After` header indicating when the client can try again. Include a human-readable error message in the body explaining which limit was exceeded and how to request a higher quota.
+
+## Distributed Rate Limiting
+
+Single-server rate limiting is easy. Distributed rate limiting across multiple application servers is where complexity lives. Without coordination, each server enforces its own limit, and a client hitting different servers gets N times the intended rate.
+
+Redis is the standard solution. All servers check and update the same Redis counters atomically using Lua scripts. The trade-off is an additional network round-trip per request — typically 1-2ms. For most APIs, this is acceptable. For ultra-low-latency paths, you can use local approximate counters that sync with Redis periodically, accepting some over-limit leakage in exchange for zero-latency checking.
+
+When Redis goes down, you need a fallback policy. Most teams default to allowing traffic (fail open) because blocking all requests during a Redis outage is worse than temporarily losing rate limiting. Some critical endpoints — login, payment processing — might warrant fail-closed behavior with a local fallback counter.

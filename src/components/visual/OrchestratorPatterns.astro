@@ -1,0 +1,54 @@
+---
+// OrchestratorPatterns.astro — Expandable cards for multi-agent orchestration patterns
+---
+
+<div class="op-wrap">
+  <h3 class="op-title">3 Ways to Wire Agents Together</h3>
+  <p class="op-sub">Click each pattern to see how it works and when to use it.</p>
+  <div class="op-stack">
+    <details class="op-card op-card--cyan">
+      <summary class="op-hd"><span class="op-num">01</span><div class="op-info"><span class="op-name">Hub & Spoke (Orchestrator)</span><span class="op-when">One boss, many workers. Most common.</span></div><span class="op-arr">▼</span></summary>
+      <div class="op-body">
+        <p>A central orchestrator agent receives the task, breaks it down, and delegates to specialized agents. Each worker reports back. The orchestrator assembles the final answer.</p>
+        <div class="op-pros"><strong>Pros:</strong> Easy to debug, clear ownership, predictable flow.</div>
+        <div class="op-cons"><strong>Cons:</strong> Bottleneck at orchestrator, single point of failure.</div>
+      </div>
+    </details>
+    <details class="op-card op-card--green">
+      <summary class="op-hd"><span class="op-num">02</span><div class="op-info"><span class="op-name">Pipeline (Sequential)</span><span class="op-when">Each agent's output feeds the next.</span></div><span class="op-arr">▼</span></summary>
+      <div class="op-body">
+        <p>Agents run in sequence like an assembly line. Agent 1 researches, Agent 2 drafts, Agent 3 reviews. Each transforms the output and passes it along.</p>
+        <div class="op-pros"><strong>Pros:</strong> Simple to build, easy to test each stage independently.</div>
+        <div class="op-cons"><strong>Cons:</strong> Slow (no parallelism), errors compound downstream.</div>
+      </div>
+    </details>
+    <details class="op-card op-card--purple">
+      <summary class="op-hd"><span class="op-num">03</span><div class="op-info"><span class="op-name">Debate (Adversarial)</span><span class="op-when">Agents challenge each other for quality.</span></div><span class="op-arr">▼</span></summary>
+      <div class="op-body">
+        <p>Two or more agents generate competing answers, then a judge agent picks the best one — or asks for revisions. Used in high-stakes decisions where accuracy matters more than speed.</p>
+        <div class="op-pros"><strong>Pros:</strong> Higher accuracy, catches errors, reduces hallucination.</div>
+        <div class="op-cons"><strong>Cons:</strong> 2-3x cost and latency, complex to orchestrate.</div>
+      </div>
+    </details>
+  </div>
+</div>
+
+<style>
+  .op-wrap { background: linear-gradient(135deg, #0f172a, #1e293b); border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155; }
+  .op-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 .25rem; }
+  .op-sub { color: #64748b; font-size: .8rem; margin: 0 0 1.5rem; font-family: monospace; }
+  .op-stack { display: flex; flex-direction: column; gap: 8px; }
+  .op-card { border-radius: 12px; border: 1px solid #334155; overflow: hidden; transition: border-color .3s; }
+  .op-card[open] { border-color: #475569; }
+  .op-card--cyan[open] { border-color: #06b6d430; } .op-card--green[open] { border-color: #4ade8030; } .op-card--purple[open] { border-color: #818cf830; }
+  .op-hd { display: flex; align-items: center; gap: 12px; padding: 12px 16px; cursor: pointer; list-style: none; background: rgba(0,0,0,.15); }
+  .op-hd::-webkit-details-marker { display: none; } .op-hd::marker { content: ''; }
+  .op-num { font-family: monospace; font-size: .65rem; font-weight: 800; width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .op-card--cyan .op-num { color: #06b6d4; background: rgba(6,182,212,.1); } .op-card--green .op-num { color: #4ade80; background: rgba(74,222,128,.1); } .op-card--purple .op-num { color: #818cf8; background: rgba(129,140,248,.1); }
+  .op-info { flex: 1; } .op-name { display: block; color: #e2e8f0; font-weight: 700; font-size: .85rem; } .op-when { display: block; color: #64748b; font-family: monospace; font-size: .6rem; margin-top: 2px; }
+  .op-arr { color: #475569; font-size: .7rem; transition: transform .3s; } .op-card[open] .op-arr { transform: rotate(180deg); }
+  .op-body { padding: 14px 16px; }
+  .op-body p { color: #94a3b8; font-size: .78rem; line-height: 1.6; margin: 0 0 10px; }
+  .op-pros { color: #86efac; font-size: .7rem; margin-bottom: 4px; } .op-pros strong { color: #4ade80; }
+  .op-cons { color: #fca5a5; font-size: .7rem; } .op-cons strong { color: #f87171; }
+</style>

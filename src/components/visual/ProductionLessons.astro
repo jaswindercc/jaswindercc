@@ -1,0 +1,177 @@
+---
+// ProductionLessons.astro
+---
+
+<div class="pl-wrap">
+  <h3 class="pl-title">The Production Checklist I Wish I Had</h3>
+  <p class="pl-sub">Click each lesson to see the story behind it — and the fix.</p>
+  <div class="pl-stack">
+
+    <details class="pl-card pl-card--red">
+      <summary class="pl-header">
+        <span class="pl-num">01</span>
+        <div class="pl-info">
+          <span class="pl-name">Set a max iteration count — always</span>
+          <span class="pl-tldr">Learned after a $47 runaway bill</span>
+        </div>
+        <span class="pl-arrow">▼</span>
+      </summary>
+      <div class="pl-body">
+        <p>The agent decided it needed "more context" and kept looping. No hard cap meant it ran 23 iterations before a human noticed. The fix is embarrassingly simple:</p>
+        <pre class="pl-code"><code>MAX_ITERATIONS = 8  # Hard ceiling
+
+for i in range(MAX_ITERATIONS):
+    result = agent.step()
+    if result.done:
+        break
+else:
+    log.warn("Hit max iterations — forcing exit")</code></pre>
+      </div>
+    </details>
+
+    <details class="pl-card pl-card--amber">
+      <summary class="pl-header">
+        <span class="pl-num">02</span>
+        <div class="pl-info">
+          <span class="pl-name">Per-tool timeouts, not just global ones</span>
+          <span class="pl-tldr">One slow DB call froze the whole loop</span>
+        </div>
+        <span class="pl-arrow">▼</span>
+      </summary>
+      <div class="pl-body">
+        <p>A global 30s timeout doesn't help when one tool hangs at 28s. The agent technically "finished" but the user waited half a minute for garbage. Give each tool its own budget:</p>
+        <pre class="pl-code"><code>tools = &#123;
+  "sentiment_api": &#123;"timeout": 3, "fallback": "neutral"&#125;,
+  "history_lookup": &#123;"timeout": 5, "fallback": "cache"&#125;,
+  "draft_response": &#123;"timeout": 10, "fallback": "template"&#125;
+&#125;</code></pre>
+      </div>
+    </details>
+
+    <details class="pl-card pl-card--cyan">
+      <summary class="pl-header">
+        <span class="pl-num">03</span>
+        <div class="pl-info">
+          <span class="pl-name">Sliding context window — don't append forever</span>
+          <span class="pl-tldr">Tokens doubled every 3 iterations</span>
+        </div>
+        <span class="pl-arrow">▼</span>
+      </summary>
+      <div class="pl-body">
+        <p>We naively appended every tool result to the context. By iteration 8, the agent was reading 40K tokens of its own history. The solution: keep only the last 2 iterations in full, summarize the rest.</p>
+        <pre class="pl-code"><code>def sliding_context(history, keep_last=2):
+    recent = history[-keep_last:]
+    older = history[:-keep_last]
+    summary = llm.summarize(older)  # ~200 tokens
+    return [summary] + recent</code></pre>
+      </div>
+    </details>
+
+    <details class="pl-card pl-card--purple">
+      <summary class="pl-header">
+        <span class="pl-num">04</span>
+        <div class="pl-info">
+          <span class="pl-name">Log the why, not just the what</span>
+          <span class="pl-tldr">400 lines of JSON, zero insight</span>
+        </div>
+        <span class="pl-arrow">▼</span>
+      </summary>
+      <div class="pl-body">
+        <p>Our first logging setup recorded every API call. Useless for debugging. What we actually needed was the agent's reasoning at each step: why it chose that tool, what it expected, and whether the result matched.</p>
+        <pre class="pl-code"><code>decision_log.append(&#123;
+    "iteration": i,
+    "thought": agent.last_thought,    # WHY
+    "action": agent.last_action,      # WHAT
+    "expected": agent.expectation,     # PREDICTION
+    "actual": tool_result,             # REALITY
+    "match": expected == actual        # DID IT WORK?
+&#125;)</code></pre>
+      </div>
+    </details>
+
+    <details class="pl-card pl-card--green">
+      <summary class="pl-header">
+        <span class="pl-num">05</span>
+        <div class="pl-info">
+          <span class="pl-name">Build the kill switch before you need it</span>
+          <span class="pl-tldr">The human in the loop is the last guardrail</span>
+        </div>
+        <span class="pl-arrow">▼</span>
+      </summary>
+      <div class="pl-body">
+        <p>Every production agent needs three things: a budget cap, a max iteration count, and a way for a human to stop it mid-run. We added a simple Redis flag check between iterations:</p>
+        <pre class="pl-code"><code>async def check_kill_switch(run_id):
+    killed = await redis.get("kill:" + run_id)
+    if killed:
+        log.warn("Run killed by operator: " + run_id)
+        raise AgentHalted("Manual kill switch activated")
+
+# Between every iteration:
+await check_kill_switch(run_id)</code></pre>
+      </div>
+    </details>
+
+  </div>
+</div>
+
+<style>
+  .pl-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .pl-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .pl-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+  .pl-stack { display: flex; flex-direction: column; gap: 8px; }
+  .pl-card {
+    border-radius: 12px; border: 1px solid #334155; background: rgba(0,0,0,0.2);
+    overflow: hidden; transition: border-color 0.3s, background 0.3s;
+  }
+  .pl-card[open] { border-color: #475569; }
+  .pl-card--red[open] { border-color: #ef444430; background: rgba(239,68,68,0.03); }
+  .pl-card--amber[open] { border-color: #f59e0b30; background: rgba(245,158,11,0.03); }
+  .pl-card--cyan[open] { border-color: #06b6d430; background: rgba(6,182,212,0.03); }
+  .pl-card--purple[open] { border-color: #818cf830; background: rgba(129,140,248,0.03); }
+  .pl-card--green[open] { border-color: #4ade8030; background: rgba(74,222,128,0.03); }
+  .pl-header {
+    display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+    cursor: pointer; list-style: none;
+  }
+  .pl-header::-webkit-details-marker { display: none; }
+  .pl-header::marker { content: ''; }
+  .pl-num {
+    font-family: monospace; font-size: 0.7rem; font-weight: 800;
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid #475569;
+  }
+  .pl-card--red .pl-num { color: #f87171; border-color: #ef444440; background: rgba(239,68,68,0.08); }
+  .pl-card--amber .pl-num { color: #f59e0b; border-color: #f59e0b40; background: rgba(245,158,11,0.08); }
+  .pl-card--cyan .pl-num { color: #06b6d4; border-color: #06b6d440; background: rgba(6,182,212,0.08); }
+  .pl-card--purple .pl-num { color: #818cf8; border-color: #818cf840; background: rgba(129,140,248,0.08); }
+  .pl-card--green .pl-num { color: #4ade80; border-color: #4ade8040; background: rgba(74,222,128,0.08); }
+  .pl-info { display: flex; flex-direction: column; flex: 1; }
+  .pl-name { color: #e2e8f0; font-weight: 700; font-size: 0.85rem; }
+  .pl-tldr { color: #64748b; font-family: monospace; font-size: 0.6rem; margin-top: 2px; }
+  .pl-arrow {
+    color: #475569; font-size: 0.7rem; transition: transform 0.3s; flex-shrink: 0; margin-left: auto;
+  }
+  .pl-card[open] .pl-arrow { transform: rotate(180deg); }
+  .pl-body { padding: 0 16px 16px; }
+  .pl-body p {
+    color: #94a3b8; font-size: 0.8rem; line-height: 1.6; margin: 0 0 12px;
+  }
+  .pl-body em { color: #f59e0b; font-style: italic; }
+  .pl-code {
+    margin: 0; padding: 12px 14px; border-radius: 8px; font-size: 0.65rem;
+    line-height: 1.5; overflow-x: auto; border: 1px solid #334155; white-space: pre;
+  }
+  .pl-card--red .pl-code { background: rgba(239,68,68,0.04); color: #fca5a5; }
+  .pl-card--amber .pl-code { background: rgba(245,158,11,0.04); color: #fbbf24; }
+  .pl-card--cyan .pl-code { background: rgba(6,182,212,0.04); color: #22d3ee; }
+  .pl-card--purple .pl-code { background: rgba(129,140,248,0.04); color: #a5b4fc; }
+  .pl-card--green .pl-code { background: rgba(74,222,128,0.04); color: #86efac; }
+  .pl-code code {
+    background: transparent !important; padding: 0 !important;
+    color: inherit !important; font-size: inherit !important;
+  }
+</style>

@@ -1,0 +1,73 @@
+---
+/**
+ * DeployStrategiesVisual.astro
+ * Blue-green vs canary vs rolling deployment comparison
+ */
+---
+
+<div class="dsv-wrap">
+  <h3 class="dsv-title">Deployment Strategy Comparison</h3>
+  <div class="dsv-strats">
+    <div class="dsv-strat" style="--i:0;--c:#06b6d4;">
+      <div class="dsv-sname">Blue-Green</div>
+      <div class="dsv-viz">
+        <div class="dsv-env blue">Blue (v1)</div>
+        <div class="dsv-switch">⟵ DNS switch ⟶</div>
+        <div class="dsv-env green">Green (v2)</div>
+      </div>
+      <div class="dsv-pros">Instant rollback, zero downtime, full testing before switch</div>
+      <div class="dsv-cons">2x infrastructure cost, database migration complexity</div>
+    </div>
+    <div class="dsv-strat" style="--i:1;--c:#f59e0b;">
+      <div class="dsv-sname">Canary</div>
+      <div class="dsv-viz">
+        <div class="dsv-bar-track">
+          <div class="dsv-bar-fill canary"></div>
+        </div>
+        <div class="dsv-bar-labels"><span>5% → 25% → 50% → 100%</span></div>
+      </div>
+      <div class="dsv-pros">Gradual risk, real traffic validation, metric-driven promotion</div>
+      <div class="dsv-cons">Slower rollout, needs good observability, traffic splitting complexity</div>
+    </div>
+    <div class="dsv-strat" style="--i:2;--c:#4ade80;">
+      <div class="dsv-sname">Rolling</div>
+      <div class="dsv-viz">
+        <div class="dsv-pods">
+          <div class="dsv-pod old">v1</div>
+          <div class="dsv-pod new">v2</div>
+          <div class="dsv-pod new">v2</div>
+          <div class="dsv-pod old">v1</div>
+          <div class="dsv-pod new">v2</div>
+        </div>
+      </div>
+      <div class="dsv-pros">No extra infra, K8s default, gradual replacement</div>
+      <div class="dsv-cons">Mixed versions during rollout, slow rollback, no traffic control</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .dsv-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .dsv-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .dsv-strats{display:flex;flex-direction:column;gap:1rem}
+  .dsv-strat{background:rgba(0,0,0,.2);border-radius:12px;padding:1rem;border-left:3px solid var(--c);opacity:0;animation:dsvSlide .4s ease forwards;animation-delay:calc(var(--i)*.15s)}
+  @keyframes dsvSlide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  .dsv-sname{color:var(--c);font-weight:700;font-size:.9rem;margin-bottom:.6rem}
+  .dsv-viz{display:flex;align-items:center;gap:.5rem;justify-content:center;margin-bottom:.6rem;flex-wrap:wrap}
+  .dsv-env{padding:.3rem .8rem;border-radius:6px;font-size:.72rem;font-weight:600}
+  .dsv-env.blue{background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid #3b82f6}
+  .dsv-env.green{background:rgba(74,222,128,.15);color:#4ade80;border:1px solid #4ade80}
+  .dsv-switch{color:#475569;font-size:.7rem}
+  .dsv-bar-track{background:rgba(255,255,255,.05);border-radius:4px;height:8px;width:100%;max-width:250px}
+  .dsv-bar-fill.canary{height:100%;width:0;border-radius:4px;background:linear-gradient(90deg,#f59e0b,#4ade80);animation:dsvGrow 2s ease forwards;animation-delay:.6s}
+  @keyframes dsvGrow{to{width:100%}}
+  .dsv-bar-labels{color:#64748b;font-size:.65rem;text-align:center;width:100%}
+  .dsv-pods{display:flex;gap:.3rem;justify-content:center}
+  .dsv-pod{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700}
+  .dsv-pod.old{background:rgba(148,163,184,.15);color:#94a3b8;border:1px solid #475569}
+  .dsv-pod.new{background:rgba(74,222,128,.15);color:#4ade80;border:1px solid #4ade80}
+  .dsv-pros{color:#4ade80;font-size:.72rem;margin-bottom:.3rem}
+  .dsv-pros::before{content:'✓ '}
+  .dsv-cons{color:#f87171;font-size:.72rem}
+  .dsv-cons::before{content:'✗ '}
+</style>

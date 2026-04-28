@@ -1,0 +1,25 @@
+---
+// K8sServiceTypes.astro — Kubernetes service types comparison
+---
+<div class="kst-wrap">
+  <h3 class="kst-title">Service Types — When to Use What</h3>
+  <div class="kst-grid">
+    <details class="kst-card kst-card--green"><summary class="kst-h"><span class="kst-type">ClusterIP</span><span class="kst-tag">Internal only</span></summary><div class="kst-body"><p class="kst-p">Default. Only reachable inside the cluster. Perfect for service-to-service communication. Creates a virtual IP that kube-proxy maps to healthy pod endpoints.</p><div class="kst-use"><strong>Use when:</strong> Backend services that only other pods need to reach (databases, internal APIs, caches).</div></div></details>
+    <details class="kst-card kst-card--amber"><summary class="kst-h"><span class="kst-type">NodePort</span><span class="kst-tag">Port 30000-32767</span></summary><div class="kst-body"><p class="kst-p">Opens a static port on every node in the cluster. Traffic to any node's IP on that port reaches your pod. Simple but exposes nodes directly.</p><div class="kst-use"><strong>Use when:</strong> Development/testing, or when you already have an external load balancer that routes to node IPs.</div></div></details>
+    <details class="kst-card kst-card--cyan"><summary class="kst-h"><span class="kst-type">LoadBalancer</span><span class="kst-tag">Cloud LB provisioned</span></summary><div class="kst-body"><p class="kst-p">Provisions a cloud load balancer (AWS ALB/NLB, GCP LB). Gets a real public IP. Traffic flows: Internet → LB → NodePort → Pod. Most common for production apps.</p><div class="kst-use"><strong>Use when:</strong> Production services that need stable external access on standard ports (80/443).</div></div></details>
+    <details class="kst-card kst-card--purple"><summary class="kst-h"><span class="kst-type">ExternalName</span><span class="kst-tag">CNAME redirect</span></summary><div class="kst-body"><p class="kst-p">No proxying. Just creates a DNS CNAME record pointing to an external hostname. Useful for migrating external services into the cluster gradually.</p><div class="kst-use"><strong>Use when:</strong> Pointing internal DNS at external databases or third-party services during migration.</div></div></details>
+  </div>
+</div>
+<style>
+  .kst-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .kst-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .kst-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+  .kst-card{border-radius:12px;border:1px solid #334155;overflow:hidden;transition:border-color .3s}
+  .kst-card--green[open]{border-color:#4ade8040}.kst-card--amber[open]{border-color:#f59e0b40}.kst-card--cyan[open]{border-color:#06b6d440}.kst-card--purple[open]{border-color:#818cf840}
+  .kst-h{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;list-style:none;background:rgba(0,0,0,.15)}.kst-h::-webkit-details-marker{display:none}.kst-h::marker{content:''}
+  .kst-type{color:#e2e8f0;font-weight:700;font-size:.82rem;font-family:monospace}
+  .kst-tag{font-size:.6rem;padding:2px 8px;border-radius:20px;font-family:monospace}
+  .kst-card--green .kst-tag{color:#4ade80;background:rgba(74,222,128,.1)}.kst-card--amber .kst-tag{color:#f59e0b;background:rgba(245,158,11,.1)}.kst-card--cyan .kst-tag{color:#06b6d4;background:rgba(6,182,212,.1)}.kst-card--purple .kst-tag{color:#818cf8;background:rgba(129,140,248,.1)}
+  .kst-body{padding:12px 16px}.kst-p{color:#94a3b8;font-size:.75rem;line-height:1.6;margin:0 0 8px}
+  .kst-use{color:#64748b;font-size:.68rem;line-height:1.5;padding:6px 10px;background:rgba(0,0,0,.2);border-radius:6px}.kst-use strong{color:#f59e0b}
+</style>

@@ -1,0 +1,51 @@
+---
+title: "DNS Explained Visually — From Query to IP Address"
+description: "A visual walkthrough of how DNS resolution works. Follow a query from browser cache to authoritative nameserver, understand record types, TTLs, and why DNS is both critical and fragile."
+date: 2026-05-05
+---
+
+import DNSVisual from '../../components/visual/DNSVisual.astro';
+
+Every internet connection starts with DNS. Before your browser can send a single byte to a server, it needs to translate a human-readable domain name into an IP address. This translation happens billions of times per day, usually in under 50 milliseconds, and most developers never think about it until it breaks. Then everything breaks, because DNS is the foundation everything else sits on.
+
+## The Resolution Journey
+
+When you type `example.com` into a browser, a cascade of lookups begins. Each step either returns a cached answer or escalates to the next level.
+
+<DNSVisual />
+
+Most queries resolve from cache — browser, OS, or recursive resolver. The full root → TLD → authoritative chain only happens for queries no one has made recently. Caching is what makes DNS scale to billions of daily queries without melting.
+
+## Caching and TTL
+
+Every DNS record has a Time To Live (TTL) — the number of seconds a resolver should cache the result. When you set an A record with TTL 300, resolvers cache that answer for five minutes. After TTL expires, the next query triggers a fresh lookup from the authoritative server.
+
+Low TTLs (60-300 seconds) mean faster propagation when you change records. High TTLs (3600-86400 seconds) mean fewer queries to your authoritative servers and faster resolution for users. The trade-off is flexibility versus performance.
+
+Before a migration, lower TTLs 24-48 hours in advance. If your records had 4-hour TTLs and you change the IP, some resolvers will serve the old IP for up to four hours. Lowering TTL to 60 seconds before the change ensures the transition completes quickly. Raise TTL again after the migration stabilizes.
+
+## Record Types in Practice
+
+A records map names to IPv4 addresses. The simplest record — `example.com → 93.184.216.34`. AAAA records do the same for IPv6. If you're serving IPv6 traffic (you should be), you need both.
+
+CNAME records are aliases — `www.example.com → example.com`. The resolver follows the CNAME chain to find the final A record. CNAMEs can't coexist with other records at the same name, which is why you can't CNAME the zone apex (`example.com` itself). Some providers offer ALIAS or ANAME records that solve this.
+
+TXT records store arbitrary text and are used for domain verification (Google Search Console, Let's Encrypt DNS-01), email security (SPF, DKIM, DMARC), and various API integrations. SPF records tell receiving mail servers which IPs are authorized to send email for your domain — critical for email deliverability.
+
+MX records direct email to mail servers, with priority values that determine failover order. Lower priority numbers are preferred, so `10 mail1.example.com` receives mail before `20 mail2.example.com`.
+
+## DNS Security
+
+DNS was designed in 1983 without encryption or authentication. Traditional DNS queries travel in plaintext UDP — any network observer can see which domains you're resolving, and any intermediary can forge responses.
+
+DNSSEC adds cryptographic signatures to DNS responses, preventing response forgery. The authoritative server signs records, and resolvers verify signatures using a chain of trust rooted in the DNS root zone. DNSSEC prevents cache poisoning attacks where an attacker injects false records into a resolver's cache.
+
+DNS over HTTPS (DoH) and DNS over TLS (DoT) encrypt the query between client and recursive resolver, preventing eavesdropping. Cloudflare (1.1.1.1), Google (8.8.8.8), and Quad9 (9.9.9.9) all support encrypted DNS. Most modern browsers use DoH by default, though enterprise networks sometimes disable it to maintain visibility into DNS queries.
+
+## DNS as Infrastructure
+
+DNS isn't just name resolution — it's traffic management infrastructure. Geographic DNS routes users to the nearest data center. Weighted DNS distributes traffic across servers. Failover DNS detects unhealthy endpoints and reroutes traffic automatically.
+
+Route 53, Cloudflare DNS, and NS1 offer health-checked DNS records. If a health check fails, the record is removed from responses, routing traffic to healthy endpoints. Combined with low TTLs, this provides automated failover within minutes. It's not as fast as load balancer failover, but it works across regions and providers.
+
+The most important DNS operational practice: never let your domain registration expire. Set auto-renew, add calendar reminders, and use a registrar that contacts you weeks before expiration. A lapsed domain can be purchased by anyone, and everything that depended on it — email, websites, APIs, certificate validation — stops working instantly.

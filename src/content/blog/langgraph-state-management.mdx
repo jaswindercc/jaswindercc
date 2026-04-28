@@ -1,0 +1,102 @@
+---
+title: "State Management in LangGraph: Why Loops Beat Chains"
+description: "A visual, interactive guide to state management in LangGraph. See why stateful loops outperform sequential chains — with animated diagrams, real code, and side-by-side comparisons."
+date: 2026-04-28
+---
+
+import ChainsVsLoops from '../../components/visual/ChainsVsLoops.astro';
+import StateFlowDiagram from '../../components/visual/StateFlowDiagram.astro';
+import StateSnapshotTimeline from '../../components/visual/StateSnapshotTimeline.astro';
+import LangGraphLayers from '../../components/visual/LangGraphLayers.astro';
+import StateMetrics from '../../components/visual/StateMetrics.astro';
+
+# State Management in LangGraph: Why Loops Beat Chains
+
+**Chains are simple. That's the problem.**
+
+When your AI workflow is a straight line — input → step 1 → step 2 → output — everything's fine. Until step 3 fails and your entire pipeline crashes. Until you need step 5 to re-run step 2 with updated context. Until you realize you can't debug anything because intermediate state vanished.
+
+LangGraph's `StateGraph` fixes this with one idea: **state is a first-class citizen**. Every node sees it, every node can change it, and the graph decides what happens next based on what's in it.
+
+This guide is interactive. Every section has a visual. Scroll and learn.
+
+---
+
+## 1. The Problem With Chains
+
+A chain is a straight line. Data flows in one direction. If anything breaks midway, everything after it is dead. There's no going back.
+
+A loop is different. It carries state forward, re-routes on failure, and can revisit earlier steps with new information.
+
+<ChainsVsLoops />
+
+This isn't theoretical. If you've ever had a LangChain pipeline crash at step 4 of 6 and had to re-run the *entire thing* from scratch, you already know why loops matter.
+
+---
+
+## 2. How State Flows Through the Graph
+
+In LangGraph, every node is a function that receives the full state dictionary and returns an updated copy. The graph manages the flow — including conditional branches and loops.
+
+<StateFlowDiagram />
+
+The key insight: **state is the connective tissue**. It's not hidden inside some internal buffer. It's a typed, inspectable dictionary that you define, and every node in the graph can read and write to it.
+
+The graph's edges (including conditional ones) look at the state to decide what runs next. That's how you get loops: a condition checks the state and routes back to an earlier node.
+
+---
+
+## 3. Watch the State Evolve — Step by Step
+
+Let's trace a real request through the graph. Watch how the state object changes as it passes through each node. Every mutation is visible.
+
+<StateSnapshotTimeline />
+
+This is the superpower. In a chain, the output of step 2 is consumed by step 3 and then it's gone. In a StateGraph, you can inspect the state *at any point* — before and after every single node. That makes debugging trivial: just look at what the state was when the node ran.
+
+---
+
+## 4. The Building Blocks — Just 3 Things
+
+LangGraph looks complex from the outside, but the core is dead simple: **State**, **Nodes**, and **Edges**. That's it. Click each layer to see the code:
+
+<LangGraphLayers />
+
+Notice the pattern: each node is a pure function. State in, state out. You can test any node in complete isolation by passing it a mock state dictionary. Try doing that with a deeply nested chain.
+
+---
+
+## 5. The Numbers — Chains vs Loops
+
+<StateMetrics />
+
+These aren't just nice-to-haves. When your agent handles real traffic, the difference between "crash and restart" and "re-route and continue" is the difference between a toy and a product.
+
+---
+
+## When Should You Use Loops Over Chains?
+
+Not everything needs a loop. Here's the simple rule:
+
+**Use a chain** when:
+- Your workflow is truly linear (A → B → C, no branching)
+- No step ever needs to re-run
+- You don't need to inspect intermediate state
+
+**Use a loop (StateGraph)** when:
+- Any step can fail and you want to recover, not restart
+- The output of one step might trigger a re-evaluation of an earlier step
+- You need to see the state at every point for debugging or auditing
+- The workflow involves human review or approval gates
+
+---
+
+## Try It Yourself
+
+1. **Define your state** as a TypedDict — be explicit about every field
+2. **Write each node** as a standalone function: state in, state out
+3. **Connect with edges** — use `add_conditional_edges` for loops
+4. **Add a loop counter** in your state to prevent infinite loops
+5. **Log state snapshots** between nodes — this is your best debugging tool
+
+The pattern scales from a 3-node customer service bot to a 20-node enterprise workflow. State is the constant.

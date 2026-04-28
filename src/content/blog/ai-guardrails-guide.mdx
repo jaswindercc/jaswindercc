@@ -1,0 +1,49 @@
+---
+title: "AI Guardrails — Building Safe LLM Applications"
+description: "Practical guide to implementing guardrails for LLM applications. Input filtering, output validation, hallucination detection, and monitoring strategies that keep AI systems safe in production."
+date: 2026-05-08
+---
+
+import GuardrailsVisual from '../../components/visual/GuardrailsVisual.astro';
+
+Shipping an LLM application without guardrails is like deploying a web application without input validation. The model will eventually produce something harmful, incorrect, or off-topic — and when it does, you need layers of defense that catch it before users see it. Guardrails aren't about making AI worse. They're about making AI reliable enough to trust in production.
+
+## Defense in Depth
+
+No single guardrail catches everything. You need multiple layers, each catching different failure modes. Input guardrails prevent dangerous prompts from reaching the model. System prompt controls constrain the model's behavior. Output validation catches responses that slip through. Monitoring detects patterns that individual checks miss.
+
+<GuardrailsVisual />
+
+The layered approach means each layer can be imperfect. An input filter that catches 90% of prompt injections combined with an output validator that catches 90% of harmful content gives you 99% coverage. Expecting any single layer to be perfect is unrealistic — expecting the combination to be sufficient is not.
+
+## Input Guardrails
+
+Input filtering runs before the LLM call, making it the cheapest and fastest defense. It includes prompt injection detection, PII scrubbing, topic classification, and input length limits. A well-designed input filter rejects obviously problematic requests without consuming LLM tokens.
+
+Prompt injection detection uses a classifier (often another smaller model) to identify inputs that attempt to override the system prompt. Patterns like "ignore previous instructions," role-play requests, or encoded text in various formats get flagged. The classifier doesn't need to be perfect — it just needs to catch the low-hanging fruit while output validation handles the rest.
+
+PII detection scrubs or masks personal information before it reaches the model. Phone numbers, email addresses, social security numbers, and credit card numbers can be detected with regex patterns. Names and addresses require NER models. For applications handling sensitive data, this prevents the model from memorizing or regurgitating personal information.
+
+## System Prompt Engineering
+
+The system prompt is your primary behavioral control. It defines the model's role, topics it should and shouldn't discuss, output format requirements, and how to handle edge cases. A weak system prompt is the root cause of most guardrail failures.
+
+Be specific about refusals. "Don't discuss harmful topics" is vague. "If asked about synthesizing controlled substances, respond with: 'I can't help with that. Here's a link to [relevant resource] instead.'" is actionable. The model follows specific instructions better than general ones.
+
+Include format constraints in the system prompt. If your application expects JSON, instruct the model to always respond in JSON. If responses should be under 200 words, say so explicitly. Format violations are easier to detect programmatically than content violations, so they're a cheap secondary guardrail.
+
+## Output Validation
+
+Output validation runs after the model generates a response and before the user sees it. It includes toxicity scoring, hallucination detection, format validation, and factual verification.
+
+Toxicity classifiers score responses on dimensions like hate speech, violence, sexual content, and self-harm. These are supervised classifiers trained on labeled datasets, and they run in milliseconds. Set thresholds per dimension — you might allow higher scores for medical content that discusses self-harm in clinical terms while maintaining zero tolerance for hate speech.
+
+Hallucination detection is harder. For RAG applications, you can check whether the model's claims are grounded in the retrieved documents. Compare the response against source material using NLI (natural language inference) models that determine whether the source supports, contradicts, or is irrelevant to each claim. Claims without source support get flagged or removed.
+
+## Monitoring and Feedback Loops
+
+Production guardrails need monitoring. Track the percentage of requests blocked by input filters, the percentage of responses flagged by output validation, and user feedback signals (thumbs up/down, report buttons). Sudden spikes in any metric indicate either an attack or a guardrail misconfiguration.
+
+Log every LLM interaction — input, output, guardrail decisions, and user feedback. This audit trail is essential for debugging failures, improving guardrails, and demonstrating compliance. Store logs securely and implement retention policies that balance debugging needs with privacy requirements.
+
+Build a feedback loop: when users flag bad responses, review them to determine whether existing guardrails should have caught them. Each missed detection is a training example for improving your classifiers. Over time, your guardrails become increasingly precise — fewer false positives, fewer missed detections. The system learns from its own failures.

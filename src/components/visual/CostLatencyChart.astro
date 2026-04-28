@@ -1,0 +1,107 @@
+---
+// CostLatencyChart.astro — Animated bar chart comparing cost and latency across methods
+---
+
+<div class="clc-wrap">
+  <h3 class="clc-title">Cost vs Latency vs Accuracy</h3>
+  <p class="clc-sub">Three dimensions. No method wins all three. Pick your trade-off.</p>
+
+  <div class="clc-charts">
+    <div class="clc-chart">
+      <div class="clc-chart-label">Monthly Cost</div>
+      <div class="clc-bars">
+        <div class="clc-bar-row">
+          <span class="clc-bar-name clc-green">Prompt</span>
+          <div class="clc-bar-track"><div class="clc-bar clc-bar--green" style="--w: 5%;"><span class="clc-bar-val">~$0</span></div></div>
+        </div>
+        <div class="clc-bar-row">
+          <span class="clc-bar-name clc-cyan">RAG</span>
+          <div class="clc-bar-track"><div class="clc-bar clc-bar--cyan" style="--w: 35%;"><span class="clc-bar-val">$200</span></div></div>
+        </div>
+        <div class="clc-bar-row">
+          <span class="clc-bar-name clc-amber">Fine-Tune</span>
+          <div class="clc-bar-track"><div class="clc-bar clc-bar--amber" style="--w: 85%;"><span class="clc-bar-val">$2,500</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="clc-chart">
+      <div class="clc-chart-label">Response Latency</div>
+      <div class="clc-bars">
+        <div class="clc-bar-row">
+          <span class="clc-bar-name clc-green">Prompt</span>
+          <div class="clc-bar-track"><div class="clc-bar clc-bar--green" style="--w: 30%;"><span class="clc-bar-val">0.8s</span></div></div>
+        </div>
+        <div class="clc-bar-row">
+          <span class="clc-bar-name clc-cyan">RAG</span>
+          <div class="clc-bar-track"><div class="clc-bar clc-bar--cyan" style="--w: 65%;"><span class="clc-bar-val">1.8s</span></div></div>
+        </div>
+        <div class="clc-bar-row">
+          <span class="clc-bar-name clc-amber">Fine-Tune</span>
+          <div class="clc-bar-track"><div class="clc-bar clc-bar--amber" style="--w: 28%;"><span class="clc-bar-val">0.7s</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="clc-chart">
+      <div class="clc-chart-label">Domain Accuracy</div>
+      <div class="clc-bars">
+        <div class="clc-bar-row">
+          <span class="clc-bar-name clc-green">Prompt</span>
+          <div class="clc-bar-track"><div class="clc-bar clc-bar--green" style="--w: 55%;"><span class="clc-bar-val">55%</span></div></div>
+        </div>
+        <div class="clc-bar-row">
+          <span class="clc-bar-name clc-cyan">RAG</span>
+          <div class="clc-bar-track"><div class="clc-bar clc-bar--cyan" style="--w: 88%;"><span class="clc-bar-val">88%</span></div></div>
+        </div>
+        <div class="clc-bar-row">
+          <span class="clc-bar-name clc-amber">Fine-Tune</span>
+          <div class="clc-bar-track"><div class="clc-bar clc-bar--amber" style="--w: 92%;"><span class="clc-bar-val">92%</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .clc-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .clc-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .clc-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .clc-charts { display: flex; flex-direction: column; gap: 20px; }
+
+  .clc-chart-label {
+    color: #94a3b8; font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.05em; margin-bottom: 8px;
+  }
+
+  .clc-bars { display: flex; flex-direction: column; gap: 8px; }
+
+  .clc-bar-row { display: flex; align-items: center; gap: 10px; }
+  .clc-bar-name {
+    font-size: 0.65rem; font-weight: 700; font-family: monospace; min-width: 65px; text-align: right;
+  }
+  .clc-green { color: #4ade80; }
+  .clc-cyan { color: #06b6d4; }
+  .clc-amber { color: #f59e0b; }
+
+  .clc-bar-track {
+    flex: 1; height: 26px; background: rgba(0,0,0,0.25); border-radius: 6px; overflow: hidden;
+  }
+  .clc-bar {
+    height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 10px;
+    width: 0; animation: clcGrow 1.2s ease-out 0.3s forwards; min-width: fit-content;
+  }
+  .clc-bar--green { background: linear-gradient(90deg, rgba(74,222,128,0.3), rgba(74,222,128,0.15)); border: 1px solid #4ade8040; }
+  .clc-bar--cyan { background: linear-gradient(90deg, rgba(6,182,212,0.3), rgba(6,182,212,0.15)); border: 1px solid #06b6d440; }
+  .clc-bar--amber { background: linear-gradient(90deg, rgba(245,158,11,0.3), rgba(245,158,11,0.15)); border: 1px solid #f59e0b40; }
+
+  .clc-bar-val { color: #e2e8f0; font-size: 0.6rem; font-weight: 700; font-family: monospace; white-space: nowrap; }
+
+  @keyframes clcGrow {
+    to { width: var(--w); }
+  }
+</style>

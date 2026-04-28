@@ -1,0 +1,42 @@
+---
+/**
+ * CoTVisual.astro
+ * Chain of Thought reasoning visual - with vs without
+ */
+---
+
+<div class="cot-wrap">
+  <h3 class="cot-title">Chain of Thought — Thinking Step by Step</h3>
+  <div class="cot-grid">
+    <div class="cot-card" style="--i:0;">
+      <div class="cot-label" style="color:#ef4444;">Without CoT</div>
+      <div class="cot-q">Q: A store has 23 apples. 6 are sold, then 15 more arrive. How many?</div>
+      <div class="cot-a cot-wrong">A: 44</div>
+    </div>
+    <div class="cot-card" style="--i:1;">
+      <div class="cot-label" style="color:#4ade80;">With CoT</div>
+      <div class="cot-q">Q: ...same question. Let's think step by step.</div>
+      <div class="cot-steps">
+        <div class="cot-step">Start: 23 apples</div>
+        <div class="cot-step">Sold 6: 23 - 6 = 17</div>
+        <div class="cot-step">Arrived 15: 17 + 15 = 32</div>
+      </div>
+      <div class="cot-a cot-right">A: 32 ✓</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cot-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .cot-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .cot-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+  @media(max-width:640px){.cot-grid{grid-template-columns:1fr}}
+  .cot-card{background:rgba(255,255,255,0.03);border:1px solid #334155;border-radius:12px;padding:1.25rem;opacity:0;animation:cotFade .5s ease forwards;animation-delay:calc(var(--i)*.2s)}
+  @keyframes cotFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .cot-label{font-weight:700;font-size:1rem;margin-bottom:.75rem}
+  .cot-q{color:#94a3b8;font-size:.82rem;margin-bottom:.75rem;font-style:italic}
+  .cot-steps{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.5rem}
+  .cot-step{color:#06b6d4;font-size:.8rem;font-family:monospace;padding:.3rem .6rem;background:rgba(6,182,212,0.08);border-radius:6px}
+  .cot-a{font-weight:700;font-size:1rem}
+  .cot-wrong{color:#ef4444}.cot-right{color:#4ade80}
+</style>

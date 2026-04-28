@@ -1,0 +1,67 @@
+---
+/**
+ * RAGChunking.astro
+ * Visual showing different chunking strategies
+ * Pure CSS, dark theme
+ */
+---
+
+<div class="ragc-wrap">
+  <h3 class="ragc-title">Chunking Strategies Compared</h3>
+  
+  <div class="ragc-strats">
+    <div class="ragc-strat" style="--i:0;">
+      <div class="ragc-header">
+        <span class="ragc-icon" style="color:#ef4444;">▦</span>
+        <span class="ragc-name">Fixed-Size</span>
+      </div>
+      <div class="ragc-demo">
+        <span class="ragc-chunk" style="--c:#ef4444;">chunk 1 (512 tok)</span>
+        <span class="ragc-chunk" style="--c:#ef4444;">chunk 2 (512 tok)</span>
+        <span class="ragc-chunk" style="--c:#ef4444;">chunk 3 (512 tok)</span>
+      </div>
+      <div class="ragc-desc">Splits at token count boundaries. Fast, but breaks mid-sentence.</div>
+    </div>
+    
+    <div class="ragc-strat" style="--i:1;">
+      <div class="ragc-header">
+        <span class="ragc-icon" style="color:#f59e0b;">¶</span>
+        <span class="ragc-name">Semantic</span>
+      </div>
+      <div class="ragc-demo">
+        <span class="ragc-chunk" style="--c:#f59e0b;">Introduction (340 tok)</span>
+        <span class="ragc-chunk" style="--c:#f59e0b;">Methods (720 tok)</span>
+        <span class="ragc-chunk" style="--c:#f59e0b;">Results (480 tok)</span>
+      </div>
+      <div class="ragc-desc">Splits at meaning boundaries using embeddings. Better retrieval, variable sizes.</div>
+    </div>
+    
+    <div class="ragc-strat" style="--i:2;">
+      <div class="ragc-header">
+        <span class="ragc-icon" style="color:#4ade80;">⧉</span>
+        <span class="ragc-name">Parent-Child</span>
+      </div>
+      <div class="ragc-demo">
+        <span class="ragc-chunk ragc-parent" style="--c:#4ade80;">Parent: full section</span>
+        <span class="ragc-chunk" style="--c:#06b6d4;">Child: paragraph 1</span>
+        <span class="ragc-chunk" style="--c:#06b6d4;">Child: paragraph 2</span>
+      </div>
+      <div class="ragc-desc">Search small chunks, return parent context. Best of both worlds.</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ragc-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .ragc-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .ragc-strats{display:flex;flex-direction:column;gap:1.25rem}
+  .ragc-strat{background:rgba(255,255,255,0.03);border:1px solid #334155;border-radius:12px;padding:1.25rem;opacity:0;animation:ragcFade .5s ease forwards;animation-delay:calc(var(--i)*.15s)}
+  @keyframes ragcFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .ragc-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem}
+  .ragc-icon{font-size:1.2rem}
+  .ragc-name{color:#f1f5f9;font-weight:700;font-size:.95rem}
+  .ragc-demo{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.5rem}
+  .ragc-chunk{background:rgba(255,255,255,0.05);border:1px solid var(--c);color:var(--c);font-size:.7rem;font-family:monospace;padding:.3rem .6rem;border-radius:6px}
+  .ragc-parent{border-style:dashed}
+  .ragc-desc{color:#94a3b8;font-size:.8rem}
+</style>

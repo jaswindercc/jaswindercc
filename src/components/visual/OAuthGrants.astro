@@ -1,0 +1,26 @@
+---
+// OAuthGrants.astro — Grant types comparison
+---
+<div class="og-wrap">
+  <h3 class="og-title">Which Grant Type Should You Use?</h3>
+  <div class="og-cards">
+    <details class="og-card og-card--green"><summary class="og-h"><span class="og-nm">Authorization Code + PKCE</span><span class="og-rec">Recommended</span></summary><div class="og-body"><p class="og-p">The gold standard. Works for web apps, mobile apps, SPAs. PKCE adds security for public clients (no client_secret stored on device).</p><div class="og-when"><strong>When:</strong> Any interactive user login. Always start here.</div></div></details>
+    <details class="og-card og-card--cyan"><summary class="og-h"><span class="og-nm">Client Credentials</span><span class="og-rec">Machine-to-Machine</span></summary><div class="og-body"><p class="og-p">No user involved. Service A authenticates to Service B using its own credentials. Perfect for backend microservice communication.</p><div class="og-when"><strong>When:</strong> Cron jobs, background workers, internal APIs.</div></div></details>
+    <details class="og-card og-card--amber"><summary class="og-h"><span class="og-nm">Device Authorization</span><span class="og-rec">Limited Input</span></summary><div class="og-body"><p class="og-p">For devices without a browser (smart TVs, CLI tools, IoT). Shows a code on device, user enters it on their phone/laptop.</p><div class="og-when"><strong>When:</strong> TV apps, CLI auth (gh auth login), smart devices.</div></div></details>
+    <details class="og-card og-card--red"><summary class="og-h"><span class="og-nm">Implicit (DEPRECATED)</span><span class="og-rec">Don't Use</span></summary><div class="og-body"><p class="og-p">Returns token directly in URL fragment. No code exchange. Vulnerable to token leakage via browser history, referrer headers. Replaced by Auth Code + PKCE.</p><div class="og-when"><strong>When:</strong> Never. Legacy only. Migrate away.</div></div></details>
+    <details class="og-card og-card--red"><summary class="og-h"><span class="og-nm">Resource Owner Password</span><span class="og-rec">Don't Use</span></summary><div class="og-body"><p class="og-p">User gives their password directly to the app. Defeats the entire purpose of OAuth (delegated auth without sharing credentials). Only for legacy migration.</p><div class="og-when"><strong>When:</strong> Never in greenfield. Only legacy systems being migrated.</div></div></details>
+  </div>
+</div>
+<style>
+  .og-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .og-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .og-cards{display:flex;flex-direction:column;gap:8px}
+  .og-card{border-radius:12px;border:1px solid #334155;overflow:hidden;transition:border-color .3s}
+  .og-card--green[open]{border-color:#4ade8030}.og-card--cyan[open]{border-color:#06b6d430}.og-card--amber[open]{border-color:#f59e0b30}.og-card--red[open]{border-color:#ef444430}
+  .og-h{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;list-style:none;background:rgba(0,0,0,.15)}.og-h::-webkit-details-marker{display:none}.og-h::marker{content:''}
+  .og-nm{color:#e2e8f0;font-weight:700;font-size:.8rem}
+  .og-rec{font-size:.58rem;padding:2px 8px;border-radius:20px;font-family:monospace}
+  .og-card--green .og-rec{color:#4ade80;background:rgba(74,222,128,.1)}.og-card--cyan .og-rec{color:#06b6d4;background:rgba(6,182,212,.1)}.og-card--amber .og-rec{color:#f59e0b;background:rgba(245,158,11,.1)}.og-card--red .og-rec{color:#f87171;background:rgba(248,113,113,.1)}
+  .og-body{padding:12px 16px}.og-p{color:#94a3b8;font-size:.73rem;line-height:1.6;margin:0 0 8px}
+  .og-when{color:#64748b;font-size:.68rem;padding:6px 10px;background:rgba(0,0,0,.2);border-radius:6px}.og-when strong{color:#f59e0b}
+</style>

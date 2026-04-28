@@ -1,0 +1,32 @@
+---
+// OAuthFlow.astro — Animated OAuth 2.0 Authorization Code flow
+---
+<div class="oaf-wrap">
+  <h3 class="oaf-title">Authorization Code Flow — Step by Step</h3>
+  <p class="oaf-sub">The most common and most secure flow for web applications</p>
+  <div class="oaf-steps">
+    <div class="oaf-step oaf-s1"><span class="oaf-n">1</span><div class="oaf-info"><span class="oaf-who">User → Your App</span><span class="oaf-what">Clicks "Login with Google"</span></div></div>
+    <div class="oaf-arrow">↓</div>
+    <div class="oaf-step oaf-s2"><span class="oaf-n">2</span><div class="oaf-info"><span class="oaf-who">Your App → Auth Server</span><span class="oaf-what">302 redirect to /authorize with client_id, redirect_uri, scope, state</span></div></div>
+    <div class="oaf-arrow">↓</div>
+    <div class="oaf-step oaf-s3"><span class="oaf-n">3</span><div class="oaf-info"><span class="oaf-who">Auth Server → User</span><span class="oaf-what">Shows login + consent screen</span></div></div>
+    <div class="oaf-arrow">↓</div>
+    <div class="oaf-step oaf-s4"><span class="oaf-n">4</span><div class="oaf-info"><span class="oaf-who">Auth Server → Your App</span><span class="oaf-what">302 redirect back with authorization code + state</span></div></div>
+    <div class="oaf-arrow">↓</div>
+    <div class="oaf-step oaf-s5"><span class="oaf-n">5</span><div class="oaf-info"><span class="oaf-who">Your App (backend) → Auth Server</span><span class="oaf-what">POST /token with code + client_secret (server-to-server)</span></div></div>
+    <div class="oaf-arrow">↓</div>
+    <div class="oaf-step oaf-s6"><span class="oaf-n">6</span><div class="oaf-info"><span class="oaf-who">Auth Server → Your App</span><span class="oaf-what">Returns access_token + id_token + refresh_token</span></div></div>
+  </div>
+</div>
+<style>
+  .oaf-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .oaf-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.oaf-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem}
+  .oaf-steps{display:flex;flex-direction:column;align-items:center;gap:0}
+  .oaf-step{display:flex;align-items:center;gap:12px;padding:10px 16px;background:rgba(0,0,0,.2);border-radius:10px;border:1px solid #334155;width:100%;max-width:460px;opacity:0;animation:oafIn .4s ease forwards}
+  .oaf-s1{animation-delay:.1s}.oaf-s2{animation-delay:.25s}.oaf-s3{animation-delay:.4s}.oaf-s4{animation-delay:.55s}.oaf-s5{animation-delay:.7s}.oaf-s6{animation-delay:.85s}
+  @keyframes oafIn{to{opacity:1}}
+  .oaf-n{font-family:monospace;font-size:.65rem;font-weight:800;width:22px;height:22px;border-radius:50%;background:rgba(129,140,248,.1);color:#818cf8;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .oaf-info{flex:1}.oaf-who{display:block;color:#06b6d4;font-size:.65rem;font-family:monospace;font-weight:600}.oaf-what{display:block;color:#94a3b8;font-size:.72rem;margin-top:1px}
+  .oaf-arrow{color:#475569;font-size:.7rem;height:14px;display:flex;align-items:center;animation:oafPulse 1.5s ease infinite}
+  @keyframes oafPulse{0%,100%{opacity:.3}50%{opacity:1}}
+</style>

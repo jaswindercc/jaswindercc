@@ -1,0 +1,55 @@
+---
+title: "Kubernetes Networking Explained — From Pod to Internet"
+description: "Visual guide to Kubernetes networking layers. Understand Services, DNS resolution, CNI plugins, and Network Policies through animated diagrams and real cluster examples."
+date: 2026-04-22
+---
+
+import K8sNetworkLayers from '../../components/visual/K8sNetworkLayers.astro';
+import K8sServiceTypes from '../../components/visual/K8sServiceTypes.astro';
+import K8sDNSFlow from '../../components/visual/K8sDNSFlow.astro';
+import K8sNetworkPolicies from '../../components/visual/K8sNetworkPolicies.astro';
+import K8sCNICompare from '../../components/visual/K8sCNICompare.astro';
+
+Kubernetes networking is where most people get lost. Not because the concepts are hard — but because there are four separate layers doing different jobs, and the docs explain each one in isolation. When your pod can't reach another pod, you don't know which layer broke.
+
+Let's stack them on top of each other so the full picture clicks.
+
+## 1. The Four Networking Layers
+
+Every single packet in your cluster passes through this stack. Debugging means figuring out which layer is broken. Is it DNS? Is it the service proxy? Is it the CNI routing?
+
+<K8sNetworkLayers />
+
+The mental model that saves you: Kubernetes networking guarantees that every pod gets a unique IP and can reach every other pod without NAT. That's the contract. The CNI plugin implementation decides HOW that contract is fulfilled — overlay networks, BGP, eBPF, whatever.
+
+## 2. Service Types
+
+Services are the stable front door to your pods. Pods come and go (they're ephemeral). Services have stable IPs and DNS names. But there are four types, and most people only know LoadBalancer.
+
+<K8sServiceTypes />
+
+The mistake I see in production: teams use LoadBalancer for everything, even internal services. You end up with 30 cloud load balancers ($$$) when ClusterIP would work fine. LoadBalancer is for public-facing endpoints. Everything else is ClusterIP.
+
+## 3. DNS — How Pods Find Each Other
+
+You never hardcode pod IPs. You use service names. But under the hood, that name has to resolve to an IP, then that IP has to route to an actual pod. Here's the full flow:
+
+<K8sDNSFlow />
+
+Common debugging gotcha: DNS works inside the pod but the connection times out. That means DNS layer is fine — the problem is in kube-proxy (iptables rules) or the CNI layer (packet can't reach the destination node). Check `kubectl get endpoints` to verify the service has backends.
+
+## 4. Network Policies
+
+The default Kubernetes posture is "everything can talk to everything." That's a flat network with zero segmentation. If one pod gets compromised, the attacker has lateral movement to every other pod in the cluster.
+
+<K8sNetworkPolicies />
+
+The principle is simple: default-deny everything, then whitelist specific paths. Start with `deny all ingress` for sensitive namespaces (databases, secrets vaults), then add policies like "only pods with label `app=api` can reach the database on port 5432."
+
+## 5. CNI Plugins — The Network Brain
+
+The Container Network Interface plugin is the thing that actually moves packets between nodes. Kubernetes doesn't ship with one — you choose it at cluster creation. And the choice matters more than people think.
+
+<K8sCNICompare />
+
+The trend is clear: eBPF-based networking (Cilium) is replacing iptables-based networking (kube-proxy + Calico legacy mode). eBPF operates in kernel space without the chain-walking overhead of iptables. At scale (1000+ services), the performance difference is dramatic — O(1) lookups vs O(n) iptables chain traversal.

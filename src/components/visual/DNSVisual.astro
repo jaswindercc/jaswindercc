@@ -1,0 +1,72 @@
+---
+/**
+ * DNSVisual.astro
+ * DNS resolution process
+ */
+---
+
+<div class="dnv-wrap">
+  <h3 class="dnv-title">DNS Resolution Journey</h3>
+  <div class="dnv-steps">
+    <div class="dnv-step" style="--i:0;--c:#818cf8;">
+      <div class="dnv-num">1</div>
+      <div class="dnv-sbox">
+        <div class="dnv-sname">Browser Cache</div>
+        <div class="dnv-sdesc">Check local DNS cache. Hit? Done in &lt;1ms.</div>
+      </div>
+    </div>
+    <div class="dnv-arr" style="--i:1;">miss ↓</div>
+    <div class="dnv-step" style="--i:2;--c:#06b6d4;">
+      <div class="dnv-num">2</div>
+      <div class="dnv-sbox">
+        <div class="dnv-sname">OS Resolver</div>
+        <div class="dnv-sdesc">Check /etc/hosts + OS cache. Checks local config.</div>
+      </div>
+    </div>
+    <div class="dnv-arr" style="--i:3;">miss ↓</div>
+    <div class="dnv-step" style="--i:4;--c:#f59e0b;">
+      <div class="dnv-num">3</div>
+      <div class="dnv-sbox">
+        <div class="dnv-sname">Recursive Resolver</div>
+        <div class="dnv-sdesc">ISP or 8.8.8.8 / 1.1.1.1. Checks its cache. ~5ms if cached.</div>
+      </div>
+    </div>
+    <div class="dnv-arr" style="--i:5;">miss ↓</div>
+    <div class="dnv-step" style="--i:6;--c:#ef4444;">
+      <div class="dnv-num">4</div>
+      <div class="dnv-sbox">
+        <div class="dnv-sname">Root → TLD → Authoritative</div>
+        <div class="dnv-sdesc">Root servers → .com NS → example.com NS → IP. Full resolution ~50-200ms.</div>
+      </div>
+    </div>
+  </div>
+  <div class="dnv-records">
+    <h4 class="dnv-subtitle">Common Record Types</h4>
+    <div class="dnv-recs">
+      <div class="dnv-rec" style="--rc:#4ade80;">A<span>IPv4 address</span></div>
+      <div class="dnv-rec" style="--rc:#06b6d4;">AAAA<span>IPv6 address</span></div>
+      <div class="dnv-rec" style="--rc:#f59e0b;">CNAME<span>Alias to another name</span></div>
+      <div class="dnv-rec" style="--rc:#818cf8;">MX<span>Mail server</span></div>
+      <div class="dnv-rec" style="--rc:#ef4444;">TXT<span>SPF, DKIM, verification</span></div>
+      <div class="dnv-rec" style="--rc:#f472b6;">NS<span>Nameserver delegation</span></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .dnv-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .dnv-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .dnv-steps{display:flex;flex-direction:column;align-items:center;gap:0}
+  .dnv-step{display:flex;gap:.6rem;align-items:center;width:100%;max-width:400px;opacity:0;animation:dnvSlide .35s ease forwards;animation-delay:calc(var(--i)*.1s)}
+  .dnv-arr{color:#475569;font-size:.7rem;padding:.15rem 0;text-align:center;opacity:0;animation:dnvSlide .3s ease forwards;animation-delay:calc(var(--i)*.1s)}
+  @keyframes dnvSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .dnv-num{background:var(--c);color:#0f172a;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.7rem;flex-shrink:0}
+  .dnv-sbox{background:rgba(0,0,0,.2);border-left:2px solid var(--c);border-radius:0 8px 8px 0;padding:.5rem .7rem;flex:1}
+  .dnv-sname{color:var(--c);font-weight:700;font-size:.8rem}
+  .dnv-sdesc{color:#94a3b8;font-size:.68rem}
+  .dnv-records{margin-top:1.5rem}
+  .dnv-subtitle{color:#94a3b8;text-align:center;font-size:.85rem;margin:0 0 .6rem}
+  .dnv-recs{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center}
+  .dnv-rec{background:rgba(0,0,0,.2);border:1px solid var(--rc);border-radius:8px;padding:.35rem .6rem;color:var(--rc);font-weight:700;font-size:.75rem;display:flex;flex-direction:column;align-items:center;gap:.1rem}
+  .dnv-rec span{color:#64748b;font-size:.6rem;font-weight:400}
+</style>

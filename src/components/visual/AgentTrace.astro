@@ -1,0 +1,148 @@
+---
+// AgentTrace.astro — Trace view of an agent executing a multi-step task
+---
+
+<div class="at-wrap">
+  <h3 class="at-title">Agent Trace: Watch It Think</h3>
+  <p class="at-sub">Real execution trace showing every thought, tool call, and decision.</p>
+
+  <div class="at-trace">
+    <div class="at-entry at-entry--think at-anim--1">
+      <div class="at-time">0ms</div>
+      <div class="at-dot at-dot--purple"></div>
+      <div class="at-content">
+        <div class="at-type">THINK</div>
+        <div class="at-text">User wants to know their order status. I need the order ID. Let me check the conversation — they said order #ORD-7891.</div>
+      </div>
+    </div>
+
+    <div class="at-entry at-entry--tool at-anim--2">
+      <div class="at-time">120ms</div>
+      <div class="at-dot at-dot--green"></div>
+      <div class="at-content">
+        <div class="at-type at-type--green">TOOL CALL</div>
+        <div class="at-text at-text--mono">get_order_status(order_id="ORD-7891")</div>
+      </div>
+    </div>
+
+    <div class="at-entry at-entry--result at-anim--3">
+      <div class="at-time">340ms</div>
+      <div class="at-dot at-dot--cyan"></div>
+      <div class="at-content">
+        <div class="at-type at-type--cyan">TOOL RESULT</div>
+        <div class="at-text at-text--mono">status: "in_transit", carrier: "UPS", tracking: "1Z999AA...", eta: "2026-05-15"</div>
+      </div>
+    </div>
+
+    <div class="at-entry at-entry--think at-anim--4">
+      <div class="at-time">360ms</div>
+      <div class="at-dot at-dot--purple"></div>
+      <div class="at-content">
+        <div class="at-type">THINK</div>
+        <div class="at-text">Got the status. It's in transit with UPS. ETA is May 15th. Let me also check if there are any delivery exceptions.</div>
+      </div>
+    </div>
+
+    <div class="at-entry at-entry--tool at-anim--5">
+      <div class="at-time">380ms</div>
+      <div class="at-dot at-dot--green"></div>
+      <div class="at-content">
+        <div class="at-type at-type--green">TOOL CALL</div>
+        <div class="at-text at-text--mono">get_tracking_details(tracking="1Z999AA...")</div>
+      </div>
+    </div>
+
+    <div class="at-entry at-entry--result at-anim--6">
+      <div class="at-time">580ms</div>
+      <div class="at-dot at-dot--cyan"></div>
+      <div class="at-content">
+        <div class="at-type at-type--cyan">TOOL RESULT</div>
+        <div class="at-text at-text--mono">exceptions: none, last_scan: "Memphis, TN — 6:42am"</div>
+      </div>
+    </div>
+
+    <div class="at-entry at-entry--decide at-anim--7">
+      <div class="at-time">600ms</div>
+      <div class="at-dot at-dot--amber"></div>
+      <div class="at-content">
+        <div class="at-type at-type--amber">DECIDE</div>
+        <div class="at-text">I have everything I need. No exceptions. Will format a clear response with status, tracking link, and ETA.</div>
+      </div>
+    </div>
+
+    <div class="at-entry at-entry--output at-anim--8">
+      <div class="at-time">620ms</div>
+      <div class="at-dot at-dot--rose"></div>
+      <div class="at-content">
+        <div class="at-type at-type--rose">RESPOND</div>
+        <div class="at-text">Your order ORD-7891 is in transit via UPS. It was last scanned in Memphis, TN this morning. Expected delivery: May 15th. No delays detected.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="at-stats">
+    <div class="at-stat"><span class="at-stat-val">620ms</span><span class="at-stat-label">Total time</span></div>
+    <div class="at-stat"><span class="at-stat-val">2</span><span class="at-stat-label">Tool calls</span></div>
+    <div class="at-stat"><span class="at-stat-val">2</span><span class="at-stat-label">Think steps</span></div>
+    <div class="at-stat"><span class="at-stat-val">$0.003</span><span class="at-stat-label">Cost</span></div>
+  </div>
+</div>
+
+<style>
+  .at-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .at-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .at-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .at-trace { position: relative; padding-left: 20px; }
+  .at-trace::before {
+    content: ''; position: absolute; left: 55px; top: 0; bottom: 0; width: 1px; background: #334155;
+  }
+
+  .at-entry {
+    display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px;
+    opacity: 0; animation: atIn 0.4s ease-out forwards;
+  }
+  .at-anim--1 { animation-delay: 0.1s; }
+  .at-anim--2 { animation-delay: 0.4s; }
+  .at-anim--3 { animation-delay: 0.7s; }
+  .at-anim--4 { animation-delay: 1.0s; }
+  .at-anim--5 { animation-delay: 1.3s; }
+  .at-anim--6 { animation-delay: 1.6s; }
+  .at-anim--7 { animation-delay: 1.9s; }
+  .at-anim--8 { animation-delay: 2.2s; }
+
+  .at-time { color: #475569; font-size: 0.5rem; font-family: monospace; min-width: 32px; text-align: right; margin-top: 4px; }
+
+  .at-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; position: relative; z-index: 1; }
+  .at-dot--purple { background: #818cf8; box-shadow: 0 0 6px rgba(129,140,248,0.4); }
+  .at-dot--green { background: #4ade80; box-shadow: 0 0 6px rgba(74,222,128,0.4); }
+  .at-dot--cyan { background: #06b6d4; box-shadow: 0 0 6px rgba(6,182,212,0.4); }
+  .at-dot--amber { background: #f59e0b; box-shadow: 0 0 6px rgba(245,158,11,0.4); }
+  .at-dot--rose { background: #f472b6; box-shadow: 0 0 6px rgba(244,114,182,0.4); }
+
+  .at-content {
+    flex: 1; padding: 8px 12px; border-radius: 8px; background: rgba(0,0,0,0.2); border: 1px solid #334155;
+  }
+  .at-type { font-size: 0.5rem; font-family: monospace; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #818cf8; margin-bottom: 4px; }
+  .at-type--green { color: #4ade80; }
+  .at-type--cyan { color: #06b6d4; }
+  .at-type--amber { color: #f59e0b; }
+  .at-type--rose { color: #f472b6; }
+
+  .at-text { color: #94a3b8; font-size: 0.72rem; line-height: 1.5; }
+  .at-text--mono { font-family: monospace; font-size: 0.65rem; color: #cbd5e1; }
+
+  .at-stats {
+    display: flex; gap: 16px; margin-top: 16px; padding: 12px 14px;
+    background: rgba(0,0,0,0.15); border-radius: 10px; border: 1px solid #334155;
+    justify-content: center; flex-wrap: wrap;
+  }
+  .at-stat { text-align: center; }
+  .at-stat-val { display: block; color: #e2e8f0; font-size: 1rem; font-weight: 800; font-family: monospace; }
+  .at-stat-label { display: block; color: #64748b; font-size: 0.55rem; font-family: monospace; }
+
+  @keyframes atIn { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+</style>

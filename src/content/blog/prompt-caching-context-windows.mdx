@@ -1,0 +1,43 @@
+---
+title: "Prompt Caching and Context Windows — Cut Your AI API Costs by 90%"
+description: "Visual guide to prompt caching. Learn how prefix caching works, compare Anthropic vs OpenAI vs Google implementations, and discover when caching delivers real cost savings."
+date: 2026-03-21
+---
+
+import PromptCacheFlow from '../../components/visual/PromptCacheFlow.astro';
+import PromptCacheProviders from '../../components/visual/PromptCacheProviders.astro';
+import CachingStrategies from '../../components/visual/CachingStrategies.astro';
+
+Every time you call an LLM API, you send the same system prompt, the same tool definitions, the same context documents — and pay full price for all of it. Again. And again. Prompt caching fixes this by telling the API: "You've already processed this prefix. Skip to the new part."
+
+It's the single biggest cost optimization available for production AI applications in 2026. Some teams see 80-90% cost reductions with zero quality impact. The concept is simple, but the implementation details matter.
+
+## 1. How Prompt Caching Works
+
+Traditional LLM calls process every token from scratch every time. Prompt caching stores the processed state of a prefix — the system prompt, tool schemas, and context documents — so subsequent requests only process the new tokens. It's like a database prepared statement: parse the query once, execute it many times with different parameters.
+
+<PromptCacheFlow />
+
+The mental model is straightforward. Your prompt is a sequence of tokens. The cache stores the computed state (the KV cache) for the first N tokens. If your next request starts with the same N tokens, the API skips reprocessing them and jumps straight to token N+1. The prefix must match exactly — one token difference and the entire cache misses.
+
+This is why prompt structure matters. Put stable content first: system prompt, tool definitions, reference documents. Put variable content last: the user's actual question. The more tokens you can keep stable in the prefix, the higher your cache hit rate.
+
+## 2. Provider Comparison
+
+Every major provider now offers prompt caching, but the implementations differ significantly in minimum sizes, TTLs, pricing, and how explicit you need to be.
+
+<PromptCacheProviders />
+
+Anthropic offers the deepest discount (90%) but requires you to be intentional about what gets cached. OpenAI is the most hands-off — caching happens automatically for any prompt over 1,024 tokens, but the discount is smaller (50%). Google takes a different approach entirely: you explicitly create a cache object with a custom TTL and pay for storage time, but the per-token discount is strong (75%).
+
+For high-volume applications, Anthropic's 90% discount wins on cost. For simplicity, OpenAI's automatic caching wins on developer experience. For long-lived contexts that need to persist for hours, Google's explicit caching model is the most flexible.
+
+## 3. When to Cache (and When Not To)
+
+Prompt caching isn't free. There's a small write cost to create the cache, and caches expire if not used within the TTL window. The ROI depends on how much prefix repetition your application has and how frequently you make requests.
+
+<CachingStrategies />
+
+The biggest wins come from RAG applications. A typical RAG call sends 5,000-15,000 tokens of retrieved documents alongside a short user query. If your system prompt and tool schema are another 2,000 tokens, that's 7,000-17,000 tokens processed identically for every request. Caching the stable prefix turns a $0.03 call into a $0.004 call. At 10,000 requests per day, that's $260 in daily savings.
+
+For agentic applications, the savings compound further. Each agent step sends the full conversation history plus tool schemas. A 10-step agent workflow might process the same 5,000-token tool schema ten times. Caching processes it once.

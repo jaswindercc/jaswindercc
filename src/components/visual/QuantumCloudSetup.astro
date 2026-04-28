@@ -1,0 +1,81 @@
+---
+// QuantumCloudSetup.astro — Step-by-step setup for cloud quantum computing
+---
+
+<div class="qcs-wrap">
+  <h3 class="qcs-title">Getting Started — IBM Quantum in 5 Minutes</h3>
+  <p class="qcs-sub">From zero to running on real quantum hardware. Free account.</p>
+
+  <div class="qcs-steps">
+    <div class="qcs-step" style="--i:0">
+      <div class="qcs-num">1</div>
+      <div class="qcs-body">
+        <div class="qcs-what">Create an IBM Quantum account</div>
+        <div class="qcs-how">Sign up at quantum.ibm.com with your email or GitHub. Free.</div>
+      </div>
+    </div>
+    <div class="qcs-step" style="--i:1">
+      <div class="qcs-num">2</div>
+      <div class="qcs-body">
+        <div class="qcs-what">Get your API token</div>
+        <pre class="qcs-code"><code># Copy your token from the IBM Quantum dashboard
+# Settings → API Token → Copy</code></pre>
+      </div>
+    </div>
+    <div class="qcs-step" style="--i:2">
+      <div class="qcs-num">3</div>
+      <div class="qcs-body">
+        <div class="qcs-what">Install and configure Qiskit</div>
+        <pre class="qcs-code"><code>pip install qiskit qiskit-ibm-runtime
+
+from qiskit_ibm_runtime import QiskitRuntimeService
+QiskitRuntimeService.save_account(
+    channel="ibm_quantum",
+    token="YOUR_TOKEN_HERE"
+)</code></pre>
+      </div>
+    </div>
+    <div class="qcs-step" style="--i:3">
+      <div class="qcs-num">4</div>
+      <div class="qcs-body">
+        <div class="qcs-what">Run your first job on real hardware</div>
+        <pre class="qcs-code"><code>from qiskit import QuantumCircuit
+from qiskit_ibm_runtime import SamplerV2
+
+service = QiskitRuntimeService()
+backend = service.least_busy(operational=True)
+
+qc = QuantumCircuit(2, 2)
+qc.h(0)
+qc.cx(0, 1)
+qc.measure([0,1], [0,1])
+
+sampler = SamplerV2(backend)
+job = sampler.run([qc], shots=1000)
+print(job.result()[0].data)</code></pre>
+      </div>
+    </div>
+    <div class="qcs-step" style="--i:4">
+      <div class="qcs-num">5</div>
+      <div class="qcs-body">
+        <div class="qcs-what">Check results</div>
+        <div class="qcs-how">Results appear in your dashboard. Expect noise — real quantum hardware isn't perfect. You'll see roughly 50% |00⟩ and 50% |11⟩, but not exactly.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .qcs-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .qcs-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .qcs-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .qcs-steps{display:flex;flex-direction:column;gap:10px}
+  .qcs-step{display:flex;gap:12px;align-items:flex-start;opacity:0;animation:qcsIn .4s ease forwards;animation-delay:calc(var(--i)*.12s)}
+  .qcs-num{width:24px;height:24px;border-radius:50%;background:rgba(74,222,128,.12);color:#4ade80;font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;font-family:monospace}
+  .qcs-body{flex:1}
+  .qcs-what{color:#f1f5f9;font-size:.78rem;font-weight:600;margin-bottom:.35rem}
+  .qcs-how{color:#94a3b8;font-size:.68rem;line-height:1.5}
+  .qcs-code{background:rgba(0,0,0,.3);border:1px solid #334155;border-radius:8px;padding:10px 14px;margin:.35rem 0 0;overflow-x:auto}
+  .qcs-code code{color:#4ade80;font-size:.65rem;font-family:monospace;line-height:1.6;white-space:pre}
+  @keyframes qcsIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+</style>

@@ -1,0 +1,25 @@
+---
+// CICDMetricsDash.astro — Pipeline health metrics
+---
+<div class="cim-wrap">
+  <h3 class="cim-title">Pipeline Health Metrics — What to Track</h3>
+  <div class="cim-metrics">
+    <div class="cim-metric cim-m1"><span class="cim-val cim-val--green">< 10 min</span><span class="cim-nm">Total Pipeline Duration</span><span class="cim-d">Commit to production. Over 15 min means devs context-switch. Over 30 min means no one watches it.</span></div>
+    <div class="cim-metric cim-m2"><span class="cim-val cim-val--cyan">> 95%</span><span class="cim-nm">Success Rate</span><span class="cim-d">Green pipeline percentage. Below 90% means flaky tests or infra issues. Below 80% means the pipeline is useless.</span></div>
+    <div class="cim-metric cim-m3"><span class="cim-val cim-val--amber">< 60 min</span><span class="cim-nm">Mean Time to Recovery</span><span class="cim-d">From broken main to fixed main. Fast MTTR means small commits + quick deploys + easy rollbacks.</span></div>
+    <div class="cim-metric cim-m4"><span class="cim-val cim-val--purple">> 5/day</span><span class="cim-nm">Deploy Frequency</span><span class="cim-d">How often you ship. Elite teams deploy 30+/day. Once a week means batch risk. Once a month means fear.</span></div>
+    <div class="cim-metric cim-m5"><span class="cim-val cim-val--red">< 5%</span><span class="cim-nm">Flaky Test Rate</span><span class="cim-d">Tests that pass/fail non-deterministically. Over 5% means trust erosion — devs re-run instead of investigating.</span></div>
+  </div>
+  <div class="cim-src">These align with DORA metrics (Deployment Frequency, Lead Time, Change Failure Rate, MTTR) — the industry standard for DevOps performance measurement.</div>
+</div>
+<style>
+  .cim-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .cim-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .cim-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:1rem}
+  .cim-metric{padding:14px;background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155;display:flex;flex-direction:column;gap:4px;opacity:0;animation:cimIn .4s ease forwards}
+  .cim-m1{animation-delay:.1s}.cim-m2{animation-delay:.2s}.cim-m3{animation-delay:.3s}.cim-m4{animation-delay:.4s}.cim-m5{animation-delay:.5s}
+  @keyframes cimIn{to{opacity:1}}
+  .cim-val{font-size:1.1rem;font-weight:800;font-family:monospace}.cim-val--green{color:#4ade80}.cim-val--cyan{color:#06b6d4}.cim-val--amber{color:#f59e0b}.cim-val--purple{color:#818cf8}.cim-val--red{color:#f87171}
+  .cim-nm{color:#e2e8f0;font-size:.75rem;font-weight:700}.cim-d{color:#94a3b8;font-size:.65rem;line-height:1.5}
+  .cim-src{color:#475569;font-size:.65rem;text-align:center;font-style:italic}
+</style>

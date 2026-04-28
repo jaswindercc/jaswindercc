@@ -1,0 +1,122 @@
+---
+/**
+ * ZeroTrustChecklist.astro
+ * Implementation checklist for zero trust adoption
+ * Pure CSS, dark theme
+ */
+---
+
+<div class="ztc-wrap">
+  <h3 class="ztc-title">Zero Trust Implementation Checklist</h3>
+  
+  <div class="ztc-phases">
+    <div class="ztc-phase" style="--i:0;">
+      <div class="ztc-phase-header">
+        <span class="ztc-phase-num">Phase 1</span>
+        <span class="ztc-phase-name">Identity Foundation</span>
+      </div>
+      <div class="ztc-items">
+        <div class="ztc-item">Enforce MFA on all accounts — no exceptions</div>
+        <div class="ztc-item">Implement SSO with conditional access policies</div>
+        <div class="ztc-item">Inventory all service accounts and API keys</div>
+        <div class="ztc-item">Deploy privileged access management (PAM)</div>
+      </div>
+    </div>
+    
+    <div class="ztc-phase" style="--i:1;">
+      <div class="ztc-phase-header">
+        <span class="ztc-phase-num">Phase 2</span>
+        <span class="ztc-phase-name">Network Segmentation</span>
+      </div>
+      <div class="ztc-items">
+        <div class="ztc-item">Map all application communication flows</div>
+        <div class="ztc-item">Deploy micro-segmentation controls</div>
+        <div class="ztc-item">Replace VPN with identity-aware proxy</div>
+        <div class="ztc-item">Encrypt all internal traffic (mTLS)</div>
+      </div>
+    </div>
+    
+    <div class="ztc-phase" style="--i:2;">
+      <div class="ztc-phase-header">
+        <span class="ztc-phase-num">Phase 3</span>
+        <span class="ztc-phase-name">Continuous Verification</span>
+      </div>
+      <div class="ztc-items">
+        <div class="ztc-item">Implement device health checks before access</div>
+        <div class="ztc-item">Deploy real-time risk scoring per request</div>
+        <div class="ztc-item">Automate access revocation on anomaly detection</div>
+        <div class="ztc-item">Log everything — centralize in SIEM</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ztc-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+  .ztc-title {
+    color: #f1f5f9;
+    text-align: center;
+    font-size: 1.25rem;
+    margin: 0 0 1.5rem;
+  }
+  .ztc-phases {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .ztc-phase {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 1.25rem;
+    opacity: 0;
+    animation: ztcFade 0.5s ease forwards;
+    animation-delay: calc(var(--i) * 0.2s);
+  }
+  @keyframes ztcFade {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .ztc-phase-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  .ztc-phase-num {
+    background: #818cf8;
+    color: #0f172a;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+  }
+  .ztc-phase-name {
+    color: #f1f5f9;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .ztc-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .ztc-item {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+  .ztc-item::before {
+    content: '☐';
+    position: absolute;
+    left: 0;
+    color: #4ade80;
+  }
+</style>

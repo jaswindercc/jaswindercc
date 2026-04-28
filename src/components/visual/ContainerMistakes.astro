@@ -1,0 +1,42 @@
+---
+/**
+ * ContainerMistakes.astro
+ * Common container security anti-patterns
+ */
+---
+
+<div class="csm-wrap">
+  <h3 class="csm-title">Container Security Anti-Patterns</h3>
+  <div class="csm-list">
+    <div class="csm-item" style="--i:0;">
+      <div class="csm-bad">Running as root</div>
+      <div class="csm-fix">Add USER nonroot to Dockerfile. Run with runAsNonRoot: true in K8s.</div>
+    </div>
+    <div class="csm-item" style="--i:1;">
+      <div class="csm-bad">Using :latest tag</div>
+      <div class="csm-fix">Pin to digest or immutable tags. latest is mutable and unpredictable.</div>
+    </div>
+    <div class="csm-item" style="--i:2;">
+      <div class="csm-bad">Secrets in image layers</div>
+      <div class="csm-fix">Use multi-stage builds. Mount secrets at runtime, never COPY them.</div>
+    </div>
+    <div class="csm-item" style="--i:3;">
+      <div class="csm-bad">No resource limits</div>
+      <div class="csm-fix">Set CPU/memory limits. Unbounded containers cause noisy-neighbor outages.</div>
+    </div>
+    <div class="csm-item" style="--i:4;">
+      <div class="csm-bad">Privileged mode enabled</div>
+      <div class="csm-fix">Never use privileged: true. Drop all capabilities, add only what's needed.</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .csm-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .csm-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.25rem}
+  .csm-list{display:flex;flex-direction:column;gap:.75rem}
+  .csm-item{background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:1rem;opacity:0;animation:csmFade .4s ease forwards;animation-delay:calc(var(--i)*.1s)}
+  @keyframes csmFade{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+  .csm-bad{color:#ef4444;font-weight:700;font-size:.9rem;margin-bottom:.2rem}.csm-bad::before{content:'🔥 '}
+  .csm-fix{color:#94a3b8;font-size:.8rem}
+</style>

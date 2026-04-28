@@ -1,0 +1,47 @@
+---
+/**
+ * CanaryTools.astro
+ * Tools for canary deployments
+ * Pure CSS, dark theme
+ */
+---
+
+<div class="cnt-wrap">
+  <h3 class="cnt-title">Canary Deployment Tools</h3>
+  
+  <div class="cnt-grid">
+    <div class="cnt-tool" style="--i:0; --color:#818cf8;">
+      <div class="cnt-name">Argo Rollouts</div>
+      <div class="cnt-desc">Kubernetes-native progressive delivery controller. Best for K8s shops.</div>
+      <div class="cnt-tags"><span>K8s</span><span>GitOps</span></div>
+    </div>
+    <div class="cnt-tool" style="--i:1; --color:#06b6d4;">
+      <div class="cnt-name">Flagger</div>
+      <div class="cnt-desc">Works with Istio, Linkerd, App Mesh. Automated analysis and promotion.</div>
+      <div class="cnt-tags"><span>Service Mesh</span><span>Auto</span></div>
+    </div>
+    <div class="cnt-tool" style="--i:2; --color:#f59e0b;">
+      <div class="cnt-name">AWS CodeDeploy</div>
+      <div class="cnt-desc">Managed canary for Lambda, ECS, EC2. Linear or all-at-once strategies.</div>
+      <div class="cnt-tags"><span>AWS</span><span>Managed</span></div>
+    </div>
+    <div class="cnt-tool" style="--i:3; --color:#4ade80;">
+      <div class="cnt-name">LaunchDarkly</div>
+      <div class="cnt-desc">Feature flag platform with percentage rollouts. Works anywhere.</div>
+      <div class="cnt-tags"><span>Flags</span><span>Multi-platform</span></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cnt-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .cnt-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.25rem}
+  .cnt-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  @media(max-width:600px){.cnt-grid{grid-template-columns:1fr}}
+  .cnt-tool{background:rgba(255,255,255,0.03);border:1px solid var(--color);border-radius:12px;padding:1.25rem;opacity:0;animation:cntFade .5s ease forwards;animation-delay:calc(var(--i)*.12s)}
+  @keyframes cntFade{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+  .cnt-name{color:var(--color);font-weight:700;font-size:.95rem;margin-bottom:.4rem}
+  .cnt-desc{color:#94a3b8;font-size:.8rem;line-height:1.5;margin-bottom:.5rem}
+  .cnt-tags{display:flex;gap:.3rem;flex-wrap:wrap}
+  .cnt-tags span{background:rgba(255,255,255,0.06);color:#64748b;font-size:.65rem;padding:.15rem .4rem;border-radius:4px}
+</style>

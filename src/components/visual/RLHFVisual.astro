@@ -1,0 +1,59 @@
+---
+/**
+ * RLHFVisual.astro
+ * RLHF process visualization
+ */
+---
+
+<div class="rlv-wrap">
+  <h3 class="rlv-title">RLHF Training Pipeline</h3>
+  <div class="rlv-stages">
+    <div class="rlv-stage" style="--i:0;">
+      <div class="rlv-num" style="--c:#818cf8;">1</div>
+      <div class="rlv-box">
+        <div class="rlv-sname" style="--c:#818cf8;">Supervised Fine-Tuning</div>
+        <div class="rlv-sdesc">Train base model on human-written demonstrations</div>
+        <div class="rlv-io"><span class="rlv-in">Prompt → Human answer</span></div>
+        <div class="rlv-out">SFT Model</div>
+      </div>
+    </div>
+    <div class="rlv-arrow" style="--i:1;">↓</div>
+    <div class="rlv-stage" style="--i:2;">
+      <div class="rlv-num" style="--c:#f59e0b;">2</div>
+      <div class="rlv-box">
+        <div class="rlv-sname" style="--c:#f59e0b;">Reward Model Training</div>
+        <div class="rlv-sdesc">Train a model to predict human preferences</div>
+        <div class="rlv-io"><span class="rlv-in">Response A vs B → Human ranks</span></div>
+        <div class="rlv-out">Reward Model</div>
+      </div>
+    </div>
+    <div class="rlv-arrow" style="--i:3;">↓</div>
+    <div class="rlv-stage" style="--i:4;">
+      <div class="rlv-num" style="--c:#4ade80;">3</div>
+      <div class="rlv-box">
+        <div class="rlv-sname" style="--c:#4ade80;">PPO Optimization</div>
+        <div class="rlv-sdesc">Optimize SFT model against reward signal with KL penalty</div>
+        <div class="rlv-io"><span class="rlv-in">Generate → Score → Update policy</span></div>
+        <div class="rlv-out">RLHF-Aligned Model</div>
+      </div>
+    </div>
+  </div>
+  <div class="rlv-note">KL divergence penalty prevents the model from drifting too far from the SFT baseline</div>
+</div>
+
+<style>
+  .rlv-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .rlv-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .rlv-stages{display:flex;flex-direction:column;align-items:center;gap:.4rem}
+  .rlv-stage{display:flex;gap:.75rem;align-items:flex-start;width:100%;max-width:480px;opacity:0;animation:rlvFade .4s ease forwards;animation-delay:calc(var(--i)*.15s)}
+  .rlv-arrow{color:#475569;font-size:1.2rem;opacity:0;animation:rlvFade .3s ease forwards;animation-delay:calc(var(--i)*.15s)}
+  @keyframes rlvFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .rlv-num{background:var(--c);color:#0f172a;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;flex-shrink:0;margin-top:.3rem}
+  .rlv-box{background:rgba(0,0,0,.2);border-radius:10px;padding:.8rem;flex:1}
+  .rlv-sname{color:var(--c);font-weight:700;font-size:.85rem;margin-bottom:.2rem}
+  .rlv-sdesc{color:#94a3b8;font-size:.73rem;margin-bottom:.4rem}
+  .rlv-io{margin-bottom:.3rem}
+  .rlv-in{color:#64748b;font-size:.68rem;font-family:monospace}
+  .rlv-out{color:#e2e8f0;font-size:.72rem;font-weight:600;background:rgba(255,255,255,.05);display:inline-block;padding:.15rem .5rem;border-radius:4px}
+  .rlv-note{text-align:center;color:#64748b;font-size:.68rem;margin-top:1rem;font-style:italic}
+</style>

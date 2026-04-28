@@ -1,0 +1,46 @@
+---
+// GitOpsRepoStructure.astro — Repo structure for GitOps
+---
+<div class="grs-wrap">
+  <h3 class="grs-title">Repo Structure — Two Repos, Not One</h3>
+  <p class="grs-sub">Separate application code from deployment manifests. Different lifecycles, different access.</p>
+  <div class="grs-repos">
+    <div class="grs-repo grs-repo--app">
+      <span class="grs-rn grs-rn--cyan">App Repo</span>
+      <div class="grs-tree">
+        <span class="grs-file">src/</span>
+        <span class="grs-file">tests/</span>
+        <span class="grs-file">Dockerfile</span>
+        <span class="grs-file">.github/workflows/ci.yml</span>
+      </div>
+      <span class="grs-note">CI builds image, pushes to registry, updates image tag in config repo</span>
+    </div>
+    <div class="grs-conn">→ image:tag →</div>
+    <div class="grs-repo grs-repo--config">
+      <span class="grs-rn grs-rn--green">Config Repo (GitOps)</span>
+      <div class="grs-tree">
+        <span class="grs-file">base/</span>
+        <span class="grs-sub2">├─ deployment.yaml</span>
+        <span class="grs-sub2">├─ service.yaml</span>
+        <span class="grs-sub2">└─ kustomization.yaml</span>
+        <span class="grs-file">overlays/</span>
+        <span class="grs-sub2">├─ dev/</span>
+        <span class="grs-sub2">├─ staging/</span>
+        <span class="grs-sub2">└─ prod/</span>
+      </div>
+      <span class="grs-note">ArgoCD watches this repo. Changes here = changes in cluster.</span>
+    </div>
+  </div>
+</div>
+<style>
+  .grs-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .grs-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.grs-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem}
+  .grs-repos{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;justify-content:center}
+  .grs-repo{padding:14px;background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155;min-width:200px;flex:1}
+  .grs-repo--app{border-top:2px solid #06b6d4}.grs-repo--config{border-top:2px solid #4ade80}
+  .grs-rn{display:block;font-size:.72rem;font-weight:700;font-family:monospace;margin-bottom:8px}.grs-rn--cyan{color:#06b6d4}.grs-rn--green{color:#4ade80}
+  .grs-tree{display:flex;flex-direction:column;gap:1px;margin-bottom:8px}
+  .grs-file{color:#e2e8f0;font-size:.65rem;font-family:monospace}.grs-sub2{color:#64748b;font-size:.6rem;font-family:monospace;padding-left:8px}
+  .grs-note{color:#94a3b8;font-size:.6rem;font-style:italic;display:block;padding-top:6px;border-top:1px solid #334155}
+  .grs-conn{color:#f59e0b;font-size:.6rem;font-family:monospace;padding-top:20px;flex-shrink:0;white-space:nowrap}
+</style>

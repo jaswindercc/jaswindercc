@@ -1,0 +1,55 @@
+---
+title: "Attention Mechanisms — The Visual Guide to How Transformers Actually Work"
+description: "Visual explainer of attention mechanisms in transformers. Understand Query-Key-Value, multi-head attention, self vs cross-attention through animated diagrams and intuitive analogies."
+date: 2026-04-04
+---
+
+import AttentionVisual from '../../components/visual/AttentionVisual.astro';
+import QKVFlow from '../../components/visual/QKVFlow.astro';
+import MultiHeadAttention from '../../components/visual/MultiHeadAttention.astro';
+import SelfVsCrossAttention from '../../components/visual/SelfVsCrossAttention.astro';
+import AttentionEvolution from '../../components/visual/AttentionEvolution.astro';
+
+"Attention Is All You Need" — the 2017 paper that launched the transformer revolution. The title isn't hyperbole. Attention is the core mechanism that makes GPT, Claude, Gemini, and every modern language model work. Everything else (feedforward layers, normalization, embeddings) is supporting infrastructure.
+
+But most explanations jump to matrix math before you understand what attention is actually doing. Let's start from the intuition.
+
+## 1. What Attention Does
+
+Imagine reading: "The cat sat on the mat because it was tired." When you read "it," your brain instantly connects it to "cat" — not to "mat." That's attention: figuring out which other tokens are relevant to the current token.
+
+<AttentionVisual />
+
+The key insight: without attention, the model processes each token independently. "It" has no way to know it refers to "cat." Attention creates connections between every pair of tokens in the sequence, letting the model build relationships across the entire context.
+
+## 2. Query, Key, Value
+
+The mechanism uses three learned projections — Q, K, V — inspired by information retrieval. Each token generates all three, then uses them to compute attention scores with every other token.
+
+<QKVFlow />
+
+The √d scaling in the formula prevents the dot products from getting too large with high-dimensional vectors. Without it, softmax saturates — all attention goes to one token and the gradients vanish. A small detail that made training stable.
+
+## 3. Multi-Head Attention
+
+One attention head captures one type of relationship. But language has many simultaneous relationships — syntactic, semantic, positional, coreference. Multiple heads run in parallel, each learning to focus on different patterns.
+
+<MultiHeadAttention />
+
+This is why transformers are so powerful: they're not doing one thing really well — they're doing dozens of things simultaneously and combining the results. Each head becomes a specialist, and the linear projection combines their findings into a single representation.
+
+## 4. Self vs Cross Attention
+
+There are two flavors of attention, and they serve different purposes. Self-attention (used in GPT, BERT) lets tokens attend to other tokens in the same sequence. Cross-attention lets tokens attend to a different sequence — crucial for translation and multimodal models.
+
+<SelfVsCrossAttention />
+
+Modern decoder-only models (GPT-4, Claude, Llama) use only self-attention with causal masking — each token can only attend to previous tokens, not future ones. This forces left-to-right generation. Encoder-decoder models (T5, Whisper) use both self-attention in the encoder and cross-attention to connect decoder to encoder outputs.
+
+## 5. Making It Scale
+
+The original attention mechanism is O(n²) — quadratic in sequence length. That worked fine for 512-token sequences in 2017. It doesn't work for 1M-token sequences in 2024. The field has been racing to make attention faster without losing quality.
+
+<AttentionEvolution />
+
+FlashAttention was the breakthrough that changed everything. It doesn't approximate — it computes the exact same result but exploits GPU memory hierarchy (SRAM vs HBM) to avoid memory bottlenecks. Before FlashAttention, long-context models were theoretical. After it, they became practical. Gemini's 1M context, Claude's 200K context — all powered by FlashAttention and its successors.

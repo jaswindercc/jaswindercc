@@ -1,0 +1,35 @@
+---
+// K8sDNSFlow.astro — Animated DNS resolution in Kubernetes
+---
+<div class="kdf-wrap">
+  <h3 class="kdf-title">DNS Resolution Inside the Cluster</h3>
+  <p class="kdf-sub">When Pod A calls `http://api-service:8080`, here's what actually happens:</p>
+  <div class="kdf-flow">
+    <div class="kdf-step kdf-s1"><span class="kdf-num">1</span><div class="kdf-info"><span class="kdf-nm">Pod A container</span><span class="kdf-d">Calls api-service:8080</span></div></div>
+    <div class="kdf-arrow">↓</div>
+    <div class="kdf-step kdf-s2"><span class="kdf-num">2</span><div class="kdf-info"><span class="kdf-nm">/etc/resolv.conf</span><span class="kdf-d">nameserver points to CoreDNS ClusterIP</span></div></div>
+    <div class="kdf-arrow">↓</div>
+    <div class="kdf-step kdf-s3"><span class="kdf-num">3</span><div class="kdf-info"><span class="kdf-nm">CoreDNS lookup</span><span class="kdf-d">api-service.default.svc.cluster.local → 10.96.42.7</span></div></div>
+    <div class="kdf-arrow">↓</div>
+    <div class="kdf-step kdf-s4"><span class="kdf-num">4</span><div class="kdf-info"><span class="kdf-nm">kube-proxy / iptables</span><span class="kdf-d">10.96.42.7 → DNAT to 10.244.1.15:8080 (actual pod)</span></div></div>
+    <div class="kdf-arrow">↓</div>
+    <div class="kdf-step kdf-s5"><span class="kdf-num">5</span><div class="kdf-info"><span class="kdf-nm">CNI routing</span><span class="kdf-d">Packet routed to node2, delivered to pod's veth interface</span></div></div>
+  </div>
+  <div class="kdf-note">
+    <strong>FQDN pattern:</strong> <code>&lt;service&gt;.&lt;namespace&gt;.svc.cluster.local</code><br/>
+    Same namespace? Just use the service name. Cross-namespace? Add the namespace: <code>api-service.payments</code>
+  </div>
+</div>
+<style>
+  .kdf-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .kdf-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.kdf-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .kdf-flow{display:flex;flex-direction:column;align-items:center;gap:0;margin-bottom:1.5rem}
+  .kdf-step{display:flex;align-items:center;gap:12px;padding:11px 16px;background:rgba(0,0,0,.2);border-radius:10px;border:1px solid #334155;width:100%;max-width:420px;opacity:0;animation:kdfIn .4s ease forwards}
+  .kdf-s1{animation-delay:.1s}.kdf-s2{animation-delay:.3s}.kdf-s3{animation-delay:.5s}.kdf-s4{animation-delay:.7s}.kdf-s5{animation-delay:.9s}
+  @keyframes kdfIn{to{opacity:1}}
+  .kdf-num{font-family:monospace;font-size:.65rem;font-weight:800;width:24px;height:24px;border-radius:50%;background:rgba(6,182,212,.1);color:#06b6d4;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .kdf-info{flex:1}.kdf-nm{display:block;color:#e2e8f0;font-size:.78rem;font-weight:700}.kdf-d{display:block;color:#94a3b8;font-size:.67rem;font-family:monospace;margin-top:1px}
+  .kdf-arrow{color:#475569;font-size:.8rem;height:16px;display:flex;align-items:center;animation:kdfPulse 1.5s ease infinite}
+  @keyframes kdfPulse{0%,100%{opacity:.3}50%{opacity:1}}
+  .kdf-note{background:rgba(0,0,0,.2);border-radius:8px;padding:10px 14px;border:1px solid #334155;color:#94a3b8;font-size:.7rem;line-height:1.7}.kdf-note strong{color:#f59e0b}.kdf-note code{color:#06b6d4;font-size:.65rem;background:rgba(6,182,212,.08);padding:1px 4px;border-radius:3px}
+</style>

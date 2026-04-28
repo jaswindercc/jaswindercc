@@ -1,0 +1,120 @@
+---
+// MCPDefenseLayer.astro — Interactive defense architecture for MCP security
+---
+
+<div class="mcp-def-wrap">
+  <h3 class="mcp-def-title">🛡️ Defense-in-Depth for MCP</h3>
+  <p class="mcp-def-sub">Each layer blocks a different attack vector. Hover to activate.</p>
+
+  <div class="mcp-def-stack">
+    <div class="mcp-def-layer mcp-def-layer--1" tabindex="0">
+      <div class="mcp-def-bar">
+        <span class="mcp-def-num">1</span>
+        <span class="mcp-def-name">Tool Allowlisting</span>
+        <span class="mcp-def-badge">Prevents: Poisoning</span>
+      </div>
+      <div class="mcp-def-content">
+        <p>Explicitly declare which tools your agent can invoke. Reject anything not on the list — even if the MCP server offers it.</p>
+        <pre><code>allowed_tools:
+  - read_file
+  - search_docs
+  - create_ticket
+# ALL other tools → blocked + logged</code></pre>
+      </div>
+    </div>
+
+    <div class="mcp-def-layer mcp-def-layer--2" tabindex="0">
+      <div class="mcp-def-bar">
+        <span class="mcp-def-num">2</span>
+        <span class="mcp-def-name">Output Sanitization</span>
+        <span class="mcp-def-badge">Prevents: Exfiltration</span>
+      </div>
+      <div class="mcp-def-content">
+        <p>Scan every tool response for injection patterns, URLs, and encoded data before it reaches the LLM context.</p>
+        <pre><code>def sanitize(response):
+    if contains_url(response) and not allowlisted_domain(url):
+        return REDACTED
+    if contains_base64_blob(response):
+        return STRIPPED
+    return response</code></pre>
+      </div>
+    </div>
+
+    <div class="mcp-def-layer mcp-def-layer--3" tabindex="0">
+      <div class="mcp-def-bar">
+        <span class="mcp-def-num">3</span>
+        <span class="mcp-def-name">Integrity Pinning</span>
+        <span class="mcp-def-badge">Prevents: Rug Pull</span>
+      </div>
+      <div class="mcp-def-content">
+        <p>Hash the tool schema at approval time. On every call, verify the schema hasn't changed. Any drift = hard block.</p>
+        <pre><code>schema_hash = sha256(tool.schema + tool.description)
+if schema_hash != pinned_hash:
+    raise ToolTamperError(f"Schema changed since approval")
+    alert_security_team(tool.name, diff)</code></pre>
+      </div>
+    </div>
+
+    <div class="mcp-def-layer mcp-def-layer--4" tabindex="0">
+      <div class="mcp-def-bar">
+        <span class="mcp-def-num">4</span>
+        <span class="mcp-def-name">Session Isolation</span>
+        <span class="mcp-def-badge">Prevents: Leakage</span>
+      </div>
+      <div class="mcp-def-content">
+        <p>Every client connection gets its own ephemeral context. No shared state between sessions. Destroy on disconnect.</p>
+        <pre><code>class MCPSession:
+    def __init__(self, client_id):
+        self.state = {}  # isolated per client
+        self.ttl = 3600  # auto-destroy after 1hr
+    def __del__(self):
+        secure_wipe(self.state)</code></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .mcp-def-wrap {
+    background: linear-gradient(135deg, #022c22 0%, #0f172a 100%);
+    border-radius: 1rem; padding: 2rem; margin: 2rem 0;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+  .mcp-def-title { color: #f1f5f9; font-size: 1.25rem; margin: 0 0 0.25rem; }
+  .mcp-def-sub { color: #94a3b8; font-size: 0.875rem; margin: 0 0 1.5rem; }
+  .mcp-def-stack { display: flex; flex-direction: column; gap: 0.75rem; }
+  .mcp-def-layer { border-radius: 0.75rem; overflow: hidden; transition: all 0.3s ease; cursor: pointer; }
+  .mcp-def-bar {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem 1rem; background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 0.75rem; transition: all 0.3s;
+  }
+  .mcp-def-layer:hover .mcp-def-bar, .mcp-def-layer:focus .mcp-def-bar {
+    background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4);
+  }
+  .mcp-def-num {
+    width: 1.75rem; height: 1.75rem; border-radius: 50%;
+    background: rgba(16, 185, 129, 0.2); color: #34d399;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
+  }
+  .mcp-def-name { color: #e2e8f0; font-weight: 600; font-size: 0.875rem; flex: 1; }
+  .mcp-def-badge {
+    font-size: 0.7rem; color: #86efac; background: rgba(16,185,129,0.15);
+    padding: 0.25rem 0.5rem; border-radius: 999px; white-space: nowrap;
+  }
+  .mcp-def-content {
+    max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s;
+    padding: 0 1rem; background: rgba(0,0,0,0.3);
+  }
+  .mcp-def-layer:hover .mcp-def-content, .mcp-def-layer:focus .mcp-def-content {
+    max-height: 400px; padding: 1rem;
+  }
+  .mcp-def-content p { color: #cbd5e1; font-size: 0.8rem; margin: 0 0 0.5rem; line-height: 1.5; }
+  .mcp-def-content pre {
+    background: rgba(0,0,0,0.5); border-radius: 0.5rem; padding: 0.75rem;
+    overflow-x: auto; margin: 0;
+  }
+  .mcp-def-content code { color: #a5b4fc; font-size: 0.75rem; line-height: 1.6; }
+</style>

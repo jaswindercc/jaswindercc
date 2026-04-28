@@ -1,0 +1,55 @@
+---
+title: "Token Limits Explained — Why Your AI App Forgets and How to Fix It"
+description: "Visual guide to LLM token limits. Understand tokenization, context windows, budget allocation, and strategies for managing conversation memory in production AI apps."
+date: 2026-04-12
+---
+
+import TokenCounter from '../../components/visual/TokenCounter.astro';
+import ContextWindowMap from '../../components/visual/ContextWindowMap.astro';
+import TokenBudget from '../../components/visual/TokenBudget.astro';
+import TokenStrategies from '../../components/visual/TokenStrategies.astro';
+import TokenCosts from '../../components/visual/TokenCosts.astro';
+
+"Why did the AI forget what I said 10 messages ago?" Because you hit the token limit. Every LLM has a fixed context window — a maximum number of tokens it can process at once. When your conversation exceeds this, older messages get dropped. The model literally can't see them anymore.
+
+Understanding tokens isn't just an API detail. It's the fundamental constraint that shapes how you architect AI applications.
+
+## 1. Tokens Are Not Words
+
+First misconception: "128K tokens means 128K words." No. Tokens are subword chunks created by the tokenizer. Common words are one token. Uncommon words get split into pieces. Code and special characters are particularly token-hungry.
+
+<TokenCounter />
+
+This matters because it's easy to blow your budget with code-heavy prompts. That JSON payload you're stuffing into context? It could be 3-5x more tokens than the equivalent English description. Structured data is expensive.
+
+## 2. Context Windows — The Hard Ceiling
+
+The context window is everything the model can see at once. System prompt, entire conversation history, retrieved documents, the user's current message, AND the space reserved for the response — all must fit within this window.
+
+<ContextWindowMap />
+
+Bigger isn't always better. A 2M token window means you CAN stuff more in — but the model's attention degrades in the middle of long contexts ("lost in the middle" problem). Just because you have 200K tokens available doesn't mean you should use all of them. Focused, relevant context beats comprehensive context.
+
+## 3. Budget Your Tokens
+
+Think of the context window as a fixed budget. Every component of your prompt competes for space. If your system prompt is 2000 tokens and your RAG context is 50K tokens, you've already used most of a 128K window before the user says anything.
+
+<TokenBudget />
+
+The mistake I see in production: teams build elaborate system prompts (3000+ tokens) with instructions the model doesn't follow anyway. Then they wonder why their RAG context gets truncated. Shorter system prompts leave more room for the information that actually helps the model answer correctly.
+
+## 4. When You Hit the Limit
+
+Every long-running AI application eventually hits the token limit. The conversation grows, context accumulates, and suddenly you're over budget. How you handle this determines whether your app gracefully degrades or silently loses important context.
+
+<TokenStrategies />
+
+The approach I recommend for most production apps: summarize + RAG hybrid. Periodically compress old conversation into a summary paragraph (saves 90% of tokens while retaining key facts). For knowledge-heavy queries, retrieve relevant chunks instead of stuffing everything into context. This scales to infinite conversations.
+
+## 5. The Cost Dimension
+
+Tokens aren't just a size constraint — they're a cost multiplier. Every token processed costs money. At scale (millions of conversations/month), token efficiency directly impacts your margin. Output tokens cost 3-5x more than input tokens.
+
+<TokenCosts />
+
+The optimization that saves the most money: model routing. Use expensive models (GPT-4, Claude Sonnet) only for complex queries. Route simple questions to cheap models (GPT-4o-mini, Haiku, Flash). A good router cuts token costs by 70% with minimal quality loss. Most questions don't need the strongest model.

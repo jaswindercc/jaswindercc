@@ -5,20 +5,60 @@ import '../styles/global.css';
 import MainLayout from '../components/MainLayout.astro';
 
 const allPosts = await getCollection('blog');
-const sortedPosts = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-const displayedPosts = sortedPosts.slice(0, 6);
+
+const feat = [
+	'transformer-architecture-visual', 'zero-trust-architecture-2026', 'kubernetes-networking-explained',
+	'cicd-pipeline-anatomy', 'rlhf-visualized', 'prompt-injection-attacks', 'serverless-vs-containers',
+	'docker-multi-stage-builds', 'graphql-rest-grpc-compared', 'container-security-image-to-runtime',
+	'cloud-load-balancing-l4-l7', 'deployment-strategies-compared', 'ai-hallucinations-decoded',
+	'api-rate-limiting-algorithms', 'dns-explained-visual', 'rag-pipelines-explained',
+	'secrets-management-guide', 'cloud-cost-optimization', 'caching-strategies-guide',
+	'mixture-of-experts-explained', 'oauth2-oidc-visual-guide', 'kubernetes-storage-explained',
+	'observability-logs-metrics-traces', 'fine-tuning-small-models',
+];
+const sl = (p: any) => p.id.replace(/\.mdx?$/, '');
+const featSet = new Set(feat);
+const top = allPosts.filter(p => featSet.has(sl(p))).sort((a, b) => feat.indexOf(sl(a)) - feat.indexOf(sl(b)));
+const displayedPosts = top.slice(0, 6);
 
 function getCategory(id: string): string {
 	const map: Record<string, string> = {
-		'agentic-ai-compliance': 'AI',
-		'claude-mythos-5': 'AI',
-		'edge-computing-2026': 'Cloud',
-		'enterprise-devops-modernization': 'DevOps',
-		'finops-best-practices': 'FinOps',
-		'metadata-saturation': 'Analytics',
-		'retail-banking-api-architecture': 'Architecture',
-		'securing-openclaw': 'Security',
-		'zero-trust-cloud-security': 'Security',
+		'agentic-ai-compliance': 'AI', 'agentic-loop-production': 'AI', 'langgraph-state-management': 'AI',
+		'prompt-engineering-visual-playbook': 'AI', 'rag-pipelines-explained': 'AI', 'fine-tuning-vs-rag-vs-prompting': 'AI',
+		'how-embeddings-work': 'AI', 'ai-agents-tool-use': 'AI', 'claude-mythos-5': 'AI',
+		'edge-computing-2026': 'Cloud', 'enterprise-devops-modernization': 'DevOps', 'finops-best-practices': 'FinOps',
+		'metadata-saturation': 'Analytics', 'retail-banking-api-architecture': 'Architecture', 'securing-openclaw': 'Security',
+		'zero-trust-cloud-security': 'Security', 'multi-agent-systems': 'AI', 'feature-flags-done-right': 'DevOps',
+		'supply-chain-attacks-explained': 'Security', 'kubernetes-networking-explained': 'Cloud',
+		'ai-hallucinations-decoded': 'AI', 'oauth2-oidc-visual-guide': 'Security', 'cicd-pipeline-anatomy': 'DevOps',
+		'serverless-vs-containers': 'Cloud', 'token-limits-explained': 'AI', 'secrets-management-guide': 'Security',
+		'gitops-from-scratch': 'DevOps', 'cloud-cost-optimization': 'Cloud', 'attention-mechanisms-visual-guide': 'AI',
+		'api-security-owasp-top-10': 'Security', 'observability-logs-metrics-traces': 'DevOps',
+		'multi-cloud-strategy': 'Cloud', 'vector-databases-explained': 'AI', 'zero-trust-architecture-2026': 'Security',
+		'infrastructure-as-code-compared': 'Cloud', 'prompt-caching-context-windows': 'AI',
+		'rag-patterns-beyond-naive': 'AI', 'canary-deployments-guide': 'DevOps',
+		'container-security-image-to-runtime': 'Security', 'service-mesh-explained': 'Cloud',
+		'prompt-injection-attacks': 'AI', 'trunk-based-vs-gitflow': 'DevOps', 'encryption-rest-vs-transit': 'Security',
+		'cloud-load-balancing-l4-l7': 'Cloud', 'mixture-of-experts-explained': 'AI', 'platform-engineering-guide': 'DevOps',
+		'incident-response-playbook': 'Security', 'event-driven-architecture': 'Cloud', 'llm-evaluation-guide': 'AI',
+		'docker-multi-stage-builds': 'DevOps', 'sast-dast-iast-compared': 'Security', 'managed-kubernetes-compared': 'Cloud',
+		'ai-agent-memory-systems': 'AI', 'slos-slis-error-budgets': 'DevOps', 'certificate-management-tls': 'Security',
+		'database-scaling-patterns': 'Cloud', 'chain-of-thought-reasoning': 'AI', 'monorepo-vs-polyrepo': 'DevOps',
+		'cloud-iam-least-privilege': 'Security', 'cdn-architecture-explained': 'Cloud', 'model-distillation-guide': 'AI',
+		'terraform-state-management': 'DevOps', 'security-headers-guide': 'Security',
+		'message-queues-vs-event-streams': 'Cloud', 'multimodal-ai-explained': 'AI', 'helm-charts-demystified': 'DevOps',
+		'penetration-testing-methodology': 'Security', 'cloud-region-strategy': 'Cloud', 'fine-tuning-small-models': 'AI',
+		'dependency-management-guide': 'DevOps', 'web-application-firewalls': 'Security', 'cloud-migration-7-rs': 'Cloud',
+		'rlhf-visualized': 'AI', 'deployment-strategies-compared': 'DevOps', 'api-rate-limiting-algorithms': 'Security',
+		'kubernetes-storage-explained': 'Cloud', 'ai-guardrails-guide': 'AI', 'graphql-rest-grpc-compared': 'DevOps',
+		'secrets-in-cicd-pipelines': 'Security', 'dns-explained-visual': 'Cloud', 'semantic-vs-keyword-search': 'AI',
+		'caching-strategies-guide': 'DevOps', 'threat-modeling-stride': 'Security', 'data-pipeline-architecture': 'Cloud',
+		'transformer-architecture-visual': 'AI', 'database-connection-pooling': 'Cloud',
+		'quantum-computing-beginners-guide': 'Quantum', 'qubits-vs-classical-bits': 'Quantum',
+		'quantum-entanglement-explained': 'Quantum', 'quantum-gates-visualized': 'Quantum',
+		'quantum-programming-qiskit-getting-started': 'Quantum', 'quantum-algorithms-grover-shor-explained': 'Quantum',
+		'quantum-computing-real-world-applications': 'Quantum', 'quantum-computing-cloud-hands-on': 'Quantum',
+		'quantum-security-encryption-future': 'Quantum', 'quantum-computing-future-roadmap': 'Quantum',
 	};
 	const slug = id.replace(/\.mdx?$/, '');
 	return map[slug] || 'Tech';
@@ -33,6 +73,7 @@ function getCategoryStyle(category: string): { bg: string; text: string; border:
 		'Analytics': { bg: 'bg-rose-50', text: 'text-rose-700', border: 'border-rose-200', dot: 'bg-rose-500' },
 		'Architecture': { bg: 'bg-indigo-50', text: 'text-indigo-700', border: 'border-indigo-200', dot: 'bg-indigo-500' },
 		'Security': { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200', dot: 'bg-red-500' },
+		'Quantum': { bg: 'bg-fuchsia-50', text: 'text-fuchsia-700', border: 'border-fuchsia-200', dot: 'bg-fuchsia-500' },
 	};
 	return styles[category] || { bg: 'bg-slate-50', text: 'text-slate-700', border: 'border-slate-200', dot: 'bg-slate-500' };
 }
@@ -122,6 +163,30 @@ const pageDescription = 'Jaswinder Singh helps companies modernize cloud archite
 								<h3 class="text-base font-bold text-slate-950">Cloud Modernization</h3>
 							</div>
 							<p class="text-sm text-slate-500 leading-relaxed">Leading large-scale migrations and establishing Cloud Centers of Excellence (CCoE) for governed growth.</p>
+						</div>
+					</div>
+				</section>
+
+				<!-- Published Work -->
+				<section class="mb-14 animate-section">
+					<h2 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">Published Work</h2>
+					<div class="card-hover bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+						<div class="p-5">
+							<div class="flex items-start gap-4">
+								<div class="shrink-0 w-16 h-20 bg-gradient-to-br from-blue-600 to-violet-700 rounded-lg flex items-center justify-center shadow-md">
+									<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+									</svg>
+								</div>
+								<div class="flex-1 min-w-0">
+									<h3 class="text-base font-bold text-slate-950 mb-1 leading-tight">Mastering Practical Challenges in Technology Leadership</h3>
+									<p class="text-sm text-slate-500 mb-3">A comprehensive guide to navigating real-world technology leadership — from cloud architecture decisions to building high-performing engineering teams.</p>
+									<a href="https://www.amazon.ca/Mastering-Practical-Challenges-Technology-Leadership-ebook/dp/B0FP883HX5/?tag=jaswindercc-20" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors">
+										<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+										View on Amazon
+									</a>
+								</div>
+							</div>
 						</div>
 					</div>
 				</section>

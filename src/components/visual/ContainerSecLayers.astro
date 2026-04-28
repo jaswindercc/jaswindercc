@@ -1,0 +1,56 @@
+---
+/**
+ * ContainerSecLayers.astro
+ * Container security from build to runtime
+ */
+---
+
+<div class="csl-wrap">
+  <h3 class="csl-title">Container Security — Build to Runtime</h3>
+  <div class="csl-pipeline">
+    <div class="csl-stage" style="--i:0; --color:#818cf8;">
+      <div class="csl-num">1</div>
+      <div class="csl-body">
+        <div class="csl-name">Base Image</div>
+        <div class="csl-desc">Use minimal images (distroless, Alpine). Fewer packages = fewer CVEs.</div>
+      </div>
+    </div>
+    <div class="csl-conn"></div>
+    <div class="csl-stage" style="--i:1; --color:#06b6d4;">
+      <div class="csl-num">2</div>
+      <div class="csl-body">
+        <div class="csl-name">Build Scanning</div>
+        <div class="csl-desc">Scan images in CI with Trivy, Grype, or Snyk. Block deploys on critical CVEs.</div>
+      </div>
+    </div>
+    <div class="csl-conn"></div>
+    <div class="csl-stage" style="--i:2; --color:#f59e0b;">
+      <div class="csl-num">3</div>
+      <div class="csl-body">
+        <div class="csl-name">Registry Policy</div>
+        <div class="csl-desc">Only allow signed, scanned images. Admission controllers block unsigned pods.</div>
+      </div>
+    </div>
+    <div class="csl-conn"></div>
+    <div class="csl-stage" style="--i:3; --color:#4ade80;">
+      <div class="csl-num">4</div>
+      <div class="csl-body">
+        <div class="csl-name">Runtime Protection</div>
+        <div class="csl-desc">Falco, seccomp profiles, read-only filesystems. Detect anomalous behavior live.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .csl-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .csl-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .csl-pipeline{display:flex;flex-direction:column;gap:0}
+  .csl-stage{display:flex;align-items:center;gap:1rem;padding:1rem;background:rgba(255,255,255,0.03);border:1px solid var(--color);border-radius:12px;opacity:0;animation:cslSlide .4s ease forwards;animation-delay:calc(var(--i)*.15s)}
+  @keyframes cslSlide{from{opacity:0;transform:translateX(-15px)}to{opacity:1;transform:translateX(0)}}
+  .csl-num{width:30px;height:30px;border-radius:50%;background:var(--color);color:#0f172a;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0}
+  .csl-body{flex:1}
+  .csl-name{color:var(--color);font-weight:700;font-size:.95rem}
+  .csl-desc{color:#94a3b8;font-size:.8rem;margin-top:.15rem}
+  .csl-conn{width:2px;height:14px;background:#334155;margin-left:22px}
+</style>

@@ -1,0 +1,68 @@
+---
+// QuantumCircuit.astro — Simple quantum circuit diagram
+---
+
+<div class="qci-wrap">
+  <h3 class="qci-title">Reading a Quantum Circuit</h3>
+  <p class="qci-sub">Time flows left to right. Each horizontal line is a qubit. Boxes are gates.</p>
+
+  <div class="qci-canvas">
+    <svg viewBox="0 0 480 180" class="qci-svg">
+      <!-- Qubit lines -->
+      <line x1="30" y1="50" x2="450" y2="50" stroke="#334155" stroke-width="1.5" class="qci-line" style="--i:0"/>
+      <line x1="30" y1="120" x2="450" y2="120" stroke="#334155" stroke-width="1.5" class="qci-line" style="--i:1"/>
+
+      <!-- Qubit labels -->
+      <text x="15" y="54" fill="#94a3b8" font-size="9" font-family="monospace" class="qci-ql" style="--i:0">q₀</text>
+      <text x="15" y="124" fill="#94a3b8" font-size="9" font-family="monospace" class="qci-ql" style="--i:1">q₁</text>
+
+      <!-- Gate 1: H on q0 -->
+      <rect x="70" y="30" width="40" height="40" rx="6" fill="rgba(6,182,212,0.15)" stroke="#06b6d4" stroke-width="1.5" class="qci-gate" style="--i:0"/>
+      <text x="90" y="55" fill="#06b6d4" font-size="14" font-weight="bold" font-family="monospace" text-anchor="middle" class="qci-gt" style="--i:0">H</text>
+
+      <!-- Gate 2: CNOT (control on q0, target on q1) -->
+      <circle cx="170" cy="50" r="5" fill="#a78bfa" class="qci-ctrl" style="--i:1"/>
+      <line x1="170" y1="55" x2="170" y2="120" stroke="#a78bfa" stroke-width="1.5" class="qci-cline" style="--i:1"/>
+      <circle cx="170" cy="120" r="12" fill="none" stroke="#a78bfa" stroke-width="1.5" class="qci-target" style="--i:1"/>
+      <line x1="158" y1="120" x2="182" y2="120" stroke="#a78bfa" stroke-width="1.5" class="qci-cross" style="--i:1"/>
+      <line x1="170" y1="108" x2="170" y2="132" stroke="#a78bfa" stroke-width="1.5" class="qci-cross" style="--i:1"/>
+
+      <!-- Gate 3: X on q1 -->
+      <rect x="230" y="100" width="40" height="40" rx="6" fill="rgba(74,222,128,0.15)" stroke="#4ade80" stroke-width="1.5" class="qci-gate" style="--i:2"/>
+      <text x="250" y="125" fill="#4ade80" font-size="14" font-weight="bold" font-family="monospace" text-anchor="middle" class="qci-gt" style="--i:2">X</text>
+
+      <!-- Measurement -->
+      <rect x="340" y="30" width="40" height="40" rx="6" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5" class="qci-gate" style="--i:3"/>
+      <text x="360" y="55" fill="#f59e0b" font-size="11" font-family="monospace" text-anchor="middle" class="qci-gt" style="--i:3">M</text>
+      <rect x="340" y="100" width="40" height="40" rx="6" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5" class="qci-gate" style="--i:4"/>
+      <text x="360" y="125" fill="#f59e0b" font-size="11" font-family="monospace" text-anchor="middle" class="qci-gt" style="--i:4">M</text>
+
+      <!-- Output -->
+      <text x="415" y="54" fill="#4ade80" font-size="9" font-family="monospace" class="qci-out" style="--i:5">→ 0/1</text>
+      <text x="415" y="124" fill="#4ade80" font-size="9" font-family="monospace" class="qci-out" style="--i:5">→ 0/1</text>
+
+      <!-- Time arrow -->
+      <text x="240" y="170" fill="#475569" font-size="8" font-family="monospace" text-anchor="middle">time →</text>
+    </svg>
+  </div>
+
+  <div class="qci-legend">
+    <span class="qci-leg"><span class="qci-ld" style="background:#06b6d4"></span>H = Hadamard (superposition)</span>
+    <span class="qci-leg"><span class="qci-ld" style="background:#a78bfa"></span>CNOT = entanglement</span>
+    <span class="qci-leg"><span class="qci-ld" style="background:#4ade80"></span>X = NOT gate</span>
+    <span class="qci-leg"><span class="qci-ld" style="background:#f59e0b"></span>M = Measurement</span>
+  </div>
+</div>
+
+<style>
+  .qci-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .qci-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .qci-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .qci-canvas{background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155;overflow:hidden;margin-bottom:1rem}
+  .qci-svg{width:100%;height:auto;display:block}
+  .qci-line,.qci-ql,.qci-gate,.qci-gt,.qci-ctrl,.qci-cline,.qci-target,.qci-cross,.qci-out{opacity:0;animation:qciIn .4s ease forwards;animation-delay:calc(var(--i)*.15s)}
+  .qci-legend{display:flex;flex-wrap:wrap;gap:12px}
+  .qci-leg{display:flex;align-items:center;gap:5px;color:#94a3b8;font-size:.65rem;font-family:monospace}
+  .qci-ld{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+  @keyframes qciIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+</style>

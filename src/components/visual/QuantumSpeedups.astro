@@ -1,0 +1,89 @@
+---
+// QuantumSpeedups.astro — Where quantum algorithms actually provide speedup
+---
+
+<div class="qsp-wrap">
+  <h3 class="qsp-title">Quantum Speedup — Where It Matters</h3>
+  <p class="qsp-sub">Not all problems get faster. Here's where quantum delivers real advantage.</p>
+
+  <div class="qsp-bars">
+    <div class="qsp-bar-group" style="--i:0">
+      <div class="qsp-label">Database Search</div>
+      <div class="qsp-bar-row">
+        <span class="qsp-tag">Classical</span>
+        <div class="qsp-bar-track"><div class="qsp-bar" style="--w:100%;--c:#38bdf8"></div></div>
+        <span class="qsp-val">O(N)</span>
+      </div>
+      <div class="qsp-bar-row">
+        <span class="qsp-tag qsp-tag--q">Quantum</span>
+        <div class="qsp-bar-track"><div class="qsp-bar" style="--w:50%;--c:#a78bfa"></div></div>
+        <span class="qsp-val qsp-val--q">O(√N)</span>
+      </div>
+      <div class="qsp-algo">Grover's Algorithm</div>
+    </div>
+
+    <div class="qsp-bar-group" style="--i:1">
+      <div class="qsp-label">Integer Factoring</div>
+      <div class="qsp-bar-row">
+        <span class="qsp-tag">Classical</span>
+        <div class="qsp-bar-track"><div class="qsp-bar" style="--w:100%;--c:#38bdf8"></div></div>
+        <span class="qsp-val">O(e^(n^⅓))</span>
+      </div>
+      <div class="qsp-bar-row">
+        <span class="qsp-tag qsp-tag--q">Quantum</span>
+        <div class="qsp-bar-track"><div class="qsp-bar" style="--w:15%;--c:#a78bfa"></div></div>
+        <span class="qsp-val qsp-val--q">O(n³)</span>
+      </div>
+      <div class="qsp-algo">Shor's Algorithm</div>
+    </div>
+
+    <div class="qsp-bar-group" style="--i:2">
+      <div class="qsp-label">Quantum Simulation</div>
+      <div class="qsp-bar-row">
+        <span class="qsp-tag">Classical</span>
+        <div class="qsp-bar-track"><div class="qsp-bar" style="--w:100%;--c:#38bdf8"></div></div>
+        <span class="qsp-val">O(2ⁿ)</span>
+      </div>
+      <div class="qsp-bar-row">
+        <span class="qsp-tag qsp-tag--q">Quantum</span>
+        <div class="qsp-bar-track"><div class="qsp-bar" style="--w:10%;--c:#a78bfa"></div></div>
+        <span class="qsp-val qsp-val--q">O(poly(n))</span>
+      </div>
+      <div class="qsp-algo">Quantum Phase Estimation</div>
+    </div>
+
+    <div class="qsp-bar-group" style="--i:3">
+      <div class="qsp-label">Sorting</div>
+      <div class="qsp-bar-row">
+        <span class="qsp-tag">Classical</span>
+        <div class="qsp-bar-track"><div class="qsp-bar" style="--w:80%;--c:#38bdf8"></div></div>
+        <span class="qsp-val">O(N log N)</span>
+      </div>
+      <div class="qsp-bar-row">
+        <span class="qsp-tag qsp-tag--q">Quantum</span>
+        <div class="qsp-bar-track"><div class="qsp-bar" style="--w:75%;--c:#ef4444"></div></div>
+        <span class="qsp-val qsp-val--no">No speedup</span>
+      </div>
+      <div class="qsp-algo">Classical wins here</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .qsp-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .qsp-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .qsp-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .qsp-bars{display:flex;flex-direction:column;gap:16px}
+  .qsp-bar-group{background:rgba(0,0,0,.15);border:1px solid #334155;border-radius:10px;padding:12px 14px;opacity:0;animation:qspIn .4s ease forwards;animation-delay:calc(var(--i)*.12s)}
+  .qsp-label{color:#f1f5f9;font-size:.75rem;font-weight:600;margin-bottom:8px}
+  .qsp-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .qsp-tag{color:#38bdf8;font-size:.58rem;font-family:monospace;min-width:55px}
+  .qsp-tag--q{color:#a78bfa}
+  .qsp-bar-track{flex:1;height:8px;background:rgba(0,0,0,.2);border-radius:6px;overflow:hidden}
+  .qsp-bar{height:100%;border-radius:6px;background:var(--c);width:0;animation:qspBar 1s ease forwards .5s}
+  @keyframes qspBar{to{width:var(--w)}}
+  .qsp-val{color:#64748b;font-size:.58rem;font-family:monospace;min-width:60px;text-align:right}
+  .qsp-val--q{color:#a78bfa}.qsp-val--no{color:#ef4444}
+  .qsp-algo{color:#475569;font-size:.58rem;font-family:monospace;margin-top:2px}
+  @keyframes qspIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+</style>

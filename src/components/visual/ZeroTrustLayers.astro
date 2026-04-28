@@ -1,0 +1,119 @@
+---
+/**
+ * ZeroTrustLayers.astro
+ * Visual showing the layers of zero trust: Identity, Device, Network, Application, Data
+ * Pure CSS, dark theme, no JS
+ */
+---
+
+<div class="zt-layers">
+  <h3 class="zt-title">Zero Trust Security Layers</h3>
+  <p class="zt-subtitle">Verify at every boundary — never trust implicitly</p>
+  
+  <div class="zt-stack">
+    <div class="zt-layer" style="--i:0; --color:#f59e0b;">
+      <div class="zt-layer-icon">👤</div>
+      <div class="zt-layer-content">
+        <div class="zt-layer-name">Identity</div>
+        <div class="zt-layer-desc">MFA, SSO, conditional access, continuous authentication</div>
+      </div>
+      <div class="zt-layer-badge">WHO</div>
+    </div>
+    <div class="zt-layer" style="--i:1; --color:#06b6d4;">
+      <div class="zt-layer-icon">💻</div>
+      <div class="zt-layer-content">
+        <div class="zt-layer-name">Device</div>
+        <div class="zt-layer-desc">Compliance checks, health attestation, MDM enrollment</div>
+      </div>
+      <div class="zt-layer-badge">WHAT</div>
+    </div>
+    <div class="zt-layer" style="--i:2; --color:#818cf8;">
+      <div class="zt-layer-icon">🌐</div>
+      <div class="zt-layer-content">
+        <div class="zt-layer-name">Network</div>
+        <div class="zt-layer-desc">Micro-segmentation, encrypted tunnels, no flat networks</div>
+      </div>
+      <div class="zt-layer-badge">WHERE</div>
+    </div>
+    <div class="zt-layer" style="--i:3; --color:#4ade80;">
+      <div class="zt-layer-icon">📱</div>
+      <div class="zt-layer-content">
+        <div class="zt-layer-name">Application</div>
+        <div class="zt-layer-desc">Just-in-time access, API gateways, session verification</div>
+      </div>
+      <div class="zt-layer-badge">HOW</div>
+    </div>
+    <div class="zt-layer" style="--i:4; --color:#ef4444;">
+      <div class="zt-layer-icon">🔐</div>
+      <div class="zt-layer-content">
+        <div class="zt-layer-name">Data</div>
+        <div class="zt-layer-desc">Encryption at rest, classification, DLP, access logging</div>
+      </div>
+      <div class="zt-layer-badge">WHAT DATA</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .zt-layers {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+  .zt-title {
+    color: #f1f5f9;
+    font-size: 1.25rem;
+    margin: 0 0 0.25rem;
+    text-align: center;
+  }
+  .zt-subtitle {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    text-align: center;
+    margin: 0 0 1.5rem;
+  }
+  .zt-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .zt-layer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--color);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    opacity: 0;
+    animation: ztSlide 0.5s ease forwards;
+    animation-delay: calc(var(--i) * 0.15s);
+  }
+  @keyframes ztSlide {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .zt-layer-icon { font-size: 1.5rem; }
+  .zt-layer-content { flex: 1; }
+  .zt-layer-name {
+    color: var(--color);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .zt-layer-desc {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+  }
+  .zt-layer-badge {
+    background: var(--color);
+    color: #0f172a;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+</style>

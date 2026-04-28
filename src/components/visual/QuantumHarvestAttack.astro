@@ -1,0 +1,57 @@
+---
+// QuantumHarvestAttack.astro — Harvest now, decrypt later attack visualization
+---
+
+<div class="qha-wrap">
+  <h3 class="qha-title">"Harvest Now, Decrypt Later" — The Silent Threat</h3>
+  <p class="qha-sub">Attackers don't need quantum computers today. They just need patience.</p>
+
+  <div class="qha-flow">
+    <div class="qha-stage" style="--i:0;--c:#38bdf8">
+      <div class="qha-step-icon">📡</div>
+      <div class="qha-step-title">Today: Intercept</div>
+      <div class="qha-step-desc">Attackers capture encrypted network traffic. VPN sessions, emails, classified documents. All encrypted with RSA or ECDH.</div>
+    </div>
+    <div class="qha-arrow" style="--i:1">→</div>
+    <div class="qha-stage" style="--i:2;--c:#f59e0b">
+      <div class="qha-step-icon">💾</div>
+      <div class="qha-step-title">Store</div>
+      <div class="qha-step-desc">Store everything on cheap hard drives. The data is useless now — but storage is cheap and quantum computing is coming.</div>
+    </div>
+    <div class="qha-arrow" style="--i:3">→</div>
+    <div class="qha-stage" style="--i:4;--c:#ef4444">
+      <div class="qha-step-icon">⚛️</div>
+      <div class="qha-step-title">Future: Decrypt</div>
+      <div class="qha-step-desc">When quantum computers are powerful enough, run Shor's algorithm and decrypt everything. Medical records, trade secrets, state secrets — all exposed.</div>
+    </div>
+  </div>
+
+  <div class="qha-who">
+    <div class="qha-who-title">Who's doing this?</div>
+    <div class="qha-who-list">
+      <span class="qha-who-item" style="--c:#ef4444">Nation-state actors</span>
+      <span class="qha-who-item" style="--c:#f59e0b">Intelligence agencies</span>
+      <span class="qha-who-item" style="--c:#a78bfa">Advanced persistent threats</span>
+    </div>
+    <div class="qha-who-note">This isn't theoretical. Intelligence communities have confirmed this strategy is actively in use.</div>
+  </div>
+</div>
+
+<style>
+  .qha-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .qha-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .qha-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .qha-flow{display:flex;align-items:flex-start;justify-content:center;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+  .qha-stage{background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:12px;padding:1.25rem;text-align:center;max-width:180px;opacity:0;animation:qhaIn .4s ease forwards;animation-delay:calc(var(--i)*.12s);transition:border-color .2s}
+  .qha-stage:hover{border-color:var(--c)}
+  .qha-step-icon{font-size:1.5rem;margin-bottom:.5rem}
+  .qha-step-title{color:var(--c);font-size:.75rem;font-weight:600;margin-bottom:.35rem}
+  .qha-step-desc{color:#94a3b8;font-size:.65rem;line-height:1.5}
+  .qha-arrow{color:#475569;font-size:1.2rem;display:flex;align-items:center;padding-top:2rem;opacity:0;animation:qhaIn .3s ease forwards;animation-delay:calc(var(--i)*.12s)}
+  .qha-who{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:8px;padding:14px}
+  .qha-who-title{color:#ef4444;font-size:.72rem;font-weight:600;margin-bottom:.5rem}
+  .qha-who-list{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:.5rem}
+  .qha-who-item{color:var(--c);font-size:.6rem;font-family:monospace;padding:2px 8px;background:rgba(0,0,0,.2);border-radius:12px}
+  .qha-who-note{color:#94a3b8;font-size:.65rem;line-height:1.5}
+  @keyframes qhaIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>

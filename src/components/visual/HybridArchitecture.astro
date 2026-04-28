@@ -1,0 +1,32 @@
+---
+// HybridArchitecture.astro — Best-of-both approach
+---
+<div class="ha-wrap">
+  <h3 class="ha-title">The Hybrid Approach — Best of Both</h3>
+  <p class="ha-sub">Most production systems end up using both. Here's what goes where:</p>
+  <div class="ha-layers">
+    <div class="ha-layer ha-l1">
+      <span class="ha-badge ha-badge--cyan">Serverless Layer</span>
+      <div class="ha-items"><span class="ha-item">API Gateway</span><span class="ha-item">Auth webhooks</span><span class="ha-item">Image processing</span><span class="ha-item">Cron jobs</span><span class="ha-item">Event handlers</span></div>
+    </div>
+    <div class="ha-conn"><div class="ha-line"></div><span class="ha-cl">Event Bus / Queue</span><div class="ha-line"></div></div>
+    <div class="ha-layer ha-l2">
+      <span class="ha-badge ha-badge--purple">Container Layer</span>
+      <div class="ha-items"><span class="ha-item">Core API</span><span class="ha-item">WebSocket server</span><span class="ha-item">ML inference</span><span class="ha-item">Background workers</span><span class="ha-item">Databases</span></div>
+    </div>
+  </div>
+  <div class="ha-principle"><strong>Principle:</strong> Serverless for edges and events. Containers for core and long-running. Connect them via queues (SQS/EventBridge) so they stay decoupled.</div>
+</div>
+<style>
+  .ha-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .ha-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.ha-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem}
+  .ha-layers{display:flex;flex-direction:column;align-items:center;gap:0;margin-bottom:1rem}
+  .ha-layer{width:100%;max-width:420px;padding:14px;background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155}
+  .ha-l1{border-top:2px solid #06b6d4}.ha-l2{border-top:2px solid #818cf8}
+  .ha-badge{font-size:.7rem;font-weight:700;font-family:monospace;display:block;margin-bottom:8px}.ha-badge--cyan{color:#06b6d4}.ha-badge--purple{color:#818cf8}
+  .ha-items{display:flex;flex-wrap:wrap;gap:4px}
+  .ha-item{padding:3px 8px;background:rgba(100,116,139,.08);border:1px solid #334155;border-radius:4px;font-size:.62rem;color:#94a3b8;font-family:monospace}
+  .ha-conn{display:flex;align-items:center;gap:8px;padding:8px 0}
+  .ha-line{flex:1;height:1px;background:#334155}.ha-cl{color:#f59e0b;font-size:.6rem;font-family:monospace;white-space:nowrap}
+  .ha-principle{color:#94a3b8;font-size:.72rem;line-height:1.6;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border:1px solid #334155}.ha-principle strong{color:#4ade80}
+</style>

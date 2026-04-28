@@ -1,0 +1,28 @@
+---
+// AttackVectors.astro — Expandable cards for supply chain attack types
+---
+<div class="av-wrap">
+  <h3 class="av-title">5 Ways They Get In</h3>
+  <p class="av-sub">Click each vector to see how it works and real-world examples.</p>
+  <div class="av-stack">
+    <details class="av-c av-c--red"><summary class="av-h"><span class="av-n">01</span><div class="av-i"><span class="av-nm">Typosquatting</span><span class="av-w">lodash → lodahs, requests → reqests</span></div><span class="av-a">▼</span></summary><div class="av-b"><p>Publish a package with a name one typo away from a popular library. Developers run `npm install` with a typo and get your malicious package instead. The code looks normal until you read the postinstall script.</p><div class="av-ex"><strong>Real case:</strong> crossenv (typosquat of cross-env) — stole environment variables from 700+ projects before discovery.</div></div></details>
+    <details class="av-c av-c--amber"><summary class="av-h"><span class="av-n">02</span><div class="av-i"><span class="av-nm">Dependency Confusion</span><span class="av-w">Public package overrides private name</span></div><span class="av-a">▼</span></summary><div class="av-b"><p>Your company has internal packages on a private registry. An attacker publishes a higher version number on the public registry with the same name. Your build system pulls the public (malicious) version instead.</p><div class="av-ex"><strong>Real case:</strong> Alex Birsan's 2021 research hit Apple, Microsoft, Tesla using this exact technique.</div></div></details>
+    <details class="av-c av-c--purple"><summary class="av-h"><span class="av-n">03</span><div class="av-i"><span class="av-nm">Compromised Maintainer</span><span class="av-w">Hijacked account pushes malicious update</span></div><span class="av-a">▼</span></summary><div class="av-b"><p>Attacker gains access to a maintainer's npm/PyPI account (phishing, leaked creds, burned-out maintainer sells access). They push a patch version with malicious code. Dependabot auto-merges it.</p><div class="av-ex"><strong>Real case:</strong> ua-parser-js (7M weekly downloads) — account hijacked, crypto-miner injected into a patch release.</div></div></details>
+    <details class="av-c av-c--cyan"><summary class="av-h"><span class="av-n">04</span><div class="av-i"><span class="av-nm">Build Pipeline Poisoning</span><span class="av-w">Inject code during CI/CD, not in source</span></div><span class="av-a">▼</span></summary><div class="av-b"><p>Source code is clean. But the build pipeline injects malicious code during compilation. The artifact users download is different from what's in Git. Extremely hard to detect.</p><div class="av-ex"><strong>Real case:</strong> SolarWinds Orion (2020) — build system compromised, 18,000 organizations affected including US government agencies.</div></div></details>
+    <details class="av-c av-c--green"><summary class="av-h"><span class="av-n">05</span><div class="av-i"><span class="av-nm">Malicious PR/Star-jacking</span><span class="av-w">Innocent-looking contribution with hidden payload</span></div><span class="av-a">▼</span></summary><div class="av-b"><p>Submit a helpful PR to a popular repo. Hide malicious code in obfuscated test fixtures, build scripts, or deeply nested utility files. Maintainer merges without catching it.</p><div class="av-ex"><strong>Real case:</strong> xz-utils backdoor (2024) — multi-year social engineering campaign to become a trusted maintainer, then inject a SSH backdoor.</div></div></details>
+  </div>
+</div>
+<style>
+  .av-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .av-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.av-sub{color:#64748b;font-size:.8rem;margin:0 0 1.5rem;font-family:monospace}
+  .av-stack{display:flex;flex-direction:column;gap:8px}
+  .av-c{border-radius:12px;border:1px solid #334155;overflow:hidden;transition:border-color .3s}.av-c[open]{border-color:#475569}
+  .av-c--red[open]{border-color:#ef444430}.av-c--amber[open]{border-color:#f59e0b30}.av-c--purple[open]{border-color:#818cf830}.av-c--cyan[open]{border-color:#06b6d430}.av-c--green[open]{border-color:#4ade8030}
+  .av-h{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;list-style:none;background:rgba(0,0,0,.15)}.av-h::-webkit-details-marker{display:none}.av-h::marker{content:''}
+  .av-n{font-family:monospace;font-size:.65rem;font-weight:800;width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .av-c--red .av-n{color:#f87171;background:rgba(239,68,68,.1)}.av-c--amber .av-n{color:#f59e0b;background:rgba(245,158,11,.1)}.av-c--purple .av-n{color:#818cf8;background:rgba(129,140,248,.1)}.av-c--cyan .av-n{color:#06b6d4;background:rgba(6,182,212,.1)}.av-c--green .av-n{color:#4ade80;background:rgba(74,222,128,.1)}
+  .av-i{flex:1}.av-nm{display:block;color:#e2e8f0;font-weight:700;font-size:.85rem}.av-w{display:block;color:#64748b;font-family:monospace;font-size:.6rem;margin-top:2px}
+  .av-a{color:#475569;font-size:.7rem;transition:transform .3s}.av-c[open] .av-a{transform:rotate(180deg)}
+  .av-b{padding:14px 16px}.av-b p{color:#94a3b8;font-size:.78rem;line-height:1.6;margin:0 0 10px}
+  .av-ex{color:#64748b;font-size:.7rem;line-height:1.5;padding:8px 12px;background:rgba(0,0,0,.2);border-radius:8px;border:1px solid #334155}.av-ex strong{color:#f59e0b}
+</style>

@@ -1,0 +1,23 @@
+---
+title: "Certificate Management — TLS Lifecycle Explained"
+description: "Visual guide to TLS certificate management. Understand the certificate lifecycle from key generation to automated renewal, and why expired certs cause the most preventable outages."
+date: 2026-05-30
+---
+
+import TLSLifecycle from '../../components/visual/TLSLifecycle.astro';
+
+The most embarrassing outages in tech are caused by expired certificates. Microsoft Teams, Spotify, LinkedIn, Azure — all have had major incidents because someone forgot to renew a cert. It's entirely preventable. The certificate lifecycle is well-understood, and automation has existed for years. The problem is that teams set up TLS once and forget about it until it breaks.
+
+## The Certificate Lifecycle
+
+A TLS certificate goes through five stages: key generation, certificate signing request, validation and issuance, deployment, and renewal. The first three happen once. The last two repeat forever — and that's where things break.
+
+<TLSLifecycle />
+
+Let's Encrypt changed the game by making certificates free and automatable with a 90-day validity period. Short-lived certificates are actually more secure — if a certificate is compromised, the exposure window is weeks, not years. The catch is that 90-day certs require reliable automation. If your renewal process breaks and goes unnoticed for 90 days, your site goes down.
+
+cert-manager in Kubernetes is the gold standard for automated certificate management. It requests certificates from Let's Encrypt (or any ACME-compatible CA), installs them as Kubernetes secrets, and renews them automatically before expiration. You define a Certificate resource, and cert-manager handles everything else. Set it up once and certificates become a solved problem.
+
+For non-Kubernetes environments, certbot handles Let's Encrypt automation on traditional servers. Cloud load balancers (AWS ACM, GCP Certificate Manager, Azure App Gateway) manage certificates natively — you don't even see the private key.
+
+The one rule: never manage certificates manually. No spreadsheets, no calendar reminders, no "we'll renew it when it gets close." Automate issuance, automate renewal, automate monitoring. Alert when a cert is 30 days from expiration — that gives you a month to fix any automation failure before users are affected.

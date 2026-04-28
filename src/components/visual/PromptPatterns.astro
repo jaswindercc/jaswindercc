@@ -1,0 +1,190 @@
+---
+// PromptPatterns.astro — Expandable cards showing 5 prompt engineering patterns with examples
+
+const pattern1 = `You are a [ROLE] with expertise in [DOMAIN].
+
+[TASK DESCRIPTION]
+
+Return your answer as:
+- Format: [DESIRED FORMAT]
+- Length: [CONSTRAINT]
+- Tone: [STYLE]`;
+
+const pattern2 = `Here are 3 examples of good summaries:
+
+Example 1: "The API returns 429 when rate limited..."
+Example 2: "Deploy fails if the env var is unset..."
+Example 3: "The query times out above 10K rows..."
+
+Now summarize this: [YOUR INPUT]`;
+
+const pattern3 = `Think through this step by step:
+
+1. First, identify the main problem
+2. Then, list possible causes
+3. For each cause, evaluate likelihood
+4. Recommend the most likely fix
+
+Problem: [YOUR INPUT]`;
+
+const pattern4 = `I will give you a code review to perform.
+
+Before you respond, ask me 3 clarifying questions 
+about the codebase, the team's conventions, and 
+the deployment target.
+
+Do NOT review the code until I answer.`;
+
+const pattern5 = `You are a senior engineer reviewing a pull request.
+
+Rules:
+- Flag only HIGH severity issues
+- Ignore style/formatting
+- Each issue must include: line number, risk, fix
+- If nothing is critical, say "LGTM"
+
+PR diff:
+[PASTE DIFF]`;
+---
+
+<div class="pp-wrap">
+  <h3 class="pp-title">5 Patterns That Work Every Time</h3>
+  <p class="pp-sub">Click each pattern to see the template and when to use it.</p>
+
+  <div class="pp-stack">
+    <details class="pp-card pp-card--amber">
+      <summary class="pp-header">
+        <span class="pp-num">01</span>
+        <div class="pp-info">
+          <span class="pp-name">Role + Task + Format</span>
+          <span class="pp-when">When you need expertise and structured output</span>
+        </div>
+        <span class="pp-arrow">▼</span>
+      </summary>
+      <div class="pp-body">
+        <p>The workhorse pattern. Set a role, define the task, specify the format. Works for 80% of prompts.</p>
+        <pre class="pp-code"><code set:html={pattern1} /></pre>
+      </div>
+    </details>
+
+    <details class="pp-card pp-card--cyan">
+      <summary class="pp-header">
+        <span class="pp-num">02</span>
+        <div class="pp-info">
+          <span class="pp-name">Few-Shot Examples</span>
+          <span class="pp-when">When you need a specific style or format</span>
+        </div>
+        <span class="pp-arrow">▼</span>
+      </summary>
+      <div class="pp-body">
+        <p>Show the model what good output looks like. 2-3 examples are usually enough. The model mimics the pattern.</p>
+        <pre class="pp-code"><code set:html={pattern2} /></pre>
+      </div>
+    </details>
+
+    <details class="pp-card pp-card--purple">
+      <summary class="pp-header">
+        <span class="pp-num">03</span>
+        <div class="pp-info">
+          <span class="pp-name">Chain of Thought</span>
+          <span class="pp-when">When the problem needs reasoning, not just recall</span>
+        </div>
+        <span class="pp-arrow">▼</span>
+      </summary>
+      <div class="pp-body">
+        <p>Force the model to show its work. "Think step by step" is the simplest version, but explicit numbered steps work better.</p>
+        <pre class="pp-code"><code set:html={pattern3} /></pre>
+      </div>
+    </details>
+
+    <details class="pp-card pp-card--green">
+      <summary class="pp-header">
+        <span class="pp-num">04</span>
+        <div class="pp-info">
+          <span class="pp-name">Ask Before Acting</span>
+          <span class="pp-when">When context is incomplete or ambiguous</span>
+        </div>
+        <span class="pp-arrow">▼</span>
+      </summary>
+      <div class="pp-body">
+        <p>Tell the model to ask clarifying questions before responding. Prevents hallucinated assumptions and produces better output on the second turn.</p>
+        <pre class="pp-code"><code set:html={pattern4} /></pre>
+      </div>
+    </details>
+
+    <details class="pp-card pp-card--red">
+      <summary class="pp-header">
+        <span class="pp-num">05</span>
+        <div class="pp-info">
+          <span class="pp-name">Constrained Persona</span>
+          <span class="pp-when">When you need focused, filtered output</span>
+        </div>
+        <span class="pp-arrow">▼</span>
+      </summary>
+      <div class="pp-body">
+        <p>Combine a persona with hard rules. The persona shapes the expertise; the rules filter the noise. Best for code reviews, audits, and analysis.</p>
+        <pre class="pp-code"><code set:html={pattern5} /></pre>
+      </div>
+    </details>
+  </div>
+</div>
+
+<style>
+  .pp-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .pp-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .pp-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+  .pp-stack { display: flex; flex-direction: column; gap: 8px; }
+
+  .pp-card {
+    border-radius: 12px; border: 1px solid #334155; background: rgba(0,0,0,0.2);
+    overflow: hidden; transition: border-color 0.3s, background 0.3s;
+  }
+  .pp-card[open] { border-color: #475569; }
+  .pp-card--amber[open] { border-color: #f59e0b30; background: rgba(245,158,11,0.03); }
+  .pp-card--cyan[open] { border-color: #06b6d430; background: rgba(6,182,212,0.03); }
+  .pp-card--purple[open] { border-color: #818cf830; background: rgba(129,140,248,0.03); }
+  .pp-card--green[open] { border-color: #4ade8030; background: rgba(74,222,128,0.03); }
+  .pp-card--red[open] { border-color: #ef444430; background: rgba(239,68,68,0.03); }
+
+  .pp-header {
+    display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+    cursor: pointer; list-style: none;
+  }
+  .pp-header::-webkit-details-marker { display: none; }
+  .pp-header::marker { content: ''; }
+
+  .pp-num {
+    font-family: monospace; font-size: 0.7rem; font-weight: 800;
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; border: 1px solid #475569;
+  }
+  .pp-card--amber .pp-num { color: #f59e0b; border-color: #f59e0b40; background: rgba(245,158,11,0.08); }
+  .pp-card--cyan .pp-num { color: #06b6d4; border-color: #06b6d440; background: rgba(6,182,212,0.08); }
+  .pp-card--purple .pp-num { color: #818cf8; border-color: #818cf840; background: rgba(129,140,248,0.08); }
+  .pp-card--green .pp-num { color: #4ade80; border-color: #4ade8040; background: rgba(74,222,128,0.08); }
+  .pp-card--red .pp-num { color: #f87171; border-color: #ef444440; background: rgba(239,68,68,0.08); }
+
+  .pp-info { display: flex; flex-direction: column; flex: 1; }
+  .pp-name { color: #e2e8f0; font-weight: 700; font-size: 0.85rem; }
+  .pp-when { color: #64748b; font-family: monospace; font-size: 0.6rem; margin-top: 2px; }
+
+  .pp-arrow { color: #475569; font-size: 0.7rem; transition: transform 0.3s; flex-shrink: 0; margin-left: auto; }
+  .pp-card[open] .pp-arrow { transform: rotate(180deg); }
+
+  .pp-body { padding: 0 16px 16px; }
+  .pp-body p { color: #94a3b8; font-size: 0.8rem; line-height: 1.6; margin: 0 0 12px; }
+
+  .pp-code {
+    margin: 0; padding: 12px 14px; border-radius: 8px; font-size: 0.65rem;
+    line-height: 1.5; overflow-x: auto; border: 1px solid #334155; white-space: pre;
+  }
+  .pp-card--amber .pp-code { background: rgba(245,158,11,0.04); color: #fbbf24; }
+  .pp-card--cyan .pp-code { background: rgba(6,182,212,0.04); color: #22d3ee; }
+  .pp-card--purple .pp-code { background: rgba(129,140,248,0.04); color: #a5b4fc; }
+  .pp-card--green .pp-code { background: rgba(74,222,128,0.04); color: #86efac; }
+  .pp-card--red .pp-code { background: rgba(239,68,68,0.04); color: #fca5a5; }
+  .pp-code code { background: transparent !important; padding: 0 !important; color: inherit !important; font-size: inherit !important; }
+</style>

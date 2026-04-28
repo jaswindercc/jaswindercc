@@ -1,0 +1,28 @@
+---
+// ObservabilityStack.astro — Modern observability tool stack
+---
+<div class="os-wrap">
+  <h3 class="os-title">The Modern Stack — 2026</h3>
+  <div class="os-table">
+    <div class="os-row os-row--h"><span class="os-c os-c--nm">Layer</span><span class="os-c">OSS Option</span><span class="os-c">SaaS Option</span></div>
+    <div class="os-row os-r1"><span class="os-c os-c--nm">Collection</span><span class="os-c">OpenTelemetry</span><span class="os-c">OpenTelemetry</span></div>
+    <div class="os-row os-r2"><span class="os-c os-c--nm">Metrics</span><span class="os-c">Prometheus + Grafana</span><span class="os-c">Datadog / New Relic</span></div>
+    <div class="os-row os-r3"><span class="os-c os-c--nm">Logs</span><span class="os-c">Loki + Grafana</span><span class="os-c">Datadog / Splunk</span></div>
+    <div class="os-row os-r4"><span class="os-c os-c--nm">Traces</span><span class="os-c">Tempo + Grafana</span><span class="os-c">Honeycomb / Datadog</span></div>
+    <div class="os-row os-r5"><span class="os-c os-c--nm">Alerting</span><span class="os-c">Alertmanager</span><span class="os-c">PagerDuty / OpsGenie</span></div>
+  </div>
+  <div class="os-rec"><strong>The convergence:</strong> OpenTelemetry is the universal standard for instrumentation. Regardless of backend choice, instrument with OTel. You can swap backends without re-instrumenting code.</div>
+</div>
+<style>
+  .os-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .os-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .os-table{display:flex;flex-direction:column;gap:3px;margin-bottom:1rem}
+  .os-row{display:grid;grid-template-columns:100px 1fr 1fr;gap:8px;padding:7px 12px;border-radius:6px;align-items:center}
+  .os-row--h{border-bottom:1px solid #334155;padding-bottom:8px;margin-bottom:4px}
+  .os-row--h .os-c{color:#64748b;font-size:.58rem;text-transform:uppercase;letter-spacing:.3px;font-weight:700}
+  .os-row:not(.os-row--h){opacity:0;animation:osIn .3s ease forwards;background:rgba(0,0,0,.08)}
+  .os-r1{animation-delay:.05s}.os-r2{animation-delay:.1s}.os-r3{animation-delay:.15s}.os-r4{animation-delay:.2s}.os-r5{animation-delay:.25s}
+  @keyframes osIn{to{opacity:1}}
+  .os-c{color:#94a3b8;font-size:.68rem;font-family:monospace}.os-c--nm{color:#e2e8f0;font-weight:700;font-size:.7rem}
+  .os-rec{color:#94a3b8;font-size:.7rem;line-height:1.6;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border:1px solid #334155}.os-rec strong{color:#06b6d4}
+</style>

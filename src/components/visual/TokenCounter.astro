@@ -1,0 +1,29 @@
+---
+// TokenCounter.astro — Visual token counting explanation
+const jsonExample = `<div class="tc-ex"><span class="tc-word tc-word--code">{"key": "value"}</span><span class="tc-arrow">→</span><div class="tc-tokens"><span class="tc-tok tc-tok--3">{"</span><span class="tc-tok tc-tok--1">key</span><span class="tc-tok tc-tok--4">":</span><span class="tc-tok tc-tok--2"> "</span><span class="tc-tok tc-tok--3">value</span><span class="tc-tok tc-tok--1">"}</span></div><span class="tc-count">6 tokens</span></div>`;
+---
+<div class="tc-wrap">
+  <h3 class="tc-title">What Tokens Actually Are</h3>
+  <p class="tc-sub">Tokens aren't words. They're chunks the model's tokenizer creates. One word can be multiple tokens.</p>
+  <div class="tc-examples">
+    <div class="tc-ex"><span class="tc-word">hello</span><span class="tc-arrow">→</span><div class="tc-tokens"><span class="tc-tok tc-tok--1">hello</span></div><span class="tc-count">1 token</span></div>
+    <div class="tc-ex"><span class="tc-word">Kubernetes</span><span class="tc-arrow">→</span><div class="tc-tokens"><span class="tc-tok tc-tok--2">Kub</span><span class="tc-tok tc-tok--3">ern</span><span class="tc-tok tc-tok--4">etes</span></div><span class="tc-count">3 tokens</span></div>
+    <div class="tc-ex"><span class="tc-word">indistinguishable</span><span class="tc-arrow">→</span><div class="tc-tokens"><span class="tc-tok tc-tok--2">ind</span><span class="tc-tok tc-tok--3">ist</span><span class="tc-tok tc-tok--1">ingu</span><span class="tc-tok tc-tok--4">ish</span><span class="tc-tok tc-tok--2">able</span></div><span class="tc-count">5 tokens</span></div>
+    <Fragment set:html={jsonExample} />
+  </div>
+  <div class="tc-rule"><strong>Rule of thumb:</strong> 1 token ≈ 4 characters in English. 100 tokens ≈ 75 words. Code and non-English text use MORE tokens per word.</div>
+</div>
+<style>
+  .tc-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .tc-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.tc-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem}
+  .tc-examples{display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem}
+  .tc-ex{display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(0,0,0,.2);border-radius:8px;flex-wrap:wrap}
+  .tc-word{color:#e2e8f0;font-family:monospace;font-size:.78rem;font-weight:600;min-width:130px}.tc-word--code{color:#06b6d4}
+  .tc-arrow{color:#475569;font-size:.7rem;flex-shrink:0}
+  .tc-tokens{display:flex;gap:2px;flex-wrap:wrap}
+  .tc-tok{padding:3px 6px;border-radius:4px;font-family:monospace;font-size:.65rem;font-weight:600;animation:tcPop .3s ease forwards;opacity:0}
+  .tc-tok--1{background:rgba(74,222,128,.15);color:#4ade80;animation-delay:.1s}.tc-tok--2{background:rgba(6,182,212,.15);color:#06b6d4;animation-delay:.2s}.tc-tok--3{background:rgba(245,158,11,.15);color:#f59e0b;animation-delay:.3s}.tc-tok--4{background:rgba(129,140,248,.15);color:#818cf8;animation-delay:.4s}
+  @keyframes tcPop{to{opacity:1}}
+  .tc-count{color:#475569;font-size:.6rem;font-family:monospace;margin-left:auto}
+  .tc-rule{color:#94a3b8;font-size:.72rem;line-height:1.6;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border:1px solid #334155}.tc-rule strong{color:#f59e0b}
+</style>

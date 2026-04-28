@@ -1,0 +1,166 @@
+---
+// MethodDecisionTree.astro — Interactive decision flowchart for choosing FT vs RAG vs Prompting
+---
+
+<div class="mdt-wrap">
+  <h3 class="mdt-title">Which Approach Do You Need?</h3>
+  <p class="mdt-sub">Follow the flow. Answer each question honestly. The path picks the method.</p>
+
+  <div class="mdt-tree">
+    <div class="mdt-node mdt-node--start mdt-anim--1">
+      <div class="mdt-q">Do you need the model to know things it wasn't trained on?</div>
+    </div>
+
+    <div class="mdt-branches">
+      <div class="mdt-branch mdt-branch--left">
+        <div class="mdt-edge mdt-anim--2">
+          <span class="mdt-edge-label mdt-edge-label--green">YES</span>
+          <div class="mdt-line"></div>
+        </div>
+        <div class="mdt-node mdt-node--mid mdt-anim--3">
+          <div class="mdt-q">Does the knowledge change frequently?</div>
+        </div>
+        <div class="mdt-sub-branches">
+          <div class="mdt-sub-branch">
+            <div class="mdt-edge mdt-anim--4">
+              <span class="mdt-edge-label mdt-edge-label--green">YES</span>
+              <div class="mdt-line"></div>
+            </div>
+            <div class="mdt-node mdt-node--result mdt-node--rag mdt-anim--5">
+              <div class="mdt-result-icon">🔍</div>
+              <div class="mdt-result-name">RAG</div>
+              <div class="mdt-result-why">Dynamic knowledge, updated docs, real-time data</div>
+            </div>
+          </div>
+          <div class="mdt-sub-branch">
+            <div class="mdt-edge mdt-anim--4">
+              <span class="mdt-edge-label mdt-edge-label--red">NO</span>
+              <div class="mdt-line"></div>
+            </div>
+            <div class="mdt-node mdt-node--mid mdt-anim--5">
+              <div class="mdt-q">Do you have 1,000+ labeled examples?</div>
+            </div>
+            <div class="mdt-sub-branches">
+              <div class="mdt-sub-branch">
+                <div class="mdt-edge mdt-anim--6">
+                  <span class="mdt-edge-label mdt-edge-label--green">YES</span>
+                  <div class="mdt-line"></div>
+                </div>
+                <div class="mdt-node mdt-node--result mdt-node--ft mdt-anim--7">
+                  <div class="mdt-result-icon">🎯</div>
+                  <div class="mdt-result-name">Fine-Tune</div>
+                  <div class="mdt-result-why">Stable domain, enough data, custom behavior</div>
+                </div>
+              </div>
+              <div class="mdt-sub-branch">
+                <div class="mdt-edge mdt-anim--6">
+                  <span class="mdt-edge-label mdt-edge-label--red">NO</span>
+                  <div class="mdt-line"></div>
+                </div>
+                <div class="mdt-node mdt-node--result mdt-node--rag mdt-anim--7">
+                  <div class="mdt-result-icon">🔍</div>
+                  <div class="mdt-result-name">RAG</div>
+                  <div class="mdt-result-why">Not enough data to fine-tune. RAG is cheaper.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mdt-branch mdt-branch--right">
+        <div class="mdt-edge mdt-anim--2">
+          <span class="mdt-edge-label mdt-edge-label--red">NO</span>
+          <div class="mdt-line"></div>
+        </div>
+        <div class="mdt-node mdt-node--mid mdt-anim--3">
+          <div class="mdt-q">Do you need a specific output format or tone?</div>
+        </div>
+        <div class="mdt-sub-branches">
+          <div class="mdt-sub-branch">
+            <div class="mdt-edge mdt-anim--4">
+              <span class="mdt-edge-label mdt-edge-label--green">YES</span>
+              <div class="mdt-line"></div>
+            </div>
+            <div class="mdt-node mdt-node--result mdt-node--prompt mdt-anim--5">
+              <div class="mdt-result-icon">✏️</div>
+              <div class="mdt-result-name">Prompt Engineering</div>
+              <div class="mdt-result-why">Model knows enough. You just need to steer it.</div>
+            </div>
+          </div>
+          <div class="mdt-sub-branch">
+            <div class="mdt-edge mdt-anim--4">
+              <span class="mdt-edge-label mdt-edge-label--red">NO</span>
+              <div class="mdt-line"></div>
+            </div>
+            <div class="mdt-node mdt-node--result mdt-node--prompt mdt-anim--5">
+              <div class="mdt-result-icon">✏️</div>
+              <div class="mdt-result-name">Prompt Engineering</div>
+              <div class="mdt-result-why">Start here. You might not need anything else.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .mdt-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+    overflow-x: auto;
+  }
+  .mdt-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .mdt-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .mdt-tree { min-width: 500px; }
+
+  .mdt-node {
+    padding: 10px 14px; border-radius: 10px; text-align: center;
+    max-width: 280px; margin: 0 auto;
+    opacity: 0; animation: mdt-fadeIn 0.5s ease-out forwards;
+  }
+  .mdt-anim--1 { animation-delay: 0.1s; }
+  .mdt-anim--2 { animation-delay: 0.4s; }
+  .mdt-anim--3 { animation-delay: 0.7s; }
+  .mdt-anim--4 { animation-delay: 1.0s; }
+  .mdt-anim--5 { animation-delay: 1.3s; }
+  .mdt-anim--6 { animation-delay: 1.6s; }
+  .mdt-anim--7 { animation-delay: 1.9s; }
+
+  .mdt-node--start { background: rgba(129,140,248,0.1); border: 1px solid #818cf830; }
+  .mdt-node--mid { background: rgba(0,0,0,0.25); border: 1px solid #33415580; }
+  .mdt-node--result { border: 2px solid; }
+  .mdt-node--rag { border-color: #06b6d440; background: rgba(6,182,212,0.08); }
+  .mdt-node--ft { border-color: #f59e0b40; background: rgba(245,158,11,0.08); }
+  .mdt-node--prompt { border-color: #4ade8040; background: rgba(74,222,128,0.08); }
+
+  .mdt-q { color: #e2e8f0; font-size: 0.75rem; font-weight: 600; line-height: 1.4; }
+
+  .mdt-result-icon { font-size: 1.3rem; margin-bottom: 4px; }
+  .mdt-result-name { color: #f1f5f9; font-size: 0.85rem; font-weight: 800; margin-bottom: 4px; }
+  .mdt-result-why { color: #94a3b8; font-size: 0.6rem; line-height: 1.4; }
+
+  .mdt-branches { display: flex; gap: 16px; justify-content: center; margin-top: 8px; }
+  .mdt-branch { flex: 1; max-width: 350px; }
+  .mdt-sub-branches { display: flex; gap: 12px; justify-content: center; margin-top: 8px; }
+  .mdt-sub-branch { flex: 1; }
+
+  .mdt-edge {
+    text-align: center; padding: 4px 0;
+    opacity: 0; animation: mdt-fadeIn 0.3s ease-out forwards;
+  }
+  .mdt-edge-label {
+    font-size: 0.55rem; font-weight: 800; font-family: monospace;
+    padding: 2px 8px; border-radius: 4px;
+  }
+  .mdt-edge-label--green { color: #4ade80; background: rgba(74,222,128,0.1); }
+  .mdt-edge-label--red { color: #f87171; background: rgba(239,68,68,0.1); }
+  .mdt-line { width: 1px; height: 16px; background: #334155; margin: 4px auto; }
+
+  @keyframes mdt-fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

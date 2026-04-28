@@ -1,0 +1,30 @@
+---
+// QKVFlow.astro — Query Key Value explanation
+---
+<div class="qkv-wrap">
+  <h3 class="qkv-title">Query, Key, Value — The Three Projections</h3>
+  <div class="qkv-flow">
+    <div class="qkv-step qkv-s1"><div class="qkv-badge qkv-badge--amber">Q</div><div class="qkv-info"><span class="qkv-nm">Query</span><span class="qkv-d">"What am I looking for?" — the current token's question. Each token generates a query vector.</span></div></div>
+    <div class="qkv-step qkv-s2"><div class="qkv-badge qkv-badge--cyan">K</div><div class="qkv-info"><span class="qkv-nm">Key</span><span class="qkv-d">"What do I contain?" — every token's label. Query is matched against all keys to find relevance scores.</span></div></div>
+    <div class="qkv-step qkv-s3"><div class="qkv-badge qkv-badge--green">V</div><div class="qkv-info"><span class="qkv-nm">Value</span><span class="qkv-d">"What information do I carry?" — the actual content. Attention scores weight which values to mix.</span></div></div>
+  </div>
+  <div class="qkv-formula">
+    <span class="qkv-fl">Attention(Q, K, V) = softmax(Q·K<sup>T</sup> / √d<sub>k</sub>) · V</span>
+  </div>
+  <div class="qkv-analogy"><strong>Analogy:</strong> Library search. Query = your search terms. Keys = book titles/tags. Values = book contents. You match your query against keys to decide which books (values) to read. High-scoring books contribute more to your answer.</div>
+</div>
+<style>
+  .qkv-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .qkv-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .qkv-flow{display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem}
+  .qkv-step{display:flex;gap:12px;align-items:center;padding:12px 14px;background:rgba(0,0,0,.2);border-radius:10px;border:1px solid #334155;opacity:0;animation:qkvIn .4s ease forwards}
+  .qkv-s1{animation-delay:.1s}.qkv-s2{animation-delay:.3s}.qkv-s3{animation-delay:.5s}
+  @keyframes qkvIn{to{opacity:1}}
+  .qkv-badge{font-family:monospace;font-size:1rem;font-weight:800;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .qkv-badge--amber{color:#f59e0b;background:rgba(245,158,11,.1)}.qkv-badge--cyan{color:#06b6d4;background:rgba(6,182,212,.1)}.qkv-badge--green{color:#4ade80;background:rgba(74,222,128,.1)}
+  .qkv-info{flex:1}.qkv-nm{display:block;color:#e2e8f0;font-weight:700;font-size:.85rem}.qkv-d{display:block;color:#94a3b8;font-size:.72rem;line-height:1.5;margin-top:2px}
+  .qkv-formula{text-align:center;margin-bottom:1rem}
+  .qkv-fl{color:#818cf8;font-size:.78rem;font-family:monospace;padding:8px 16px;background:rgba(129,140,248,.05);border-radius:8px;border:1px solid #818cf820;display:inline-block}
+  .qkv-fl sup,.qkv-fl sub{font-size:.6rem}
+  .qkv-analogy{color:#94a3b8;font-size:.72rem;line-height:1.6;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border:1px solid #334155}.qkv-analogy strong{color:#f59e0b}
+</style>

@@ -1,0 +1,29 @@
+---
+// HallucinationMitigation.astro — Practical mitigation strategies
+---
+<div class="hm-wrap">
+  <h3 class="hm-title">Mitigation Playbook</h3>
+  <p class="hm-sub">Ranked by effectiveness-to-effort ratio.</p>
+  <div class="hm-list">
+    <div class="hm-item hm-i1"><div class="hm-rank">1</div><div class="hm-body"><span class="hm-nm">Ground with RAG</span><span class="hm-d">Retrieve relevant docs before generation. Model answers from sources, not memory. Reduce fabrication by 70-90%.</span><div class="hm-bar"><div class="hm-fill hm-fill--1"></div></div></div></div>
+    <div class="hm-item hm-i2"><div class="hm-rank">2</div><div class="hm-body"><span class="hm-nm">Constrain Output Format</span><span class="hm-d">Force structured output (JSON schema, enum fields). Models hallucinate less when output space is constrained.</span><div class="hm-bar"><div class="hm-fill hm-fill--2"></div></div></div></div>
+    <div class="hm-item hm-i3"><div class="hm-rank">3</div><div class="hm-body"><span class="hm-nm">Lower Temperature</span><span class="hm-d">Temperature 0.0-0.3 for factual tasks. Higher temperature = more creative = more hallucination. Save temp 0.8+ for brainstorming only.</span><div class="hm-bar"><div class="hm-fill hm-fill--3"></div></div></div></div>
+    <div class="hm-item hm-i4"><div class="hm-rank">4</div><div class="hm-body"><span class="hm-nm">Add "I don't know" to Prompt</span><span class="hm-d">Explicitly tell the model: "If you're not sure, say 'I don't know' instead of guessing." Simple but surprisingly effective.</span><div class="hm-bar"><div class="hm-fill hm-fill--4"></div></div></div></div>
+    <div class="hm-item hm-i5"><div class="hm-rank">5</div><div class="hm-body"><span class="hm-nm">Chain-of-Thought Verification</span><span class="hm-d">Ask the model to show its reasoning, then verify the chain. Hallucinations often appear as logical jumps in the reasoning trace.</span><div class="hm-bar"><div class="hm-fill hm-fill--5"></div></div></div></div>
+  </div>
+</div>
+<style>
+  .hm-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .hm-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.hm-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem}
+  .hm-list{display:flex;flex-direction:column;gap:10px}
+  .hm-item{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:rgba(0,0,0,.15);border-radius:10px;border:1px solid #334155;opacity:0;animation:hmIn .4s ease forwards}
+  .hm-i1{animation-delay:.1s}.hm-i2{animation-delay:.2s}.hm-i3{animation-delay:.3s}.hm-i4{animation-delay:.4s}.hm-i5{animation-delay:.5s}
+  @keyframes hmIn{to{opacity:1}}
+  .hm-rank{font-family:monospace;font-size:.7rem;font-weight:800;width:24px;height:24px;border-radius:50%;background:rgba(74,222,128,.1);color:#4ade80;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .hm-body{flex:1}.hm-nm{display:block;color:#e2e8f0;font-weight:700;font-size:.82rem;margin-bottom:2px}.hm-d{display:block;color:#94a3b8;font-size:.7rem;line-height:1.5;margin-bottom:6px}
+  .hm-bar{height:4px;background:#1e293b;border-radius:4px;overflow:hidden}
+  .hm-fill{height:100%;border-radius:4px;animation:hmBar 1.2s ease forwards;width:0}
+  .hm-fill--1{background:#4ade80;animation-delay:.3s}.hm-fill--2{background:#06b6d4;animation-delay:.4s}.hm-fill--3{background:#f59e0b;animation-delay:.5s}.hm-fill--4{background:#818cf8;animation-delay:.6s}.hm-fill--5{background:#818cf8;animation-delay:.7s}
+  @keyframes hmBar{0%{width:0}100%{width:var(--w,80%)}}
+  .hm-fill--1{--w:95%}.hm-fill--2{--w:82%}.hm-fill--3{--w:70%}.hm-fill--4{--w:65%}.hm-fill--5{--w:60%}
+</style>

@@ -1,0 +1,62 @@
+---
+// GroverVisual.astro — Animated visualization of Grover's search algorithm
+---
+
+<div class="grv-wrap">
+  <h3 class="grv-title">Grover's Algorithm — Quantum Search</h3>
+  <p class="grv-sub">Finding a needle in a haystack — quadratically faster than checking one by one.</p>
+
+  <div class="grv-comparison">
+    <div class="grv-side" style="--i:0">
+      <div class="grv-badge grv-badge--blue">CLASSICAL SEARCH</div>
+      <div class="grv-haystack">
+        <span class="grv-hay">❌</span><span class="grv-hay">❌</span><span class="grv-hay">❌</span><span class="grv-hay">❌</span>
+        <span class="grv-hay">❌</span><span class="grv-hay">❌</span><span class="grv-hay grv-hay--found">✅</span><span class="grv-hay grv-hay--dim">?</span>
+      </div>
+      <div class="grv-complexity">Average: N/2 checks</div>
+      <div class="grv-example">1 million items → ~500,000 checks</div>
+    </div>
+    <div class="grv-side" style="--i:1">
+      <div class="grv-badge grv-badge--purple">GROVER'S SEARCH</div>
+      <div class="grv-haystack">
+        <span class="grv-hay grv-hay--q">↻</span><span class="grv-hay grv-hay--q">↻</span><span class="grv-hay grv-hay--q">↻</span><span class="grv-hay grv-hay--q">↻</span>
+        <span class="grv-hay grv-hay--q">↻</span><span class="grv-hay grv-hay--q">↻</span><span class="grv-hay grv-hay--found-q">✅</span><span class="grv-hay grv-hay--q">↻</span>
+      </div>
+      <div class="grv-complexity">Average: √N checks</div>
+      <div class="grv-example">1 million items → ~1,000 checks</div>
+    </div>
+  </div>
+
+  <div class="grv-steps">
+    <div class="grv-step" style="--i:0"><span class="grv-sn">1</span><span class="grv-st">Put all items in superposition (check all at once)</span></div>
+    <div class="grv-step" style="--i:1"><span class="grv-sn">2</span><span class="grv-st">Oracle marks the correct answer (flips its phase)</span></div>
+    <div class="grv-step" style="--i:2"><span class="grv-sn">3</span><span class="grv-st">Amplification boosts the marked answer's probability</span></div>
+    <div class="grv-step" style="--i:3"><span class="grv-sn">4</span><span class="grv-st">Repeat steps 2-3 about √N times, then measure</span></div>
+  </div>
+</div>
+
+<style>
+  .grv-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .grv-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .grv-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .grv-comparison{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem}
+  @media(max-width:500px){.grv-comparison{grid-template-columns:1fr}}
+  .grv-side{background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:12px;padding:1.25rem;text-align:center;opacity:0;animation:grvIn .5s ease forwards;animation-delay:calc(var(--i)*.2s)}
+  .grv-badge{font-size:.6rem;font-family:monospace;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:.75rem}
+  .grv-badge--blue{color:#38bdf8;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.2)}
+  .grv-badge--purple{color:#a78bfa;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2)}
+  .grv-haystack{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-bottom:.75rem}
+  .grv-hay{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.7rem;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.15)}
+  .grv-hay--found{background:rgba(74,222,128,.15);border-color:rgba(74,222,128,.3)}
+  .grv-hay--dim{opacity:.4}
+  .grv-hay--q{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.15);color:#a78bfa;animation:grvSpin 2s linear infinite}
+  .grv-hay--found-q{background:rgba(74,222,128,.15);border-color:rgba(74,222,128,.3);animation:none}
+  @keyframes grvSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+  .grv-complexity{color:#f1f5f9;font-size:.72rem;font-weight:600;margin-bottom:.25rem}
+  .grv-example{color:#4ade80;font-size:.62rem;font-family:monospace}
+  .grv-steps{display:flex;flex-direction:column;gap:6px}
+  .grv-step{display:flex;align-items:center;gap:8px;opacity:0;animation:grvIn .4s ease forwards;animation-delay:calc(var(--i)*.1s + .5s)}
+  .grv-sn{width:20px;height:20px;border-radius:50%;background:rgba(167,139,250,.12);color:#a78bfa;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:monospace}
+  .grv-st{color:#94a3b8;font-size:.7rem;line-height:1.4}
+  @keyframes grvIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>

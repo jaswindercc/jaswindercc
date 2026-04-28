@@ -1,0 +1,125 @@
+---
+title: "Getting Started with Quantum Programming — Your First Qiskit Circuit"
+description: "Hands-on guide to quantum programming with Qiskit. Build your first quantum circuit, run it on a simulator, and understand quantum SDKs — with code examples."
+date: 2026-04-24
+---
+
+import QiskitCircuit from '../../components/visual/QiskitCircuit.astro';
+import QiskitEcosystem from '../../components/visual/QiskitEcosystem.astro';
+import QuantumSDKCompare from '../../components/visual/QuantumSDKCompare.astro';
+
+Reading about quantum computing is one thing. Running quantum code is another. Today you're going to write your first quantum program, run it on a simulator, and understand what every line does. By the end, you'll have a working Bell state — the "hello world" of quantum computing.
+
+---
+
+## 1. Your First Quantum Circuit
+
+Forget theory for a moment. Here's what quantum programming actually looks like: create qubits, apply gates, measure results. That's the entire workflow.
+
+<QiskitCircuit />
+
+Three steps: create a quantum circuit with qubits, apply gates to manipulate their states, then measure to read the output. The gates do the quantum magic. The measurement gives you classical bits you can work with.
+
+**The most important thing to understand:** quantum programs aren't deterministic. You run the same circuit 1,000 times and get a *distribution* of results. That's not a bug — it's the fundamental nature of quantum computing.
+
+---
+
+## 2. The Qiskit Ecosystem
+
+Qiskit is IBM's open-source quantum computing framework. It's the most widely used quantum SDK, and it's entirely Python-based. If you know Python, you can write quantum programs today.
+
+<QiskitEcosystem />
+
+You don't need all of these to start. Install `qiskit` and `qiskit-aer` and you have everything needed to build circuits and run them on a local simulator. Add `qiskit-ibm-runtime` when you're ready to run on real quantum hardware.
+
+---
+
+## 3. Choosing Your Quantum SDK
+
+Qiskit isn't the only option. Google, Amazon, Microsoft, and others all have quantum development kits. Each has different strengths.
+
+<QuantumSDKCompare />
+
+**My recommendation for beginners:** start with Qiskit. It has the best documentation, the largest community, and free access to real quantum hardware. Once you understand the fundamentals, switching to any other SDK is straightforward — the concepts are the same, only the syntax changes.
+
+---
+
+## 4. Understanding Your Results
+
+When you run a quantum circuit, you don't get a single answer. You get a probability distribution. Here's what to expect:
+
+```python
+from qiskit import QuantumCircuit
+from qiskit_aer import AerSimulator
+
+# Create Bell state
+qc = QuantumCircuit(2, 2)
+qc.h(0)
+qc.cx(0, 1)
+qc.measure([0, 1], [0, 1])
+
+# Run 1000 times
+sim = AerSimulator()
+result = sim.run(qc, shots=1000).result()
+counts = result.get_counts()
+print(counts)
+# Output: {'00': 498, '11': 502}
+```
+
+**What this means:**
+- You ran the circuit 1,000 times ("shots")
+- ~500 times you got `00` (both qubits measured 0)
+- ~500 times you got `11` (both qubits measured 1)
+- You never got `01` or `10` — that's entanglement in action
+- The exact numbers vary each run — that's quantum randomness
+
+If you run on real hardware instead of a simulator, you'll also see some `01` and `10` noise. That's quantum error — the qubits aren't perfect.
+
+---
+
+## 5. Five Circuits to Build Next
+
+Once your Bell state is working, build these to deepen your understanding:
+
+**Circuit 1: Random Number Generator**
+```python
+qc = QuantumCircuit(4, 4)
+for i in range(4):
+    qc.h(i)
+qc.measure([0,1,2,3], [0,1,2,3])
+# Produces truly random 4-bit numbers
+```
+
+**Circuit 2: Three-Qubit GHZ State**
+```python
+qc = QuantumCircuit(3, 3)
+qc.h(0)
+qc.cx(0, 1)
+qc.cx(0, 2)
+qc.measure([0,1,2], [0,1,2])
+# 50% |000⟩, 50% |111⟩
+```
+
+**Circuit 3: Quantum Teleportation**
+```python
+qc = QuantumCircuit(3, 3)
+# Prepare state to teleport
+qc.rx(1.2, 0)  # Some arbitrary state on qubit 0
+# Create entangled pair (qubits 1, 2)
+qc.h(1)
+qc.cx(1, 2)
+# Bell measurement on qubits 0, 1
+qc.cx(0, 1)
+qc.h(0)
+qc.measure([0, 1], [0, 1])
+# Corrections on qubit 2 based on measurement
+qc.cx(1, 2)
+qc.cz(0, 2)
+qc.measure(2, 2)
+```
+
+**Circuit 4: Deutsch-Jozsa Algorithm** — your first quantum algorithm. Determines if a function is constant or balanced in one query.
+
+**Circuit 5: Quantum Phase Estimation** — the foundation of Shor's algorithm. This is where you start transitioning from circuits to algorithms.
+
+Build them in order. Run each one. Look at the output distributions. The patterns in the results will teach you more about quantum computing than any textbook.

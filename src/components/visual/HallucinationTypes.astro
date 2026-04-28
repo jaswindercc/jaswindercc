@@ -1,0 +1,39 @@
+---
+// HallucinationTypes.astro — Animated cards showing different hallucination types
+---
+<div class="ht-wrap">
+  <h3 class="ht-title">3 Kinds of Hallucination</h3>
+  <p class="ht-sub">Not all made-up answers are created equal. Each type has different causes and different fixes.</p>
+  <div class="ht-cards">
+    <div class="ht-card ht-card--1">
+      <div class="ht-header"><span class="ht-icon">🎭</span><span class="ht-name">Fabrication</span></div>
+      <p class="ht-desc">The model invents facts that sound plausible but don't exist. Fake citations, imaginary APIs, nonexistent people.</p>
+      <div class="ht-example"><span class="ht-el">Example:</span> "The Smith et al. (2019) study in Nature showed..." — paper doesn't exist.</div>
+      <div class="ht-cause"><span class="ht-cl">Why:</span> The model optimizes for coherence, not truth. Plausible-sounding text gets high probability regardless of factual accuracy.</div>
+    </div>
+    <div class="ht-card ht-card--2">
+      <div class="ht-header"><span class="ht-icon">🔀</span><span class="ht-name">Conflation</span></div>
+      <p class="ht-desc">The model mixes up two real things, merging facts from different entities into one incorrect statement.</p>
+      <div class="ht-example"><span class="ht-el">Example:</span> "Einstein won the Nobel Prize for relativity" — he won it for the photoelectric effect.</div>
+      <div class="ht-cause"><span class="ht-cl">Why:</span> Strongly associated tokens (Einstein + Nobel) activate together. The model picks the most associated context, not the correct one.</div>
+    </div>
+    <div class="ht-card ht-card--3">
+      <div class="ht-header"><span class="ht-icon">📊</span><span class="ht-name">Outdated Inference</span></div>
+      <p class="ht-desc">The model states something that was true in training data but isn't true anymore. Stale knowledge treated as current.</p>
+      <div class="ht-example"><span class="ht-el">Example:</span> "Twitter's API is free for developers" — hasn't been true since 2023.</div>
+      <div class="ht-cause"><span class="ht-cl">Why:</span> Training data has a cutoff date. The model doesn't know what it doesn't know — it can't flag "this might be outdated."</div>
+    </div>
+  </div>
+</div>
+<style>
+  .ht-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .ht-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.ht-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem}
+  .ht-cards{display:flex;flex-direction:column;gap:12px}
+  .ht-card{padding:16px;background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155;opacity:0;animation:htIn .5s ease forwards}
+  .ht-card--1{animation-delay:.1s;border-left:3px solid #f87171}.ht-card--2{animation-delay:.3s;border-left:3px solid #f59e0b}.ht-card--3{animation-delay:.5s;border-left:3px solid #818cf8}
+  @keyframes htIn{to{opacity:1;transform:translateX(0)}}.ht-card{transform:translateX(-8px)}
+  .ht-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}.ht-icon{font-size:1.1rem}.ht-name{color:#e2e8f0;font-weight:700;font-size:.88rem}
+  .ht-desc{color:#94a3b8;font-size:.75rem;line-height:1.6;margin:0 0 8px}
+  .ht-example{color:#64748b;font-size:.7rem;padding:6px 10px;background:rgba(0,0,0,.2);border-radius:6px;margin-bottom:6px}.ht-el{color:#f59e0b;font-weight:600}
+  .ht-cause{color:#64748b;font-size:.68rem;line-height:1.5}.ht-cl{color:#06b6d4;font-weight:600}
+</style>

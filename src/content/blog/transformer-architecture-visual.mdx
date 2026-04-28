@@ -1,0 +1,59 @@
+---
+title: "The Transformer Architecture — A Visual Walkthrough"
+description: "Visual guide to the Transformer architecture that powers modern AI. Understand self-attention, positional encoding, feed-forward layers, and how these components produce language understanding."
+date: 2026-04-30
+---
+
+import TransformerVisual from '../../components/visual/TransformerVisual.astro';
+
+Every modern language model — GPT-4, Claude, Llama, Gemini — is built on the Transformer architecture introduced in 2017's "Attention Is All You Need" paper. Despite its dominance, the Transformer is often treated as a black box. It's not. The architecture is elegant and, once you understand the key components, surprisingly intuitive.
+
+## Architecture Overview
+
+A Transformer is a stack of identical layers. Each layer has two sub-blocks: a self-attention mechanism and a feed-forward network. Residual connections and layer normalization stabilize training. The entire architecture processes all tokens in parallel — unlike RNNs which process sequentially.
+
+<TransformerVisual />
+
+The input starts as tokens (subwords) that get converted to vectors via an embedding table. Positional encodings are added so the model knows token order — without them, "the cat sat on the mat" and "the mat sat on the cat" would be identical. These enriched vectors flow through N attention-and-FFN layers, gaining increasingly abstract representational meaning.
+
+## Self-Attention: The Core Innovation
+
+Self-attention lets each token look at every other token in the sequence to determine what's relevant. The word "bank" in "river bank" should attend to "river" to understand its meaning, while "bank" in "bank account" should attend to "account."
+
+Each token produces three vectors: Query (what am I looking for?), Key (what do I contain?), and Value (what information do I provide?). Attention scores are computed by dot-product between Queries and Keys, then normalized with softmax. These scores weight the Values, producing a context-aware representation for each token.
+
+The scaled dot-product (dividing by √d) prevents the softmax from producing extremely peaked distributions that would effectively ignore most tokens. Without scaling, large embedding dimensions produce large dot products, pushing softmax outputs to near-zero or near-one.
+
+## Multi-Head Attention
+
+Instead of computing attention once, Transformers compute it multiple times in parallel — each "head" learning to attend to different types of relationships. One head might specialize in syntactic relationships (subject-verb agreement), another in semantic similarity, another in positional proximity.
+
+With 32 heads and a 4096-dimensional model, each head operates on a 128-dimensional subspace. The heads compute attention independently, then their outputs are concatenated and projected back to 4096 dimensions. This is more expressive than single-head attention with the same computational cost.
+
+## Positional Encoding
+
+Transformers process all positions simultaneously — they have no inherent notion of sequence order. Positional encodings inject position information into the input embeddings. The original paper used sinusoidal functions at different frequencies, creating unique patterns for each position.
+
+Modern models use learned positional embeddings (each position gets a trained vector) or Rotary Position Embeddings (RoPE), which encode relative positions through rotation in the embedding space. RoPE is particularly effective because it naturally captures relative distances between tokens — the model cares more about "these tokens are 3 apart" than "this token is at position 47."
+
+RoPE also supports length extrapolation with techniques like YaRN and NTK-aware scaling, allowing models trained on 4K context to work at 128K+ context with minimal quality loss. This is how modern long-context models achieve their extended windows.
+
+## Feed-Forward Network
+
+After attention, each token passes through a two-layer feed-forward network independently. The hidden dimension is typically 4x the model dimension: a 4096-dim model has a 16384-dim FFN hidden layer. This expansion-then-compression pattern lets the network store and retrieve factual knowledge.
+
+Research suggests that FFN layers act as key-value memories. The first linear layer (expansion) produces a sparse activation pattern — only a fraction of neurons fire for any given input. The second linear layer (compression) maps the activated neurons' stored knowledge back to the token representation. This is why scaling model size primarily means scaling FFN dimensions — more neurons means more stored knowledge.
+
+## Decoder-Only vs Encoder-Decoder
+
+GPT-style models are decoder-only: they use causal attention (each token can only see previous tokens, not future ones) and generate text left-to-right. This is implemented by masking future positions in the attention matrix.
+
+The original Transformer was encoder-decoder: the encoder processes the full input with bidirectional attention, and the decoder generates output attending to both previous output tokens and the encoder's representations. T5 and translation models use this architecture.
+
+Decoder-only models dominate current LLMs because they're simpler to train (next-token prediction), scale efficiently, and in-context learning emerges naturally from the autoregressive training objective. The "encoder" functionality is implicitly learned — the model's early layers process and understand the prompt before later layers generate the response.
+
+## Why Transformers Scale
+
+Transformers scale because attention is trivially parallelizable on GPUs. Every token can compute its attention scores simultaneously. This contrasts with RNNs, where processing token 100 requires processing tokens 1-99 first. GPU parallelism means scaling to billions of parameters is an engineering problem, not an algorithmic one.
+
+The scaling laws (Chinchilla, etc.) show that model quality improves predictably with more parameters and more training data. Double the parameters, get better quality. Double the data, get better quality. This predictability is why companies invest billions in larger models — the returns are reliable.

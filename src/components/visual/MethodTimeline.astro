@@ -1,0 +1,120 @@
+---
+// MethodTimeline.astro — Visual showing progression from prompting to RAG to fine-tuning
+---
+
+<div class="mtl-wrap">
+  <h3 class="mtl-title">The Progression: Start Simple, Add Complexity</h3>
+  <p class="mtl-sub">Every team follows this path. Nobody starts with fine-tuning.</p>
+
+  <div class="mtl-timeline">
+    <div class="mtl-phase mtl-phase--1">
+      <div class="mtl-phase-header">
+        <div class="mtl-dot mtl-dot--green"></div>
+        <span class="mtl-phase-label">Week 1-2</span>
+      </div>
+      <div class="mtl-phase-card mtl-phase-card--green">
+        <div class="mtl-phase-name">Prompt Engineering</div>
+        <div class="mtl-phase-desc">Write system prompts. Test with real queries. Iterate on format and tone. Get baseline metrics.</div>
+        <div class="mtl-phase-tag">Cost: $0 · Risk: Zero · Time to value: Hours</div>
+      </div>
+    </div>
+
+    <div class="mtl-connector mtl-conn--1">
+      <div class="mtl-conn-line"></div>
+      <div class="mtl-conn-trigger">When prompts hit a ceiling...</div>
+    </div>
+
+    <div class="mtl-phase mtl-phase--2">
+      <div class="mtl-phase-header">
+        <div class="mtl-dot mtl-dot--cyan"></div>
+        <span class="mtl-phase-label">Week 3-6</span>
+      </div>
+      <div class="mtl-phase-card mtl-phase-card--cyan">
+        <div class="mtl-phase-name">Add RAG</div>
+        <div class="mtl-phase-desc">Index your documents. Set up vector search. Keep the good prompts, add retrieval. Accuracy jumps.</div>
+        <div class="mtl-phase-tag">Cost: $50-200/mo · Risk: Low · Time to value: Days</div>
+      </div>
+    </div>
+
+    <div class="mtl-connector mtl-conn--2">
+      <div class="mtl-conn-line"></div>
+      <div class="mtl-conn-trigger">When you need domain behavior...</div>
+    </div>
+
+    <div class="mtl-phase mtl-phase--3">
+      <div class="mtl-phase-header">
+        <div class="mtl-dot mtl-dot--amber"></div>
+        <span class="mtl-phase-label">Month 2+</span>
+      </div>
+      <div class="mtl-phase-card mtl-phase-card--amber">
+        <div class="mtl-phase-name">Consider Fine-Tuning</div>
+        <div class="mtl-phase-desc">Collect labeled examples from production. Train on domain-specific patterns. Keep RAG for knowledge. Model now speaks your language.</div>
+        <div class="mtl-phase-tag">Cost: $500-5K · Risk: Medium · Time to value: Weeks</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mtl-insight">
+    <strong>Key rule:</strong> Don't skip steps. Teams that jump straight to fine-tuning waste months and money. Start with prompts. Add RAG when prompts aren't enough. Fine-tune only when you have the data and the need.
+  </div>
+</div>
+
+<style>
+  .mtl-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .mtl-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .mtl-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .mtl-timeline { position: relative; }
+
+  .mtl-phase { opacity: 0; animation: mtlIn 0.5s ease-out forwards; }
+  .mtl-phase--1 { animation-delay: 0.2s; }
+  .mtl-phase--2 { animation-delay: 0.8s; }
+  .mtl-phase--3 { animation-delay: 1.4s; }
+
+  .mtl-phase-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .mtl-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .mtl-dot--green { background: #4ade80; box-shadow: 0 0 8px rgba(74,222,128,0.4); }
+  .mtl-dot--cyan { background: #06b6d4; box-shadow: 0 0 8px rgba(6,182,212,0.4); }
+  .mtl-dot--amber { background: #f59e0b; box-shadow: 0 0 8px rgba(245,158,11,0.4); }
+  .mtl-phase-label { color: #94a3b8; font-size: 0.65rem; font-family: monospace; font-weight: 700; }
+
+  .mtl-phase-card {
+    padding: 14px 16px; border-radius: 10px; margin-left: 22px; border-left: 2px solid;
+  }
+  .mtl-phase-card--green { background: rgba(74,222,128,0.04); border-left-color: #4ade8040; }
+  .mtl-phase-card--cyan { background: rgba(6,182,212,0.04); border-left-color: #06b6d440; }
+  .mtl-phase-card--amber { background: rgba(245,158,11,0.04); border-left-color: #f59e0b40; }
+
+  .mtl-phase-name { font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; }
+  .mtl-phase-card--green .mtl-phase-name { color: #4ade80; }
+  .mtl-phase-card--cyan .mtl-phase-name { color: #06b6d4; }
+  .mtl-phase-card--amber .mtl-phase-name { color: #f59e0b; }
+
+  .mtl-phase-desc { color: #94a3b8; font-size: 0.75rem; line-height: 1.5; margin-bottom: 6px; }
+  .mtl-phase-tag { color: #64748b; font-size: 0.6rem; font-family: monospace; }
+
+  .mtl-connector {
+    margin: 10px 0 10px 5px; padding-left: 22px;
+    opacity: 0; animation: mtlIn 0.3s ease-out forwards;
+  }
+  .mtl-conn--1 { animation-delay: 0.5s; }
+  .mtl-conn--2 { animation-delay: 1.1s; }
+
+  .mtl-conn-line { width: 1px; height: 12px; background: #334155; margin-left: 0; }
+  .mtl-conn-trigger { color: #fbbf24; font-size: 0.6rem; font-style: italic; margin-top: 4px; }
+
+  .mtl-insight {
+    margin-top: 16px; padding: 12px 14px; border-radius: 10px;
+    background: rgba(129,140,248,0.05); border: 1px solid #818cf820;
+    color: #94a3b8; font-size: 0.75rem; line-height: 1.6;
+  }
+  .mtl-insight strong { color: #a5b4fc; }
+
+  @keyframes mtlIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+</style>

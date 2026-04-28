@@ -1,0 +1,37 @@
+---
+title: "Container Security — From Image to Runtime"
+description: "Visual guide to securing containers at every lifecycle stage. Learn image scanning, runtime protection, and the anti-patterns that create vulnerabilities in production."
+date: 2026-06-15
+---
+
+import ContainerSecLayers from '../../components/visual/ContainerSecLayers.astro';
+import ContainerMistakes from '../../components/visual/ContainerMistakes.astro';
+import ContainerScanTools from '../../components/visual/ContainerScanTools.astro';
+
+Containers aren't inherently secure or insecure — they're as secure as you make them. The problem is that most teams treat containers like black boxes: build an image, push it, deploy it, forget it. Meanwhile, the image contains an OS with known CVEs, your app runs as root, and there's no runtime monitoring to detect when something goes wrong.
+
+Container security is a lifecycle problem. You need controls at build time, deploy time, and runtime. Miss any layer and you have a gap an attacker will find.
+
+## 1. Security at Every Stage
+
+The best container security is layered. No single tool or practice catches everything. You scan at build time to catch known vulnerabilities, enforce policies at deploy time to prevent misconfigurations, and monitor at runtime to detect novel attacks.
+
+<ContainerSecLayers />
+
+The most cost-effective investment is step 1: start with a minimal base image. A standard Ubuntu image has 400+ packages and hundreds of CVEs. A distroless image has your app binary and nothing else — no shell, no package manager, no attack surface. Most of those CVEs become irrelevant instantly.
+
+## 2. Mistakes That Create Vulnerabilities
+
+These are the anti-patterns I see in nearly every container audit. Each one seems minor in isolation. Together, they create a container environment where a single vulnerability becomes a full cluster compromise.
+
+<ContainerMistakes />
+
+Running as root is the most dangerous because it's the default. If your container runs as root and an attacker exploits a vulnerability in your app, they have root access inside the container. Combined with a kernel exploit or a misconfigured volume mount, that becomes root on the host. The fix is two lines in your Dockerfile and one line in your pod spec.
+
+## 3. Scanning and Runtime Tools
+
+Shift-left scanning catches vulnerabilities before they reach production. Runtime monitoring catches the attacks that scanners can't predict — zero-days, misuse of legitimate tools, anomalous network connections.
+
+<ContainerScanTools />
+
+My recommendation: Trivy in CI for build-time scanning (it's fast, free, and comprehensive), plus Falco in production for runtime detection. Trivy catches known CVEs before deployment. Falco catches unknown attacks after deployment. Together, they cover both sides of the container security problem at minimal cost.

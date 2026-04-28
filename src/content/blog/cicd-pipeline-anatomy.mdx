@@ -1,0 +1,55 @@
+---
+title: "CI/CD Pipeline Anatomy — From Push to Production in 7 Minutes"
+description: "Visual breakdown of CI/CD pipelines. Understand stages, triggers, caching strategies, anti-patterns, and metrics that separate fast teams from slow ones."
+date: 2026-04-16
+---
+
+import CICDStages from '../../components/visual/CICDStages.astro';
+import CICDTriggers from '../../components/visual/CICDTriggers.astro';
+import CICDAntiPatterns from '../../components/visual/CICDAntiPatterns.astro';
+import CICDMetricsDash from '../../components/visual/CICDMetricsDash.astro';
+import CICDTools from '../../components/visual/CICDTools.astro';
+
+Every team says "we have CI/CD." But most have CI (run tests on push) without real CD (automatic deployment to production). The pipeline exists but it's slow, flaky, and nobody trusts it. So they deploy manually on Fridays and pray.
+
+A well-built pipeline should be boring. Push code, wait 7 minutes, it's in production. No manual steps. No deployment tickets. No "can you approve this?" Slack messages.
+
+## 1. The Stages
+
+A minimal production-ready pipeline has six stages. Each stage gates the next — if lint fails, tests don't run. If tests fail, build doesn't run. This prevents wasting compute on code that's already broken.
+
+<CICDStages />
+
+The order is intentional: cheapest checks first. Lint takes 5 seconds and catches 30% of issues. Why burn 3 minutes on Docker builds when the code has a type error? Fail fast, fail cheap.
+
+## 2. Triggers — When Does It Run?
+
+Different events need different pipeline behavior. A push to a feature branch doesn't need a production deploy. A version tag doesn't need lint checks (it already passed them). Matching triggers to pipeline depth saves both time and money.
+
+<CICDTriggers />
+
+The pattern that works: feature branches get short pipeline (lint + test only). Pull requests get full pipeline (including preview deploy). Main branch gets deploy-to-staging. Tags get deploy-to-production. Manual dispatch for emergencies only.
+
+## 3. Anti-Patterns
+
+Fast pipelines don't happen by accident. They happen by avoiding the five mistakes that make pipelines slow, flaky, and untrustworthy. I've seen teams with 45-minute pipelines that could be 8 minutes with these fixes.
+
+<CICDAntiPatterns />
+
+The biggest meta-mistake: treating CI/CD as "set it and forget it." Pipelines need maintenance like any other code. Dependencies get heavier, test suites grow, Docker images bloat. Schedule quarterly pipeline audits — measure duration trends, identify slow stages, prune unused steps.
+
+## 4. Metrics That Matter
+
+you can't improve what you don't measure. Pipeline health has five key metrics. Track them weekly. When they degrade, fix immediately — pipeline rot compounds fast.
+
+<CICDMetricsDash />
+
+The research is clear (DORA State of DevOps reports, 8 years of data): teams with fast, reliable pipelines ship better software with fewer incidents. It's not just developer convenience — it's directly correlated with production stability. Small, frequent deploys = small blast radius = fast recovery.
+
+## 5. Picking Your Tools
+
+The tool matters less than the practices. A well-configured GitHub Actions setup beats a poorly-configured enterprise Jenkins cluster every time. That said, different tools have different strengths.
+
+<CICDTools />
+
+The trend: infrastructure-as-code for pipelines. YAML is giving way to typed languages (Dagger with Go/Python/TypeScript) because YAML pipelines aren't testable locally. You push, wait 5 minutes, find a YAML syntax error, fix it, push again. With Dagger, you run the pipeline locally in Docker before pushing. Game changer for iteration speed.

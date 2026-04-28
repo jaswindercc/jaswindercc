@@ -1,0 +1,135 @@
+---
+// ChunkingStrategy.astro — Visual showing how documents get chunked for RAG
+---
+
+<div class="cs-wrap">
+  <h3 class="cs-title">How Documents Get Chunked</h3>
+  <p class="cs-sub">Too big = noise. Too small = lost context. Here's what good chunking looks like.</p>
+
+  <div class="cs-columns">
+    <div class="cs-col cs-col--bad">
+      <div class="cs-col-header cs-col-header--red">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <span>Naive Chunking</span>
+      </div>
+      <div class="cs-doc cs-doc--bad">
+        <div class="cs-chunk cs-chunk--big cs-anim--1">
+          <div class="cs-chunk-label">Chunk 1 — 2,400 tokens</div>
+          <div class="cs-lines">
+            <span class="cs-line"></span><span class="cs-line"></span><span class="cs-line"></span>
+            <span class="cs-line"></span><span class="cs-line"></span><span class="cs-line"></span>
+            <span class="cs-line"></span><span class="cs-line"></span>
+          </div>
+          <div class="cs-problem">Mixes 3 topics. Retrieval gets confused.</div>
+        </div>
+        <div class="cs-chunk cs-chunk--big cs-anim--2">
+          <div class="cs-chunk-label">Chunk 2 — 2,400 tokens</div>
+          <div class="cs-lines">
+            <span class="cs-line"></span><span class="cs-line"></span><span class="cs-line"></span>
+            <span class="cs-line"></span><span class="cs-line"></span><span class="cs-line"></span>
+          </div>
+          <div class="cs-problem">Cuts mid-sentence. Loses meaning.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-divider">
+      <span class="cs-vs">vs</span>
+    </div>
+
+    <div class="cs-col cs-col--good">
+      <div class="cs-col-header cs-col-header--green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+        <span>Semantic Chunking</span>
+      </div>
+      <div class="cs-doc cs-doc--good">
+        <div class="cs-chunk cs-chunk--sm cs-anim--1">
+          <div class="cs-chunk-label">Chunk 1 — 380 tokens</div>
+          <div class="cs-lines"><span class="cs-line"></span><span class="cs-line"></span></div>
+          <div class="cs-benefit">One topic: Authentication flow</div>
+        </div>
+        <div class="cs-chunk cs-chunk--sm cs-anim--2">
+          <div class="cs-chunk-label">Chunk 2 — 420 tokens</div>
+          <div class="cs-lines"><span class="cs-line"></span><span class="cs-line"></span></div>
+          <div class="cs-benefit">One topic: Rate limiting rules</div>
+        </div>
+        <div class="cs-chunk cs-chunk--sm cs-anim--3">
+          <div class="cs-chunk-label">Chunk 3 — 290 tokens</div>
+          <div class="cs-lines"><span class="cs-line"></span></div>
+          <div class="cs-benefit">One topic: Error response codes</div>
+        </div>
+        <div class="cs-overlap">
+          <span class="cs-overlap-label">50-token overlap between chunks</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cs-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .cs-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .cs-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .cs-columns { display: flex; gap: 16px; align-items: flex-start; }
+  @media (max-width: 640px) { .cs-columns { flex-direction: column; } }
+
+  .cs-col { flex: 1; }
+  .cs-col-header {
+    display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 700;
+    padding: 8px 12px; border-radius: 8px 8px 0 0; margin-bottom: 0;
+  }
+  .cs-col-header svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .cs-col-header--red { background: rgba(239,68,68,0.08); color: #f87171; border: 1px solid #ef444420; border-bottom: none; }
+  .cs-col-header--red svg { stroke: #f87171; }
+  .cs-col-header--green { background: rgba(74,222,128,0.08); color: #4ade80; border: 1px solid #4ade8020; border-bottom: none; }
+  .cs-col-header--green svg { stroke: #4ade80; }
+
+  .cs-doc { padding: 12px; border-radius: 0 0 8px 8px; }
+  .cs-doc--bad { background: rgba(239,68,68,0.03); border: 1px solid #ef444420; border-top: none; }
+  .cs-doc--good { background: rgba(74,222,128,0.03); border: 1px solid #4ade8020; border-top: none; }
+
+  .cs-chunk {
+    border-radius: 6px; padding: 10px; margin-bottom: 8px; opacity: 0;
+    animation: chunkIn 0.5s ease-out forwards;
+  }
+  .cs-anim--1 { animation-delay: 0.3s; }
+  .cs-anim--2 { animation-delay: 0.6s; }
+  .cs-anim--3 { animation-delay: 0.9s; }
+  .cs-chunk--big { background: rgba(239,68,68,0.06); border: 1px dashed #ef444430; }
+  .cs-chunk--sm { background: rgba(74,222,128,0.06); border: 1px dashed #4ade8030; }
+
+  .cs-chunk-label { font-family: monospace; font-size: 0.55rem; font-weight: 700; margin-bottom: 6px; }
+  .cs-chunk--big .cs-chunk-label { color: #f87171; }
+  .cs-chunk--sm .cs-chunk-label { color: #4ade80; }
+
+  .cs-lines { display: flex; flex-direction: column; gap: 4px; margin-bottom: 6px; }
+  .cs-line { display: block; height: 4px; border-radius: 2px; }
+  .cs-chunk--big .cs-line { background: #ef444415; width: 100%; }
+  .cs-chunk--big .cs-line:nth-child(even) { width: 80%; }
+  .cs-chunk--sm .cs-line { background: #4ade8015; width: 100%; }
+  .cs-chunk--sm .cs-line:nth-child(even) { width: 70%; }
+
+  .cs-problem { color: #fca5a5; font-size: 0.55rem; font-style: italic; }
+  .cs-benefit { color: #86efac; font-size: 0.55rem; font-style: italic; }
+
+  .cs-overlap {
+    text-align: center; padding: 6px; margin-top: 4px; border-radius: 6px;
+    background: rgba(6,182,212,0.06); border: 1px dashed #06b6d430;
+  }
+  .cs-overlap-label { color: #22d3ee; font-size: 0.55rem; font-family: monospace; }
+
+  .cs-divider { display: flex; align-items: center; padding: 0 4px; }
+  .cs-vs {
+    color: #475569; font-size: 0.7rem; font-weight: 800; font-family: monospace;
+    background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 6px;
+  }
+
+  @keyframes chunkIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

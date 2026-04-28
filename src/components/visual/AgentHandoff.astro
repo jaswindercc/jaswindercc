@@ -1,0 +1,78 @@
+---
+// AgentHandoff.astro — Animated handoff between agents
+---
+
+<div class="ah-wrap">
+  <h3 class="ah-title">The Handoff — How Agents Pass Context</h3>
+  <p class="ah-sub">Clean handoffs make or break multi-agent systems. Here's the right way.</p>
+  <div class="ah-flow">
+    <div class="ah-agent ah-an1">
+      <div class="ah-avatar ah-av--cyan">R</div>
+      <div class="ah-label">Research Agent</div>
+      <div class="ah-output">
+        <div class="ah-out-title">Output</div>
+        <div class="ah-out-items">
+          <span class="ah-tag">5 key findings</span>
+          <span class="ah-tag">3 sources cited</span>
+          <span class="ah-tag">confidence: 0.91</span>
+        </div>
+      </div>
+    </div>
+    <div class="ah-handoff ah-an2">
+      <div class="ah-handoff-arrow">
+        <div class="ah-pulse-dot"></div>
+        <svg viewBox="0 0 80 20"><path d="M0 10h65M60 4l8 6-8 6" fill="none" stroke="#06b6d4" stroke-width="1.5"/></svg>
+      </div>
+      <div class="ah-handoff-payload">
+        <span class="ah-hp-label">Handoff Payload</span>
+        <span class="ah-hp-item">✓ Task summary</span>
+        <span class="ah-hp-item">✓ Structured data</span>
+        <span class="ah-hp-item">✓ Source refs</span>
+        <span class="ah-hp-item">✗ Raw conversation</span>
+      </div>
+    </div>
+    <div class="ah-agent ah-an3">
+      <div class="ah-avatar ah-av--green">W</div>
+      <div class="ah-label">Writing Agent</div>
+      <div class="ah-output">
+        <div class="ah-out-title">Receives</div>
+        <div class="ah-out-items">
+          <span class="ah-tag">Clean context</span>
+          <span class="ah-tag">No noise</span>
+          <span class="ah-tag">Ready to write</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ah-rule"><strong>The rule:</strong> Pass structured outputs, not raw conversations. Each agent should receive only what it needs — nothing more. This keeps context windows clean and output quality high.</div>
+</div>
+
+<style>
+  .ah-wrap { background: linear-gradient(135deg, #0f172a, #1e293b); border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155; }
+  .ah-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 .25rem; }
+  .ah-sub { color: #64748b; font-size: .8rem; margin: 0 0 1.5rem; font-family: monospace; }
+  .ah-flow { display: flex; align-items: center; gap: 12px; overflow-x: auto; padding: 8px 0; }
+  .ah-agent { flex-shrink: 0; text-align: center; opacity: 0; animation: ahIn .5s ease-out forwards; }
+  .ah-an1 { animation-delay: .2s; } .ah-an2 { animation-delay: .6s; } .ah-an3 { animation-delay: 1s; }
+  .ah-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .8rem; margin: 0 auto 6px; }
+  .ah-av--cyan { background: rgba(6,182,212,.15); color: #06b6d4; border: 2px solid #06b6d440; }
+  .ah-av--green { background: rgba(74,222,128,.15); color: #4ade80; border: 2px solid #4ade8040; }
+  .ah-label { color: #e2e8f0; font-size: .72rem; font-weight: 700; margin-bottom: 8px; }
+  .ah-output { background: rgba(0,0,0,.2); border: 1px solid #334155; border-radius: 8px; padding: 8px 10px; }
+  .ah-out-title { color: #64748b; font-size: .5rem; font-family: monospace; text-transform: uppercase; margin-bottom: 4px; }
+  .ah-out-items { display: flex; flex-direction: column; gap: 2px; }
+  .ah-tag { color: #94a3b8; font-size: .6rem; font-family: monospace; }
+  .ah-handoff { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; opacity: 0; animation: ahIn .5s ease-out forwards; }
+  .ah-handoff-arrow { position: relative; }
+  .ah-handoff-arrow svg { width: 80px; height: 20px; }
+  .ah-pulse-dot { position: absolute; top: 6px; left: 0; width: 8px; height: 8px; border-radius: 50%; background: #06b6d4; animation: ahPulse 2s ease-in-out infinite; }
+  .ah-handoff-payload { background: rgba(6,182,212,.04); border: 1px dashed #06b6d425; border-radius: 8px; padding: 8px 10px; }
+  .ah-hp-label { display: block; color: #06b6d4; font-size: .5rem; font-family: monospace; font-weight: 700; margin-bottom: 4px; }
+  .ah-hp-item { display: block; font-size: .55rem; font-family: monospace; }
+  .ah-hp-item:nth-child(-n+4) { color: #86efac; }
+  .ah-hp-item:last-child { color: #f87171; }
+  .ah-rule { margin-top: 14px; padding: 12px; border-radius: 10px; background: rgba(6,182,212,.05); border: 1px solid #06b6d420; color: #94a3b8; font-size: .75rem; line-height: 1.6; }
+  .ah-rule strong { color: #22d3ee; }
+  @keyframes ahIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes ahPulse { 0%{left:0;opacity:1} 100%{left:72px;opacity:0} }
+</style>

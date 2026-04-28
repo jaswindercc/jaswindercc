@@ -1,0 +1,161 @@
+---
+title: "GPU Cost Explosion: Managing AI Inference at Scale"
+description: "Interactive breakdown of why GPU costs spiral 335x from prototype to production — and the FinOps strategies that bring them under control without sacrificing model quality."
+date: 2026-04-24
+---
+
+import GPUCostDashboard from '../../components/visual/GPUCostDashboard.astro';
+
+# GPU Cost Explosion: Managing AI Inference at Scale
+
+**Your prototype cost $200/month. Production costs $67,000. Nobody budgeted for this.**
+
+Every AI team hits the same wall. The proof-of-concept runs beautifully on a single GPU. Leadership approves the project. Six months later, the cloud bill arrives and it's bigger than the entire engineering team's salary. The CFO wants answers. You don't have good ones.
+
+This isn't a failure of planning — it's a failure of understanding how GPU economics work differently from CPU economics. CPU costs scale roughly linearly. GPU costs scale exponentially with the combination of model size, latency requirements, redundancy, and traffic volume.
+
+---
+
+## The Cost Curve Is Not Linear
+
+This is the reality I've seen across four different production AI deployments. The numbers change but the shape is always the same:
+
+<GPUCostDashboard />
+
+Notice: the jump from "prototype" to "production" isn't 10x — it's closer to 100x. And the jump from "production" to "scale" often doubles again. This catches every finance team off guard because they're used to linear infrastructure scaling.
+
+---
+
+## Why GPU Costs Compound Differently
+
+**Problem 1: Latency requirements drive over-provisioning.** Your model runs inference in 800ms on one GPU. Product says "we need sub-200ms." Now you need request-level parallelism — 4 GPUs minimum, always warm, always idle-waiting. You're paying for idle capacity you can never avoid.
+
+**Problem 2: Redundancy costs double in GPU-land.** Failover for a CPU workload is cheap — spin up another VM. Failover for a GPU workload means reserving another $30K/month H100 instance that sits idle 99.9% of the time. You can't burst GPUs like you burst CPUs.
+
+**Problem 3: Models get bigger, never smaller.** Nobody ever says "let's use the smaller model." After fine-tuning, your 7B model becomes a 13B model. Your 13B becomes a 70B. Each jump doubles memory requirements and halves throughput per GPU.
+
+**Problem 4: Batch vs. real-time is a 10x delta.** If you can batch requests and run GPUs for 2 hours overnight, costs are manageable. The moment product says "we need real-time," you're in always-on territory with 90%+ idle time during off-peak hours.
+
+---
+
+## The FinOps Playbook for GPU Workloads
+
+### Strategy 1: Right-size Your Model
+
+Before throwing hardware at the problem, question whether you need the big model:
+
+```python
+# Model selection decision tree
+def choose_model(task_complexity, latency_budget, accuracy_threshold):
+    if task_complexity == "simple" and latency_budget < 100:
+        return "distilled-3B"        # $0.002/1K tokens, 50ms
+    elif accuracy_threshold > 0.95:
+        return "fine-tuned-13B"      # $0.008/1K tokens, 200ms
+    elif task_complexity == "complex":
+        return "70B-quantized-4bit"  # $0.015/1K tokens, 600ms
+    else:
+        return "api-call-external"   # $0.03/1K tokens, variable
+```
+
+A fine-tuned 3B model often outperforms a general-purpose 70B model on domain-specific tasks. And it costs 15x less to serve.
+
+### Strategy 2: Intelligent Request Routing
+
+Not every request needs your most expensive model. Route based on complexity:
+
+```
+Incoming Request
+    ↓
+[Complexity Classifier] ← tiny model, ~$0.001/req
+    ↓
+├─ Simple (60%) → 3B model ($0.002/req)
+├─ Medium (30%) → 13B model ($0.008/req)  
+└─ Complex (10%) → 70B model ($0.030/req)
+
+Blended cost: $0.005/req vs $0.030/req (6x savings)
+```
+
+### Strategy 3: Aggressive Caching
+
+LLM responses are surprisingly cacheable. Same question = same answer (modulo temperature).
+
+```python
+class InferenceCache:
+    def __init__(self):
+        self.semantic_cache = VectorStore()  # for similar-but-not-identical
+        self.exact_cache = Redis()           # for exact matches
+    
+    def get_or_compute(self, prompt, model):
+        # Check exact cache first
+        exact = self.exact_cache.get(hash(prompt))
+        if exact: return exact  # cost: $0.00
+        
+        # Check semantic similarity
+        similar = self.semantic_cache.search(prompt, threshold=0.95)
+        if similar: return similar  # cost: $0.0001 (embedding only)
+        
+        # Actually run inference
+        result = model.generate(prompt)  # cost: $0.008-0.030
+        self.exact_cache.set(hash(prompt), result)
+        self.semantic_cache.store(prompt, result)
+        return result
+```
+
+In production, I've seen 40-60% cache hit rates for enterprise workloads. That's a 40-60% reduction in GPU costs with zero quality impact.
+
+### Strategy 4: Spot Instances + Queue Architecture
+
+For batch workloads, stop paying on-demand prices:
+
+```yaml
+# Kubernetes GPU job with spot fallback
+apiVersion: batch/v1
+kind: Job
+spec:
+  template:
+    spec:
+      nodeSelector:
+        cloud.google.com/gke-accelerator: nvidia-h100
+      tolerations:
+        - key: "cloud.google.com/gke-spot"
+          operator: "Equal"
+          value: "true"
+      containers:
+        - name: inference
+          resources:
+            limits:
+              nvidia.com/gpu: 1
+          env:
+            - name: BATCH_SIZE
+              value: "32"  # maximize throughput per GPU-hour
+```
+
+Spot instances save 60-70% on GPU costs. The trade-off is preemption — but for batch inference jobs with a queue in front, that's perfectly acceptable. Job gets preempted? Reschedule from the queue.
+
+### Strategy 5: Quantization — Less Memory, Less Cost
+
+```
+Model: Llama-3 70B
+├── FP16 (default):  140GB VRAM, 2x H100 needed  → $7,200/mo
+├── INT8 quantized:   70GB VRAM, 1x H100 needed  → $3,600/mo
+├── INT4 quantized:   35GB VRAM, 1x A100 needed  → $2,500/mo
+└── GPTQ 4-bit:       35GB VRAM, 1x A100 needed  → $2,500/mo
+    Quality loss: ~2-3% on benchmarks (often invisible to users)
+```
+
+INT4 quantization cuts your hardware requirement in half with minimal quality degradation for most tasks. If you haven't quantized yet, you're overpaying by 2x minimum.
+
+---
+
+## The Dashboard You Need on Day One
+
+Don't wait until the bill arrives. Track these from day one:
+
+- **Cost per inference request** — not per GPU-hour. Tie cost to business value.
+- **GPU utilization %** — below 60%? You're over-provisioned.
+- **Cache hit rate** — below 30%? Your caching strategy is broken.
+- **Model:hardware ratio** — are you running a 7B model on hardware that could handle 70B?
+- **Spot vs. on-demand ratio** — target 70%+ spot for batch workloads.
+- **Cost per user/feature** — which product features are burning GPU budget?
+
+The difference between a $67K/month bill and a $15K/month bill isn't less functionality. It's smarter routing, aggressive caching, right-sized models, and ruthless utilization management.

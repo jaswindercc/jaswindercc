@@ -1,0 +1,61 @@
+---
+// QuantumUseCases.astro — Where quantum computing actually helps
+---
+
+<div class="quc-wrap">
+  <h3 class="quc-title">Where Quantum Computing Actually Helps</h3>
+  <p class="quc-sub">Not everything. But these specific problem types get a real advantage.</p>
+
+  <div class="quc-grid">
+    <div class="quc-card" style="--i:0;--c:#4ade80">
+      <div class="quc-emoji">🧪</div>
+      <div class="quc-name">Drug Discovery</div>
+      <div class="quc-desc">Simulating molecular interactions that classical computers can't model at scale.</div>
+      <div class="quc-tag">Molecular simulation</div>
+    </div>
+    <div class="quc-card" style="--i:1;--c:#06b6d4">
+      <div class="quc-emoji">🔐</div>
+      <div class="quc-name">Cryptography</div>
+      <div class="quc-desc">Breaking current encryption (Shor's) and building quantum-safe alternatives.</div>
+      <div class="quc-tag">Post-quantum crypto</div>
+    </div>
+    <div class="quc-card" style="--i:2;--c:#f59e0b">
+      <div class="quc-emoji">📊</div>
+      <div class="quc-name">Optimization</div>
+      <div class="quc-desc">Logistics, portfolio optimization, scheduling — problems with billions of combinations.</div>
+      <div class="quc-tag">Combinatorial problems</div>
+    </div>
+    <div class="quc-card" style="--i:3;--c:#a78bfa">
+      <div class="quc-emoji">🤖</div>
+      <div class="quc-name">Machine Learning</div>
+      <div class="quc-desc">Quantum-enhanced training and sampling for specific ML workloads.</div>
+      <div class="quc-tag">Quantum ML</div>
+    </div>
+    <div class="quc-card" style="--i:4;--c:#f472b6">
+      <div class="quc-emoji">🌡️</div>
+      <div class="quc-name">Materials Science</div>
+      <div class="quc-desc">Designing new superconductors, batteries, and catalysts at atomic level.</div>
+      <div class="quc-tag">Quantum simulation</div>
+    </div>
+    <div class="quc-card" style="--i:5;--c:#38bdf8">
+      <div class="quc-emoji">💰</div>
+      <div class="quc-name">Financial Modeling</div>
+      <div class="quc-desc">Risk analysis, derivative pricing, and Monte Carlo simulations — faster.</div>
+      <div class="quc-tag">Quantum finance</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .quc-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .quc-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .quc-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .quc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+  .quc-card{background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:12px;padding:1.25rem;opacity:0;animation:qucIn .4s ease forwards;animation-delay:calc(var(--i)*.1s);transition:border-color .2s}
+  .quc-card:hover{border-color:var(--c)}
+  .quc-emoji{font-size:1.5rem;margin-bottom:.5rem}
+  .quc-name{color:#f1f5f9;font-size:.8rem;font-weight:600;margin-bottom:.35rem}
+  .quc-desc{color:#94a3b8;font-size:.7rem;line-height:1.5;margin-bottom:.5rem}
+  .quc-tag{font-size:.6rem;font-family:monospace;color:var(--c);padding:2px 8px;background:rgba(0,0,0,.2);border-radius:12px;display:inline-block}
+  @keyframes qucIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>

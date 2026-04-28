@@ -1,0 +1,165 @@
+---
+// ToolCards.astro — Expandable cards showing different tool types for AI agents
+
+const searchTool = `{
+  "name": "search_docs",
+  "description": "Search internal documentation",
+  "parameters": {
+    "query": "string — the search query",
+    "top_k": "number — results to return (default 5)"
+  }
+}`;
+
+const apiTool = `{
+  "name": "get_order_status",
+  "description": "Look up order by ID",
+  "parameters": {
+    "order_id": "string — the order identifier"
+  },
+  "returns": "Order object with status, tracking, ETA"
+}`;
+
+const codeTool = `{
+  "name": "run_python",
+  "description": "Execute Python code in sandbox",
+  "parameters": {
+    "code": "string — Python code to execute"
+  },
+  "returns": "stdout, stderr, exit_code"
+}`;
+
+const dbTool = `{
+  "name": "query_database",
+  "description": "Run read-only SQL query",
+  "parameters": {
+    "sql": "string — SELECT query only",
+    "database": "string — target database name"
+  },
+  "returns": "Array of row objects"
+}`;
+---
+
+<div class="tc-wrap">
+  <h3 class="tc-title">The Tool Box: What Agents Can Call</h3>
+  <p class="tc-sub">Tools are just functions. The agent picks which one to use based on the task.</p>
+
+  <div class="tc-grid">
+    <details class="tc-card tc-card--cyan">
+      <summary class="tc-header">
+        <div class="tc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <div class="tc-info">
+          <span class="tc-name">Search Tool</span>
+          <span class="tc-hint">RAG, docs, knowledge base</span>
+        </div>
+        <span class="tc-arrow">▼</span>
+      </summary>
+      <div class="tc-body">
+        <p>Searches your vector database or knowledge base. Returns relevant chunks. The most common tool type — almost every agent has one.</p>
+        <pre class="tc-code"><code set:html={searchTool} /></pre>
+      </div>
+    </details>
+
+    <details class="tc-card tc-card--green">
+      <summary class="tc-header">
+        <div class="tc-icon tc-icon--green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.66 0 3-4.03 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4.03-3-9s1.34-9 3-9"/></svg>
+        </div>
+        <div class="tc-info">
+          <span class="tc-name">API Tool</span>
+          <span class="tc-hint">REST calls, external services</span>
+        </div>
+        <span class="tc-arrow">▼</span>
+      </summary>
+      <div class="tc-body">
+        <p>Calls external APIs — order lookup, weather, CRM, payments. The agent gets real-time data it couldn't possibly know from training.</p>
+        <pre class="tc-code"><code set:html={apiTool} /></pre>
+      </div>
+    </details>
+
+    <details class="tc-card tc-card--purple">
+      <summary class="tc-header">
+        <div class="tc-icon tc-icon--purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <div class="tc-info">
+          <span class="tc-name">Code Execution</span>
+          <span class="tc-hint">Python, JavaScript, calculations</span>
+        </div>
+        <span class="tc-arrow">▼</span>
+      </summary>
+      <div class="tc-body">
+        <p>Runs code in a sandboxed environment. For math, data processing, chart generation — anything the LLM can write but shouldn't hallucinate.</p>
+        <pre class="tc-code"><code set:html={codeTool} /></pre>
+      </div>
+    </details>
+
+    <details class="tc-card tc-card--amber">
+      <summary class="tc-header">
+        <div class="tc-icon tc-icon--amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>
+        </div>
+        <div class="tc-info">
+          <span class="tc-name">Database Query</span>
+          <span class="tc-hint">SQL, read-only access</span>
+        </div>
+        <span class="tc-arrow">▼</span>
+      </summary>
+      <div class="tc-body">
+        <p>Runs read-only SQL against your database. The agent generates the query from natural language. Always enforce read-only permissions.</p>
+        <pre class="tc-code"><code set:html={dbTool} /></pre>
+      </div>
+    </details>
+  </div>
+</div>
+
+<style>
+  .tc-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .tc-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .tc-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .tc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; }
+
+  .tc-card { border-radius: 12px; border: 1px solid #334155; overflow: hidden; transition: border-color 0.3s; }
+  .tc-card[open] { border-color: #475569; }
+  .tc-card--cyan[open] { border-color: #06b6d430; }
+  .tc-card--green[open] { border-color: #4ade8030; }
+  .tc-card--purple[open] { border-color: #818cf830; }
+  .tc-card--amber[open] { border-color: #f59e0b30; }
+
+  .tc-header {
+    display: flex; align-items: center; gap: 10px; padding: 12px 14px;
+    cursor: pointer; list-style: none; background: rgba(0,0,0,0.15);
+  }
+  .tc-header::-webkit-details-marker { display: none; }
+  .tc-header::marker { content: ''; }
+
+  .tc-icon {
+    width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    background: rgba(6,182,212,0.1); flex-shrink: 0;
+  }
+  .tc-icon svg { width: 16px; height: 16px; stroke: #06b6d4; }
+  .tc-icon--green { background: rgba(74,222,128,0.1); } .tc-icon--green svg { stroke: #4ade80; }
+  .tc-icon--purple { background: rgba(129,140,248,0.1); } .tc-icon--purple svg { stroke: #818cf8; }
+  .tc-icon--amber { background: rgba(245,158,11,0.1); } .tc-icon--amber svg { stroke: #f59e0b; }
+
+  .tc-info { flex: 1; }
+  .tc-name { display: block; color: #e2e8f0; font-weight: 700; font-size: 0.82rem; }
+  .tc-hint { display: block; color: #64748b; font-family: monospace; font-size: 0.6rem; margin-top: 2px; }
+
+  .tc-arrow { color: #475569; font-size: 0.7rem; transition: transform 0.3s; flex-shrink: 0; }
+  .tc-card[open] .tc-arrow { transform: rotate(180deg); }
+
+  .tc-body { padding: 14px; }
+  .tc-body p { color: #94a3b8; font-size: 0.75rem; line-height: 1.6; margin: 0 0 10px; }
+
+  .tc-code {
+    margin: 0; padding: 10px 12px; border-radius: 8px; font-size: 0.6rem; line-height: 1.5;
+    overflow-x: auto; border: 1px solid #334155; white-space: pre; background: rgba(0,0,0,0.2); color: #94a3b8;
+  }
+  .tc-code code { background: transparent !important; padding: 0 !important; color: inherit !important; font-size: inherit !important; }
+</style>

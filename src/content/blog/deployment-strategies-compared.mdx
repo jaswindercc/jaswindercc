@@ -1,0 +1,51 @@
+---
+title: "Deployment Strategies Compared — Blue-Green, Canary, and Rolling"
+description: "Visual comparison of blue-green, canary, and rolling deployment strategies. Understand the trade-offs, infrastructure requirements, and when to use each approach in production."
+date: 2026-05-11
+---
+
+import DeployStrategiesVisual from '../../components/visual/DeployStrategiesVisual.astro';
+
+Deploying code to production is where abstractions meet reality. The deployment strategy you choose determines how much risk you accept, how fast you can roll back, and how much infrastructure you need. There's no universally best strategy — only the right one for your reliability requirements and operational maturity.
+
+## The Three Major Strategies
+
+Each strategy sits on a spectrum between speed and safety. Blue-green is the safest but most expensive. Rolling is the most resource-efficient but hardest to roll back. Canary sits in between.
+
+<DeployStrategiesVisual />
+
+The strategy you pick depends on three factors: your tolerance for mixed-version traffic, your infrastructure budget, and how quickly you need to detect and revert bad deployments.
+
+## Blue-Green Deep Dive
+
+Blue-green maintains two identical production environments. Blue runs the current version, green runs the new version. You deploy to green, run your smoke tests, and then switch DNS or load balancer routing from blue to green. If something goes wrong, switch back — green is still running the old version, untouched.
+
+The elegance is in the instant rollback. DNS switches take seconds. There's no partially-deployed state, no mixed versions, no gradual rollout. One second your users are on v1, the next they're on v2.
+
+The pain is in the database. If v2 includes schema changes, you can't just switch back to v1 — the database has already been migrated. This means blue-green works best with backward-compatible database changes: add columns before removing them, deploy in two phases, and never make breaking schema changes in a single deployment.
+
+## Canary Deep Dive
+
+Canary deployment routes a small percentage of traffic — typically 5% — to the new version while 95% continues hitting the old version. You monitor error rates, latency, and business metrics. If the canary is healthy after a defined bake period, you increase traffic incrementally. If metrics degrade, you route 100% back to the old version.
+
+This is the safest way to test with real production traffic. Staging environments never perfectly replicate production — different data volumes, different traffic patterns, different edge cases. A canary deployment catches the bugs that only manifest under real conditions, while limiting their blast radius.
+
+The requirement is observability. Without automated metric comparison between canary and baseline, you're flying blind. You need dashboards comparing error rates, p99 latency, and key business metrics between the two versions. Tools like Argo Rollouts, Flagger, and LaunchDarkly automate this comparison and can auto-rollback when metrics breach thresholds.
+
+## Rolling Deep Dive
+
+Rolling deployment replaces instances one at a time. In a fleet of ten, the orchestrator terminates one old instance, starts one new instance, waits for health checks, and moves to the next. Kubernetes does this by default with `maxUnavailable: 1` and `maxSurge: 1`.
+
+The advantage is simplicity and resource efficiency. You don't need double the infrastructure (blue-green) or sophisticated traffic splitting (canary). The Kubernetes deployment controller handles everything. Set your readiness probes properly and the rollout just works.
+
+The disadvantage is mixed-version traffic. During the rollout, some users hit v1 and some hit v2. If the versions have incompatible API changes, users experience inconsistent behavior. Rollbacks are slow — the same rolling process happens in reverse. And without traffic-level controls, you can't limit exposure to a percentage of users.
+
+## Choosing Your Strategy
+
+Start with rolling deployments. They're the Kubernetes default, require minimal infrastructure, and work for most applications. Add readiness probes and automate rollback on failed probes.
+
+Graduate to canary when you need more confidence in deployments — high-traffic APIs, payment systems, anything where even brief errors are expensive. Invest in observability first, then implement progressive delivery.
+
+Use blue-green for applications where instant rollback is non-negotiable and you can afford double the infrastructure. Financial systems, critical internal tools, and regulated workloads benefit from the zero-risk switch pattern.
+
+Many teams use different strategies for different services. The user-facing API gets canary deploys with automated metric gates. Internal batch processors use rolling updates. The payment service gets blue-green. Match the strategy to the risk profile, not the other way around.

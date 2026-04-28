@@ -1,0 +1,37 @@
+---
+title: "API Security Done Right — OWASP Top 10 Visual Guide"
+description: "Visual breakdown of OWASP API Security Top 10. Understand broken authorization, authentication flaws, and injection attacks through animated diagrams and real-world examples."
+date: 2026-04-02
+---
+
+import OWASPAPITop5 from '../../components/visual/OWASPAPITop5.astro';
+import APISecurityLayers from '../../components/visual/APISecurityLayers.astro';
+import APISecurityChecklist from '../../components/visual/APISecurityChecklist.astro';
+
+APIs are the front door to your data. Every mobile app, every SPA, every microservice communicates through APIs. And most API security is an afterthought — bolted on after the endpoints are built, if at all.
+
+The OWASP API Security Top 10 isn't theoretical. It's a list compiled from thousands of real penetration tests and bug bounty reports. These are the vulnerabilities pentesters find every single time.
+
+## 1. The Top 5 That Hit Hardest
+
+Broken authorization (API1) alone accounts for more data breaches than all other API vulnerabilities combined. It's not a sophisticated attack — it's literally changing an ID in the URL and seeing someone else's data.
+
+<OWASPAPITop5 />
+
+The uncomfortable pattern: all five of these are authorization and validation failures, not encryption weaknesses. Your TLS can be perfect, your password hashing flawless, and if you don't check `user_id == authenticated_user.id` on every object access, none of it matters. The most common API vulnerability is the simplest one.
+
+## 2. Defense in Depth
+
+API security isn't one layer. It's five layers, each catching what the previous one missed. If your WAF fails, authentication catches it. If authentication is bypassed, authorization blocks unauthorized access. If authorization has a gap, input validation prevents injection. Defense in depth means no single failure is catastrophic.
+
+<APISecurityLayers />
+
+The mistake I see: teams invest heavily in L1 (WAF, API Gateway) and skip L3-L5. A WAF can't check whether user 123 owns order 456. That's business logic authorization — and it must be in your application code. No amount of infrastructure protects against broken application logic.
+
+## 3. The Practical Checklist
+
+Security audits find the same gaps repeatedly. This checklist covers the configuration and implementation items that prevent 90% of common API vulnerabilities.
+
+<APISecurityChecklist />
+
+Start with the items that have the highest impact for the lowest effort: schema validation (catches injection), rate limiting (prevents abuse), and object-level authorization checks (prevents the #1 vulnerability). These three alone block the majority of real-world attacks. Add the rest incrementally.

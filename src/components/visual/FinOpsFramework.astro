@@ -1,0 +1,24 @@
+---
+// FinOpsFramework.astro — FinOps practice areas
+---
+<div class="fof-wrap">
+  <h3 class="fof-title">The FinOps Framework</h3>
+  <p class="fof-sub">Cloud cost management isn't one tool. It's a practice with three continuous phases.</p>
+  <div class="fof-phases">
+    <div class="fof-phase fof-p1"><div class="fof-ph"><span class="fof-pn">Phase 1</span><span class="fof-pnm">Inform</span></div><div class="fof-pd"><span class="fof-point">Tag everything (team, env, service)</span><span class="fof-point">Allocation: who spends what</span><span class="fof-point">Showback reports per team</span><span class="fof-point">Anomaly detection alerts</span></div></div>
+    <div class="fof-phase fof-p2"><div class="fof-ph"><span class="fof-pn">Phase 2</span><span class="fof-pnm">Optimize</span></div><div class="fof-pd"><span class="fof-point">Right-size underutilized resources</span><span class="fof-point">Reserved instances / savings plans</span><span class="fof-point">Spot for fault-tolerant workloads</span><span class="fof-point">Storage tiering and lifecycle</span></div></div>
+    <div class="fof-phase fof-p3"><div class="fof-ph"><span class="fof-pn">Phase 3</span><span class="fof-pnm">Operate</span></div><div class="fof-pd"><span class="fof-point">Team budgets with alerts</span><span class="fof-point">Automated scheduling (dev off at night)</span><span class="fof-point">Weekly cost review meetings</span><span class="fof-point">Architecture decisions include cost</span></div></div>
+  </div>
+</div>
+<style>
+  .fof-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .fof-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.fof-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem}
+  .fof-phases{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+  .fof-phase{padding:14px;background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155;opacity:0;animation:fofIn .4s ease forwards}
+  .fof-p1{animation-delay:.1s;border-top:2px solid #06b6d4}.fof-p2{animation-delay:.2s;border-top:2px solid #f59e0b}.fof-p3{animation-delay:.3s;border-top:2px solid #4ade80}
+  @keyframes fofIn{to{opacity:1}}
+  .fof-ph{margin-bottom:8px}.fof-pn{display:block;color:#64748b;font-size:.55rem;text-transform:uppercase;font-family:monospace;letter-spacing:.5px}
+  .fof-pnm{color:#e2e8f0;font-size:.85rem;font-weight:700}
+  .fof-pd{display:flex;flex-direction:column;gap:3px}
+  .fof-point{color:#94a3b8;font-size:.67rem;line-height:1.5;padding-left:10px;position:relative}.fof-point::before{content:'→';position:absolute;left:0;color:#475569}
+</style>

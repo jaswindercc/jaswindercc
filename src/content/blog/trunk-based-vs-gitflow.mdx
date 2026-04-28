@@ -1,0 +1,23 @@
+---
+title: "Trunk-Based Development vs GitFlow — A Visual Guide"
+description: "Visual comparison of trunk-based development and GitFlow branching strategies. See the tradeoffs, understand when each works best, and pick the right model for your team."
+date: 2026-06-12
+---
+
+import TrunkVsGitflow from '../../components/visual/TrunkVsGitflow.astro';
+
+The branching strategy wars have been going on for over a decade. GitFlow was revolutionary when it was introduced in 2010 — it brought order to chaotic Git workflows. But the industry has shifted toward continuous delivery, and GitFlow's ceremony now feels like friction. Trunk-based development emerged as the alternative: keep it simple, keep it fast, ship continuously.
+
+The fundamental question is: how long do your branches live? GitFlow says weeks. Trunk-based says hours. That single difference cascades into everything else — merge conflicts, CI/CD design, release processes, and team coordination.
+
+## 1. The Two Models
+
+Both strategies solve the same problem: how does a team of engineers work on the same codebase without stepping on each other? They just solve it differently. GitFlow isolates work in long-lived branches. Trunk-based development integrates work continuously.
+
+<TrunkVsGitflow />
+
+The DORA research is clear: teams that practice trunk-based development deploy more frequently, have shorter lead times, lower change failure rates, and faster recovery from incidents. That doesn't mean GitFlow is wrong — it means it's optimized for a different context. If you ship versioned desktop software with planned releases, GitFlow makes sense. If you ship a web service that deploys ten times a day, trunk-based wins.
+
+The merge conflict problem alone justifies the switch for many teams. A branch that lives for two weeks accumulates drift against main. By the time you merge, you're resolving conflicts in code someone else wrote last week. With trunk-based development, you merge multiple times per day — the diff is small, the conflicts are trivial, and the feedback loop is immediate.
+
+Feature flags are what make trunk-based development practical. You merge incomplete features to main behind a flag. The code exists in production but isn't active until you enable the flag. This decouples "deploy" from "release" — you can deploy code that isn't ready for users without branching, and you can release to specific users without deploying.

@@ -1,0 +1,59 @@
+---
+/**
+ * CanaryChecklist.astro
+ * What to monitor during canary deployments
+ * Pure CSS, dark theme
+ */
+---
+
+<div class="cnc-wrap">
+  <h3 class="cnc-title">Canary Health Signals</h3>
+  
+  <div class="cnc-signals">
+    <div class="cnc-signal" style="--i:0; --color:#ef4444;">
+      <div class="cnc-icon">🔴</div>
+      <div class="cnc-content">
+        <div class="cnc-name">Error Rate Spike</div>
+        <div class="cnc-action">Auto-rollback if canary error rate > 2x baseline</div>
+      </div>
+      <div class="cnc-tag">ROLLBACK</div>
+    </div>
+    <div class="cnc-signal" style="--i:1; --color:#f59e0b;">
+      <div class="cnc-icon">🟡</div>
+      <div class="cnc-content">
+        <div class="cnc-name">Latency Regression</div>
+        <div class="cnc-action">Pause promotion if P99 degrades > 20%</div>
+      </div>
+      <div class="cnc-tag">PAUSE</div>
+    </div>
+    <div class="cnc-signal" style="--i:2; --color:#4ade80;">
+      <div class="cnc-icon">🟢</div>
+      <div class="cnc-content">
+        <div class="cnc-name">Saturation Normal</div>
+        <div class="cnc-action">CPU, memory, connections within expected range</div>
+      </div>
+      <div class="cnc-tag">CONTINUE</div>
+    </div>
+    <div class="cnc-signal" style="--i:3; --color:#4ade80;">
+      <div class="cnc-icon">🟢</div>
+      <div class="cnc-content">
+        <div class="cnc-name">Business Metrics Stable</div>
+        <div class="cnc-action">Conversion, checkout, engagement unchanged</div>
+      </div>
+      <div class="cnc-tag">PROMOTE</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cnc-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .cnc-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.25rem}
+  .cnc-signals{display:flex;flex-direction:column;gap:.75rem}
+  .cnc-signal{display:flex;align-items:center;gap:.75rem;background:rgba(255,255,255,0.03);border:1px solid #334155;border-radius:10px;padding:1rem;opacity:0;animation:cncFade .4s ease forwards;animation-delay:calc(var(--i)*.12s)}
+  @keyframes cncFade{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+  .cnc-icon{font-size:1.2rem}
+  .cnc-content{flex:1}
+  .cnc-name{color:#f1f5f9;font-weight:700;font-size:.9rem}
+  .cnc-action{color:#94a3b8;font-size:.78rem;margin-top:.1rem}
+  .cnc-tag{background:var(--color);color:#0f172a;font-size:.6rem;font-weight:700;padding:.2rem .5rem;border-radius:6px;white-space:nowrap}
+</style>

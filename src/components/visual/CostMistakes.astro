@@ -1,0 +1,22 @@
+---
+// CostMistakes.astro — Costly cloud mistakes
+---
+<div class="cm-wrap">
+  <h3 class="cm-title">Expensive Mistakes I Keep Seeing</h3>
+  <div class="cm-list">
+    <div class="cm-item cm-i1"><span class="cm-cost">$$$</span><div class="cm-body"><span class="cm-nm">GP3 volumes left at GP2 defaults</span><span class="cm-d">GP3 is cheaper AND faster than GP2. AWS just doesn't migrate you automatically. One "modify volume type" API call saves 20%.</span></div></div>
+    <div class="cm-item cm-i2"><span class="cm-cost">$$$$</span><div class="cm-body"><span class="cm-nm">NAT Gateway data processing</span><span class="cm-d">$0.045/GB through NAT Gateway. If your pods pull Docker images through NAT, that's dollars per deploy. Use VPC endpoints.</span></div></div>
+    <div class="cm-item cm-i3"><span class="cm-cost">$$$</span><div class="cm-body"><span class="cm-nm">Dev environments running 24/7</span><span class="cm-d">Developers work 8 hours. Dev clusters run 24 hours. Auto-shutdown at 7PM, auto-start at 8AM. Save 67% on dev compute.</span></div></div>
+    <div class="cm-item cm-i4"><span class="cm-cost">$$$$</span><div class="cm-body"><span class="cm-nm">No autoscaling (or bad autoscaling)</span><span class="cm-d">Provisioned for peak 24/7. Peak is 2 hours. That's 22 hours of waste per day. HPA + Karpenter/Cluster Autoscaler.</span></div></div>
+  </div>
+</div>
+<style>
+  .cm-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .cm-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .cm-list{display:flex;flex-direction:column;gap:8px}
+  .cm-item{display:flex;gap:12px;padding:12px 14px;background:rgba(0,0,0,.15);border-radius:10px;border:1px solid #334155;border-left:3px solid #f87171;opacity:0;animation:cmIn .4s ease forwards}
+  .cm-i1{animation-delay:.1s}.cm-i2{animation-delay:.2s}.cm-i3{animation-delay:.3s}.cm-i4{animation-delay:.4s}
+  @keyframes cmIn{to{opacity:1}}
+  .cm-cost{font-family:monospace;font-size:.7rem;font-weight:800;color:#f87171;flex-shrink:0}
+  .cm-body{flex:1}.cm-nm{display:block;color:#e2e8f0;font-weight:700;font-size:.8rem;margin-bottom:2px}.cm-d{display:block;color:#94a3b8;font-size:.7rem;line-height:1.5}
+</style>

@@ -1,0 +1,51 @@
+---
+title: "Database Connection Pooling — Why Your App Needs It"
+description: "Visual guide to database connection pooling. Understand pool sizing, connection lifecycle, common misconfigurations, and how pooling prevents your database from drowning under load."
+date: 2026-04-29
+---
+
+import ConnPoolVisual from '../../components/visual/ConnPoolVisual.astro';
+
+Opening a database connection is expensive. TCP handshake, TLS negotiation, authentication, session initialization — all before your first query runs. Each connection also consumes memory on the database server (5-10MB per connection in PostgreSQL). Without connection pooling, a web server handling 200 concurrent requests opens 200 connections, each paying the setup cost and consuming database memory. Connection pooling solves this by maintaining a set of pre-established connections that application threads borrow and return.
+
+## How Connection Pools Work
+
+A connection pool sits between your application and the database. It maintains a set of open connections and manages their lifecycle.
+
+<ConnPoolVisual />
+
+When an application thread needs a database connection, it borrows one from the pool. When the query finishes, it returns the connection — but the TCP connection stays open. The next thread reuses the same connection without paying setup costs. If all connections are in use, new requests wait in a queue until a connection becomes available or a timeout fires.
+
+## Pool Sizing
+
+The most common question: how many connections should the pool hold? Too small and requests queue, adding latency. Too large and you overwhelm the database with more concurrent operations than it can handle efficiently. The sweet spot depends on your database, workload, and hardware.
+
+The counterintuitive truth: smaller pools usually perform better. A PostgreSQL database on a 4-core server performs optimally with roughly 10 connections. Not 100, not 200 — ten. Beyond that, connections contend for CPU, disk I/O, and locks, and throughput decreases as concurrency increases. This is Amdahl's Law in action.
+
+HikariCP's formula is a good starting point: `connections = (core_count * 2) + effective_spindle_count`. For a 4-core server with SSD storage, that's roughly 9-10 connections. Benchmark from there. Increase pool size only if you confirm — with metrics, not intuition — that the database has idle capacity while the pool has a full wait queue.
+
+## Key Configuration Parameters
+
+`minIdle` sets the minimum connections kept open, even when unused. Setting this to your average load prevents startup latency spikes when the first requests arrive. Set it equal to `maxSize` (fixed pool) for predictable performance, or lower than `maxSize` (dynamic pool) to conserve resources during quiet periods.
+
+`maxSize` is your hard limit. No more than this many connections can exist simultaneously. This is your protection against overwhelming the database. Divide the database's `max_connections` by the number of application instances, leaving room for admin connections. If you have 10 application pods and a database with `max_connections: 100`, each pod gets `maxSize: 8-9`.
+
+`connectionTimeout` controls how long a thread waits for an available connection before failing. Set this to your request SLA minus average query time. If your API has a 5-second timeout and average queries take 200ms, a 3-second connection timeout catches pool exhaustion before the request times out.
+
+`maxLifetime` forces connections to close after a fixed duration, even if they're healthy. This prevents problems with stale connections, firewall timeouts, and DNS changes for failover endpoints. Set it slightly below your database's `wait_timeout` or your load balancer's idle timeout — whichever is shorter.
+
+## Connection Pool Anti-Patterns
+
+**Leaking connections** is the most common pool killer. A code path that borrows a connection but never returns it (due to an unhandled exception, missing `finally` block, or early return) permanently reduces the available pool. Eventually, all connections are leaked and every request waits indefinitely. Use connection pool metrics to monitor active vs idle connections — a gradually increasing active count with decreasing idle count indicates leaks.
+
+**Pool-per-request** — creating a new pool for each request or each function call — defeats the entire purpose of pooling and is worse than no pooling at all. Pools should be application-scoped singletons.
+
+**Ignoring pool metrics** is silent failure. Monitor `pendingThreads` (threads waiting for a connection), `activeConnections`, `idleConnections`, and `connectionAcquireTime`. Alert when wait times exceed 100ms — it means your pool is undersized or your queries are too slow.
+
+## External Connection Poolers
+
+For applications with many short-lived instances (serverless functions, auto-scaling containers), application-level pooling isn't enough. Each Lambda invocation opens its own connection, and 1000 concurrent invocations means 1000 connections — far beyond what most databases handle.
+
+PgBouncer and Amazon RDS Proxy sit between all application instances and the database, multiplexing thousands of client connections onto a small number of database connections. PgBouncer in transaction mode assigns a database connection only for the duration of a transaction, then returns it for reuse. This handles 10,000 client connections with 50 database connections.
+
+The trade-off: session-level features (prepared statements, session variables, LISTEN/NOTIFY) may not work in transaction mode because different requests from the same client go to different database connections. Test your application thoroughly before deploying a connection pooler — features that worked with direct connections may break silently.

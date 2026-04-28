@@ -1,0 +1,61 @@
+---
+// QiskitEcosystem.astro — Overview of the Qiskit ecosystem and tools
+---
+
+<div class="qke-wrap">
+  <h3 class="qke-title">The Qiskit Ecosystem</h3>
+  <p class="qke-sub">Open-source modules for every stage of quantum programming.</p>
+
+  <div class="qke-grid">
+    <div class="qke-mod" style="--i:0;--c:#06b6d4">
+      <div class="qke-icon">🧱</div>
+      <div class="qke-name">Qiskit Terra</div>
+      <div class="qke-desc">Core library. Build quantum circuits, transpile them, and manage backends.</div>
+      <div class="qke-use">pip install qiskit</div>
+    </div>
+    <div class="qke-mod" style="--i:1;--c:#4ade80">
+      <div class="qke-icon">🖥️</div>
+      <div class="qke-name">Qiskit Aer</div>
+      <div class="qke-desc">High-performance simulators. Test circuits without real quantum hardware.</div>
+      <div class="qke-use">pip install qiskit-aer</div>
+    </div>
+    <div class="qke-mod" style="--i:2;--c:#f59e0b">
+      <div class="qke-icon">☁️</div>
+      <div class="qke-name">IBM Quantum Platform</div>
+      <div class="qke-desc">Run circuits on real quantum hardware. Free tier available.</div>
+      <div class="qke-use">quantum.ibm.com</div>
+    </div>
+    <div class="qke-mod" style="--i:3;--c:#a78bfa">
+      <div class="qke-icon">🔬</div>
+      <div class="qke-name">Qiskit Nature</div>
+      <div class="qke-desc">Quantum algorithms for chemistry, physics, and materials science.</div>
+      <div class="qke-use">pip install qiskit-nature</div>
+    </div>
+    <div class="qke-mod" style="--i:4;--c:#f472b6">
+      <div class="qke-icon">🤖</div>
+      <div class="qke-name">Qiskit Machine Learning</div>
+      <div class="qke-desc">Quantum neural networks, classifiers, and kernel methods.</div>
+      <div class="qke-use">pip install qiskit-machine-learning</div>
+    </div>
+    <div class="qke-mod" style="--i:5;--c:#38bdf8">
+      <div class="qke-icon">💰</div>
+      <div class="qke-name">Qiskit Finance</div>
+      <div class="qke-desc">Portfolio optimization, risk analysis, option pricing.</div>
+      <div class="qke-use">pip install qiskit-finance</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .qke-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .qke-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .qke-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .qke-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+  .qke-mod{background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:12px;padding:1.25rem;opacity:0;animation:qkeIn .4s ease forwards;animation-delay:calc(var(--i)*.1s);transition:border-color .2s}
+  .qke-mod:hover{border-color:var(--c)}
+  .qke-icon{font-size:1.5rem;margin-bottom:.5rem}
+  .qke-name{color:#f1f5f9;font-size:.78rem;font-weight:600;margin-bottom:.25rem}
+  .qke-desc{color:#94a3b8;font-size:.68rem;line-height:1.5;margin-bottom:.5rem}
+  .qke-use{color:var(--c);font-size:.6rem;font-family:monospace;padding:3px 8px;background:rgba(0,0,0,.2);border-radius:4px;display:inline-block}
+  @keyframes qkeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>

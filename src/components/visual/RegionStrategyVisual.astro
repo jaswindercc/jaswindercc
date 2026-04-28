@@ -1,0 +1,53 @@
+---
+/**
+ * RegionStrategyVisual.astro
+ * Cloud region selection decision factors
+ */
+---
+
+<div class="rsv-wrap">
+  <h3 class="rsv-title">Cloud Region Selection Factors</h3>
+  <div class="rsv-grid">
+    <div class="rsv-card" style="--i:0;--c:#06b6d4;">
+      <div class="rsv-icon">⚡</div>
+      <div class="rsv-label">Latency</div>
+      <div class="rsv-detail">Deploy near users. Every 1000km adds ~6ms RTT. US-East ↔ EU-West = ~80ms.</div>
+    </div>
+    <div class="rsv-card" style="--i:1;--c:#f59e0b;">
+      <div class="rsv-icon">📜</div>
+      <div class="rsv-label">Compliance</div>
+      <div class="rsv-detail">GDPR requires EU data residency. HIPAA needs US regions. PCI-DSS limits data flows.</div>
+    </div>
+    <div class="rsv-card" style="--i:2;--c:#4ade80;">
+      <div class="rsv-icon">💰</div>
+      <div class="rsv-label">Cost</div>
+      <div class="rsv-detail">Same instance: US-East $0.096/hr vs São Paulo $0.144/hr. Region pricing varies 20-50%.</div>
+    </div>
+    <div class="rsv-card" style="--i:3;--c:#818cf8;">
+      <div class="rsv-icon">🔧</div>
+      <div class="rsv-label">Service Availability</div>
+      <div class="rsv-detail">Not all services exist in all regions. New features launch first in us-east-1.</div>
+    </div>
+    <div class="rsv-card" style="--i:4;--c:#ef4444;">
+      <div class="rsv-icon">🛡</div>
+      <div class="rsv-label">Disaster Recovery</div>
+      <div class="rsv-detail">Multi-region for HA. Pair regions 300+ miles apart. Active-active vs active-passive.</div>
+    </div>
+    <div class="rsv-card" style="--i:5;--c:#f472b6;">
+      <div class="rsv-icon">🌐</div>
+      <div class="rsv-label">Network Backbone</div>
+      <div class="rsv-detail">Inter-region traffic uses provider backbone. Cross-provider needs peering or internet.</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .rsv-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .rsv-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .rsv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.75rem}
+  .rsv-card{background:rgba(0,0,0,.2);border-radius:12px;padding:1rem;border-top:3px solid var(--c);opacity:0;animation:rsvPop .35s ease forwards;animation-delay:calc(var(--i)*.1s)}
+  @keyframes rsvPop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  .rsv-icon{font-size:1.5rem;margin-bottom:.4rem}
+  .rsv-label{color:var(--c);font-weight:700;font-size:.85rem;margin-bottom:.3rem}
+  .rsv-detail{color:#94a3b8;font-size:.73rem;line-height:1.4}
+</style>

@@ -1,0 +1,41 @@
+---
+title: "Dependency Management — Lockfiles, Ranges, and Security"
+description: "Master dependency management across ecosystems. Understand lockfiles, version ranges, pinning strategies, and how to prevent supply chain attacks through your dependency tree."
+date: 2026-05-15
+---
+
+import DepManageVisual from '../../components/visual/DepManageVisual.astro';
+
+Your application probably has more dependency code than application code. A typical Node.js project with 20 direct dependencies installs 800+ transitive dependencies. Each one is a trust decision you made implicitly. Dependency management isn't about running `npm install` — it's about controlling what code runs in your production environment.
+
+## Version Ranges and Pinning
+
+Every package manager uses semantic versioning ranges to specify which versions you'll accept. The range you choose determines how much risk you're accepting with each install.
+
+<DepManageVisual />
+
+The caret range (`^1.2.0`) is npm's default and the most common source of "works on my machine" bugs. It allows any minor or patch version within the major version — meaning `npm install` on your machine might resolve to `1.2.0` while your colleague's resolves to `1.7.3` three months later. Lockfiles exist specifically to solve this.
+
+## Lockfiles Are Not Optional
+
+Every install without a lockfile is a gamble. The lockfile records the exact resolved version of every dependency in your tree, ensuring deterministic installations across machines, CI, and production. `package-lock.json`, `yarn.lock`, `Pipfile.lock`, `Cargo.lock` — they all serve the same purpose.
+
+Commit your lockfile. Always. The "don't commit lockfiles in libraries" advice is outdated. A lockfile in a library ensures the library's own CI tests against the same versions the maintainer tested against. Consumers will still resolve their own versions — the library lockfile only affects the library's development.
+
+Use `npm ci` instead of `npm install` in CI pipelines. The former installs exactly what the lockfile specifies. The latter may update the lockfile if ranges allow newer versions. This single change prevents an entire category of deployment bugs.
+
+## Transitive Dependency Risks
+
+You chose your 20 direct dependencies carefully. But each of those depends on others, which depend on others. The `event-stream` incident — where a maintainer injected cryptocurrency-stealing malware into a transitive dependency — affected thousands of projects whose maintainers had never heard of the compromised package.
+
+Tools like `npm audit`, `pip-audit`, and `cargo-audit` scan your dependency tree for known vulnerabilities. Run them in CI. But they only catch known issues — they won't detect a malicious maintainer who hasn't been caught yet. That's where lockfile diffing and Software Bill of Materials (SBOM) come in.
+
+Review lockfile diffs in pull requests. When a lockfile changes, inspect which packages were added, removed, or updated. Automated tools like Socket.dev and Snyk analyze dependency changes for suspicious patterns — new install scripts, obfuscated code, or unexpected network access.
+
+## Update Strategy
+
+Never update all dependencies at once. That's a recipe for a broken build with thirty suspects. Update dependencies in small batches — security patches immediately, major versions one at a time with thorough testing.
+
+Dependabot and Renovate automate version updates by opening pull requests for each update. They respect your configuration — auto-merge patch updates, require manual review for major versions, and group related packages together. The key is acting on these PRs promptly. A bot that opens 50 unreviewed PRs is worse than no bot at all.
+
+Pin your CI runner tools separately from application dependencies. Your linter, formatter, and test runner versions shouldn't drift between builds. Use exact versions in your CI configuration and update them deliberately, not accidentally.

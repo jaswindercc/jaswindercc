@@ -1,0 +1,53 @@
+---
+/**
+ * ServiceMeshArch.astro
+ * Service mesh sidecar architecture visual
+ */
+---
+
+<div class="sma-wrap">
+  <h3 class="sma-title">Service Mesh Architecture — The Sidecar Pattern</h3>
+  <div class="sma-diagram">
+    <div class="sma-service" style="--i:0;">
+      <div class="sma-pod">
+        <div class="sma-app">App A</div>
+        <div class="sma-proxy">Proxy</div>
+      </div>
+      <div class="sma-label">Pod A</div>
+    </div>
+    <div class="sma-arrows">
+      <div class="sma-arrow sma-arrow-data">mTLS encrypted traffic</div>
+      <div class="sma-arrow sma-arrow-control">telemetry + config</div>
+    </div>
+    <div class="sma-service" style="--i:1;">
+      <div class="sma-pod">
+        <div class="sma-app">App B</div>
+        <div class="sma-proxy">Proxy</div>
+      </div>
+      <div class="sma-label">Pod B</div>
+    </div>
+  </div>
+  <div class="sma-control">
+    <div class="sma-cp">Control Plane</div>
+    <div class="sma-cp-desc">Certificate management, routing rules, telemetry collection</div>
+  </div>
+</div>
+
+<style>
+  .sma-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .sma-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .sma-diagram{display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+  .sma-service{opacity:0;animation:smaFade .5s ease forwards;animation-delay:calc(var(--i)*.3s)}
+  @keyframes smaFade{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+  .sma-pod{background:rgba(255,255,255,0.03);border:1px solid #334155;border-radius:12px;padding:1rem;display:flex;flex-direction:column;gap:.5rem;min-width:120px;align-items:center}
+  .sma-app{background:rgba(129,140,248,0.15);border:1px solid rgba(129,140,248,0.4);color:#818cf8;padding:.5rem 1rem;border-radius:8px;font-size:.8rem;font-weight:700}
+  .sma-proxy{background:rgba(6,182,212,0.15);border:1px solid rgba(6,182,212,0.4);color:#06b6d4;padding:.3rem .8rem;border-radius:8px;font-size:.7rem;font-weight:600}
+  .sma-label{color:#64748b;font-size:.7rem;text-align:center;margin-top:.3rem}
+  .sma-arrows{display:flex;flex-direction:column;gap:.5rem}
+  .sma-arrow{font-size:.65rem;padding:.2rem .6rem;border-radius:6px;text-align:center}
+  .sma-arrow-data{color:#4ade80;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3)}
+  .sma-arrow-control{color:#f59e0b;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3)}
+  .sma-control{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:1rem;text-align:center}
+  .sma-cp{color:#f59e0b;font-weight:700;font-size:.95rem}
+  .sma-cp-desc{color:#94a3b8;font-size:.78rem;margin-top:.2rem}
+</style>

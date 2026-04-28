@@ -1,0 +1,64 @@
+---
+// QuantumAI.astro — Intersection of quantum computing and AI
+---
+
+<div class="qai-wrap">
+  <h3 class="qai-title">Quantum + AI — Where They Intersect</h3>
+  <p class="qai-sub">Each amplifies the other. But we're still in early days.</p>
+
+  <div class="qai-grid">
+    <div class="qai-area" style="--i:0;--c:#a78bfa">
+      <div class="qai-icon">🧠</div>
+      <div class="qai-name">Quantum Machine Learning</div>
+      <div class="qai-desc">Quantum circuits as ML models. Potential speedup for training on high-dimensional data.</div>
+      <details class="qai-detail">
+        <summary>Example</summary>
+        <div class="qai-body">Variational Quantum Eigensolvers (VQE) — hybrid classical-quantum optimization for chemistry.</div>
+      </details>
+    </div>
+    <div class="qai-area" style="--i:1;--c:#06b6d4">
+      <div class="qai-icon">🔍</div>
+      <div class="qai-name">Quantum Sampling</div>
+      <div class="qai-desc">Generate samples from complex distributions exponentially faster — useful for generative models.</div>
+      <details class="qai-detail">
+        <summary>Example</summary>
+        <div class="qai-body">Quantum Boltzmann Machines — training generative models with quantum speedup.</div>
+      </details>
+    </div>
+    <div class="qai-area" style="--i:2;--c:#f59e0b">
+      <div class="qai-icon">📐</div>
+      <div class="qai-name">Quantum Kernel Methods</div>
+      <div class="qai-desc">Map data into quantum feature spaces where patterns are easier to separate.</div>
+      <details class="qai-detail">
+        <summary>Example</summary>
+        <div class="qai-body">Quantum Support Vector Machines — classification tasks with quantum-enhanced kernels.</div>
+      </details>
+    </div>
+    <div class="qai-area" style="--i:3;--c:#4ade80">
+      <div class="qai-icon">⚡</div>
+      <div class="qai-name">AI for Quantum</div>
+      <div class="qai-desc">Using classical AI to design better quantum circuits, reduce errors, and optimize compilation.</div>
+      <details class="qai-detail">
+        <summary>Example</summary>
+        <div class="qai-body">Reinforcement learning agents that discover optimal quantum error correction codes.</div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<style>
+  .qai-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .qai-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .qai-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .qai-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+  .qai-area{background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:12px;padding:1.25rem;opacity:0;animation:qaiIn .4s ease forwards;animation-delay:calc(var(--i)*.1s);transition:border-color .2s}
+  .qai-area:hover{border-color:var(--c)}
+  .qai-icon{font-size:1.5rem;margin-bottom:.5rem}
+  .qai-name{color:var(--c);font-size:.78rem;font-weight:600;margin-bottom:.35rem}
+  .qai-desc{color:#94a3b8;font-size:.68rem;line-height:1.5;margin-bottom:.5rem}
+  .qai-detail{border-top:1px solid #334155;padding-top:.5rem}
+  .qai-detail summary{color:#f1f5f9;font-size:.65rem;cursor:pointer;list-style:none;font-family:monospace}
+  .qai-detail summary::-webkit-details-marker{display:none}
+  .qai-body{color:#94a3b8;font-size:.65rem;line-height:1.5;margin-top:.35rem}
+  @keyframes qaiIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>

@@ -1,0 +1,108 @@
+---
+title: "Quantum Security — How Quantum Tech Will Change Encryption"
+description: "Visual guide to quantum threats and post-quantum cryptography. Understand harvest-now-decrypt-later attacks, PQC standards, and the encryption migration timeline."
+date: 2026-04-20
+---
+
+import PostQuantumCrypto from '../../components/visual/PostQuantumCrypto.astro';
+import QuantumThreatTimeline from '../../components/visual/QuantumThreatTimeline.astro';
+import QuantumHarvestAttack from '../../components/visual/QuantumHarvestAttack.astro';
+
+Every time you connect to a website, send an email, or use a VPN — encryption protects your data. RSA. Elliptic curves. Diffie-Hellman. These algorithms have kept the internet secure for decades. Quantum computers will break all of them. Not today. Not tomorrow. But the clock is ticking, and the migration to quantum-safe encryption has already begun.
+
+---
+
+## 1. The Threat — What Quantum Breaks
+
+Shor's algorithm (1994) proved that a sufficiently powerful quantum computer can factor large numbers and compute discrete logarithms exponentially faster than any classical computer. This directly breaks:
+
+- **RSA** — based on the difficulty of factoring large numbers
+- **ECDSA / ECDH** — based on elliptic curve discrete logarithms
+- **Diffie-Hellman** — based on discrete logarithm problem
+
+These aren't obscure algorithms. They protect TLS (every HTTPS connection), SSH, VPNs, code signing, PKI, and most digital signatures. When quantum computers can run Shor's algorithm at scale, the entire public-key infrastructure breaks.
+
+<QuantumThreatTimeline />
+
+**Symmetric encryption is mostly safe.** AES-256 remains secure against quantum attacks (Grover's algorithm reduces security from 256-bit to 128-bit equivalent — still strong enough). Hash functions like SHA-256 need larger outputs but aren't fundamentally broken.
+
+---
+
+## 2. The Silent Attack Already Happening
+
+You don't need a quantum computer to start a quantum attack. You just need patience and storage space.
+
+<QuantumHarvestAttack />
+
+This is the most urgent reason to act now. Any encrypted data captured today that needs to stay secret for 10+ years is vulnerable. Government communications, medical records, financial data, trade secrets, intellectual property — all at risk.
+
+**The math is simple:** if your data must stay secret until 2040, and quantum computers might break RSA by 2035, you needed to switch to post-quantum encryption yesterday.
+
+---
+
+## 3. The Response — Post-Quantum Cryptography
+
+NIST spent eight years evaluating post-quantum algorithms. In 2024, they finalized three new standards. These algorithms resist both classical and quantum attacks.
+
+<PostQuantumCrypto />
+
+**The key point:** these aren't quantum algorithms. They run on classical computers. They're just based on mathematical problems that quantum computers can't solve efficiently (lattice problems, hash-based structures).
+
+You don't need quantum hardware to use post-quantum cryptography. You need software updates.
+
+---
+
+## 4. What You Should Do Now
+
+**If you're a developer:**
+- Inventory your cryptographic dependencies (find where you use RSA, ECDSA, ECDH)
+- Update to libraries that support hybrid modes (classical + PQC)
+- Test PQC algorithms in non-production systems
+- Watch for updates to TLS 1.3 with PQC support
+
+**If you're in security/compliance:**
+- Conduct a quantum risk assessment
+- Prioritize data with long confidentiality requirements
+- Plan a migration timeline that aligns with NIST guidance
+- Monitor your certificate authorities for PQC support
+
+**If you're in leadership:**
+- Budget for cryptographic migration (it touches everything)
+- Don't wait for a compliance mandate — the technical migration takes years
+- Factor quantum risk into your threat model
+
+```bash
+# Check if your OpenSSL supports PQC
+openssl list -kem-algorithms 2>/dev/null | grep -i kyber
+
+# Test a PQC key exchange with curl (if supported)
+curl --curves X25519Kyber768Draft00 https://pq.cloudflareresearch.com
+```
+
+---
+
+## 5. The Practical Migration Path
+
+Switching to post-quantum cryptography isn't a weekend project. It touches every system that uses public-key encryption. Here's the realistic path:
+
+**Phase 1 — Inventory (now):**
+- Catalog every place you use RSA, ECDSA, ECDH, Diffie-Hellman
+- Identify data with >10 year confidentiality requirements
+- Check your TLS library versions
+
+**Phase 2 — Hybrid deployment (2025–2027):**
+- Deploy hybrid key exchange (classical + PQC together)
+- If PQC is broken, classical protects you. If classical is broken by quantum, PQC protects you.
+- Chrome and Firefox already support hybrid PQC in TLS
+
+**Phase 3 — PQC-only (2028–2030):**
+- Once confidence in PQC is established and performance is optimized
+- Retire classical-only key exchange
+- Update all certificates, VPN configurations, and code signing
+
+**Phase 4 — Compliance (2030–2035):**
+- Meet federal and industry mandates for quantum-safe encryption
+- Conduct third-party audits of PQC implementation
+- Ongoing monitoring for new quantum threats
+
+The organizations that start Phase 1 today will have a smooth transition. The ones that wait until Phase 4 is mandated will have a very expensive emergency.

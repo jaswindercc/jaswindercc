@@ -1,0 +1,69 @@
+---
+title: Prompt Engineering That Actually Works — A Visual Playbook
+description: Stop guessing. See exactly how structured prompts beat vague ones with side-by-side comparisons, animated token flows, and 5 reusable patterns you can copy today.
+date: 2026-05-02
+---
+
+import PromptBeforeAfter from '../../components/visual/PromptBeforeAfter.astro';
+import TokenFlowDiagram from '../../components/visual/TokenFlowDiagram.astro';
+import PromptPatterns from '../../components/visual/PromptPatterns.astro';
+import PromptAntiPatterns from '../../components/visual/PromptAntiPatterns.astro';
+import PromptMetrics from '../../components/visual/PromptMetrics.astro';
+
+# Prompt Engineering That Actually Works — A Visual Playbook
+
+**No theory. No fluff. Just what works.**
+
+Most prompt engineering guides are 5,000 words of "it depends." This one is different. Every section shows you the difference between a bad prompt and a good one — visually. You can copy every pattern and use it today.
+
+---
+
+## 1. The Gap: Bad Prompt vs Good Prompt
+
+Here's the same task, two ways. One gets vague filler. The other gets exactly what you need. The difference isn't magic — it's structure.
+
+<PromptBeforeAfter />
+
+Notice the pattern: the good prompt tells the model **who** it is, **what** to do, and **how** to format the answer. The bad prompt does none of that. The model has to guess all three.
+
+---
+
+## 2. How the Model Reads Your Prompt
+
+When you send a prompt, it doesn't get read like English. It gets broken into tokens, each one weighted by attention. The structure of your prompt changes which tokens the model focuses on.
+
+<TokenFlowDiagram />
+
+This is why word order matters. Putting the instruction first and the context second gives the model better signal. Burying the instruction after a wall of context? The model loses the thread.
+
+---
+
+## 3. Five Patterns That Work Every Time
+
+After hundreds of prompt iterations across real production systems, these five patterns cover 90% of use cases. Each one solves a specific type of problem.
+
+<PromptPatterns />
+
+You don't need to memorize these. Bookmark this page and grab the pattern that fits. **Role + Task + Format** alone will fix most of your prompts overnight.
+
+---
+
+## 4. The Mistakes Everyone Makes
+
+These are the four anti-patterns I see in every team I work with. They look harmless. They're not. Each one wastes tokens, increases latency, and makes the output worse.
+
+<PromptAntiPatterns />
+
+The fix is always the same: be specific, be positive (say what you want, not what you don't), and break big asks into small steps. Treat the model like a brilliant intern — smart but needs clear instructions.
+
+---
+
+## 5. The Numbers: What Changes When You Prompt Better
+
+This isn't theoretical. These are real measurements from 500 API calls — same model, same task, same data. The only variable was the prompt structure.
+
+<PromptMetrics />
+
+The biggest win isn't accuracy — it's the **retry rate**. Bad prompts force you to re-run the same call multiple times until you get usable output. Structured prompts get it right the first time. That's where the real cost savings come from.
+
+---

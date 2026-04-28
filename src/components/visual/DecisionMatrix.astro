@@ -1,0 +1,29 @@
+---
+// DecisionMatrix.astro — When to use serverless vs containers
+---
+<div class="dm-wrap">
+  <h3 class="dm-title">Decision Matrix — Pick Based on Your Workload</h3>
+  <div class="dm-items">
+    <div class="dm-item dm-i1"><span class="dm-workload">API with predictable traffic</span><span class="dm-arrow">→</span><span class="dm-answer dm-answer--purple">Containers</span><span class="dm-why">Cheaper when always running. No cold starts.</span></div>
+    <div class="dm-item dm-i2"><span class="dm-workload">Webhook handler (bursty)</span><span class="dm-arrow">→</span><span class="dm-answer dm-answer--cyan">Serverless</span><span class="dm-why">Scales to 1000x instantly. Costs $0 when idle.</span></div>
+    <div class="dm-item dm-i3"><span class="dm-workload">Background job (> 15 min)</span><span class="dm-arrow">→</span><span class="dm-answer dm-answer--purple">Containers</span><span class="dm-why">Lambda's 15-min limit kills long jobs.</span></div>
+    <div class="dm-item dm-i4"><span class="dm-workload">Image/video processing</span><span class="dm-arrow">→</span><span class="dm-answer dm-answer--cyan">Serverless</span><span class="dm-why">Parallel fan-out. 1000 images = 1000 concurrent Lambdas.</span></div>
+    <div class="dm-item dm-i5"><span class="dm-workload">WebSocket / long-lived conn</span><span class="dm-arrow">→</span><span class="dm-answer dm-answer--purple">Containers</span><span class="dm-why">Serverless doesn't do persistent connections well.</span></div>
+    <div class="dm-item dm-i6"><span class="dm-workload">Startup with unknown scale</span><span class="dm-arrow">→</span><span class="dm-answer dm-answer--cyan">Serverless</span><span class="dm-why">Don't pay for capacity you might not need. Optimize later.</span></div>
+    <div class="dm-item dm-i7"><span class="dm-workload">ML inference (GPU needed)</span><span class="dm-arrow">→</span><span class="dm-answer dm-answer--purple">Containers</span><span class="dm-why">Need GPU instances, large memory, custom runtimes.</span></div>
+  </div>
+</div>
+<style>
+  .dm-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .dm-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .dm-items{display:flex;flex-direction:column;gap:6px}
+  .dm-item{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border:1px solid #334155;opacity:0;animation:dmIn .3s ease forwards}
+  .dm-i1{animation-delay:.05s}.dm-i2{animation-delay:.1s}.dm-i3{animation-delay:.15s}.dm-i4{animation-delay:.2s}.dm-i5{animation-delay:.25s}.dm-i6{animation-delay:.3s}.dm-i7{animation-delay:.35s}
+  @keyframes dmIn{to{opacity:1}}
+  .dm-workload{color:#e2e8f0;font-size:.72rem;font-weight:600;min-width:180px}
+  .dm-arrow{color:#475569;font-size:.7rem;flex-shrink:0}
+  .dm-answer{font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:12px;white-space:nowrap;flex-shrink:0}
+  .dm-answer--cyan{color:#06b6d4;background:rgba(6,182,212,.1)}.dm-answer--purple{color:#818cf8;background:rgba(129,140,248,.1)}
+  .dm-why{color:#64748b;font-size:.62rem;margin-left:auto}
+  @media(max-width:600px){.dm-item{flex-wrap:wrap}.dm-why{margin-left:0;width:100%}}
+</style>

@@ -1,0 +1,56 @@
+---
+/**
+ * ManagedK8sCompare.astro
+ * EKS vs GKE vs AKS comparison
+ */
+---
+
+<div class="mk-wrap">
+  <h3 class="mk-title">Managed Kubernetes — EKS vs GKE vs AKS</h3>
+  <div class="mk-cards">
+    <div class="mk-card" style="--i:0; --color:#f59e0b;">
+      <div class="mk-name">EKS (AWS)</div>
+      <div class="mk-traits">
+        <div class="mk-t"><span class="mk-good">✓</span> Deepest AWS integration (IAM, ALB, EBS)</div>
+        <div class="mk-t"><span class="mk-good">✓</span> Fargate for serverless pods</div>
+        <div class="mk-t"><span class="mk-bad">✗</span> $73/mo per cluster (control plane fee)</div>
+        <div class="mk-t"><span class="mk-bad">✗</span> Slowest upgrade cycle</div>
+      </div>
+      <div class="mk-verdict">Best for: AWS-native shops already invested in AWS ecosystem</div>
+    </div>
+    <div class="mk-card" style="--i:1; --color:#06b6d4;">
+      <div class="mk-name">GKE (Google)</div>
+      <div class="mk-traits">
+        <div class="mk-t"><span class="mk-good">✓</span> Most mature. K8s was born at Google</div>
+        <div class="mk-t"><span class="mk-good">✓</span> Autopilot mode — fully managed nodes</div>
+        <div class="mk-t"><span class="mk-good">✓</span> Free control plane (Standard tier)</div>
+        <div class="mk-t"><span class="mk-bad">✗</span> Smaller ecosystem than AWS</div>
+      </div>
+      <div class="mk-verdict">Best for: K8s-first teams wanting the best managed experience</div>
+    </div>
+    <div class="mk-card" style="--i:2; --color:#818cf8;">
+      <div class="mk-name">AKS (Azure)</div>
+      <div class="mk-traits">
+        <div class="mk-t"><span class="mk-good">✓</span> Free control plane</div>
+        <div class="mk-t"><span class="mk-good">✓</span> Best Azure AD integration</div>
+        <div class="mk-t"><span class="mk-good">✓</span> Tight integration with Azure DevOps</div>
+        <div class="mk-t"><span class="mk-bad">✗</span> Network plugin complexity</div>
+      </div>
+      <div class="mk-verdict">Best for: Azure-native shops, enterprise AD environments</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .mk-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .mk-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .mk-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+  @media(max-width:700px){.mk-cards{grid-template-columns:1fr}}
+  .mk-card{background:rgba(255,255,255,0.03);border:1px solid var(--color);border-radius:12px;padding:1.25rem;opacity:0;animation:mkFade .5s ease forwards;animation-delay:calc(var(--i)*.15s)}
+  @keyframes mkFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .mk-name{color:var(--color);font-weight:700;font-size:1.05rem;margin-bottom:.75rem}
+  .mk-traits{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.75rem}
+  .mk-t{color:#94a3b8;font-size:.8rem}
+  .mk-good{color:#4ade80}.mk-bad{color:#ef4444}
+  .mk-verdict{color:var(--color);font-size:.78rem;font-weight:600;padding-top:.5rem;border-top:1px solid #334155}
+</style>

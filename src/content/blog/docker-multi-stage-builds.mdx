@@ -1,0 +1,23 @@
+---
+title: "Docker Multi-Stage Builds — Smaller, Faster, Safer Images"
+description: "Visual guide to Docker multi-stage builds. See how splitting build and runtime stages reduces image size by 85%, speeds up deploys, and shrinks your attack surface."
+date: 2026-06-04
+---
+
+import MultiStageBuild from '../../components/visual/MultiStageBuild.astro';
+
+A typical Node.js Docker image built naively weighs over a gigabyte. It contains npm, the build toolchain, dev dependencies, source files, test fixtures — everything needed to build the app, none of which is needed to run it. Multi-stage builds fix this by separating the build environment from the runtime environment.
+
+You build in one stage (with all the tools), then copy only the compiled output into a clean, minimal final stage. The result is an image that's 80-90% smaller, faster to pull, and has a fraction of the attack surface.
+
+## Build vs Runtime
+
+The concept is simple: use one Dockerfile with multiple FROM statements. The first stage installs dependencies and builds your app. The final stage starts from a minimal base image and copies only what's needed to run.
+
+<MultiStageBuild />
+
+That 85% size reduction isn't just about disk space. Smaller images mean faster CI builds, faster deployments, faster autoscaling. When a new node comes up and needs to pull your image, 180 MB downloads 6x faster than 1.2 GB. At scale, this shaves minutes off deployment times.
+
+The security benefit is equally important. Every package in your image is potential attack surface. The build stage contains gcc, make, npm, git — tools an attacker would love to find inside a running container. The multi-stage final image contains none of them. If an attacker gets shell access to your container, there's nothing useful to work with.
+
+Go even further with distroless images: Google's distroless base images contain only your application binary and its runtime dependencies. No shell, no package manager, no utilities. An attacker who compromises your app literally can't execute commands because there's no shell to execute them in. For compiled languages like Go or Rust, the final image can be under 20 MB.

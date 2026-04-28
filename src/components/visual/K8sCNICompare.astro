@@ -1,0 +1,30 @@
+---
+// K8sCNICompare.astro — CNI plugin comparison
+---
+<div class="cni-wrap">
+  <h3 class="cni-title">CNI Comparison — Picking Your Network Brain</h3>
+  <div class="cni-table">
+    <div class="cni-row cni-row--header"><span class="cni-cell cni-cell--name">Plugin</span><span class="cni-cell">Speed</span><span class="cni-cell">NetworkPolicy</span><span class="cni-cell">Best For</span></div>
+    <div class="cni-row cni-row--1"><span class="cni-cell cni-cell--name"><span class="cni-dot cni-dot--amber"></span>Flannel</span><span class="cni-cell">●●●○○</span><span class="cni-cell cni-cell--no">✗ No</span><span class="cni-cell">Simple clusters, learning</span></div>
+    <div class="cni-row cni-row--2"><span class="cni-cell cni-cell--name"><span class="cni-dot cni-dot--green"></span>Calico</span><span class="cni-cell">●●●●○</span><span class="cni-cell cni-cell--yes">✓ Full</span><span class="cni-cell">Production, security-first</span></div>
+    <div class="cni-row cni-row--3"><span class="cni-cell cni-cell--name"><span class="cni-dot cni-dot--cyan"></span>Cilium</span><span class="cni-cell">●●●●●</span><span class="cni-cell cni-cell--yes">✓ L7</span><span class="cni-cell">eBPF, observability, mesh</span></div>
+    <div class="cni-row cni-row--4"><span class="cni-cell cni-cell--name"><span class="cni-dot cni-dot--purple"></span>Weave</span><span class="cni-cell">●●●○○</span><span class="cni-cell cni-cell--yes">✓ Basic</span><span class="cni-cell">Multi-cloud, encryption</span></div>
+    <div class="cni-row cni-row--5"><span class="cni-cell cni-cell--name"><span class="cni-dot cni-dot--red"></span>AWS VPC CNI</span><span class="cni-cell">●●●●●</span><span class="cni-cell cni-cell--no">✗ Use SG</span><span class="cni-cell">EKS only, native perf</span></div>
+  </div>
+  <div class="cni-rec"><strong>My recommendation:</strong> Cilium if you're starting fresh (eBPF is the future). Calico if you need battle-tested stability. AWS VPC CNI if you're on EKS and want native VPC integration.</div>
+</div>
+<style>
+  .cni-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .cni-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .cni-table{display:flex;flex-direction:column;gap:4px;margin-bottom:1rem;overflow-x:auto}
+  .cni-row{display:grid;grid-template-columns:130px 70px 100px 1fr;gap:8px;align-items:center;padding:8px 12px;border-radius:8px;opacity:0;animation:cniIn .4s ease forwards}
+  .cni-row--header{opacity:1;animation:none;border-bottom:1px solid #334155;padding-bottom:10px;margin-bottom:4px}
+  .cni-row--header .cni-cell{color:#64748b;font-size:.6rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+  .cni-row--1{animation-delay:.1s;background:rgba(245,158,11,.03)}.cni-row--2{animation-delay:.2s;background:rgba(74,222,128,.03)}.cni-row--3{animation-delay:.3s;background:rgba(6,182,212,.03)}.cni-row--4{animation-delay:.4s;background:rgba(129,140,248,.03)}.cni-row--5{animation-delay:.5s;background:rgba(248,113,113,.03)}
+  @keyframes cniIn{to{opacity:1}}
+  .cni-cell{color:#94a3b8;font-size:.7rem;font-family:monospace}
+  .cni-cell--name{color:#e2e8f0;font-weight:700;display:flex;align-items:center;gap:6px}
+  .cni-cell--yes{color:#4ade80}.cni-cell--no{color:#f87171}
+  .cni-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}.cni-dot--amber{background:#f59e0b}.cni-dot--green{background:#4ade80}.cni-dot--cyan{background:#06b6d4}.cni-dot--purple{background:#818cf8}.cni-dot--red{background:#f87171}
+  .cni-rec{color:#94a3b8;font-size:.72rem;line-height:1.6;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border:1px solid #334155}.cni-rec strong{color:#06b6d4}
+</style>

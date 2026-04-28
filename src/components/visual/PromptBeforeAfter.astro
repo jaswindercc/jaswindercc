@@ -1,0 +1,104 @@
+---
+// PromptBeforeAfter.astro — Pure CSS side-by-side comparison of bad vs good prompts
+---
+
+<div class="pba-wrap">
+  <h3 class="pba-title">Before & After — Same Task, Better Prompt</h3>
+  <p class="pba-sub">The left prompt gets a mediocre answer. The right one gets a precise, useful one.</p>
+
+  <div class="pba-grid">
+    <!-- BAD prompt -->
+    <div class="pba-side pba-side--bad">
+      <div class="pba-badge pba-badge--red">❌ VAGUE PROMPT</div>
+      <div class="pba-prompt">
+        <div class="pba-line">"Tell me about cloud security"</div>
+      </div>
+      <div class="pba-result">
+        <div class="pba-result-label">What you get:</div>
+        <div class="pba-result-text">A generic 500-word essay about firewalls, encryption, and "best practices." Nothing actionable. Nothing specific to your stack.</div>
+      </div>
+      <div class="pba-problems">
+        <div class="pba-problem"><span class="pba-x">✗</span> No role specified</div>
+        <div class="pba-problem"><span class="pba-x">✗</span> No format requested</div>
+        <div class="pba-problem"><span class="pba-x">✗</span> No context given</div>
+        <div class="pba-problem"><span class="pba-x">✗</span> No constraints set</div>
+      </div>
+    </div>
+
+    <!-- GOOD prompt -->
+    <div class="pba-side pba-side--good">
+      <div class="pba-badge pba-badge--green">✓ STRUCTURED PROMPT</div>
+      <div class="pba-prompt pba-prompt--good">
+        <div class="pba-section"><span class="pba-label">ROLE:</span> You are a cloud security architect with 10 years of AWS experience.</div>
+        <div class="pba-section"><span class="pba-label">TASK:</span> Review this IAM policy and identify the 3 biggest risks.</div>
+        <div class="pba-section"><span class="pba-label">FORMAT:</span> Return a numbered list. Each item: risk name, severity (high/med/low), one-line fix.</div>
+        <div class="pba-section"><span class="pba-label">CONSTRAINT:</span> Focus only on privilege escalation risks. Ignore billing permissions.</div>
+      </div>
+      <div class="pba-result pba-result--good">
+        <div class="pba-result-label">What you get:</div>
+        <div class="pba-result-text">A precise 3-item list with severity ratings and actionable fixes. Focused. Useful. Copy-pasteable.</div>
+      </div>
+      <div class="pba-wins">
+        <div class="pba-win"><span class="pba-check">✓</span> Role gives expertise</div>
+        <div class="pba-win"><span class="pba-check">✓</span> Format structures output</div>
+        <div class="pba-win"><span class="pba-check">✓</span> Context narrows scope</div>
+        <div class="pba-win"><span class="pba-check">✓</span> Constraints cut noise</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pba-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .pba-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .pba-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .pba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 640px) { .pba-grid { grid-template-columns: 1fr; } }
+
+  .pba-side {
+    background: rgba(0,0,0,0.2); border-radius: 12px; padding: 14px; border: 1px solid #334155;
+  }
+  .pba-side--bad:hover { border-color: #ef444430; }
+  .pba-side--good:hover { border-color: #4ade8030; }
+
+  .pba-badge {
+    font-family: monospace; font-size: 0.6rem; font-weight: 700; letter-spacing: 1px;
+    padding: 3px 10px; border-radius: 6px; display: inline-block; margin-bottom: 10px;
+  }
+  .pba-badge--red { background: rgba(239,68,68,0.12); color: #f87171; }
+  .pba-badge--green { background: rgba(74,222,128,0.12); color: #4ade80; }
+
+  .pba-prompt {
+    background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px;
+    font-family: monospace; font-size: 0.75rem; color: #94a3b8;
+    line-height: 1.6; margin-bottom: 10px; border: 1px solid #334155;
+  }
+  .pba-prompt--good { border-color: #4ade8020; }
+  .pba-section { margin-bottom: 6px; }
+  .pba-section:last-child { margin-bottom: 0; }
+  .pba-label { color: #f59e0b; font-weight: 700; font-size: 0.65rem; }
+
+  .pba-result {
+    background: rgba(239,68,68,0.04); border: 1px dashed #ef444430;
+    border-radius: 8px; padding: 10px; margin-bottom: 10px;
+  }
+  .pba-result--good {
+    background: rgba(74,222,128,0.04); border-color: #4ade8030;
+  }
+  .pba-result-label { font-family: monospace; font-size: 0.55rem; color: #64748b; margin-bottom: 4px; }
+  .pba-result-text { font-size: 0.7rem; color: #94a3b8; line-height: 1.5; }
+
+  .pba-problems, .pba-wins { display: flex; flex-direction: column; gap: 3px; }
+  .pba-problem, .pba-win {
+    font-family: monospace; font-size: 0.6rem; padding: 4px 8px; border-radius: 4px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .pba-problem { color: #f87171; background: rgba(239,68,68,0.04); }
+  .pba-win { color: #4ade80; background: rgba(74,222,128,0.04); }
+  .pba-x { font-weight: 700; }
+  .pba-check { font-weight: 700; }
+</style>

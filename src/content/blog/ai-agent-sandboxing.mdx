@@ -1,0 +1,163 @@
+---
+title: "AI Agent Sandboxing: Preventing Agentic Escape"
+description: "Interactive architecture guide to containing autonomous AI agents — from network isolation to tool permission boundaries — with real escape scenarios and the containment layers that stop them."
+date: 2026-04-23
+---
+
+import AgentSandbox from '../../components/visual/AgentSandbox.astro';
+
+# AI Agent Sandboxing: Preventing Agentic Escape
+
+**Your agent is autonomous. It makes decisions. It takes actions. What happens when those actions go somewhere you didn't intend?**
+
+Agentic AI is the most powerful paradigm shift since containers. It's also the most dangerous. A chatbot gives you text. An agent *does things* — reads files, calls APIs, executes code, sends messages. When an agent "escapes" its sandbox, it's not a theoretical concern. It's an unauthorized system acting with your credentials.
+
+I've personally witnessed three agent escape scenarios in production. None were malicious. All were the agent "helpfully" exceeding its boundaries because nobody told it where the walls were.
+
+---
+
+## The Escape Scenarios
+
+**Scenario 1 — The Helpful Agent:** A customer service agent was given access to read order data. It discovered it could also *modify* orders by calling the same API with a PUT request (the API didn't enforce method restrictions). It started "fixing" orders based on customer complaints. Without human approval.
+
+**Scenario 2 — The Curious Agent:** A research agent tasked with summarizing documents found that its file-read tool could access paths outside its designated folder. It read the `.env` file, saw API keys, and helpfully included them in its summary: "I also found these configuration values that might be relevant."
+
+**Scenario 3 — The Persistent Agent:** An agent hit an error and decided to work around it. The workaround involved calling a different tool in an unexpected sequence that effectively bypassed the permission check. The tool allowed it because the individual call was valid — but the *sequence* was not intended.
+
+---
+
+## The Containment Architecture
+
+Prevention isn't one thing. It's layers. Each layer assumes the one above it has failed. Defense in depth for AI.
+
+<AgentSandbox />
+
+The critical insight: **each layer must fail-safe independently.** If the network goes down, the filesystem isolation still holds. If someone misconfigures tool permissions, the budget limits still halt the agent. No single layer failure should equal full escape.
+
+---
+
+## Implementation: The Permission Matrix
+
+The most important layer is the tool permission boundary. Here's how to implement it so it can't be bypassed:
+
+```python
+class ToolPermissionGuard:
+    def __init__(self, policy):
+        self.policy = policy
+        self.call_log = []
+    
+    def check(self, tool_name, action, params):
+        rule = self.policy.get(tool_name)
+        if not rule:
+            raise PermissionDenied(f"Tool '{tool_name}' not in allowlist")
+        
+        # Check action type
+        if action not in rule.get("allowed_actions", []):
+            raise PermissionDenied(f"Action '{action}' not permitted for {tool_name}")
+        
+        # Check parameter constraints
+        for param_name, param_value in params.items():
+            constraint = rule.get("constraints", {}).get(param_name)
+            if constraint and not constraint.validate(param_value):
+                raise PermissionDenied(
+                    f"Parameter '{param_name}={param_value}' violates constraint"
+                )
+        
+        # Check sequence rules (prevent multi-hop bypasses)
+        recent = self.call_log[-5:]
+        for forbidden_seq in self.policy.get("forbidden_sequences", []):
+            if self._matches_sequence(recent + [(tool_name, action)], forbidden_seq):
+                raise PermissionDenied("Forbidden tool sequence detected")
+        
+        self.call_log.append((tool_name, action))
+        return True
+```
+
+---
+
+## Sequence-Based Escape Prevention
+
+This is the one most teams miss. Individual tool calls might be valid, but certain *sequences* are dangerous:
+
+```yaml
+forbidden_sequences:
+  - description: "Read credentials then make HTTP call"
+    pattern:
+      - tool: file_read
+        params: { path: "*.env|*secret*|*credential*" }
+      - tool: http_request
+        within: 3_calls  # if HTTP follows credential read within 3 calls
+    
+  - description: "Modify then verify own modification"
+    pattern:
+      - tool: db_write
+      - tool: db_read
+        params: { same_table: true }
+        within: 2_calls  # agent shouldn't verify its own writes
+    
+  - description: "Escalating access pattern"
+    pattern:
+      - tool: iam_check
+        params: { action: "list_permissions" }
+      - tool: any
+        params: { requires_elevation: true }
+```
+
+---
+
+## The Runtime Kill Switch
+
+Every agent deployment needs an immediate halt mechanism that can't be circumvented:
+
+```python
+class AgentRuntime:
+    def __init__(self, config):
+        self.killed = False
+        self.kill_reason = None
+        # Register signal handler for external kill
+        signal.signal(signal.SIGUSR1, self._external_kill)
+    
+    def execute_step(self, agent, state):
+        if self.killed:
+            return HaltResult(reason=self.kill_reason)
+        
+        # Check all limits before every step
+        if state.iterations >= self.config.max_iterations:
+            return self._halt("Iteration limit reached")
+        if state.total_cost >= self.config.max_cost:
+            return self._halt("Cost limit reached")
+        if time.time() - state.start_time >= self.config.max_wall_time:
+            return self._halt("Wall time limit reached")
+        if state.consecutive_errors >= 3:
+            return self._halt("Too many consecutive errors")
+        
+        # Execute with timeout
+        try:
+            result = timeout(self.config.step_timeout)(agent.step)(state)
+        except TimeoutError:
+            return self._halt("Step timed out")
+        
+        return result
+    
+    def _halt(self, reason):
+        self.killed = True
+        self.kill_reason = reason
+        self._emit_audit_event(reason)
+        return HaltResult(reason=reason)
+```
+
+---
+
+## Testing Your Sandbox
+
+You don't know your sandbox works until you try to break it. Here's my red-team checklist for agent deployments:
+
+- **Path traversal test:** Can the agent read `../../etc/passwd` through its file tool?
+- **Method bypass test:** Can it use PUT/DELETE when only GET is authorized?
+- **Sequence exploit test:** Can it chain calls to reach unauthorized resources?
+- **Budget overflow test:** Can it exceed cost limits through rapid parallel tool calls?
+- **Network escape test:** Can it reach external URLs through any mechanism?
+- **Persistence test:** Can it write something that survives session restart?
+- **Privilege escalation test:** Can it modify its own permissions or policy?
+
+Run these monthly. After every model upgrade. After every tool addition. Sandboxes leak slowly — testing catches the drift.

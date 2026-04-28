@@ -1,0 +1,85 @@
+---
+// EntanglementVisual.astro — Animated visualization of quantum entanglement
+---
+
+<div class="etv-wrap">
+  <h3 class="etv-title">Entanglement — Spooky Connection at Any Distance</h3>
+  <p class="etv-sub">Measure one, instantly know the other. No matter how far apart.</p>
+
+  <div class="etv-demo">
+    <div class="etv-particle etv-particle--a" style="--i:0">
+      <div class="etv-p-ring"></div>
+      <div class="etv-p-label">Qubit A</div>
+      <div class="etv-p-state">|ψ⟩</div>
+      <div class="etv-p-loc">📍 Earth</div>
+    </div>
+
+    <div class="etv-link" style="--i:1">
+      <svg viewBox="0 0 200 30" class="etv-svg">
+        <line x1="0" y1="15" x2="200" y2="15" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="6,4">
+          <animate attributeName="stroke-dashoffset" values="0;-20" dur="1s" repeatCount="indefinite"/>
+        </line>
+        <circle r="3" fill="#a78bfa">
+          <animateMotion dur="2s" repeatCount="indefinite" path="M0,15 L200,15"/>
+        </circle>
+        <circle r="3" fill="#f472b6">
+          <animateMotion dur="2s" repeatCount="indefinite" path="M200,15 L0,15"/>
+        </circle>
+      </svg>
+      <div class="etv-link-label">Entangled pair</div>
+    </div>
+
+    <div class="etv-particle etv-particle--b" style="--i:2">
+      <div class="etv-p-ring"></div>
+      <div class="etv-p-label">Qubit B</div>
+      <div class="etv-p-state">|ψ⟩</div>
+      <div class="etv-p-loc">📍 Mars</div>
+    </div>
+  </div>
+
+  <div class="etv-steps">
+    <details class="etv-step">
+      <summary class="etv-step-sum"><span class="etv-num">1</span> Create entangled pair</summary>
+      <div class="etv-step-body">Two qubits interact and become entangled. Their states are now correlated — you can't describe one without the other.</div>
+    </details>
+    <details class="etv-step">
+      <summary class="etv-step-sum"><span class="etv-num">2</span> Separate them</summary>
+      <div class="etv-step-body">Send one qubit to Mars (or just across the lab). The entanglement holds regardless of distance.</div>
+    </details>
+    <details class="etv-step">
+      <summary class="etv-step-sum"><span class="etv-num">3</span> Measure one</summary>
+      <div class="etv-step-body">Measure Qubit A and get, say, |0⟩. Instantly — with zero delay — Qubit B collapses to |1⟩ (or |0⟩ depending on the entanglement type).</div>
+    </details>
+    <details class="etv-step">
+      <summary class="etv-step-sum"><span class="etv-num">4</span> No faster-than-light communication</summary>
+      <div class="etv-step-body">The measurement results look random to each side. You need a classical channel to compare notes. Einstein called it "spooky" — but it can't send messages faster than light.</div>
+    </details>
+  </div>
+</div>
+
+<style>
+  .etv-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .etv-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .etv-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .etv-demo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:1.5rem;flex-wrap:wrap}
+  .etv-particle{text-align:center;background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:12px;padding:1.25rem;min-width:100px;opacity:0;animation:etvIn .5s ease forwards;animation-delay:calc(var(--i)*.2s)}
+  .etv-p-ring{width:50px;height:50px;border-radius:50%;border:2px solid #a78bfa;margin:0 auto .5rem;animation:etvPulse 2s ease-in-out infinite;display:flex;align-items:center;justify-content:center}
+  .etv-particle--b .etv-p-ring{border-color:#f472b6;animation-name:etvPulseB}
+  .etv-p-label{color:#f1f5f9;font-size:.72rem;font-weight:600}
+  .etv-p-state{color:#a78bfa;font-family:monospace;font-size:.8rem;font-weight:700;margin:4px 0}
+  .etv-particle--b .etv-p-state{color:#f472b6}
+  .etv-p-loc{color:#475569;font-size:.6rem;font-family:monospace}
+  .etv-link{text-align:center;opacity:0;animation:etvIn .4s ease forwards;animation-delay:calc(var(--i)*.2s)}
+  .etv-svg{width:120px;height:30px}
+  .etv-link-label{color:#64748b;font-size:.58rem;font-family:monospace}
+  .etv-steps{display:flex;flex-direction:column;gap:6px}
+  .etv-step{background:rgba(0,0,0,.15);border:1px solid #334155;border-radius:8px;overflow:hidden;transition:border-color .2s}
+  .etv-step[open]{border-color:#a78bfa30}
+  .etv-step-sum{color:#f1f5f9;font-size:.75rem;padding:10px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;list-style:none}
+  .etv-step-sum::-webkit-details-marker{display:none}
+  .etv-num{width:20px;height:20px;border-radius:50%;background:rgba(167,139,250,.12);color:#a78bfa;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:monospace}
+  .etv-step-body{color:#94a3b8;font-size:.7rem;line-height:1.6;padding:0 14px 12px 42px}
+  @keyframes etvIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes etvPulse{0%,100%{box-shadow:0 0 8px rgba(167,139,250,.2)}50%{box-shadow:0 0 20px rgba(167,139,250,.5)}}
+  @keyframes etvPulseB{0%,100%{box-shadow:0 0 8px rgba(244,114,182,.2)}50%{box-shadow:0 0 20px rgba(244,114,182,.5)}}
+</style>

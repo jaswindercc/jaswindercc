@@ -1,0 +1,51 @@
+---
+/**
+ * AppSecCompare.astro
+ * SAST vs DAST vs IAST comparison
+ */
+---
+
+<div class="asc-wrap">
+  <h3 class="asc-title">Application Security Testing — SAST vs DAST vs IAST</h3>
+  <div class="asc-cards">
+    <div class="asc-card" style="--i:0; --color:#818cf8;">
+      <div class="asc-name">SAST</div>
+      <div class="asc-full">Static Analysis</div>
+      <div class="asc-when">Scans source code before runtime</div>
+      <div class="asc-finds">SQL injection patterns, hardcoded secrets, unsafe functions</div>
+      <div class="asc-pros">Early detection, covers all code paths</div>
+      <div class="asc-cons">High false positives, no runtime context</div>
+    </div>
+    <div class="asc-card" style="--i:1; --color:#f59e0b;">
+      <div class="asc-name">DAST</div>
+      <div class="asc-full">Dynamic Analysis</div>
+      <div class="asc-when">Tests running application from outside</div>
+      <div class="asc-finds">XSS, CSRF, auth bypass, misconfigurations</div>
+      <div class="asc-pros">No false positives (real exploits), finds runtime issues</div>
+      <div class="asc-cons">Late in pipeline, can't pinpoint code line</div>
+    </div>
+    <div class="asc-card" style="--i:2; --color:#4ade80;">
+      <div class="asc-name">IAST</div>
+      <div class="asc-full">Interactive Analysis</div>
+      <div class="asc-when">Agent inside running app monitors during tests</div>
+      <div class="asc-finds">Data flow from input to vulnerability, runtime + code context</div>
+      <div class="asc-pros">Low false positives, pinpoints exact code, sees data flow</div>
+      <div class="asc-cons">Requires instrumentation, language-specific agents</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .asc-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .asc-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .asc-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+  @media(max-width:700px){.asc-cards{grid-template-columns:1fr}}
+  .asc-card{background:rgba(255,255,255,0.03);border:1px solid var(--color);border-radius:12px;padding:1.25rem;opacity:0;animation:ascFade .5s ease forwards;animation-delay:calc(var(--i)*.15s)}
+  @keyframes ascFade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  .asc-name{color:var(--color);font-weight:700;font-size:1.2rem}
+  .asc-full{color:#64748b;font-size:.75rem;margin-bottom:.5rem}
+  .asc-when{color:#f1f5f9;font-size:.85rem;margin-bottom:.5rem}
+  .asc-finds{color:#06b6d4;font-size:.78rem;margin-bottom:.5rem;font-family:monospace}
+  .asc-pros{color:#4ade80;font-size:.78rem;margin-bottom:.25rem}.asc-pros::before{content:'✓ '}
+  .asc-cons{color:#f59e0b;font-size:.78rem}.asc-cons::before{content:'⚠ '}
+</style>

@@ -1,0 +1,26 @@
+---
+// VectorIndexTypes.astro — ANN index types
+---
+<div class="vit-wrap">
+  <h3 class="vit-title">Index Types — Speed vs Accuracy Tradeoff</h3>
+  <div class="vit-cards">
+    <div class="vit-card vit-c1"><span class="vit-nm">Flat (Brute Force)</span><span class="vit-d">Exact nearest neighbor. Compares query against every vector. O(n) per query. Perfect accuracy. Unusable above 100K vectors.</span><div class="vit-meter"><span class="vit-ml">Speed</span><div class="vit-bar"><div class="vit-fill vit-fill--red" style="--w:10%"></div></div><span class="vit-ml">Accuracy</span><div class="vit-bar"><div class="vit-fill vit-fill--green" style="--w:100%"></div></div></div></div>
+    <div class="vit-card vit-c2"><span class="vit-nm">IVF (Inverted File Index)</span><span class="vit-d">Clusters vectors into buckets. Only searches nearby clusters. Fast but misses edge cases. Good default for millions of vectors.</span><div class="vit-meter"><span class="vit-ml">Speed</span><div class="vit-bar"><div class="vit-fill vit-fill--amber" style="--w:70%"></div></div><span class="vit-ml">Accuracy</span><div class="vit-bar"><div class="vit-fill vit-fill--green" style="--w:92%"></div></div></div></div>
+    <div class="vit-card vit-c3"><span class="vit-nm">HNSW (Hierarchical Navigable Small World)</span><span class="vit-d">Graph-based. Navigates a multi-layer graph to find neighbors. Best speed-accuracy tradeoff. Memory-hungry. Industry standard for production.</span><div class="vit-meter"><span class="vit-ml">Speed</span><div class="vit-bar"><div class="vit-fill vit-fill--green" style="--w:95%"></div></div><span class="vit-ml">Accuracy</span><div class="vit-bar"><div class="vit-fill vit-fill--green" style="--w:98%"></div></div></div></div>
+  </div>
+</div>
+<style>
+  .vit-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .vit-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .vit-cards{display:flex;flex-direction:column;gap:10px}
+  .vit-card{padding:14px;background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155;opacity:0;animation:vitIn .4s ease forwards}
+  .vit-c1{animation-delay:.1s}.vit-c2{animation-delay:.2s}.vit-c3{animation-delay:.3s}
+  @keyframes vitIn{to{opacity:1}}
+  .vit-nm{display:block;color:#e2e8f0;font-weight:700;font-size:.82rem;margin-bottom:4px}.vit-d{display:block;color:#94a3b8;font-size:.7rem;line-height:1.5;margin-bottom:8px}
+  .vit-meter{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .vit-ml{color:#64748b;font-size:.58rem;min-width:52px}
+  .vit-bar{width:80px;height:5px;background:rgba(0,0,0,.3);border-radius:4px;overflow:hidden}
+  .vit-fill{height:100%;border-radius:4px;width:0;animation:vitBar 1s ease forwards}
+  .vit-fill--red{background:#f87171}.vit-fill--amber{background:#f59e0b}.vit-fill--green{background:#4ade80}
+  @keyframes vitBar{to{width:var(--w)}}
+</style>

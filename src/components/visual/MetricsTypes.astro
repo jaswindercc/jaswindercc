@@ -1,0 +1,33 @@
+---
+// MetricsTypes.astro — Types of metrics (RED/USE)
+---
+<div class="mt-wrap">
+  <h3 class="mt-title">RED and USE — Two Methods for What to Measure</h3>
+  <div class="mt-grid">
+    <div class="mt-card mt-card--red">
+      <span class="mt-hl mt-hl--red">RED (for services)</span>
+      <div class="mt-item"><span class="mt-let">R</span><span class="mt-val">Rate — requests per second</span></div>
+      <div class="mt-item"><span class="mt-let">E</span><span class="mt-val">Errors — failed requests per second</span></div>
+      <div class="mt-item"><span class="mt-let">D</span><span class="mt-val">Duration — latency histogram (p50, p95, p99)</span></div>
+      <span class="mt-use">Use for: APIs, microservices, web servers</span>
+    </div>
+    <div class="mt-card mt-card--amber">
+      <span class="mt-hl mt-hl--amber">USE (for resources)</span>
+      <div class="mt-item"><span class="mt-let">U</span><span class="mt-val">Utilization — % of resource capacity being used</span></div>
+      <div class="mt-item"><span class="mt-let">S</span><span class="mt-val">Saturation — queue depth, backlog</span></div>
+      <div class="mt-item"><span class="mt-let">E</span><span class="mt-val">Errors — hardware/resource error count</span></div>
+      <span class="mt-use">Use for: CPU, memory, disk, network</span>
+    </div>
+  </div>
+</div>
+<style>
+  .mt-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .mt-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .mt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:600px){.mt-grid{grid-template-columns:1fr}}
+  .mt-card{padding:14px;background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155}
+  .mt-card--red{border-top:2px solid #f87171}.mt-card--amber{border-top:2px solid #f59e0b}
+  .mt-hl{display:block;font-size:.72rem;font-weight:700;font-family:monospace;margin-bottom:10px}.mt-hl--red{color:#f87171}.mt-hl--amber{color:#f59e0b}
+  .mt-item{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #1e293b}.mt-item:last-of-type{border-bottom:none}
+  .mt-let{color:#e2e8f0;font-family:monospace;font-size:.9rem;font-weight:800;width:20px;flex-shrink:0}.mt-val{color:#94a3b8;font-size:.7rem}
+  .mt-use{display:block;color:#64748b;font-size:.62rem;font-style:italic;margin-top:8px;padding-top:6px;border-top:1px solid #334155}
+</style>

@@ -1,0 +1,25 @@
+---
+title: "SLOs, SLIs, and Error Budgets — Reliability Visualized"
+description: "Visual guide to service level objectives, indicators, and error budgets. Understand how SLOs drive engineering decisions and create a framework for balancing reliability with feature velocity."
+date: 2026-05-31
+---
+
+import SLOStack from '../../components/visual/SLOStack.astro';
+
+"How reliable should this service be?" seems like a simple question. The answer is always "as reliable as possible," right? Wrong. Every nine you add to your uptime target costs exponentially more. Going from 99% to 99.9% is hard. Going from 99.9% to 99.99% is an order of magnitude harder. The real question is: how much reliability is enough for your users?
+
+SLOs give you a framework to answer that question with math instead of gut feelings.
+
+## The Stack: SLI → SLO → SLA
+
+These three terms are related but serve different purposes. SLIs are what you measure. SLOs are what you target. SLAs are what you promise. The hierarchy matters — you should always have more SLO headroom than your SLA requires, and your SLIs should be measuring exactly what users experience.
+
+<SLOStack />
+
+The error budget is the key concept. If your SLO is 99.95% availability, that's a 0.05% error budget — roughly 22 minutes of downtime per month. That budget is yours to spend. Use it for risky deploys, infrastructure migrations, experiment rollouts. When the budget is healthy, ship fast. When it's nearly exhausted, slow down and focus on reliability.
+
+This reframes the "reliability vs features" tension. Instead of arguing about whether to ship a feature or fix a bug, you check the error budget. Budget available? Ship the feature. Budget burned? Fix reliability first. The decision is data-driven, not political.
+
+Choose SLIs that reflect the user experience, not system internals. CPU utilization isn't an SLI — users don't care about your CPU. "Percentage of requests that return successfully within 200ms" is an SLI — that's what users experience. Similarly, "database replication lag" isn't an SLI, but "percentage of reads that return fresh data" is.
+
+Start with one SLO per service. Make it the most important thing about that service from the user's perspective. For an API, it's usually request success rate and latency. For a data pipeline, it's freshness. For a batch job, it's completion within a time window. Get one SLO right before adding more.

@@ -1,0 +1,44 @@
+---
+// K8sNetworkPolicies.astro — Network policies visualization
+---
+<div class="knp-wrap">
+  <h3 class="knp-title">Network Policies — Your Cluster's Firewall</h3>
+  <p class="knp-sub">By default, every pod can talk to every other pod. That's terrifying.</p>
+  <div class="knp-before-after">
+    <div class="knp-panel knp-panel--before">
+      <span class="knp-panel-title knp-panel-title--red">Without NetworkPolicy</span>
+      <div class="knp-grid">
+        <div class="knp-pod">frontend</div>
+        <div class="knp-pod">api</div>
+        <div class="knp-pod">db</div>
+        <div class="knp-pod">redis</div>
+      </div>
+      <div class="knp-lines"><span class="knp-mesh">Every pod ↔ Every pod</span><span class="knp-mesh knp-mesh--bad">db exposed to frontend directly</span></div>
+    </div>
+    <div class="knp-panel knp-panel--after">
+      <span class="knp-panel-title knp-panel-title--green">With NetworkPolicy</span>
+      <div class="knp-grid">
+        <div class="knp-pod knp-pod--ok">frontend</div>
+        <div class="knp-pod knp-pod--ok">api</div>
+        <div class="knp-pod knp-pod--locked">db</div>
+        <div class="knp-pod knp-pod--locked">redis</div>
+      </div>
+      <div class="knp-lines"><span class="knp-mesh knp-mesh--good">frontend → api only</span><span class="knp-mesh knp-mesh--good">api → db, redis only</span><span class="knp-mesh knp-mesh--good">db → nothing (ingress only from api)</span></div>
+    </div>
+  </div>
+  <div class="knp-hint">Network policies are enforced by the CNI plugin. Make sure yours supports them — vanilla Flannel doesn't. Calico, Cilium, and Weave do.</div>
+</div>
+<style>
+  .knp-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .knp-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.knp-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem}
+  .knp-before-after{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem}@media(max-width:600px){.knp-before-after{grid-template-columns:1fr}}
+  .knp-panel{padding:14px;background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155}
+  .knp-panel--before{border-color:#ef444420}.knp-panel--after{border-color:#4ade8020}
+  .knp-panel-title{display:block;font-size:.7rem;font-weight:700;margin-bottom:10px;font-family:monospace}.knp-panel-title--red{color:#f87171}.knp-panel-title--green{color:#4ade80}
+  .knp-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+  .knp-pod{padding:6px 10px;background:rgba(100,116,139,.1);border:1px solid #475569;border-radius:6px;color:#94a3b8;font-size:.65rem;font-family:monospace;text-align:center}
+  .knp-pod--ok{border-color:#4ade8030;color:#4ade80}.knp-pod--locked{border-color:#f59e0b30;color:#f59e0b}
+  .knp-lines{display:flex;flex-direction:column;gap:3px}
+  .knp-mesh{color:#64748b;font-size:.6rem;font-family:monospace}.knp-mesh--bad{color:#f87171}.knp-mesh--good{color:#4ade80}
+  .knp-hint{color:#64748b;font-size:.68rem;line-height:1.5;padding:8px 12px;background:rgba(0,0,0,.15);border-radius:8px;border-left:3px solid #f59e0b}
+</style>

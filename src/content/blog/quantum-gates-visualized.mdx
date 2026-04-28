@@ -1,0 +1,93 @@
+---
+title: "Quantum Gates Made Easy — Visualizing the Building Blocks"
+description: "Visual guide to quantum gates. See how Hadamard, CNOT, Pauli-X, and other gates work with animated circuit diagrams and matrix transformations."
+date: 2026-04-25
+---
+
+import QuantumGateVisual from '../../components/visual/QuantumGateVisual.astro';
+import QuantumCircuit from '../../components/visual/QuantumCircuit.astro';
+import QuantumGateMatrix from '../../components/visual/QuantumGateMatrix.astro';
+
+Classical computers have AND, OR, and NOT gates. Quantum computers have Hadamard, CNOT, and Pauli gates. Different alphabet, same idea — simple building blocks that combine into complex computations. If you can understand a NOT gate, you can understand quantum gates.
+
+---
+
+## 1. The Quantum Gate Library
+
+Every quantum program is built from a small set of gates. Most quantum computations use fewer than 10 gate types. Here are the ones that matter most:
+
+<QuantumGateVisual />
+
+**The pattern to notice:** most quantum gates have no classical equivalent. The Hadamard gate creates superposition — there's nothing like that in classical computing. The phase gates change a property (phase) that simply doesn't exist in classical bits.
+
+The one exception is the Pauli-X gate, which works exactly like a classical NOT. Flip 0 to 1, flip 1 to 0. If you understand NOT, you already understand one quantum gate.
+
+---
+
+## 2. Reading a Quantum Circuit
+
+Quantum programs are drawn as circuits. Each horizontal wire is a qubit. Gates are boxes (or symbols) placed on the wires. Time flows left to right.
+
+<QuantumCircuit />
+
+**How to read this circuit:**
+- Qubit q₀ starts in state |0⟩, goes through a Hadamard gate (creating superposition), then gets measured
+- Qubit q₁ starts in state |0⟩, gets entangled with q₀ via CNOT, then goes through an X gate, then gets measured
+- The CNOT connects two wires — the dot is the control, the circle-plus is the target
+
+Every quantum computation you'll ever see is just a sequence of these gates applied to qubits. That's it. The art is choosing which gates in which order to get the probability amplitudes you want.
+
+---
+
+## 3. The Math Behind the Gates
+
+Every quantum gate is a matrix. Applying a gate means multiplying the qubit's state vector by that matrix. This is the entire mathematical framework of quantum computing — matrix multiplication.
+
+<QuantumGateMatrix />
+
+**You don't need to do this by hand.** Qiskit, Cirq, and every other quantum SDK handles the linear algebra. But understanding that gates are matrices helps you reason about what they do:
+
+- A gate that moves probability from |0⟩ to |1⟩ has off-diagonal entries
+- A gate that only changes phase has entries on the diagonal
+- Combining two gates means multiplying their matrices
+- The order of gates matters (matrix multiplication isn't commutative)
+
+---
+
+## 4. Universal Gate Sets
+
+Here's a powerful idea: you only need a small set of gates to build *any* quantum computation. Just like you can build any classical computation from NAND gates alone.
+
+**Common universal sets:**
+- {H, T, CNOT} — the most standard universal gate set
+- {H, Toffoli} — an alternative
+- {Rx, Ry, CNOT} — common for variational circuits
+
+This means any quantum algorithm, no matter how complex, can be decomposed into a sequence of these basic gates. Quantum compilers (called transpilers) do this automatically — you write high-level operations, the transpiler converts them into the gate set your hardware supports.
+
+---
+
+## 5. From Gates to Programs
+
+Understanding gates is the foundation. Here's how to go from "I know what gates do" to "I can write quantum programs":
+
+**Start with these three circuits:**
+
+1. **Bell State** — H gate on qubit 0, CNOT on qubits 0-1. Creates entanglement. This is the "hello world" of quantum programming.
+
+2. **GHZ State** — H gate on qubit 0, CNOT on qubits 0-1, CNOT on qubits 0-2. Entangles three qubits. Extends the Bell state.
+
+3. **Quantum Teleportation** — Uses entanglement and classical communication to transfer a qubit state. Your first "real" quantum protocol.
+
+```python
+# Bell State in Qiskit
+from qiskit import QuantumCircuit
+
+bell = QuantumCircuit(2, 2)
+bell.h(0)
+bell.cx(0, 1)
+bell.measure([0, 1], [0, 1])
+# Run this — you'll get 50% |00⟩ and 50% |11⟩
+```
+
+Build these three, understand why they work, and you'll have a solid intuition for how quantum gates combine into useful programs.

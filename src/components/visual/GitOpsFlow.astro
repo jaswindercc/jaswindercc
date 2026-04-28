@@ -1,0 +1,30 @@
+---
+// GitOpsFlow.astro — GitOps workflow diagram
+---
+<div class="gf-wrap">
+  <h3 class="gf-title">The GitOps Loop</h3>
+  <p class="gf-sub">Git is the single source of truth. The cluster converges to match what's in the repo.</p>
+  <div class="gf-loop">
+    <div class="gf-step gf-s1"><span class="gf-n">1</span><div class="gf-info"><span class="gf-nm">Developer pushes</span><span class="gf-d">Changes manifests in Git (K8s YAML, Helm, Kustomize)</span></div></div>
+    <div class="gf-arrow">↓</div>
+    <div class="gf-step gf-s2"><span class="gf-n">2</span><div class="gf-info"><span class="gf-nm">GitOps agent detects diff</span><span class="gf-d">ArgoCD / FluxCD watches repo, sees desired ≠ actual</span></div></div>
+    <div class="gf-arrow">↓</div>
+    <div class="gf-step gf-s3"><span class="gf-n">3</span><div class="gf-info"><span class="gf-nm">Reconciliation</span><span class="gf-d">Agent applies changes to cluster: create, update, or delete resources</span></div></div>
+    <div class="gf-arrow">↓</div>
+    <div class="gf-step gf-s4"><span class="gf-n">4</span><div class="gf-info"><span class="gf-nm">Drift detection</span><span class="gf-d">Continuous loop. If someone `kubectl edit`s manually, agent reverts it.</span></div></div>
+    <div class="gf-arrow gf-arrow--loop">↻ Repeat</div>
+  </div>
+</div>
+<style>
+  .gf-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .gf-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.gf-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem}
+  .gf-loop{display:flex;flex-direction:column;align-items:center;gap:0}
+  .gf-step{display:flex;align-items:center;gap:12px;padding:10px 16px;background:rgba(0,0,0,.2);border-radius:10px;border:1px solid #334155;width:100%;max-width:420px;opacity:0;animation:gfIn .4s ease forwards}
+  .gf-s1{animation-delay:.1s}.gf-s2{animation-delay:.3s}.gf-s3{animation-delay:.5s}.gf-s4{animation-delay:.7s}
+  @keyframes gfIn{to{opacity:1}}
+  .gf-n{font-family:monospace;font-size:.65rem;font-weight:800;width:22px;height:22px;border-radius:50%;background:rgba(6,182,212,.1);color:#06b6d4;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .gf-info{flex:1}.gf-nm{display:block;color:#e2e8f0;font-size:.78rem;font-weight:700}.gf-d{display:block;color:#94a3b8;font-size:.67rem;margin-top:1px}
+  .gf-arrow{color:#475569;font-size:.7rem;height:14px;display:flex;align-items:center}
+  .gf-arrow--loop{color:#4ade80;font-size:.7rem;font-family:monospace;margin-top:8px;animation:gfPulse 2s ease infinite}
+  @keyframes gfPulse{0%,100%{opacity:.4}50%{opacity:1}}
+</style>

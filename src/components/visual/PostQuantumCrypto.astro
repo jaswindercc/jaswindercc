@@ -1,0 +1,56 @@
+---
+// PostQuantumCrypto.astro — Post-quantum cryptography overview
+---
+
+<div class="pqc-wrap">
+  <h3 class="pqc-title">Post-Quantum Cryptography — The New Standards</h3>
+  <p class="pqc-sub">NIST finalized new algorithms in 2024. The migration has begun.</p>
+
+  <div class="pqc-grid">
+    <div class="pqc-algo" style="--i:0;--c:#4ade80">
+      <div class="pqc-name">ML-KEM (CRYSTALS-Kyber)</div>
+      <div class="pqc-type">Key Encapsulation</div>
+      <div class="pqc-desc">Replaces RSA/ECDH for key exchange. Based on lattice problems. Fast and compact.</div>
+      <div class="pqc-status">✓ NIST Standard (FIPS 203)</div>
+    </div>
+    <div class="pqc-algo" style="--i:1;--c:#06b6d4">
+      <div class="pqc-name">ML-DSA (CRYSTALS-Dilithium)</div>
+      <div class="pqc-type">Digital Signatures</div>
+      <div class="pqc-desc">Replaces RSA/ECDSA for signing. Also lattice-based. Strong security margins.</div>
+      <div class="pqc-status">✓ NIST Standard (FIPS 204)</div>
+    </div>
+    <div class="pqc-algo" style="--i:2;--c:#f59e0b">
+      <div class="pqc-name">SLH-DSA (SPHINCS+)</div>
+      <div class="pqc-type">Digital Signatures</div>
+      <div class="pqc-desc">Hash-based signatures. Backup option if lattice math is broken. Larger signatures.</div>
+      <div class="pqc-status">✓ NIST Standard (FIPS 205)</div>
+    </div>
+  </div>
+
+  <div class="pqc-timeline">
+    <div class="pqc-tl-title">Migration Timeline</div>
+    <div class="pqc-tl-item" style="--i:0"><span class="pqc-tl-year">2024</span><span class="pqc-tl-event">NIST finalizes PQC standards</span></div>
+    <div class="pqc-tl-item" style="--i:1"><span class="pqc-tl-year">2025-26</span><span class="pqc-tl-event">Early adopters migrate (browsers, VPNs, TLS)</span></div>
+    <div class="pqc-tl-item" style="--i:2"><span class="pqc-tl-year">2030</span><span class="pqc-tl-event">NIST deprecates old algorithms</span></div>
+    <div class="pqc-tl-item" style="--i:3"><span class="pqc-tl-year">2035</span><span class="pqc-tl-event">Federal deadline: all systems PQC-ready</span></div>
+  </div>
+</div>
+
+<style>
+  .pqc-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .pqc-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .pqc-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .pqc-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem}
+  .pqc-algo{background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:12px;padding:1.25rem;opacity:0;animation:pqcIn .4s ease forwards;animation-delay:calc(var(--i)*.12s);transition:border-color .2s}
+  .pqc-algo:hover{border-color:var(--c)}
+  .pqc-name{color:var(--c);font-size:.8rem;font-weight:700;margin-bottom:.15rem}
+  .pqc-type{color:#64748b;font-size:.6rem;font-family:monospace;margin-bottom:.35rem}
+  .pqc-desc{color:#94a3b8;font-size:.7rem;line-height:1.5;margin-bottom:.35rem}
+  .pqc-status{color:#4ade80;font-size:.62rem;font-family:monospace}
+  .pqc-timeline{background:rgba(0,0,0,.15);border:1px solid #334155;border-radius:8px;padding:14px}
+  .pqc-tl-title{color:#f1f5f9;font-size:.75rem;font-weight:600;margin-bottom:8px}
+  .pqc-tl-item{display:flex;gap:12px;padding:4px 0;opacity:0;animation:pqcIn .4s ease forwards;animation-delay:calc(var(--i)*.1s + .4s)}
+  .pqc-tl-year{color:#f59e0b;font-size:.65rem;font-family:monospace;font-weight:700;min-width:55px}
+  .pqc-tl-event{color:#94a3b8;font-size:.68rem}
+  @keyframes pqcIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+</style>

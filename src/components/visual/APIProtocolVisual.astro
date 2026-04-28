@@ -1,0 +1,55 @@
+---
+/**
+ * APIProtocolVisual.astro
+ * GraphQL vs REST vs gRPC
+ */
+---
+
+<div class="apv-wrap">
+  <h3 class="apv-title">API Protocol Comparison</h3>
+  <div class="apv-protos">
+    <div class="apv-proto" style="--i:0;--c:#f472b6;">
+      <div class="apv-pname">REST</div>
+      <div class="apv-attrs">
+        <div class="apv-attr"><span class="apv-key">Format</span><span class="apv-val">JSON over HTTP</span></div>
+        <div class="apv-attr"><span class="apv-key">Schema</span><span class="apv-val">OpenAPI (optional)</span></div>
+        <div class="apv-attr"><span class="apv-key">Caching</span><span class="apv-val">HTTP native</span></div>
+        <div class="apv-attr"><span class="apv-key">Streaming</span><span class="apv-val">SSE / Webhooks</span></div>
+        <div class="apv-attr"><span class="apv-key">Best for</span><span class="apv-val">Public APIs, CRUD</span></div>
+      </div>
+    </div>
+    <div class="apv-proto" style="--i:1;--c:#818cf8;">
+      <div class="apv-pname">GraphQL</div>
+      <div class="apv-attrs">
+        <div class="apv-attr"><span class="apv-key">Format</span><span class="apv-val">JSON over HTTP POST</span></div>
+        <div class="apv-attr"><span class="apv-key">Schema</span><span class="apv-val">Required (SDL)</span></div>
+        <div class="apv-attr"><span class="apv-key">Caching</span><span class="apv-val">Complex (no HTTP cache)</span></div>
+        <div class="apv-attr"><span class="apv-key">Streaming</span><span class="apv-val">Subscriptions (WS)</span></div>
+        <div class="apv-attr"><span class="apv-key">Best for</span><span class="apv-val">Complex UIs, mobile</span></div>
+      </div>
+    </div>
+    <div class="apv-proto" style="--i:2;--c:#4ade80;">
+      <div class="apv-pname">gRPC</div>
+      <div class="apv-attrs">
+        <div class="apv-attr"><span class="apv-key">Format</span><span class="apv-val">Protobuf over HTTP/2</span></div>
+        <div class="apv-attr"><span class="apv-key">Schema</span><span class="apv-val">Required (.proto)</span></div>
+        <div class="apv-attr"><span class="apv-key">Caching</span><span class="apv-val">Not built-in</span></div>
+        <div class="apv-attr"><span class="apv-key">Streaming</span><span class="apv-val">Bi-directional native</span></div>
+        <div class="apv-attr"><span class="apv-key">Best for</span><span class="apv-val">Microservices, low latency</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .apv-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .apv-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .apv-protos{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem}
+  .apv-proto{background:rgba(0,0,0,.2);border-radius:12px;padding:1rem;border-top:3px solid var(--c);opacity:0;animation:apvPop .4s ease forwards;animation-delay:calc(var(--i)*.12s)}
+  @keyframes apvPop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  .apv-pname{color:var(--c);font-weight:700;font-size:.95rem;text-align:center;margin-bottom:.6rem}
+  .apv-attrs{display:flex;flex-direction:column;gap:.35rem}
+  .apv-attr{display:flex;justify-content:space-between;gap:.5rem}
+  .apv-key{color:#64748b;font-size:.7rem;font-weight:600}
+  .apv-val{color:#e2e8f0;font-size:.7rem;text-align:right}
+</style>

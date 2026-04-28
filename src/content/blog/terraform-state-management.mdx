@@ -1,0 +1,23 @@
+---
+title: "Terraform State Management — Locking, Backends, Workspaces"
+description: "Visual guide to Terraform state management. Understand remote backends, state locking, workspaces, and state splitting to prevent the most common Terraform disasters."
+date: 2026-05-23
+---
+
+import TFStateVisual from '../../components/visual/TFStateVisual.astro';
+
+Terraform state is the single most critical file in your infrastructure setup. It maps your Terraform configuration to real cloud resources. Lose the state file and Terraform thinks nothing exists. Corrupt it and Terraform might destroy resources trying to recreate them. Two people applying simultaneously can create race conditions that leave your infrastructure in an inconsistent state.
+
+State management isn't glamorous. But getting it wrong causes the worst Terraform disasters.
+
+## State Management Patterns
+
+The progression from "state on my laptop" to "production-grade state management" follows a clear path. Each step adds safety at the cost of minor complexity.
+
+<TFStateVisual />
+
+Remote backends with locking should be your first Terraform setup task — before writing any infrastructure code. For AWS: S3 bucket for state storage, DynamoDB table for locking. Enable versioning on the S3 bucket so you can roll back to previous state versions if something goes wrong. Encrypt the bucket. Restrict access to the state file — it contains sensitive information like database passwords and API keys.
+
+State splitting (separate state files per component) is the pattern that saves teams at scale. When all your infrastructure shares one state file, running `terraform plan` takes minutes because it refreshes every resource. A change to a database config refreshes the VPC, the EKS cluster, and the DNS records. Split state so that each component plans and applies independently. A database change only touches database state — the blast radius is contained.
+
+Workspaces are useful for managing environments, but they have limitations. The biggest: all workspaces share the same backend configuration. You can't put dev state in one account and prod state in another using workspaces alone. For strict environment isolation, use separate root module directories with separate backend configurations.

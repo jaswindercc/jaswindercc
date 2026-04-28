@@ -1,0 +1,68 @@
+---
+// QuantumVsClassical.astro — Side-by-side comparison of classical vs quantum computing
+---
+
+<div class="qvc-wrap">
+  <h3 class="qvc-title">Classical vs Quantum — Two Different Worlds</h3>
+  <p class="qvc-sub">Same goal, completely different approach to computation.</p>
+
+  <div class="qvc-grid">
+    <div class="qvc-card" style="--i:0">
+      <div class="qvc-badge qvc-badge--blue">CLASSICAL COMPUTER</div>
+      <div class="qvc-icon">🖥️</div>
+      <div class="qvc-bits">
+        <span class="qvc-bit">0</span><span class="qvc-bit">1</span><span class="qvc-bit">1</span><span class="qvc-bit">0</span>
+      </div>
+      <div class="qvc-desc">Processes one state at a time. A bit is either 0 or 1 — never both.</div>
+      <div class="qvc-points">
+        <div class="qvc-pt"><span class="qvc-dot qvc-dot--blue"></span>Deterministic</div>
+        <div class="qvc-pt"><span class="qvc-dot qvc-dot--blue"></span>Sequential logic</div>
+        <div class="qvc-pt"><span class="qvc-dot qvc-dot--blue"></span>Great for everyday tasks</div>
+        <div class="qvc-pt"><span class="qvc-dot qvc-dot--blue"></span>Mature & reliable</div>
+      </div>
+    </div>
+
+    <div class="qvc-vs" style="--i:1">VS</div>
+
+    <div class="qvc-card" style="--i:2">
+      <div class="qvc-badge qvc-badge--purple">QUANTUM COMPUTER</div>
+      <div class="qvc-icon">⚛️</div>
+      <div class="qvc-bits">
+        <span class="qvc-bit qvc-bit--q">|0⟩+|1⟩</span><span class="qvc-bit qvc-bit--q">|ψ⟩</span>
+      </div>
+      <div class="qvc-desc">Explores many states simultaneously. A qubit can be 0, 1, or both at once.</div>
+      <div class="qvc-points">
+        <div class="qvc-pt"><span class="qvc-dot qvc-dot--purple"></span>Probabilistic</div>
+        <div class="qvc-pt"><span class="qvc-dot qvc-dot--purple"></span>Parallel exploration</div>
+        <div class="qvc-pt"><span class="qvc-dot qvc-dot--purple"></span>Great for specific hard problems</div>
+        <div class="qvc-pt"><span class="qvc-dot qvc-dot--purple"></span>Emerging & experimental</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qvc-note">Quantum computers don't replace classical ones — they're a different tool for a different type of problem.</div>
+</div>
+
+<style>
+  .qvc-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .qvc-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .qvc-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .qvc-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:center;margin-bottom:1.5rem}
+  @media(max-width:600px){.qvc-grid{grid-template-columns:1fr;}.qvc-vs{text-align:center}}
+  .qvc-card{background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:12px;padding:1.5rem;opacity:0;animation:qvcIn .5s ease forwards;animation-delay:calc(var(--i)*.2s)}
+  .qvc-vs{color:#f59e0b;font-size:1.5rem;font-weight:900;font-family:monospace;opacity:0;animation:qvcIn .4s ease forwards;animation-delay:calc(var(--i)*.2s)}
+  .qvc-badge{font-size:.6rem;font-family:monospace;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:.75rem}
+  .qvc-badge--blue{color:#38bdf8;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.2)}
+  .qvc-badge--purple{color:#a78bfa;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2)}
+  .qvc-icon{font-size:2rem;margin-bottom:.75rem}
+  .qvc-bits{display:flex;gap:6px;margin-bottom:.75rem;flex-wrap:wrap}
+  .qvc-bit{padding:4px 10px;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.15);border-radius:6px;color:#38bdf8;font-family:monospace;font-size:.75rem}
+  .qvc-bit--q{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.15);color:#a78bfa}
+  .qvc-desc{color:#94a3b8;font-size:.75rem;line-height:1.5;margin-bottom:.75rem}
+  .qvc-points{display:flex;flex-direction:column;gap:4px}
+  .qvc-pt{display:flex;align-items:center;gap:6px;color:#94a3b8;font-size:.68rem;font-family:monospace}
+  .qvc-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .qvc-dot--blue{background:#38bdf8}.qvc-dot--purple{background:#a78bfa}
+  .qvc-note{color:#94a3b8;font-size:.7rem;line-height:1.6;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border:1px solid #334155}
+  @keyframes qvcIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>

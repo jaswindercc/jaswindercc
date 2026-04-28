@@ -1,0 +1,48 @@
+---
+/**
+ * DistillationVisual.astro
+ * Model distillation process visual
+ */
+---
+
+<div class="dist-wrap">
+  <h3 class="dist-title">Model Distillation — Teacher to Student</h3>
+  <div class="dist-flow">
+    <div class="dist-model dist-teacher" style="--i:0;">
+      <div class="dist-label">Teacher Model</div>
+      <div class="dist-size">70B parameters</div>
+      <div class="dist-traits">High accuracy, slow, expensive</div>
+    </div>
+    <div class="dist-arrow">
+      <div class="dist-arrow-text">Soft labels (probability distributions)</div>
+      <div class="dist-arrow-line">→→→</div>
+    </div>
+    <div class="dist-model dist-student" style="--i:1;">
+      <div class="dist-label">Student Model</div>
+      <div class="dist-size">7B parameters</div>
+      <div class="dist-traits">90% accuracy, 10x faster, 10x cheaper</div>
+    </div>
+  </div>
+  <div class="dist-key">
+    <div class="dist-insight">💡 The student learns from the teacher's probability distribution (soft labels), not just the correct answer (hard labels). This transfers "dark knowledge" — the teacher's uncertainty and nuance.</div>
+  </div>
+</div>
+
+<style>
+  .dist-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .dist-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .dist-flow{display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+  .dist-model{background:rgba(255,255,255,0.03);border-radius:14px;padding:1.5rem;text-align:center;min-width:180px;opacity:0;animation:distFade .5s ease forwards;animation-delay:calc(var(--i)*.3s)}
+  @keyframes distFade{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+  .dist-teacher{border:2px solid #f59e0b}
+  .dist-student{border:2px solid #4ade80}
+  .dist-label{font-weight:700;font-size:.95rem;margin-bottom:.25rem}
+  .dist-teacher .dist-label{color:#f59e0b}.dist-student .dist-label{color:#4ade80}
+  .dist-size{font-size:1.3rem;font-weight:700;color:#f1f5f9}
+  .dist-traits{color:#94a3b8;font-size:.78rem;margin-top:.25rem}
+  .dist-arrow{text-align:center}
+  .dist-arrow-text{color:#06b6d4;font-size:.72rem;margin-bottom:.3rem}
+  .dist-arrow-line{color:#64748b;font-size:1.2rem;letter-spacing:4px}
+  .dist-key{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:1rem}
+  .dist-insight{color:#94a3b8;font-size:.82rem;line-height:1.5}
+</style>

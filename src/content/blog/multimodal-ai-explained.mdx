@@ -1,0 +1,23 @@
+---
+title: "Multimodal AI — When Models See, Hear, and Read"
+description: "Visual guide to multimodal AI. Understand how models process text, images, audio, and video simultaneously, and the practical applications this enables."
+date: 2026-05-20
+---
+
+import MultimodalVisual from '../../components/visual/MultimodalVisual.astro';
+
+Early LLMs were text-in, text-out. You typed a question, you got text back. Multimodal models process multiple types of input — text, images, audio, video — and reason across them simultaneously. "Look at this screenshot and tell me what's broken" is a multimodal query. "Listen to this audio clip and transcribe it while identifying the speakers" is another.
+
+This isn't about chaining separate models (OCR → text → LLM). It's about one model that natively understands all modalities in a unified representation space.
+
+## The Modalities
+
+Modern multimodal models accept several input types and can generate text (and increasingly, images and audio) as output. The power isn't in any single modality — it's in the cross-modal reasoning.
+
+<MultimodalVisual />
+
+Images are the most mature non-text modality. Models like GPT-4o, Claude, and Gemini can read charts, interpret diagrams, OCR documents, describe photos, and spot visual bugs in UI screenshots. This unlocked use cases that were previously impossible: "here's a photo of my network rack, identify the cable management issues" or "here's a screenshot of my app, what's the accessibility problem?"
+
+Audio and video are newer modalities but progressing rapidly. Real-time conversation with voice models feels qualitatively different from typed chat — the model picks up on tone, hesitation, and emphasis that text strips away. Video understanding enables analyzing screen recordings, security camera feeds, and educational content at scale.
+
+The practical applications multiply when you combine modalities. A customer support agent that can see the user's screenshot, hear their frustrated tone, read the error log they pasted, and cross-reference with documentation — all in a single inference. A code review tool that reads the PR diff, sees the architecture diagram, and checks both against the team's coding standards.

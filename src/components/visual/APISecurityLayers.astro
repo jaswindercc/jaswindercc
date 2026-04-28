@@ -1,0 +1,24 @@
+---
+// APISecurityLayers.astro — Defense layers for API security
+---
+<div class="asl-wrap">
+  <h3 class="asl-title">Defense Layers — Outside In</h3>
+  <div class="asl-stack">
+    <div class="asl-layer asl-l1"><span class="asl-badge">L1</span><div class="asl-info"><span class="asl-nm">WAF / API Gateway</span><span class="asl-d">Rate limiting, bot detection, IP filtering, request size limits, DDoS protection</span></div></div>
+    <div class="asl-layer asl-l2"><span class="asl-badge asl-badge--amber">L2</span><div class="asl-info"><span class="asl-nm">Authentication</span><span class="asl-d">JWT validation, API key verification, OAuth token introspection, mTLS for service-to-service</span></div></div>
+    <div class="asl-layer asl-l3"><span class="asl-badge asl-badge--cyan">L3</span><div class="asl-info"><span class="asl-nm">Authorization</span><span class="asl-d">RBAC/ABAC policy checks, object-level ownership validation, permission boundaries</span></div></div>
+    <div class="asl-layer asl-l4"><span class="asl-badge asl-badge--green">L4</span><div class="asl-info"><span class="asl-nm">Input Validation</span><span class="asl-d">Schema validation (JSON Schema/Zod), sanitization, SQL injection prevention, type coercion</span></div></div>
+    <div class="asl-layer asl-l5"><span class="asl-badge asl-badge--purple">L5</span><div class="asl-info"><span class="asl-nm">Business Logic</span><span class="asl-d">Domain-specific rules, idempotency, race condition prevention, transaction isolation</span></div></div>
+  </div>
+</div>
+<style>
+  .asl-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .asl-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .asl-stack{display:flex;flex-direction:column;gap:6px}
+  .asl-layer{display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(0,0,0,.15);border-radius:10px;border:1px solid #334155;opacity:0;animation:aslIn .4s ease forwards}
+  .asl-l1{animation-delay:.1s}.asl-l2{animation-delay:.2s}.asl-l3{animation-delay:.3s}.asl-l4{animation-delay:.4s}.asl-l5{animation-delay:.5s}
+  @keyframes aslIn{to{opacity:1}}
+  .asl-badge{font-family:monospace;font-size:.6rem;font-weight:800;color:#f87171;background:rgba(248,113,113,.1);padding:4px 8px;border-radius:6px;flex-shrink:0}
+  .asl-badge--amber{color:#f59e0b;background:rgba(245,158,11,.1)}.asl-badge--cyan{color:#06b6d4;background:rgba(6,182,212,.1)}.asl-badge--green{color:#4ade80;background:rgba(74,222,128,.1)}.asl-badge--purple{color:#818cf8;background:rgba(129,140,248,.1)}
+  .asl-info{flex:1}.asl-nm{display:block;color:#e2e8f0;font-weight:700;font-size:.8rem}.asl-d{display:block;color:#94a3b8;font-size:.68rem;line-height:1.4;margin-top:2px}
+</style>

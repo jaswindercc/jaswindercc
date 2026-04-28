@@ -1,0 +1,47 @@
+---
+title: "Fine-Tuning Small Language Models — When and How It Actually Works"
+description: "Practical guide to fine-tuning small language models. When fine-tuning beats prompting, how LoRA makes it affordable, and the data quality practices that determine success or failure."
+date: 2026-05-16
+---
+
+import FineTuningVisual from '../../components/visual/FineTuningVisual.astro';
+
+The instinct to fine-tune is usually wrong. Most tasks that seem to require fine-tuning actually need better prompting or a RAG pipeline. But when you genuinely need a model to adopt a new behavior — a consistent output format, domain-specific reasoning style, or specialized classification — fine-tuning a small model can outperform prompting a large one at a fraction of the cost.
+
+## Decision Framework
+
+Before investing weeks in fine-tuning, run through this decision tree. Each alternative is cheaper and faster, so you want to exhaust them before committing to training.
+
+<FineTuningVisual />
+
+Prompt engineering costs nothing and takes hours. If you haven't tried few-shot examples, system prompts, and chain-of-thought instructions, start there. RAG adds external knowledge without changing the model — ideal when the model knows how to reason but lacks specific facts. Fine-tuning changes the model itself — its style, format, and domain behavior.
+
+## Why Small Models
+
+A fine-tuned 7B parameter model often matches or exceeds a general-purpose 70B model on the specific task you fine-tuned for. The economics are compelling: inference costs drop by 10x, latency improves by 3-5x, and you can run the model on a single GPU instead of needing a multi-GPU cluster.
+
+Mistral 7B, Llama 3 8B, and Phi-3 are the current sweet spots for fine-tuning. They're small enough to train on a single A100 GPU, large enough to capture complex patterns, and permissively licensed for commercial use. The quality-per-parameter of these models has improved dramatically — today's 7B model outperforms GPT-3 (175B) on most benchmarks.
+
+## Data Quality Over Quantity
+
+The single biggest determinant of fine-tuning success is data quality. Five hundred carefully curated examples consistently outperform ten thousand noisy ones. Each training example should demonstrate exactly the behavior you want — correct format, appropriate reasoning depth, accurate domain knowledge.
+
+Common data quality mistakes: including examples with contradictory formats, mixing difficulty levels without balance, and using machine-generated training data without human verification. If your training data is inconsistent, your model will be inconsistent. Garbage in, confident garbage out.
+
+The instruction format matters. Use the chat template your base model was trained with. For Llama models, that's the Llama chat format. For Mistral, it's the instruct format. Mismatched templates degrade performance because you're fighting the model's pre-trained expectations.
+
+## LoRA and QLoRA
+
+Full fine-tuning updates every parameter in the model. For a 7B model, that's 14GB of parameters in FP16. LoRA (Low-Rank Adaptation) freezes the base model and adds small trainable matrices to attention layers. Instead of updating 7 billion parameters, you're training 10-50 million — a 99% reduction in trainable parameters.
+
+QLoRA goes further by quantizing the frozen model to 4-bit precision. This lets you fine-tune a 7B model on a single GPU with 24GB VRAM — consumer hardware territory. The quality loss from quantization is negligible for most tasks, and you can merge the LoRA weights back into a full-precision model for deployment.
+
+Typical LoRA hyperparameters: rank 16-64 (higher for complex tasks), alpha equal to rank, dropout 0.05-0.1, and a learning rate of 2e-4 with cosine scheduling. Train for 3-5 epochs, evaluate each epoch on a held-out set, and stop when validation loss plateaus.
+
+## Evaluation That Actually Works
+
+Loss curves tell you the model is learning — they don't tell you it's learning the right things. You need task-specific evaluation. For classification, measure accuracy and F1 on a held-out test set. For generation, use a combination of automated metrics (ROUGE, BERTScore) and human evaluation.
+
+The most reliable evaluation method: create 50-100 test cases with gold-standard outputs, run them through both your fine-tuned model and the base model with your best prompt, and have domain experts blind-rate the outputs. If the fine-tuned model doesn't clearly win, your training data needs work — not more training epochs.
+
+Watch for catastrophic forgetting. Fine-tuning on a narrow task can degrade the model's general capabilities. Test your fine-tuned model on a few general-knowledge questions to ensure it hasn't lost basic reasoning. If it has, reduce the learning rate or train for fewer epochs.

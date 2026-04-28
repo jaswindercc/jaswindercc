@@ -1,0 +1,22 @@
+---
+// GitOpsPitfalls.astro — Common GitOps mistakes
+---
+<div class="gp-wrap">
+  <h3 class="gp-title">Pitfalls I've Seen in Production</h3>
+  <div class="gp-list">
+    <div class="gp-item gp-i1"><span class="gp-x">⚠️</span><div class="gp-body"><span class="gp-nm">Secrets in Git (plaintext)</span><span class="gp-d">GitOps means everything in Git — but secrets must be encrypted. Use SOPS, Sealed Secrets, or External Secrets Operator.</span></div></div>
+    <div class="gp-item gp-i2"><span class="gp-x">⚠️</span><div class="gp-body"><span class="gp-nm">Monorepo config for 50 apps</span><span class="gp-d">One config repo is fine for 10 services. At 50, ArgoCD's sync time slows, PRs conflict, and blast radius is the entire platform.</span></div></div>
+    <div class="gp-item gp-i3"><span class="gp-x">⚠️</span><div class="gp-body"><span class="gp-nm">No promotion strategy</span><span class="gp-d">Same manifests for dev and prod. Without Kustomize overlays or Helm values, you deploy untested configs to production.</span></div></div>
+    <div class="gp-item gp-i4"><span class="gp-x">⚠️</span><div class="gp-body"><span class="gp-nm">Manual kubectl edits</span><span class="gp-d">Someone "fixes" a prod issue with kubectl edit. ArgoCD reverts it 3 minutes later. Panic. The fix must go through Git.</span></div></div>
+  </div>
+</div>
+<style>
+  .gp-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .gp-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .gp-list{display:flex;flex-direction:column;gap:8px}
+  .gp-item{display:flex;gap:10px;padding:12px 14px;background:rgba(0,0,0,.15);border-radius:10px;border:1px solid #334155;border-left:3px solid #f59e0b;opacity:0;animation:gpIn .4s ease forwards}
+  .gp-i1{animation-delay:.1s}.gp-i2{animation-delay:.2s}.gp-i3{animation-delay:.3s}.gp-i4{animation-delay:.4s}
+  @keyframes gpIn{to{opacity:1}}
+  .gp-x{font-size:1rem;flex-shrink:0}
+  .gp-body{flex:1}.gp-nm{display:block;color:#e2e8f0;font-weight:700;font-size:.8rem;margin-bottom:2px}.gp-d{display:block;color:#94a3b8;font-size:.7rem;line-height:1.5}
+</style>

@@ -1,0 +1,23 @@
+---
+title: "CDN Architecture — How Content Reaches Users Fast"
+description: "Visual guide to CDN architecture. Understand edge POPs, origin shields, cache hierarchies, and why a properly configured CDN reduces latency by 10-50x."
+date: 2026-05-25
+---
+
+import CDNArch from '../../components/visual/CDNArch.astro';
+
+Without a CDN, a user in Tokyo requesting your image from a server in Virginia waits 200+ milliseconds for a round trip across the Pacific. With a CDN, that image is cached at an edge server in Tokyo and served in 5 milliseconds. A 40x improvement, with no application code changes.
+
+CDNs work by caching your content at hundreds of Points of Presence (POPs) around the world. The first request goes all the way to your origin server. Every subsequent request from that region is served from the local cache.
+
+## The Caching Hierarchy
+
+A modern CDN isn't just edge caches and an origin. There's usually an intermediate caching layer — the origin shield — that protects your origin from thundering herd problems when edge caches expire simultaneously.
+
+<CDNArch />
+
+The origin shield is a critical optimization most teams miss. Without it, a cache expiration means every edge POP fetches from your origin simultaneously. With an origin shield, edge POPs fetch from the shield (which has its own cache), and only the shield fetches from origin. Your origin gets one request instead of hundreds.
+
+Cache hit rate is the single most important CDN metric. A 95% hit rate means 95% of requests never reach your origin — they're served instantly from edge. Improving from 90% to 95% cuts origin traffic in half. The levers: increase TTLs (cache longer), add cache keys wisely (don't vary cache on unnecessary headers), and use stale-while-revalidate to serve cached content while refreshing in the background.
+
+For dynamic content, CDNs now offer edge compute (Cloudflare Workers, Lambda@Edge, Fastly Compute). Run code at the edge POP instead of routing to a distant origin. API responses, personalization, A/B testing, authentication — all can run at the edge with single-digit millisecond latency.

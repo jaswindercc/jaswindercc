@@ -1,0 +1,28 @@
+---
+// VectorSearchFlow.astro — How vector search works
+---
+<div class="vsf-wrap">
+  <h3 class="vsf-title">How Vector Search Works</h3>
+  <div class="vsf-flow">
+    <div class="vsf-step vsf-s1"><span class="vsf-n">1</span><div class="vsf-info"><span class="vsf-nm">Document → Embedding Model</span><span class="vsf-d">"Machine learning is transforming healthcare" → [0.23, -0.87, 0.15, ..., 0.42] (1536 dimensions)</span></div></div>
+    <div class="vsf-arrow">↓</div>
+    <div class="vsf-step vsf-s2"><span class="vsf-n">2</span><div class="vsf-info"><span class="vsf-nm">Store in Vector DB</span><span class="vsf-d">Vector indexed with ANN algorithm (HNSW, IVF) for fast nearest-neighbor search</span></div></div>
+    <div class="vsf-arrow">↓</div>
+    <div class="vsf-step vsf-s3"><span class="vsf-n">3</span><div class="vsf-info"><span class="vsf-nm">Query → Same Embedding Model</span><span class="vsf-d">"How is AI used in medicine?" → [0.19, -0.82, 0.21, ..., 0.38]</span></div></div>
+    <div class="vsf-arrow">↓</div>
+    <div class="vsf-step vsf-s4"><span class="vsf-n">4</span><div class="vsf-info"><span class="vsf-nm">Cosine Similarity Search</span><span class="vsf-d">Find vectors closest to the query vector. The healthcare doc scores 0.94 similarity — high match despite zero word overlap.</span></div></div>
+  </div>
+  <div class="vsf-key"><strong>Key insight:</strong> Vector search finds semantic similarity, not keyword matches. "AI in medicine" finds "machine learning in healthcare" because their meanings are close in embedding space — even though they share no words.</div>
+</div>
+<style>
+  .vsf-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .vsf-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .vsf-flow{display:flex;flex-direction:column;align-items:center;gap:0;margin-bottom:1.5rem}
+  .vsf-step{display:flex;align-items:center;gap:12px;padding:10px 16px;background:rgba(0,0,0,.2);border-radius:10px;border:1px solid #334155;width:100%;max-width:480px;opacity:0;animation:vsfIn .4s ease forwards}
+  .vsf-s1{animation-delay:.1s}.vsf-s2{animation-delay:.3s}.vsf-s3{animation-delay:.5s}.vsf-s4{animation-delay:.7s}
+  @keyframes vsfIn{to{opacity:1}}
+  .vsf-n{font-family:monospace;font-size:.65rem;font-weight:800;width:22px;height:22px;border-radius:50%;background:rgba(129,140,248,.1);color:#818cf8;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .vsf-info{flex:1}.vsf-nm{display:block;color:#e2e8f0;font-size:.78rem;font-weight:700}.vsf-d{display:block;color:#94a3b8;font-size:.67rem;font-family:monospace;margin-top:2px;line-height:1.4}
+  .vsf-arrow{color:#475569;font-size:.7rem;height:14px;display:flex;align-items:center}
+  .vsf-key{color:#94a3b8;font-size:.72rem;line-height:1.6;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border:1px solid #334155}.vsf-key strong{color:#f59e0b}
+</style>

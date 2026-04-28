@@ -1,0 +1,47 @@
+---
+title: "Threat Modeling with STRIDE — Finding Vulnerabilities Before Attackers Do"
+description: "Practical guide to STRIDE threat modeling. Walk through each threat category with real examples, learn the process of systematic threat identification, and build threat models for your systems."
+date: 2026-05-02
+---
+
+import STRIDEVisual from '../../components/visual/STRIDEVisual.astro';
+
+Most security vulnerabilities exist because nobody thought about them during design. Threat modeling is the practice of systematically thinking about what can go wrong before writing code. STRIDE is the most widely used framework — it gives you six categories of threats to check against every component of your system. It doesn't require security expertise to start, just structured thinking.
+
+## The Six Categories
+
+STRIDE is a mnemonic. Each letter represents a threat category that maps to a security property — Spoofing violates authentication, tampering violates integrity, and so on.
+
+<STRIDEVisual />
+
+These six categories cover the vast majority of application security vulnerabilities. OWASP Top 10 entries all fit into STRIDE categories: SQL injection is Tampering, broken authentication is Spoofing, sensitive data exposure is Information Disclosure, broken access control is Elevation of Privilege.
+
+## The Threat Modeling Process
+
+Start with a data flow diagram (DFD). Draw every component — web server, API, database, external service, message queue. Draw arrows showing how data flows between them. Mark trust boundaries — the lines between your network and the internet, between your application and the database, between your service and a third-party API.
+
+For each data flow that crosses a trust boundary, apply STRIDE. Ask six questions: Can someone spoof the sender? Can someone tamper with the data? Can someone deny they performed an action? Can someone read data they shouldn't? Can someone crash this component? Can someone escalate their privileges?
+
+Not every flow has all six threats. A read-only public API has minimal tampering risk but high information disclosure risk. An internal service behind a VPN has lower spoofing risk but still needs authorization (elevation of privilege).
+
+## Working Through an Example
+
+Consider a web application with a user-facing frontend, an API server, a PostgreSQL database, and a payment service. Trust boundaries exist between: the user's browser and the API, the API and the database, the API and the payment service.
+
+At the browser-to-API boundary: **Spoofing** — stolen session tokens allow impersonation (mitigate with short-lived JWTs, token binding). **Tampering** — modified request bodies could change order amounts (mitigate with server-side validation, never trust client data). **Information Disclosure** — error messages revealing stack traces or SQL queries (mitigate with generic error responses). **Denial of Service** — malicious clients flooding the API (mitigate with rate limiting, CAPTCHA).
+
+At the API-to-database boundary: **Tampering** — SQL injection modifying queries (mitigate with parameterized queries, ORM). **Information Disclosure** — excessive database permissions exposing tables the API doesn't need (mitigate with least privilege, separate read/write users). **Elevation of Privilege** — bulk data access through the application's broad permissions (mitigate with row-level security, application-level authorization).
+
+## Prioritizing Threats
+
+Not all threats are equally dangerous. A threat that requires physical access to your server is less urgent than one exploitable from the internet. Use DREAD or risk matrices to prioritize: how damaging is it, how reproducible, how exploitable, how many users affected, how discoverable.
+
+Focus on threats that are high impact and high likelihood first. A SQL injection vulnerability on a public-facing login form is critical — high impact (data breach), high likelihood (automated scanners find it in minutes). A theoretical timing attack on an internal service is lower priority — still fix it, but after the critical items.
+
+## Making Threat Modeling Sustainable
+
+The biggest threat to threat modeling is treating it as a one-time event. Systems change — new features, new integrations, new deployment patterns — and each change introduces new threats. Threat models need updating.
+
+Integrate threat modeling into your development process. For new features, spend 30 minutes drawing the data flow and running STRIDE against new trust boundaries. For major architecture changes, hold a dedicated threat modeling session with developers, security engineers, and architects.
+
+Keep threat models lightweight. A whiteboard diagram with sticky notes for threats is better than a 50-page document nobody reads. Tools like OWASP Threat Dragon and Microsoft Threat Modeling Tool provide structure, but the value is in the thinking process, not the tool output. A team that spends an hour thinking adversarially about their system finds more bugs than any tool.

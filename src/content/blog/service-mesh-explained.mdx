@@ -1,0 +1,37 @@
+---
+title: "Service Mesh Explained — Istio, Linkerd, and Beyond"
+description: "Visual guide to service mesh architecture. Understand the sidecar pattern, compare Istio vs Linkerd vs Cilium, and figure out if you actually need a mesh."
+date: 2026-06-14
+---
+
+import ServiceMeshArch from '../../components/visual/ServiceMeshArch.astro';
+import MeshCompare from '../../components/visual/MeshCompare.astro';
+import MeshDecision from '../../components/visual/MeshDecision.astro';
+
+When you have three services, networking is simple. Service A calls Service B, maybe through a load balancer. When you have thirty services, networking becomes a distributed systems problem: mTLS between every pair, retry policies, circuit breakers, traffic splitting, observability for every connection. A service mesh handles all of this at the infrastructure layer so your application code doesn't have to.
+
+The mesh intercepts all network traffic through sidecar proxies (or eBPF hooks) and applies policies transparently. Your service sends a plain HTTP request. The proxy encrypts it, routes it, retries on failure, collects metrics, and enforces access policies — all without your code knowing.
+
+## 1. How the Sidecar Pattern Works
+
+Every pod gets an injected sidecar proxy that intercepts all inbound and outbound traffic. The proxy handles the hard stuff: TLS termination, load balancing, retries, timeouts, circuit breaking. The control plane pushes configuration to every proxy and collects telemetry from them.
+
+<ServiceMeshArch />
+
+This is the fundamental value proposition. Without a mesh, you implement retries in every service (in different languages, with different libraries, with different bugs). With a mesh, you define retry policy once in the control plane and every service inherits it. Same for mTLS, rate limiting, and observability.
+
+## 2. Tool Comparison
+
+The service mesh landscape has consolidated to three serious options. Istio is the most feature-complete. Linkerd is the simplest. Cilium is the newest and fastest, replacing sidecars with kernel-level eBPF programs.
+
+<MeshCompare />
+
+The choice usually comes down to operational maturity. Istio requires dedicated platform engineers to operate well — its configuration surface is enormous. Linkerd is designed to be simple enough that application teams can manage it themselves. Cilium is the performance play, but it requires Linux kernel 5.8+ and eBPF expertise.
+
+## 3. When You Don't Need a Mesh
+
+Not every microservice architecture needs a service mesh. The overhead is real — CPU and memory for sidecar proxies, operational complexity, debugging through an extra network hop. If your mesh solves problems you don't have, it's pure cost.
+
+<MeshDecision />
+
+The honest answer for most teams: you probably don't need a full service mesh until you hit 15-20+ services with strict security requirements. Before that, Kubernetes network policies for segmentation and a simple retry library get you 80% of the value at 10% of the complexity.

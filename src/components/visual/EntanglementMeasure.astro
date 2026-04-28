@@ -1,0 +1,50 @@
+---
+// EntanglementMeasure.astro — Shows what happens when measuring entangled qubits
+---
+
+<div class="etm-wrap">
+  <h3 class="etm-title">What Happens When You Measure?</h3>
+  <p class="etm-sub">Four runs of measuring an entangled Bell pair — results are always correlated.</p>
+
+  <div class="etm-runs">
+    <div class="etm-run" style="--i:0">
+      <div class="etm-rn">Run 1</div>
+      <div class="etm-pair"><span class="etm-q etm-q--a">A → |0⟩</span><span class="etm-q etm-q--b">B → |0⟩</span></div>
+      <div class="etm-result etm-result--match">✓ Correlated</div>
+    </div>
+    <div class="etm-run" style="--i:1">
+      <div class="etm-rn">Run 2</div>
+      <div class="etm-pair"><span class="etm-q etm-q--a">A → |1⟩</span><span class="etm-q etm-q--b">B → |1⟩</span></div>
+      <div class="etm-result etm-result--match">✓ Correlated</div>
+    </div>
+    <div class="etm-run" style="--i:2">
+      <div class="etm-rn">Run 3</div>
+      <div class="etm-pair"><span class="etm-q etm-q--a">A → |0⟩</span><span class="etm-q etm-q--b">B → |0⟩</span></div>
+      <div class="etm-result etm-result--match">✓ Correlated</div>
+    </div>
+    <div class="etm-run" style="--i:3">
+      <div class="etm-rn">Run 4</div>
+      <div class="etm-pair"><span class="etm-q etm-q--a">A → |1⟩</span><span class="etm-q etm-q--b">B → |1⟩</span></div>
+      <div class="etm-result etm-result--match">✓ Correlated</div>
+    </div>
+  </div>
+
+  <div class="etm-note">Each individual result (0 or 1) is random — you can't predict it. But A and B always match. That's entanglement.</div>
+</div>
+
+<style>
+  .etm-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .etm-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .etm-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .etm-runs{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:1rem}
+  .etm-run{background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:10px;padding:1rem;opacity:0;animation:etmIn .4s ease forwards;animation-delay:calc(var(--i)*.12s)}
+  .etm-rn{color:#64748b;font-size:.6rem;font-family:monospace;margin-bottom:.5rem}
+  .etm-pair{display:flex;flex-direction:column;gap:4px;margin-bottom:.5rem}
+  .etm-q{font-size:.7rem;font-family:monospace;padding:3px 8px;border-radius:4px}
+  .etm-q--a{color:#a78bfa;background:rgba(167,139,250,.08)}
+  .etm-q--b{color:#f472b6;background:rgba(244,114,182,.08)}
+  .etm-result{font-size:.6rem;font-family:monospace;padding:2px 8px;border-radius:12px;display:inline-block}
+  .etm-result--match{color:#4ade80;background:rgba(74,222,128,.08)}
+  .etm-note{color:#94a3b8;font-size:.7rem;line-height:1.6;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border:1px solid #334155}
+  @keyframes etmIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+</style>

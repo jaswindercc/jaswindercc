@@ -1,0 +1,68 @@
+---
+// QuantumSDKCompare.astro — Comparison of quantum programming SDKs
+---
+
+<div class="qsc-wrap">
+  <h3 class="qsc-title">Quantum Programming SDKs — Pick Your Tool</h3>
+  <p class="qsc-sub">Multiple frameworks, different strengths. Here's how they compare.</p>
+
+  <div class="qsc-table-wrap">
+    <div class="qsc-header">
+      <div class="qsc-h">SDK</div>
+      <div class="qsc-h">Company</div>
+      <div class="qsc-h">Language</div>
+      <div class="qsc-h">Hardware</div>
+      <div class="qsc-h">Free Tier</div>
+    </div>
+    <div class="qsc-row" style="--i:0;--c:#06b6d4">
+      <div class="qsc-cell qsc-cell--name">Qiskit</div>
+      <div class="qsc-cell">IBM</div>
+      <div class="qsc-cell">Python</div>
+      <div class="qsc-cell">IBM Quantum (127+ qubits)</div>
+      <div class="qsc-cell qsc-cell--yes">✓ Yes</div>
+    </div>
+    <div class="qsc-row" style="--i:1;--c:#4ade80">
+      <div class="qsc-cell qsc-cell--name">Cirq</div>
+      <div class="qsc-cell">Google</div>
+      <div class="qsc-cell">Python</div>
+      <div class="qsc-cell">Google Sycamore</div>
+      <div class="qsc-cell qsc-cell--partial">~ Limited</div>
+    </div>
+    <div class="qsc-row" style="--i:2;--c:#f59e0b">
+      <div class="qsc-cell qsc-cell--name">Amazon Braket</div>
+      <div class="qsc-cell">AWS</div>
+      <div class="qsc-cell">Python</div>
+      <div class="qsc-cell">IonQ, Rigetti, OQC</div>
+      <div class="qsc-cell qsc-cell--yes">✓ Free hours</div>
+    </div>
+    <div class="qsc-row" style="--i:3;--c:#a78bfa">
+      <div class="qsc-cell qsc-cell--name">Azure Quantum</div>
+      <div class="qsc-cell">Microsoft</div>
+      <div class="qsc-cell">Q# / Python</div>
+      <div class="qsc-cell">IonQ, Quantinuum</div>
+      <div class="qsc-cell qsc-cell--yes">✓ Credits</div>
+    </div>
+    <div class="qsc-row" style="--i:4;--c:#f472b6">
+      <div class="qsc-cell qsc-cell--name">PennyLane</div>
+      <div class="qsc-cell">Xanadu</div>
+      <div class="qsc-cell">Python</div>
+      <div class="qsc-cell">Multiple backends</div>
+      <div class="qsc-cell qsc-cell--yes">✓ Yes</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .qsc-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .qsc-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .qsc-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .qsc-table-wrap{overflow-x:auto}
+  .qsc-header{display:grid;grid-template-columns:1fr .8fr .6fr 1.2fr .6fr;gap:1px;margin-bottom:2px}
+  .qsc-h{color:#64748b;font-size:.6rem;font-family:monospace;font-weight:700;text-transform:uppercase;padding:8px 10px;background:rgba(0,0,0,.2);border-radius:4px}
+  .qsc-row{display:grid;grid-template-columns:1fr .8fr .6fr 1.2fr .6fr;gap:1px;opacity:0;animation:qscIn .4s ease forwards;animation-delay:calc(var(--i)*.1s);margin-bottom:2px}
+  .qsc-row:hover .qsc-cell{background:rgba(0,0,0,.3)}
+  .qsc-cell{color:#94a3b8;font-size:.68rem;font-family:monospace;padding:10px;background:rgba(0,0,0,.15);border-radius:4px;transition:background .2s}
+  .qsc-cell--name{color:var(--c);font-weight:600}
+  .qsc-cell--yes{color:#4ade80}.qsc-cell--partial{color:#f59e0b}
+  @keyframes qscIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+</style>

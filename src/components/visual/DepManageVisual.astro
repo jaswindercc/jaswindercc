@@ -1,0 +1,59 @@
+---
+/**
+ * DepManageVisual.astro
+ * Dependency management strategies compared
+ */
+---
+
+<div class="dmv-wrap">
+  <h3 class="dmv-title">Dependency Pinning Strategies</h3>
+  <div class="dmv-table">
+    <div class="dmv-header">
+      <span>Strategy</span><span>Syntax</span><span>Installs</span><span>Risk</span>
+    </div>
+    <div class="dmv-row" style="--i:0;--c:#ef4444;">
+      <span class="dmv-strat">Latest</span>
+      <span class="dmv-code">*</span>
+      <span class="dmv-val">Any version</span>
+      <span class="dmv-risk high">🔴 High</span>
+    </div>
+    <div class="dmv-row" style="--i:1;--c:#f59e0b;">
+      <span class="dmv-strat">Range</span>
+      <span class="dmv-code">^1.2.0</span>
+      <span class="dmv-val">1.2.0 – 1.x.x</span>
+      <span class="dmv-risk med">🟡 Medium</span>
+    </div>
+    <div class="dmv-row" style="--i:2;--c:#06b6d4;">
+      <span class="dmv-strat">Tilde</span>
+      <span class="dmv-code">~1.2.0</span>
+      <span class="dmv-val">1.2.0 – 1.2.x</span>
+      <span class="dmv-risk low">🔵 Low-Med</span>
+    </div>
+    <div class="dmv-row" style="--i:3;--c:#4ade80;">
+      <span class="dmv-strat">Exact</span>
+      <span class="dmv-code">1.2.3</span>
+      <span class="dmv-val">Only 1.2.3</span>
+      <span class="dmv-risk safe">🟢 Lowest</span>
+    </div>
+    <div class="dmv-row" style="--i:4;--c:#818cf8;">
+      <span class="dmv-strat">Lockfile</span>
+      <span class="dmv-code">lock file</span>
+      <span class="dmv-val">Exact resolved</span>
+      <span class="dmv-risk safe">🟢 Deterministic</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .dmv-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .dmv-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .dmv-table{display:flex;flex-direction:column;gap:.4rem}
+  .dmv-header{display:grid;grid-template-columns:1fr 1fr 1.5fr 1fr;gap:.5rem;padding:.5rem .75rem;color:#64748b;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+  .dmv-row{display:grid;grid-template-columns:1fr 1fr 1.5fr 1fr;gap:.5rem;padding:.6rem .75rem;background:rgba(0,0,0,.2);border-radius:8px;border-left:3px solid var(--c);align-items:center;opacity:0;animation:dmvSlide .3s ease forwards;animation-delay:calc(var(--i)*.08s)}
+  @keyframes dmvSlide{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+  .dmv-strat{color:var(--c);font-weight:700;font-size:.8rem}
+  .dmv-code{color:#e2e8f0;font-family:monospace;font-size:.75rem;background:rgba(0,0,0,.3);padding:.1rem .3rem;border-radius:4px;width:fit-content}
+  .dmv-val{color:#94a3b8;font-size:.73rem}
+  .dmv-risk{font-size:.72rem;font-weight:600}
+  .dmv-risk.high{color:#ef4444}.dmv-risk.med{color:#f59e0b}.dmv-risk.low{color:#06b6d4}.dmv-risk.safe{color:#4ade80}
+</style>

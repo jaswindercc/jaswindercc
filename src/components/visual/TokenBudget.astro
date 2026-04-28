@@ -1,0 +1,36 @@
+---
+// TokenBudget.astro — How to allocate your token budget
+---
+<div class="tb-wrap">
+  <h3 class="tb-title">Token Budget Allocation</h3>
+  <p class="tb-sub">Your context window has a fixed size. Everything — system prompt, history, retrieval docs, user query, AND the response — must fit inside it.</p>
+  <div class="tb-budget">
+    <div class="tb-seg tb-seg--sys"><span class="tb-pct">10%</span><span class="tb-nm">System Prompt</span></div>
+    <div class="tb-seg tb-seg--hist"><span class="tb-pct">25%</span><span class="tb-nm">Conversation History</span></div>
+    <div class="tb-seg tb-seg--rag"><span class="tb-pct">35%</span><span class="tb-nm">Retrieved Context (RAG)</span></div>
+    <div class="tb-seg tb-seg--user"><span class="tb-pct">10%</span><span class="tb-nm">User Query</span></div>
+    <div class="tb-seg tb-seg--resp"><span class="tb-pct">20%</span><span class="tb-nm">Response (max_tokens)</span></div>
+  </div>
+  <div class="tb-formula">
+    <span class="tb-f">system + history + retrieval + query + max_tokens ≤ context_window</span>
+  </div>
+  <div class="tb-warn">If you exceed the limit: the API either truncates (cuts off older messages) or returns an error. Neither is good. Budget proactively.</div>
+</div>
+<style>
+  .tb-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .tb-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.tb-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem}
+  .tb-budget{display:flex;border-radius:10px;overflow:hidden;height:40px;margin-bottom:1rem}
+  .tb-seg{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;opacity:0;animation:tbIn .5s ease forwards}
+  .tb-seg--sys{background:rgba(248,113,113,.2);border-right:1px solid #1e293b;flex:10;animation-delay:.1s}
+  .tb-seg--hist{background:rgba(245,158,11,.2);border-right:1px solid #1e293b;flex:25;animation-delay:.2s}
+  .tb-seg--rag{background:rgba(6,182,212,.2);border-right:1px solid #1e293b;flex:35;animation-delay:.3s}
+  .tb-seg--user{background:rgba(129,140,248,.2);border-right:1px solid #1e293b;flex:10;animation-delay:.4s}
+  .tb-seg--resp{background:rgba(74,222,128,.2);flex:20;animation-delay:.5s}
+  @keyframes tbIn{to{opacity:1}}
+  .tb-pct{font-size:.6rem;font-weight:800;font-family:monospace}
+  .tb-seg--sys .tb-pct{color:#f87171}.tb-seg--hist .tb-pct{color:#f59e0b}.tb-seg--rag .tb-pct{color:#06b6d4}.tb-seg--user .tb-pct{color:#818cf8}.tb-seg--resp .tb-pct{color:#4ade80}
+  .tb-nm{font-size:.48rem;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .tb-formula{text-align:center;margin-bottom:1rem}
+  .tb-f{color:#06b6d4;font-size:.7rem;font-family:monospace;padding:6px 12px;background:rgba(6,182,212,.05);border-radius:6px;border:1px solid #06b6d420}
+  .tb-warn{color:#f59e0b;font-size:.7rem;line-height:1.5;padding:8px 12px;background:rgba(245,158,11,.05);border-radius:8px;border:1px solid #f59e0b20}
+</style>

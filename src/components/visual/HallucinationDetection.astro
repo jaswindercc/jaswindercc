@@ -1,0 +1,44 @@
+---
+// HallucinationDetection.astro — Detection methods comparison
+---
+<div class="hd-wrap">
+  <h3 class="hd-title">Detection Methods — Catching Lies</h3>
+  <div class="hd-methods">
+    <div class="hd-method hd-m1">
+      <div class="hd-mh"><span class="hd-badge hd-badge--green">Grounding</span><span class="hd-eff">Most Effective</span></div>
+      <p class="hd-md">Compare output against retrieved source documents. If the model says X but no source says X, flag it. This is how RAG + citation systems work.</p>
+      <div class="hd-pro"><span class="hd-tag hd-tag--green">Catches fabrication</span><span class="hd-tag hd-tag--green">Catches conflation</span></div>
+    </div>
+    <div class="hd-method hd-m2">
+      <div class="hd-mh"><span class="hd-badge hd-badge--cyan">Self-Consistency</span><span class="hd-eff">Good</span></div>
+      <p class="hd-md">Ask the model the same question 5 times with temperature > 0. If answers contradict each other, the model is uncertain and likely hallucinating.</p>
+      <div class="hd-pro"><span class="hd-tag hd-tag--cyan">No external data needed</span><span class="hd-tag hd-tag--amber">Expensive (5x cost)</span></div>
+    </div>
+    <div class="hd-method hd-m3">
+      <div class="hd-mh"><span class="hd-badge hd-badge--purple">Logprob Analysis</span><span class="hd-eff">Moderate</span></div>
+      <p class="hd-md">Check token-level log probabilities. Low-confidence tokens in factual claims are suspicious. Useful but not definitive — models can be confidently wrong.</p>
+      <div class="hd-pro"><span class="hd-tag hd-tag--purple">Fast</span><span class="hd-tag hd-tag--amber">Only works with logprob API access</span></div>
+    </div>
+    <div class="hd-method hd-m4">
+      <div class="hd-mh"><span class="hd-badge hd-badge--amber">External Verification</span><span class="hd-eff">Most Accurate</span></div>
+      <p class="hd-md">Use a second system (knowledge graph, search engine, database) to fact-check claims. Expensive but catches everything if the verification source is reliable.</p>
+      <div class="hd-pro"><span class="hd-tag hd-tag--green">Catches all types</span><span class="hd-tag hd-tag--red">Slow, costly, complex</span></div>
+    </div>
+  </div>
+</div>
+<style>
+  .hd-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .hd-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .hd-methods{display:flex;flex-direction:column;gap:10px}
+  .hd-method{padding:14px 16px;background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155;opacity:0;animation:hdIn .4s ease forwards}
+  .hd-m1{animation-delay:.1s}.hd-m2{animation-delay:.2s}.hd-m3{animation-delay:.3s}.hd-m4{animation-delay:.4s}
+  @keyframes hdIn{to{opacity:1}}
+  .hd-mh{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .hd-badge{font-size:.65rem;font-weight:700;padding:3px 8px;border-radius:20px;font-family:monospace}
+  .hd-badge--green{color:#4ade80;background:rgba(74,222,128,.1)}.hd-badge--cyan{color:#06b6d4;background:rgba(6,182,212,.1)}.hd-badge--purple{color:#818cf8;background:rgba(129,140,248,.1)}.hd-badge--amber{color:#f59e0b;background:rgba(245,158,11,.1)}
+  .hd-eff{color:#475569;font-size:.6rem;font-family:monospace;margin-left:auto}
+  .hd-md{color:#94a3b8;font-size:.73rem;line-height:1.6;margin:0 0 8px}
+  .hd-pro{display:flex;flex-wrap:wrap;gap:4px}
+  .hd-tag{font-size:.58rem;padding:2px 7px;border-radius:12px;font-family:monospace}
+  .hd-tag--green{color:#4ade80;background:rgba(74,222,128,.08)}.hd-tag--cyan{color:#06b6d4;background:rgba(6,182,212,.08)}.hd-tag--purple{color:#818cf8;background:rgba(129,140,248,.08)}.hd-tag--amber{color:#f59e0b;background:rgba(245,158,11,.08)}.hd-tag--red{color:#f87171;background:rgba(248,113,113,.08)}
+</style>

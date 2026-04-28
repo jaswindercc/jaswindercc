@@ -1,0 +1,30 @@
+---
+// DefenseChecklist.astro — Animated defense layers for supply chain
+---
+<div class="dc-wrap">
+  <h3 class="dc-title">Defense-in-Depth Checklist</h3>
+  <p class="dc-sub">Each layer blocks a different attack class. You need all of them.</p>
+  <div class="dc-layers">
+    <div class="dc-layer dc-layer--1"><div class="dc-icon">🔒</div><div class="dc-info"><span class="dc-nm">Lock Files + Pinned Versions</span><span class="dc-d">Commit package-lock.json / yarn.lock. Never use ^ or ~ in production. Pin exact versions so your build is deterministic.</span></div><div class="dc-bar"><div class="dc-fill dc-fill--1"></div></div></div>
+    <div class="dc-layer dc-layer--2"><div class="dc-icon">🛡️</div><div class="dc-info"><span class="dc-nm">Private Registry Scoping</span><span class="dc-d">Use .npmrc / pip.conf to scope internal packages to private registry. Block public registry for internal package names.</span></div><div class="dc-bar"><div class="dc-fill dc-fill--2"></div></div></div>
+    <div class="dc-layer dc-layer--3"><div class="dc-icon">🔍</div><div class="dc-info"><span class="dc-nm">Dependency Scanning (SCA)</span><span class="dc-d">Snyk, Trivy, or Dependabot in CI. Fail builds on critical CVEs. Review transitive deps — 80% of your code is someone else's.</span></div><div class="dc-bar"><div class="dc-fill dc-fill--3"></div></div></div>
+    <div class="dc-layer dc-layer--4"><div class="dc-icon">📋</div><div class="dc-info"><span class="dc-nm">SBOM Generation</span><span class="dc-d">Generate Software Bill of Materials on every build. SPDX or CycloneDX format. Know exactly what shipped.</span></div><div class="dc-bar"><div class="dc-fill dc-fill--4"></div></div></div>
+    <div class="dc-layer dc-layer--5"><div class="dc-icon">✅</div><div class="dc-info"><span class="dc-nm">Signature Verification</span><span class="dc-d">Verify GPG/Sigstore signatures before install. Reject unsigned artifacts in production pipelines.</span></div><div class="dc-bar"><div class="dc-fill dc-fill--5"></div></div></div>
+    <div class="dc-layer dc-layer--6"><div class="dc-icon">🚨</div><div class="dc-info"><span class="dc-nm">Runtime Behavior Monitoring</span><span class="dc-d">Detect anomalous outbound network calls, filesystem access, or crypto operations from dependencies at runtime. Last line of defense.</span></div><div class="dc-bar"><div class="dc-fill dc-fill--6"></div></div></div>
+  </div>
+</div>
+<style>
+  .dc-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .dc-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.dc-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem}
+  .dc-layers{display:flex;flex-direction:column;gap:12px}
+  .dc-layer{display:flex;align-items:center;gap:12px;padding:12px 14px;background:rgba(0,0,0,.15);border-radius:10px;border:1px solid #334155;opacity:0;animation:dcIn .5s ease forwards}
+  .dc-layer--1{animation-delay:.1s}.dc-layer--2{animation-delay:.3s}.dc-layer--3{animation-delay:.5s}.dc-layer--4{animation-delay:.7s}.dc-layer--5{animation-delay:.9s}.dc-layer--6{animation-delay:1.1s}
+  @keyframes dcIn{to{opacity:1;transform:translateX(0)}}
+  .dc-layer{transform:translateX(-10px)}
+  .dc-icon{font-size:1.3rem;flex-shrink:0}
+  .dc-info{flex:1}.dc-nm{display:block;color:#e2e8f0;font-weight:700;font-size:.82rem;margin-bottom:2px}.dc-d{display:block;color:#94a3b8;font-size:.7rem;line-height:1.5}
+  .dc-bar{width:60px;height:4px;background:#1e293b;border-radius:4px;flex-shrink:0;overflow:hidden}
+  .dc-fill{height:100%;border-radius:4px;animation:dcBar 1.5s ease forwards;width:0}
+  .dc-fill--1{background:#4ade80;animation-delay:.3s}.dc-fill--2{background:#4ade80;animation-delay:.5s}.dc-fill--3{background:#f59e0b;animation-delay:.7s}.dc-fill--4{background:#06b6d4;animation-delay:.9s}.dc-fill--5{background:#818cf8;animation-delay:1.1s}.dc-fill--6{background:#f87171;animation-delay:1.3s}
+  @keyframes dcBar{to{width:100%}}
+</style>

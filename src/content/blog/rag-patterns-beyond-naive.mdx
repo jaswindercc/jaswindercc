@@ -1,0 +1,37 @@
+---
+title: "Retrieval Augmented Generation Patterns — Beyond Naive RAG"
+description: "Visual guide to advanced RAG architectures. Compare naive vs modular RAG, learn chunking strategies, and see a production-grade retrieval pipeline step by step."
+date: 2026-06-17
+---
+
+import RAGPatterns from '../../components/visual/RAGPatterns.astro';
+import RAGChunking from '../../components/visual/RAGChunking.astro';
+import RAGPipelineAdv from '../../components/visual/RAGPipelineAdv.astro';
+
+Most RAG tutorials teach you the happy path: embed your documents, retrieve the top 5, stuff them into a prompt, and call it done. That works for demos. In production, it falls apart fast — irrelevant chunks, missed answers, hallucinated citations, and context windows full of noise.
+
+The gap between naive RAG and production RAG is where real engineering happens. Query rewriting, hybrid search, reranking, context compression — each step exists to solve a specific failure mode. This guide walks through those patterns visually.
+
+## 1. Three Tiers of RAG Architecture
+
+The evolution of RAG mirrors how most production systems mature: start simple, discover failure modes, add targeted solutions. Naive RAG fails on ambiguous queries. Advanced RAG fails on multi-hop reasoning. Modular RAG handles both by routing queries to specialized pipelines.
+
+<RAGPatterns />
+
+Most production systems land somewhere between Advanced and Modular. You don't need a router and self-correction loop for a simple FAQ bot. But if you're building a system that searches across legal documents, technical manuals, and conversation history simultaneously — modular RAG is the only architecture that handles the diversity.
+
+## 2. Chunking Is the Foundation
+
+Before retrieval can work, your documents need to be broken into retrievable pieces. This is where most teams lose and don't realize it. Bad chunking means even perfect retrieval returns the wrong content. The chunk boundaries determine what the model sees.
+
+<RAGChunking />
+
+Parent-child chunking is the pattern I recommend for most production systems. You search against small, precise child chunks for accuracy — but when you find a match, you pass the full parent section to the LLM for context. This solves the fundamental tension in RAG: small chunks retrieve better, but large chunks generate better.
+
+## 3. The Full Pipeline
+
+Every production RAG system I've built follows some version of this pipeline. Not every use case needs every step — but knowing what each step does tells you where to add it when your system starts failing in specific ways.
+
+<RAGPipelineAdv />
+
+The most impactful step that teams skip is reranking. A cross-encoder reranker typically improves answer quality by 15-30% over raw vector retrieval. Why? Because embedding models optimize for semantic similarity at encoding time — they never see the query and document together. A cross-encoder processes both simultaneously, catching nuances that embeddings miss. It costs 50-100ms of latency but transforms retrieval precision.

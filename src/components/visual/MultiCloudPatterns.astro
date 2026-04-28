@@ -1,0 +1,20 @@
+---
+// MultiCloudPatterns.astro — Architecture patterns
+---
+<div class="mcpat-wrap">
+  <h3 class="mcpat-title">Architecture Patterns for Multi-Cloud</h3>
+  <div class="mcpat-cards">
+    <details class="mcpat-card mcpat-c1"><summary class="mcpat-h"><span class="mcpat-nm">Workload Partitioning</span><span class="mcpat-tag">Most common</span></summary><div class="mcpat-body"><p class="mcpat-p">Different workloads on different clouds based on strengths. ML on GCP (Vertex AI), main app on AWS (EC2/EKS), analytics on Azure (Synapse). No cross-cloud real-time communication needed.</p></div></details>
+    <details class="mcpat-card mcpat-c2"><summary class="mcpat-h"><span class="mcpat-nm">Active-Active Failover</span><span class="mcpat-tag">Expensive</span></summary><div class="mcpat-body"><p class="mcpat-p">Same application runs on two clouds simultaneously. DNS-based routing. If one cloud has an outage, traffic routes to the other. Requires cloud-agnostic application layer and distributed data strategy.</p></div></details>
+    <details class="mcpat-card mcpat-c3"><summary class="mcpat-h"><span class="mcpat-nm">Abstraction Layer</span><span class="mcpat-tag">Kubernetes-based</span></summary><div class="mcpat-body"><p class="mcpat-p">Kubernetes everywhere. GKE + EKS + AKS managed by single control plane (Rancher, Anthos). Application code is cloud-agnostic because it only sees K8s APIs. Data plane still cloud-specific.</p></div></details>
+  </div>
+</div>
+<style>
+  .mcpat-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .mcpat-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .mcpat-cards{display:flex;flex-direction:column;gap:8px}
+  .mcpat-card{border-radius:10px;border:1px solid #334155;overflow:hidden;transition:border-color .3s}.mcpat-card[open]{border-color:#06b6d430}
+  .mcpat-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;list-style:none;background:rgba(0,0,0,.15)}.mcpat-h::-webkit-details-marker{display:none}.mcpat-h::marker{content:''}
+  .mcpat-nm{color:#e2e8f0;font-weight:700;font-size:.78rem}.mcpat-tag{color:#06b6d4;font-size:.55rem;font-family:monospace;padding:2px 6px;background:rgba(6,182,212,.08);border-radius:10px}
+  .mcpat-body{padding:10px 14px}.mcpat-p{color:#94a3b8;font-size:.72rem;line-height:1.6;margin:0}
+</style>

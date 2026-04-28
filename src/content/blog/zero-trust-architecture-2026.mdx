@@ -1,0 +1,39 @@
+---
+title: "Zero Trust Architecture in 2026 — Beyond the Buzzword"
+description: "A practical visual guide to zero trust security architecture. Understand the five trust layers, see how it compares to perimeter security, and get a phased implementation checklist."
+date: 2026-03-25
+---
+
+import ZeroTrustLayers from '../../components/visual/ZeroTrustLayers.astro';
+import ZeroTrustVsPerimeter from '../../components/visual/ZeroTrustVsPerimeter.astro';
+import ZeroTrustChecklist from '../../components/visual/ZeroTrustChecklist.astro';
+
+"Never trust, always verify." You've heard it a hundred times. But what does zero trust actually look like when you implement it? It's not a product you buy. It's not a switch you flip. It's a set of architectural decisions that assume your network is already compromised — and design everything accordingly.
+
+The old model was simple: build a big wall, put a firewall at the gate, and trust everything inside. That worked when everyone was in the office, on managed devices, accessing on-prem servers. That world is gone. Remote work, cloud infrastructure, SaaS apps, API-driven architectures — the perimeter dissolved years ago.
+
+## 1. The Five Layers of Zero Trust
+
+Zero trust isn't just about identity. It's five verification layers, each answering a different question: Who is requesting access? From what device? Over what network path? To which application? For what data?
+
+<ZeroTrustLayers />
+
+Most organizations start with identity (MFA, SSO) and call it zero trust. That's one layer out of five. Real zero trust means a compromised credential on an unmanaged device still can't reach sensitive data — because the device layer blocks it. A stolen session token still can't move laterally — because the network layer contains it.
+
+## 2. Castle-and-Moat vs Zero Trust
+
+The mental shift is the hardest part. Engineers who grew up with VPNs and flat internal networks find it counterintuitive to authenticate service-to-service inside the same data center. "But they're both behind the firewall!" Exactly — and that's what attackers exploit.
+
+<ZeroTrustVsPerimeter />
+
+Every major breach in the last five years involved lateral movement. Attacker gets initial access through phishing, compromised credentials, or a vulnerable edge service — then moves freely across a flat network because nothing else challenges them. Zero trust makes every hop a checkpoint.
+
+## 3. Implementation Roadmap
+
+You don't implement zero trust in a sprint. It's a multi-year journey that starts with identity and expands outward. Each phase builds on the previous one. Skip a phase and the later ones don't hold.
+
+<ZeroTrustChecklist />
+
+The biggest mistake I see: organizations buying a "zero trust platform" before doing the foundational identity work. If you don't know what service accounts exist in your environment, no amount of micro-segmentation will save you. Start with identity. Map your flows. Then segment. Then automate continuous verification.
+
+Phase 1 alone — MFA everywhere, SSO, service account inventory — eliminates the majority of common attack vectors. That's not zero trust perfection, but it's a massive security uplift that you can achieve in months, not years.

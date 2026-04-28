@@ -1,0 +1,43 @@
+---
+/**
+ * MeshCompare.astro
+ * Istio vs Linkerd vs Cilium comparison
+ */
+---
+
+<div class="mc-wrap">
+  <h3 class="mc-title">Service Mesh Tools Compared</h3>
+  <div class="mc-cards">
+    <div class="mc-card" style="--i:0; --color:#818cf8;">
+      <div class="mc-name">Istio</div>
+      <div class="mc-tag">Feature-rich</div>
+      <div class="mc-pros">Full traffic management, security policies, observability. Envoy-based.</div>
+      <div class="mc-cons">Complex to operate. High resource overhead. Steep learning curve.</div>
+    </div>
+    <div class="mc-card" style="--i:1; --color:#06b6d4;">
+      <div class="mc-name">Linkerd</div>
+      <div class="mc-tag">Lightweight</div>
+      <div class="mc-pros">Simple, fast, low overhead. Rust-based micro-proxy. Easy to adopt.</div>
+      <div class="mc-cons">Fewer features than Istio. Less traffic management flexibility.</div>
+    </div>
+    <div class="mc-card" style="--i:2; --color:#4ade80;">
+      <div class="mc-name">Cilium</div>
+      <div class="mc-tag">eBPF-powered</div>
+      <div class="mc-pros">Kernel-level networking. No sidecar needed. Extreme performance.</div>
+      <div class="mc-cons">Requires modern Linux kernel. Newer ecosystem, less battle-tested.</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .mc-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .mc-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.25rem}
+  .mc-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+  @media(max-width:700px){.mc-cards{grid-template-columns:1fr}}
+  .mc-card{background:rgba(255,255,255,0.03);border:1px solid var(--color);border-radius:12px;padding:1.25rem;opacity:0;animation:mcFade .5s ease forwards;animation-delay:calc(var(--i)*.15s)}
+  @keyframes mcFade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  .mc-name{color:var(--color);font-weight:700;font-size:1.05rem;margin-bottom:.15rem}
+  .mc-tag{color:#64748b;font-size:.7rem;margin-bottom:.5rem}
+  .mc-pros{color:#4ade80;font-size:.8rem;margin-bottom:.4rem}.mc-pros::before{content:'✓ '}
+  .mc-cons{color:#f59e0b;font-size:.8rem}.mc-cons::before{content:'⚠ '}
+</style>

@@ -1,0 +1,55 @@
+---
+title: "Data Pipeline Architecture — Batch vs Stream Processing"
+description: "Visual guide to data pipeline architectures. Compare batch and stream processing, understand Lambda and Kappa architectures, and learn when each approach fits your data requirements."
+date: 2026-05-01
+---
+
+import DataPipelineVisual from '../../components/visual/DataPipelineVisual.astro';
+
+Data pipelines move data from where it's generated to where it needs to be analyzed. The architectural choice between batch and stream processing isn't a preference — it's dictated by how quickly you need results and how complex your transformations are. Real-time fraud detection can't wait for a nightly batch job. Training a machine learning model doesn't need millisecond latency.
+
+## Architecture Patterns
+
+The three major patterns reflect different trade-offs between latency, complexity, and cost.
+
+<DataPipelineVisual />
+
+Most organizations start with batch processing because it's simpler, cheaper, and sufficient for most analytics workloads. Stream processing gets added when specific use cases demand sub-second latency. Lambda architecture attempts to serve both needs from a single system, at the cost of maintaining two parallel processing paths.
+
+## Batch Processing
+
+Batch processing collects data over time, then processes it all at once on a schedule. The classic ETL (Extract, Transform, Load) pipeline: extract data from source systems overnight, transform it with business logic, load it into a data warehouse for morning dashboards.
+
+Apache Spark is the dominant batch processing engine. It processes data in parallel across a cluster, handles terabytes efficiently, and supports SQL, Python, Scala, and R. A typical Spark pipeline reads Parquet files from S3, applies transformations and aggregations, and writes results to Snowflake or BigQuery.
+
+The key metric is throughput, not latency. A batch job that processes 10TB in two hours is performing well, even though individual records wait hours to be processed. Cost efficiency is high because you spin up compute resources for the processing window and shut them down when done.
+
+Orchestration matters more than processing. Tools like Airflow, Dagster, and Prefect schedule jobs, manage dependencies, handle retries, and alert on failures. A batch pipeline that runs perfectly 99% of the time is useless if the 1% failure goes unnoticed for three days.
+
+## Stream Processing
+
+Stream processing handles data as it arrives. Each event is processed within milliseconds to seconds of generation. Apache Kafka provides the event backbone — a durable, ordered log that producers write to and consumers read from. Processing engines like Apache Flink, Kafka Streams, and Apache Beam transform the stream in flight.
+
+The fundamental concept is windowing. Streams are infinite — you can't "process all the data" because it never ends. Instead, you define windows: tumbling (fixed-size, non-overlapping), sliding (fixed-size, overlapping), or session (gap-based). A "count orders per minute" uses tumbling windows. A "moving average over 5 minutes" uses sliding windows.
+
+Exactly-once processing is the hard problem. In a distributed system with potential failures, ensuring each event is processed exactly once (not zero times, not twice) requires careful coordination between the source, processor, and sink. Kafka + Flink can provide exactly-once semantics end-to-end, but only when configured correctly.
+
+Stream processing costs more than batch because resources run continuously. A Flink cluster processing events 24/7 costs more than a Spark cluster running for two hours daily. The cost is justified when the business value of real-time insight exceeds the cost of waiting.
+
+## Lambda vs Kappa Architecture
+
+Lambda architecture runs both batch and stream processing. The batch layer processes all historical data for accuracy (the "master dataset"). The speed layer processes real-time data for freshness. A serving layer merges results from both layers. This ensures you get both accurate historical analytics and fresh real-time views.
+
+The problem: you maintain two codebases that ideally produce the same results. The batch logic in Spark and the stream logic in Flink must agree on how to count active users, calculate revenue, and handle edge cases. Divergence between the two is a constant debugging challenge.
+
+Kappa architecture simplifies by using only stream processing. Historical data is reprocessed by replaying events through the stream processor. Kafka's retention (days, weeks, or forever) makes this possible. When you change business logic, you deploy the new version alongside the old one, replay historical events through the new version, and switch over when it catches up.
+
+Kappa is simpler to maintain but requires a stream processor powerful enough to handle both real-time and historical reprocessing. For many workloads, this is now feasible with Flink's performance and Kafka's long retention. But for complex ML training pipelines or massive historical backfills, Spark's batch processing remains more efficient.
+
+## Choosing Your Architecture
+
+If your analytics can tolerate hours of latency, use batch processing. It's cheaper, simpler, and more mature. Most business intelligence, financial reporting, and ML training fits here.
+
+If specific use cases need sub-second latency — fraud detection, monitoring alerts, live dashboards, recommendation engines — add stream processing for those specific flows. Don't convert everything to streaming "because it's modern."
+
+Start with the simplest architecture that meets requirements. You can always add streaming later for specific use cases. You can't easily remove streaming complexity once your organization depends on it.

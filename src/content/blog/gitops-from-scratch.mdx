@@ -1,0 +1,55 @@
+---
+title: "GitOps From Scratch — Git as Your Deployment Engine"
+description: "Visual guide to GitOps for Kubernetes. Compare ArgoCD vs FluxCD, understand pull-based deployment, repo structure patterns, and avoid common production pitfalls."
+date: 2026-04-08
+---
+
+import GitOpsFlow from '../../components/visual/GitOpsFlow.astro';
+import GitOpsVsTraditional from '../../components/visual/GitOpsVsTraditional.astro';
+import GitOpsRepoStructure from '../../components/visual/GitOpsRepoStructure.astro';
+import GitOpsToolCompare from '../../components/visual/GitOpsToolCompare.astro';
+import GitOpsPitfalls from '../../components/visual/GitOpsPitfalls.astro';
+
+"Just push to Git and it deploys." That's the promise of GitOps. Your Git repository becomes the single source of truth for what runs in your cluster. No SSH'ing into servers. No CI pipeline with kubectl credentials. No "who deployed that?" Slack messages.
+
+The cluster watches Git. When Git changes, the cluster changes. When someone manually edits the cluster, it gets reverted.
+
+## 1. The GitOps Loop
+
+GitOps is a continuous reconciliation loop. An agent inside the cluster constantly compares "desired state" (Git) with "actual state" (cluster). When they differ, the agent acts.
+
+<GitOpsFlow />
+
+The key word is "declarative." You don't tell the cluster "run this command." You declare "I want 3 replicas of this image." The agent figures out what needs to change to get there. This is the same model as Kubernetes itself — desired state reconciliation — just extended to the deployment process.
+
+## 2. Why Not Just CI/CD Push?
+
+Traditional CI/CD works. You've been deploying from pipelines for years. But push-based deployments have a fundamental problem: your CI system needs cluster admin credentials. And there's no mechanism to detect or fix drift.
+
+<GitOpsVsTraditional />
+
+The security improvement is significant. In push mode, your CI/CD system has write access to your production cluster — if it gets compromised, your cluster is compromised. In pull mode, the GitOps agent runs inside the cluster and only needs read access to a Git repo. The attack surface shrinks dramatically.
+
+## 3. Repo Structure
+
+The most common mistake in GitOps: putting Kubernetes manifests in the same repo as application code. This couples deployment to code changes, makes rollbacks messy, and gives all developers access to production configs.
+
+<GitOpsRepoStructure />
+
+The two-repo pattern separates concerns cleanly. App developers push code → CI builds and pushes an image → CI opens a PR to the config repo updating the image tag → GitOps agent deploys the new image. Each step has its own review process, its own access controls, its own audit trail.
+
+## 4. Picking Your Tool
+
+ArgoCD and FluxCD are the two dominant GitOps tools. Both are CNCF projects. Both work well. The choice comes down to whether you want a dashboard or prefer pure CLI/CRD workflows.
+
+<GitOpsToolCompare />
+
+If you're new to GitOps: start with ArgoCD. The web UI is invaluable for understanding what's happening. You can see sync status, diffs, resource health, and logs in one place. Once your team is comfortable with GitOps concepts, you can evaluate FluxCD if the CRD-native approach appeals to you.
+
+## 5. Pitfalls
+
+GitOps adoption fails not because the concept is wrong, but because teams underestimate the operational changes required. It's a different workflow — and old habits (manual kubectl, direct cluster edits) actively conflict with it.
+
+<GitOpsPitfalls />
+
+The cultural shift is the hardest part. Engineers who've been SSH'ing into servers for 10 years don't want to wait for a PR merge to fix a production issue. But that PR is your audit trail. That PR is your rollback point. That PR is what keeps your cluster state reproducible. The discipline is worth it.

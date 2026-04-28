@@ -1,0 +1,116 @@
+---
+// RAGComparison.astro — Side-by-side: RAG vs No-RAG responses
+---
+
+<div class="rc-wrap">
+  <h3 class="rc-title">RAG vs No RAG — Same Question, Different Worlds</h3>
+  <p class="rc-sub">Watch what happens when the model has context versus when it's guessing.</p>
+
+  <div class="rc-grid">
+    <div class="rc-card rc-card--bad">
+      <div class="rc-header">
+        <div class="rc-dot rc-dot--red"></div>
+        <span class="rc-label">Without RAG</span>
+        <span class="rc-tag">Hallucination risk: HIGH</span>
+      </div>
+      <div class="rc-question">
+        <span class="rc-q-icon">Q</span>
+        <span class="rc-q-text">What's our refund policy for enterprise contracts?</span>
+      </div>
+      <div class="rc-answer">
+        <span class="rc-a-prefix">Model says:</span>
+        <p class="rc-a-text">"Typically, enterprise contracts include a 30-day refund window. Most SaaS companies offer prorated refunds after the initial period. You should check your specific terms..."</p>
+        <div class="rc-verdict rc-verdict--bad">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>Generic guess. Not your policy. Could mislead a customer.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rc-card rc-card--good">
+      <div class="rc-header">
+        <div class="rc-dot rc-dot--green"></div>
+        <span class="rc-label">With RAG</span>
+        <span class="rc-tag">Grounded: YES</span>
+      </div>
+      <div class="rc-question">
+        <span class="rc-q-icon">Q</span>
+        <span class="rc-q-text">What's our refund policy for enterprise contracts?</span>
+      </div>
+      <div class="rc-context">
+        <span class="rc-ctx-label">Retrieved context</span>
+        <span class="rc-ctx-text">enterprise-terms-v3.pdf, Section 4.2 — Refund & Cancellation</span>
+      </div>
+      <div class="rc-answer">
+        <span class="rc-a-prefix">Model says:</span>
+        <p class="rc-a-text">"Per Section 4.2 of the enterprise terms: Enterprise contracts are non-refundable after the 14-day evaluation period. Early termination incurs a 25% remaining-term fee. Contact billing@company.com to initiate."</p>
+        <div class="rc-verdict rc-verdict--good">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+          <span>Exact policy. Cited source. Actionable next step.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .rc-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .rc-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .rc-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .rc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .rc-grid { grid-template-columns: 1fr; } }
+
+  .rc-card { border-radius: 12px; padding: 16px; }
+  .rc-card--bad { background: rgba(239,68,68,0.04); border: 1px solid #ef444425; }
+  .rc-card--good { background: rgba(74,222,128,0.04); border: 1px solid #4ade8025; }
+
+  .rc-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .rc-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .rc-dot--red { background: #ef4444; animation: blink 2s infinite; }
+  .rc-dot--green { background: #4ade80; animation: blink 2s infinite 0.5s; }
+  .rc-label { color: #e2e8f0; font-size: 0.8rem; font-weight: 700; }
+  .rc-tag { margin-left: auto; font-size: 0.55rem; font-family: monospace; padding: 2px 8px; border-radius: 4px; }
+  .rc-card--bad .rc-tag { color: #fca5a5; background: rgba(239,68,68,0.1); }
+  .rc-card--good .rc-tag { color: #86efac; background: rgba(74,222,128,0.1); }
+
+  .rc-question {
+    display: flex; align-items: flex-start; gap: 8px; padding: 10px; margin-bottom: 10px;
+    border-radius: 8px; background: rgba(0,0,0,0.2);
+  }
+  .rc-q-icon {
+    flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; font-size: 0.6rem; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(129,140,248,0.15); color: #a5b4fc;
+  }
+  .rc-q-text { color: #cbd5e1; font-size: 0.75rem; line-height: 1.5; }
+
+  .rc-context {
+    display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; margin-bottom: 10px;
+    border-radius: 6px; background: rgba(6,182,212,0.06); border: 1px dashed #06b6d425;
+  }
+  .rc-ctx-label { color: #06b6d4; font-size: 0.5rem; font-family: monospace; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .rc-ctx-text { color: #67e8f9; font-size: 0.65rem; font-family: monospace; }
+
+  .rc-answer { margin-bottom: 10px; }
+  .rc-a-prefix { color: #64748b; font-size: 0.55rem; font-family: monospace; }
+  .rc-a-text { color: #94a3b8; font-size: 0.75rem; line-height: 1.6; margin: 4px 0 10px; }
+
+  .rc-verdict {
+    display: flex; align-items: flex-start; gap: 8px; padding: 10px; border-radius: 8px;
+    font-size: 0.7rem; line-height: 1.4;
+  }
+  .rc-verdict svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
+  .rc-verdict--bad { background: rgba(239,68,68,0.06); color: #fca5a5; }
+  .rc-verdict--bad svg { stroke: #f87171; }
+  .rc-verdict--good { background: rgba(74,222,128,0.06); color: #86efac; }
+  .rc-verdict--good svg { stroke: #4ade80; }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+</style>

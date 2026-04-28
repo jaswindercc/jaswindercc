@@ -1,0 +1,64 @@
+---
+// QuantumRealWorld.astro — Current real-world quantum computing applications
+---
+
+<div class="qrw-wrap">
+  <h3 class="qrw-title">Quantum Computing in the Real World — Today</h3>
+  <p class="qrw-sub">Not science fiction. These companies are using quantum computing right now.</p>
+
+  <div class="qrw-grid">
+    <div class="qrw-card" style="--i:0;--c:#4ade80">
+      <div class="qrw-industry">Pharmaceuticals</div>
+      <div class="qrw-who">Roche, Biogen, Merck</div>
+      <div class="qrw-what">Simulating protein folding and drug interactions at molecular level.</div>
+      <div class="qrw-status qrw-status--active">Active research</div>
+    </div>
+    <div class="qrw-card" style="--i:1;--c:#06b6d4">
+      <div class="qrw-industry">Finance</div>
+      <div class="qrw-who">JPMorgan, Goldman Sachs</div>
+      <div class="qrw-what">Portfolio optimization, risk modeling, and derivative pricing.</div>
+      <div class="qrw-status qrw-status--active">Active pilots</div>
+    </div>
+    <div class="qrw-card" style="--i:2;--c:#f59e0b">
+      <div class="qrw-industry">Automotive</div>
+      <div class="qrw-who">BMW, Volkswagen, Daimler</div>
+      <div class="qrw-what">Battery chemistry simulation and supply chain optimization.</div>
+      <div class="qrw-status qrw-status--active">Active research</div>
+    </div>
+    <div class="qrw-card" style="--i:3;--c:#a78bfa">
+      <div class="qrw-industry">Logistics</div>
+      <div class="qrw-who">DHL, FedEx</div>
+      <div class="qrw-what">Route optimization across millions of delivery points.</div>
+      <div class="qrw-status qrw-status--early">Early stage</div>
+    </div>
+    <div class="qrw-card" style="--i:4;--c:#f472b6">
+      <div class="qrw-industry">Energy</div>
+      <div class="qrw-who">ExxonMobil, BP</div>
+      <div class="qrw-what">Modeling chemical processes for cleaner energy and carbon capture.</div>
+      <div class="qrw-status qrw-status--active">Active pilots</div>
+    </div>
+    <div class="qrw-card" style="--i:5;--c:#38bdf8">
+      <div class="qrw-industry">Cybersecurity</div>
+      <div class="qrw-who">NIST, governments worldwide</div>
+      <div class="qrw-what">Developing post-quantum cryptography standards before quantum breaks current encryption.</div>
+      <div class="qrw-status qrw-status--urgent">Urgent & active</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .qrw-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .qrw-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .qrw-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .qrw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+  .qrw-card{background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:12px;padding:1.25rem;opacity:0;animation:qrwIn .4s ease forwards;animation-delay:calc(var(--i)*.1s);transition:border-color .2s}
+  .qrw-card:hover{border-color:var(--c)}
+  .qrw-industry{color:var(--c);font-size:.72rem;font-weight:700;margin-bottom:.25rem}
+  .qrw-who{color:#f1f5f9;font-size:.68rem;margin-bottom:.35rem}
+  .qrw-what{color:#94a3b8;font-size:.68rem;line-height:1.5;margin-bottom:.5rem}
+  .qrw-status{font-size:.58rem;font-family:monospace;padding:2px 8px;border-radius:12px;display:inline-block}
+  .qrw-status--active{color:#4ade80;background:rgba(74,222,128,.08)}
+  .qrw-status--early{color:#f59e0b;background:rgba(245,158,11,.08)}
+  .qrw-status--urgent{color:#ef4444;background:rgba(239,68,68,.08)}
+  @keyframes qrwIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>

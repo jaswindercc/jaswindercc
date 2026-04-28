@@ -1,0 +1,115 @@
+---
+// EmbeddingMetrics.astro — Quality metrics for embedding systems
+---
+
+<div class="emm-wrap">
+  <h3 class="emm-title">How to Know Your Embeddings Are Working</h3>
+  <p class="emm-sub">Three metrics that actually matter. Ignore everything else.</p>
+
+  <div class="emm-grid">
+    <div class="emm-card">
+      <div class="emm-card-header">
+        <div class="emm-num emm-num--cyan">01</div>
+        <div class="emm-card-title">Recall@K</div>
+      </div>
+      <p class="emm-desc">Of the relevant documents that exist, how many ended up in your top-K results?</p>
+      <div class="emm-gauge">
+        <div class="emm-gauge-track">
+          <div class="emm-gauge-fill emm-fill--cyan" style="--w:87%;"></div>
+        </div>
+        <div class="emm-gauge-labels">
+          <span class="emm-gauge-bad">Bad &lt;60%</span>
+          <span class="emm-gauge-ok">OK 60-80%</span>
+          <span class="emm-gauge-good">Good &gt;80%</span>
+        </div>
+      </div>
+      <div class="emm-val emm-val--cyan">87% <span class="emm-annotation">at K=5</span></div>
+    </div>
+
+    <div class="emm-card">
+      <div class="emm-card-header">
+        <div class="emm-num emm-num--green">02</div>
+        <div class="emm-card-title">MRR (Mean Reciprocal Rank)</div>
+      </div>
+      <p class="emm-desc">Is the best answer in position 1, 2, or buried at position 10? Higher MRR = better ranking.</p>
+      <div class="emm-gauge">
+        <div class="emm-gauge-track">
+          <div class="emm-gauge-fill emm-fill--green" style="--w:79%;"></div>
+        </div>
+        <div class="emm-gauge-labels">
+          <span class="emm-gauge-bad">Bad &lt;50%</span>
+          <span class="emm-gauge-ok">OK 50-75%</span>
+          <span class="emm-gauge-good">Good &gt;75%</span>
+        </div>
+      </div>
+      <div class="emm-val emm-val--green">0.79 <span class="emm-annotation">best result avg at position 1.3</span></div>
+    </div>
+
+    <div class="emm-card">
+      <div class="emm-card-header">
+        <div class="emm-num emm-num--amber">03</div>
+        <div class="emm-card-title">Semantic Drift</div>
+      </div>
+      <p class="emm-desc">Are your embeddings still accurate as your document set grows? Drift means old embeddings no longer match new ones.</p>
+      <div class="emm-gauge">
+        <div class="emm-gauge-track">
+          <div class="emm-gauge-fill emm-fill--amber" style="--w:12%;"></div>
+        </div>
+        <div class="emm-gauge-labels">
+          <span class="emm-gauge-good">Good &lt;5%</span>
+          <span class="emm-gauge-ok">OK 5-15%</span>
+          <span class="emm-gauge-bad">Bad &gt;15%</span>
+        </div>
+      </div>
+      <div class="emm-val emm-val--amber">12% <span class="emm-annotation">re-embed quarterly to prevent</span></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .emm-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .emm-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .emm-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .emm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
+
+  .emm-card {
+    background: rgba(0,0,0,0.25); border: 1px solid #334155; border-radius: 12px; padding: 16px;
+  }
+
+  .emm-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .emm-num {
+    font-family: monospace; font-size: 0.6rem; font-weight: 800;
+    width: 26px; height: 26px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .emm-num--cyan { color: #06b6d4; background: rgba(6,182,212,0.12); }
+  .emm-num--green { color: #4ade80; background: rgba(74,222,128,0.12); }
+  .emm-num--amber { color: #f59e0b; background: rgba(245,158,11,0.12); }
+
+  .emm-card-title { color: #e2e8f0; font-size: 0.82rem; font-weight: 700; }
+  .emm-desc { color: #94a3b8; font-size: 0.72rem; line-height: 1.5; margin: 0 0 12px; }
+
+  .emm-gauge { margin-bottom: 8px; }
+  .emm-gauge-track { height: 6px; background: rgba(0,0,0,0.3); border-radius: 3px; overflow: hidden; }
+  .emm-gauge-fill { height: 100%; border-radius: 3px; width: 0; animation: emmGrow 1.2s ease-out 0.5s forwards; }
+  .emm-fill--cyan { background: linear-gradient(90deg, #06b6d4, #22d3ee); }
+  .emm-fill--green { background: linear-gradient(90deg, #22c55e, #4ade80); }
+  .emm-fill--amber { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+
+  .emm-gauge-labels { display: flex; justify-content: space-between; margin-top: 4px; }
+  .emm-gauge-bad { color: #ef4444; font-size: 0.45rem; font-family: monospace; }
+  .emm-gauge-ok { color: #fbbf24; font-size: 0.45rem; font-family: monospace; }
+  .emm-gauge-good { color: #4ade80; font-size: 0.45rem; font-family: monospace; }
+
+  .emm-val { font-size: 1.1rem; font-weight: 800; font-family: monospace; }
+  .emm-val--cyan { color: #06b6d4; }
+  .emm-val--green { color: #4ade80; }
+  .emm-val--amber { color: #f59e0b; }
+  .emm-annotation { color: #64748b; font-size: 0.55rem; font-weight: 400; }
+
+  @keyframes emmGrow { to { width: var(--w); } }
+</style>

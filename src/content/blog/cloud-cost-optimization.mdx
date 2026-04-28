@@ -1,0 +1,55 @@
+---
+title: "Cloud Cost Optimization — Stop Burning Money on Idle Resources"
+description: "Visual guide to cloud cost optimization. Learn quick wins, FinOps practices, cost allocation strategies, and common expensive mistakes with animated diagrams."
+date: 2026-04-06
+---
+
+import CloudCostBreakdown from '../../components/visual/CloudCostBreakdown.astro';
+import CostQuickWins from '../../components/visual/CostQuickWins.astro';
+import FinOpsFramework from '../../components/visual/FinOpsFramework.astro';
+import CostToolsCompare from '../../components/visual/CostToolsCompare.astro';
+import CostMistakes from '../../components/visual/CostMistakes.astro';
+
+Your cloud bill is 40% waste. That's not a guess — it's the industry average reported by Flexera's State of the Cloud report for 5 consecutive years. Teams provision for peak, run instances 24/7, and forget to clean up experiments. The meter keeps running.
+
+Cloud cost optimization isn't about being cheap. It's about spending intentionally. Every dollar you save on idle resources is a dollar you can spend on features, hiring, or better infrastructure.
+
+## 1. Where the Money Goes
+
+Before optimizing, understand the breakdown. Most teams are surprised when they see their actual cost distribution. Compute dominates everything — and within compute, most instances are dramatically over-provisioned.
+
+<CloudCostBreakdown />
+
+The first action: enable Cost Allocation Tags on everything. Tag by team, environment (dev/staging/prod), and service name. Without tags, cost reports are one giant number. With tags, you can say "the payments team's dev environment costs $4K/month — that seems high."
+
+## 2. Quick Wins
+
+These are the optimizations you can implement in a week that typically reduce bills by 30-50%. They don't require architecture changes — just configuration fixes and purchasing decisions.
+
+<CostQuickWins />
+
+The savings from right-sizing alone are staggering. I've seen teams running m5.2xlarge instances at 8% average CPU utilization. Downgrading to m5.large (half the cost) still leaves headroom. Most teams have never looked at their CloudWatch CPU metrics and compared them to their instance size.
+
+## 3. The FinOps Practice
+
+One-time optimization degrades. Teams spin up new resources, traffic patterns change, prices shift. Cloud cost management is a continuous practice — not a quarterly audit. The FinOps Foundation formalized this into three phases.
+
+<FinOpsFramework />
+
+The cultural change matters more than the tools. When engineers can see the cost of their services and feel ownership of the budget, behavior changes. "This API costs $800/month" makes people think about caching, request reduction, and right-sizing in ways that abstract cost reports never do.
+
+## 4. Tools
+
+You need visibility before you can optimize. Native cloud tools are a starting point, but purpose-built cost platforms catch savings that native tools miss — especially across Kubernetes workloads.
+
+<CostToolsCompare />
+
+My recommendation: start with your cloud provider's native tools (free). Add Infracost to your CI pipeline so PRs show cost impact. If you run Kubernetes, deploy Kubecost for namespace-level cost allocation. Only buy enterprise platforms (Vantage, CloudHealth) when you're spending $500K+/year and need cross-cloud analytics.
+
+## 5. Expensive Mistakes
+
+Some mistakes are silent — you don't realize you're overpaying until someone audits the bill. These are the four I find in almost every cloud account I review. Combined, they typically account for 20-30% of unnecessary spend.
+
+<CostMistakes />
+
+The meta-pattern: cloud providers optimize for you spending more, not less. Default configurations are generous (and expensive). GP2 is the default volume type even though GP3 is cheaper. NAT Gateway is the default egress path even though VPC endpoints are cheaper. On-demand pricing is the default even though reserved instances save 40%. You have to actively choose the cheaper option — it's never the default.

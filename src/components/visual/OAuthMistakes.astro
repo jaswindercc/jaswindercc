@@ -1,0 +1,24 @@
+---
+// OAuthMistakes.astro — Common OAuth security mistakes
+---
+<div class="om-wrap">
+  <h3 class="om-title">5 Mistakes That Get You Hacked</h3>
+  <div class="om-list">
+    <div class="om-item om-i1"><div class="om-x">✗</div><div class="om-body"><span class="om-bad">Not validating the `state` parameter</span><span class="om-why">Enables CSRF attacks. Attacker crafts a link that logs victim into attacker's account.</span><span class="om-fix">Generate random state before redirect, verify it matches on callback.</span></div></div>
+    <div class="om-item om-i2"><div class="om-x">✗</div><div class="om-body"><span class="om-bad">Storing tokens in localStorage</span><span class="om-why">XSS = game over. Any script on the page can read localStorage and exfiltrate tokens.</span><span class="om-fix">Use httpOnly secure cookies. Or token stored in memory + refresh via httpOnly cookie.</span></div></div>
+    <div class="om-item om-i3"><div class="om-x">✗</div><div class="om-body"><span class="om-bad">Not checking `iss` and `aud` claims</span><span class="om-why">Attacker can use a valid token from a different app/issuer against your API.</span><span class="om-fix">Always verify issuer matches your auth server and audience matches your client_id.</span></div></div>
+    <div class="om-item om-i4"><div class="om-x">✗</div><div class="om-body"><span class="om-bad">Long-lived access tokens</span><span class="om-why">If leaked, attacker has access for hours/days. No way to revoke without a blocklist.</span><span class="om-fix">Short-lived access tokens (5-15 min) + refresh tokens. Rotation on every refresh.</span></div></div>
+    <div class="om-item om-i5"><div class="om-x">✗</div><div class="om-body"><span class="om-bad">Open redirect_uri</span><span class="om-why">If redirect_uri isn't strictly validated, attacker redirects auth code to their server.</span><span class="om-fix">Exact match only. No wildcards. Register every valid redirect URI explicitly.</span></div></div>
+  </div>
+</div>
+<style>
+  .om-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .om-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .om-list{display:flex;flex-direction:column;gap:10px}
+  .om-item{display:flex;gap:12px;padding:12px 14px;background:rgba(0,0,0,.15);border-radius:10px;border:1px solid #334155;border-left:3px solid #ef4444;opacity:0;animation:omIn .4s ease forwards}
+  .om-i1{animation-delay:.1s}.om-i2{animation-delay:.2s}.om-i3{animation-delay:.3s}.om-i4{animation-delay:.4s}.om-i5{animation-delay:.5s}
+  @keyframes omIn{to{opacity:1}}
+  .om-x{color:#f87171;font-weight:800;font-size:1rem;flex-shrink:0;margin-top:2px}
+  .om-body{flex:1;display:flex;flex-direction:column;gap:3px}
+  .om-bad{color:#f87171;font-weight:700;font-size:.78rem}.om-why{color:#94a3b8;font-size:.7rem}.om-fix{color:#4ade80;font-size:.68rem;font-style:italic}
+</style>

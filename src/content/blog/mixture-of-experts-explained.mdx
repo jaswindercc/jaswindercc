@@ -1,0 +1,25 @@
+---
+title: "Mixture of Experts Explained — Why Sparse Models Win"
+description: "Visual guide to Mixture of Experts architecture. Understand how sparse models like Mixtral achieve massive parameter counts while using only a fraction of compute per token."
+date: 2026-06-09
+---
+
+import MoEArchitecture from '../../components/visual/MoEArchitecture.astro';
+
+GPT-4, Mixtral, Grok — the most capable language models in 2026 all use Mixture of Experts (MoE). The idea is counterintuitive: instead of one massive neural network, use many smaller specialized networks and a router that picks which ones to activate for each token. The result is a model with hundreds of billions of parameters that only uses a fraction of them per inference.
+
+This is why Mixtral 8x7B can match GPT-3.5 quality while using the compute of a 12B dense model. It has 47 billion total parameters, but only 12 billion are active for any given token. The rest sit idle, ready to activate when the router decides they're relevant.
+
+## How MoE Works
+
+Every MoE layer replaces the standard feed-forward network with multiple "expert" networks plus a gating function. For each input token, the gating network produces a probability distribution over experts and activates only the top-K (usually 2). The outputs of the active experts are combined as a weighted sum.
+
+<MoEArchitecture />
+
+The router is the critical component. It's a small neural network that learns which experts are best for which types of inputs. Over training, experts naturally specialize — one might become good at code, another at multilingual text, another at mathematical reasoning. The router learns to send code tokens to the code expert and math tokens to the math expert.
+
+The efficiency gain is enormous. A dense 47B parameter model requires 47B multiply-accumulate operations per token. An MoE model with 47B total parameters but top-2 routing over 8 experts uses roughly 12B operations per token — nearly 4x cheaper. This is why MoE models are the dominant architecture for frontier models: you get the knowledge capacity of a huge model with the inference cost of a small one.
+
+The tradeoff is memory. Even though only 2 experts compute per token, all 8 experts must be loaded in memory because you don't know which ones the router will pick until inference time. This is why MoE models require more GPU memory than dense models of equivalent inference compute. Mixtral 8x7B needs the memory of a ~47B model but the compute of a ~12B model.
+
+Training MoE models requires solving the load balancing problem: without careful tuning, the router learns to send all tokens to the same 1-2 experts and the rest become dead weight. Auxiliary loss functions encourage balanced routing, and modern implementations add noise during training to force exploration across all experts.

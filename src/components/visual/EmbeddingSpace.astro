@@ -1,0 +1,116 @@
+---
+// EmbeddingSpace.astro — Animated 2D vector space showing word clusters
+---
+
+<div class="es-wrap">
+  <h3 class="es-title">The Embedding Space — Where Words Become Coordinates</h3>
+  <p class="es-sub">Every word becomes a point. Similar meanings cluster together.</p>
+
+  <div class="es-canvas">
+    <svg viewBox="0 0 500 350" class="es-svg">
+      <!-- Grid -->
+      <defs>
+        <pattern id="es-grid" width="50" height="50" patternUnits="userSpaceOnUse">
+          <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+        </pattern>
+      </defs>
+      <rect width="500" height="350" fill="url(#es-grid)" />
+
+      <!-- Axes -->
+      <line x1="40" y1="310" x2="480" y2="310" stroke="#334155" stroke-width="1"/>
+      <line x1="40" y1="310" x2="40" y2="20" stroke="#334155" stroke-width="1"/>
+      <text x="260" y="340" fill="#475569" font-size="9" text-anchor="middle" font-family="monospace">Dimension 1 (simplified)</text>
+      <text x="12" y="170" fill="#475569" font-size="9" text-anchor="middle" font-family="monospace" transform="rotate(-90 12 170)">Dimension 2</text>
+
+      <!-- Cluster 1: Animals (green) -->
+      <circle cx="120" cy="80" r="55" fill="rgba(74,222,128,0.06)" stroke="#4ade8020" stroke-width="1" class="es-cluster es-c1"/>
+      <text x="120" y="30" fill="#4ade80" font-size="8" text-anchor="middle" font-family="monospace" font-weight="bold" class="es-label es-l1">Animals</text>
+      <circle cx="100" cy="70" r="4" fill="#4ade80" class="es-dot es-d1"/>
+      <text x="100" y="60" fill="#86efac" font-size="7" text-anchor="middle" font-family="monospace" class="es-word es-w1">cat</text>
+      <circle cx="135" cy="75" r="4" fill="#4ade80" class="es-dot es-d2"/>
+      <text x="135" y="65" fill="#86efac" font-size="7" text-anchor="middle" font-family="monospace" class="es-word es-w2">dog</text>
+      <circle cx="110" cy="100" r="4" fill="#4ade80" class="es-dot es-d3"/>
+      <text x="110" y="115" fill="#86efac" font-size="7" text-anchor="middle" font-family="monospace" class="es-word es-w3">puppy</text>
+      <circle cx="140" cy="95" r="3" fill="#4ade8080" class="es-dot es-d4"/>
+      <text x="155" y="95" fill="#86efac80" font-size="6" text-anchor="start" font-family="monospace" class="es-word es-w4">kitten</text>
+
+      <!-- Cluster 2: Tech (cyan) -->
+      <circle cx="350" cy="100" r="60" fill="rgba(6,182,212,0.06)" stroke="#06b6d420" stroke-width="1" class="es-cluster es-c2"/>
+      <text x="350" y="40" fill="#06b6d4" font-size="8" text-anchor="middle" font-family="monospace" font-weight="bold" class="es-label es-l2">Technology</text>
+      <circle cx="330" cy="85" r="4" fill="#06b6d4" class="es-dot es-d5"/>
+      <text x="330" y="75" fill="#67e8f9" font-size="7" text-anchor="middle" font-family="monospace" class="es-word es-w5">Python</text>
+      <circle cx="365" cy="90" r="4" fill="#06b6d4" class="es-dot es-d6"/>
+      <text x="365" y="80" fill="#67e8f9" font-size="7" text-anchor="middle" font-family="monospace" class="es-word es-w6">JavaScript</text>
+      <circle cx="340" cy="115" r="4" fill="#06b6d4" class="es-dot es-d7"/>
+      <text x="340" y="130" fill="#67e8f9" font-size="7" text-anchor="middle" font-family="monospace" class="es-word es-w7">TypeScript</text>
+      <circle cx="370" cy="110" r="3" fill="#06b6d480" class="es-dot es-d8"/>
+      <text x="385" y="112" fill="#67e8f980" font-size="6" text-anchor="start" font-family="monospace" class="es-word es-w8">code</text>
+
+      <!-- Cluster 3: Food (amber) -->
+      <circle cx="230" cy="230" r="55" fill="rgba(245,158,11,0.06)" stroke="#f59e0b20" stroke-width="1" class="es-cluster es-c3"/>
+      <text x="230" y="290" fill="#f59e0b" font-size="8" text-anchor="middle" font-family="monospace" font-weight="bold" class="es-label es-l3">Food</text>
+      <circle cx="210" cy="220" r="4" fill="#f59e0b" class="es-dot es-d9"/>
+      <text x="210" y="210" fill="#fbbf24" font-size="7" text-anchor="middle" font-family="monospace" class="es-word es-w9">pizza</text>
+      <circle cx="245" cy="225" r="4" fill="#f59e0b" class="es-dot es-d10"/>
+      <text x="260" y="220" fill="#fbbf24" font-size="7" text-anchor="start" font-family="monospace" class="es-word es-w10">burger</text>
+      <circle cx="225" cy="250" r="4" fill="#f59e0b" class="es-dot es-d11"/>
+      <text x="225" y="265" fill="#fbbf24" font-size="7" text-anchor="middle" font-family="monospace" class="es-word es-w11">sushi</text>
+
+      <!-- Similarity line example -->
+      <line x1="100" y1="70" x2="135" y2="75" stroke="#4ade80" stroke-width="1" stroke-dasharray="3,3" opacity="0.4" class="es-sim-line"/>
+      <text x="117" y="58" fill="#4ade8080" font-size="6" text-anchor="middle" font-family="monospace" class="es-sim-label">0.92 similarity</text>
+
+      <!-- Distance line -->
+      <line x1="135" y1="75" x2="330" y2="85" stroke="#ef4444" stroke-width="0.5" stroke-dasharray="4,4" opacity="0.3" class="es-dist-line"/>
+      <text x="230" y="72" fill="#ef444480" font-size="6" text-anchor="middle" font-family="monospace" class="es-dist-label">0.12 similarity</text>
+
+      <!-- Orbiting query dot -->
+      <circle r="5" fill="#f472b6" class="es-query-dot">
+        <animateMotion dur="8s" repeatCount="indefinite" path="M120,80 Q230,50 350,100 Q430,200 230,230 Q100,200 120,80"/>
+      </circle>
+      <text fill="#f472b6" font-size="6" font-family="monospace" font-weight="bold" class="es-query-label">
+        <animateMotion dur="8s" repeatCount="indefinite" path="M120,70 Q230,40 350,90 Q430,190 230,220 Q100,190 120,70"/>
+        query
+      </text>
+    </svg>
+  </div>
+</div>
+
+<style>
+  .es-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .es-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .es-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .es-canvas { background: rgba(0,0,0,0.2); border-radius: 12px; border: 1px solid #334155; overflow: hidden; }
+  .es-svg { width: 100%; height: auto; display: block; }
+
+  .es-dot { opacity: 0; animation: esDotIn 0.4s ease-out forwards; }
+  .es-d1 { animation-delay: 0.2s; } .es-d2 { animation-delay: 0.3s; } .es-d3 { animation-delay: 0.4s; }
+  .es-d4 { animation-delay: 0.5s; } .es-d5 { animation-delay: 0.6s; } .es-d6 { animation-delay: 0.7s; }
+  .es-d7 { animation-delay: 0.8s; } .es-d8 { animation-delay: 0.9s; } .es-d9 { animation-delay: 1.0s; }
+  .es-d10 { animation-delay: 1.1s; } .es-d11 { animation-delay: 1.2s; }
+
+  .es-word { opacity: 0; animation: esDotIn 0.4s ease-out forwards; }
+  .es-w1 { animation-delay: 0.3s; } .es-w2 { animation-delay: 0.4s; } .es-w3 { animation-delay: 0.5s; }
+  .es-w4 { animation-delay: 0.6s; } .es-w5 { animation-delay: 0.7s; } .es-w6 { animation-delay: 0.8s; }
+  .es-w7 { animation-delay: 0.9s; } .es-w8 { animation-delay: 1.0s; } .es-w9 { animation-delay: 1.1s; }
+  .es-w10 { animation-delay: 1.2s; } .es-w11 { animation-delay: 1.3s; }
+
+  .es-cluster { opacity: 0; animation: esDotIn 0.6s ease-out forwards; }
+  .es-c1 { animation-delay: 0.1s; } .es-c2 { animation-delay: 0.4s; } .es-c3 { animation-delay: 0.7s; }
+
+  .es-label { opacity: 0; animation: esDotIn 0.4s ease-out forwards; }
+  .es-l1 { animation-delay: 0.15s; } .es-l2 { animation-delay: 0.45s; } .es-l3 { animation-delay: 0.75s; }
+
+  .es-sim-line, .es-sim-label, .es-dist-line, .es-dist-label {
+    opacity: 0; animation: esDotIn 0.5s ease-out 1.5s forwards;
+  }
+
+  @keyframes esDotIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>

@@ -1,0 +1,23 @@
+---
+title: "Platform Engineering — Building Your Internal Developer Platform"
+description: "Visual guide to platform engineering. Understand the layers of an internal developer platform, the tools that power it, and why it reduces cognitive load for development teams."
+date: 2026-06-08
+---
+
+import PlatformLayers from '../../components/visual/PlatformLayers.astro';
+
+DevOps promised "you build it, you run it." And it worked — until every team needed to understand Kubernetes, Terraform, networking, secrets management, CI/CD, observability, and security. The cognitive load crushed developers. Platform engineering is the correction: a dedicated team builds an internal developer platform that abstracts infrastructure complexity behind self-service interfaces.
+
+Developers don't need to know how Kubernetes scheduling works. They need to say "deploy my service with 3 replicas" and have it happen. Platform engineering makes that possible.
+
+## The Platform Stack
+
+An internal developer platform isn't one tool — it's a stack of abstractions layered on top of raw infrastructure. Each layer hides complexity from the layer above it. Developers interact with the top layer and don't need to understand what's underneath.
+
+<PlatformLayers />
+
+The portal layer is where developers spend their time. They browse a service catalog to discover existing APIs, use templates to scaffold new services, trigger deployments through a UI, and check service health in dashboards. Everything below that — the Kubernetes clusters, the Terraform modules, the networking — is managed by the platform team and exposed through simple abstractions.
+
+Golden paths are the most impactful investment. A golden path is an opinionated, pre-built template for common tasks: "create a new Python microservice," "add a PostgreSQL database," "set up a CI/CD pipeline." Instead of every team inventing their own approach (and making their own mistakes), they follow a tested, secure, observable path that the platform team maintains.
+
+The measure of a good platform is adoption. If developers use it voluntarily, it's working. If they route around it, it's adding friction instead of removing it. The best platform teams treat developers as customers: they talk to them, measure satisfaction, and iterate on the product. Platform engineering done wrong is just a bureaucratic gate that developers learn to circumvent.

@@ -1,0 +1,25 @@
+---
+// OWASPAPITop5.astro — Top 5 API security risks
+---
+<div class="oat-wrap">
+  <h3 class="oat-title">OWASP API Top 10 — The 5 That Hit Most</h3>
+  <div class="oat-list">
+    <details class="oat-card oat-c--1"><summary class="oat-h"><span class="oat-n">API1</span><span class="oat-nm">Broken Object Level Authorization</span><span class="oat-sev">Critical</span></summary><div class="oat-body"><p class="oat-p">User A can access User B's data by changing the ID in the URL: <code>/api/users/123/orders</code> → change to <code>/api/users/456/orders</code>. No authorization check on the object.</p><div class="oat-fix"><strong>Fix:</strong> Check that the authenticated user owns the requested resource. EVERY endpoint. No exceptions.</div></div></details>
+    <details class="oat-card oat-c--2"><summary class="oat-h"><span class="oat-n">API2</span><span class="oat-nm">Broken Authentication</span><span class="oat-sev">Critical</span></summary><div class="oat-body"><p class="oat-p">Weak token validation, missing rate limits on login, no MFA, predictable tokens, tokens that never expire.</p><div class="oat-fix"><strong>Fix:</strong> Short-lived JWTs, validate all claims (iss, aud, exp), rate-limit auth endpoints, require MFA for sensitive operations.</div></div></details>
+    <details class="oat-card oat-c--3"><summary class="oat-h"><span class="oat-n">API3</span><span class="oat-nm">Broken Object Property Level Auth</span><span class="oat-sev">High</span></summary><div class="oat-body"><p class="oat-p">User can read fields they shouldn't (mass assignment). API returns <code>salary</code>, <code>ssn</code> because the whole object is serialized without filtering response fields.</p><div class="oat-fix"><strong>Fix:</strong> Explicit allowlist of response fields per role. Never return the raw database object. Use DTOs.</div></div></details>
+    <details class="oat-card oat-c--4"><summary class="oat-h"><span class="oat-n">API4</span><span class="oat-nm">Unrestricted Resource Consumption</span><span class="oat-sev">High</span></summary><div class="oat-body"><p class="oat-p">No rate limiting. No pagination limits. User requests <code>?page_size=1000000</code> and your server OOMs. Or they call your AI endpoint 50K times and you get a $10K bill.</p><div class="oat-fix"><strong>Fix:</strong> Rate limiting per user/IP, max page_size, request body size limits, cost-based throttling for expensive operations.</div></div></details>
+    <details class="oat-card oat-c--5"><summary class="oat-h"><span class="oat-n">API5</span><span class="oat-nm">Broken Function Level Authorization</span><span class="oat-sev">High</span></summary><div class="oat-body"><p class="oat-p">Regular user can call admin endpoints. <code>POST /api/admin/delete-user</code> works because the endpoint exists and authorization isn't checked.</p><div class="oat-fix"><strong>Fix:</strong> Default deny. Every endpoint requires explicit role/permission check. Admin routes behind separate middleware.</div></div></details>
+  </div>
+</div>
+<style>
+  .oat-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .oat-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .oat-list{display:flex;flex-direction:column;gap:6px}
+  .oat-card{border-radius:10px;border:1px solid #334155;overflow:hidden;transition:border-color .3s}
+  .oat-card[open]{border-color:#f8717130}
+  .oat-h{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;list-style:none;background:rgba(0,0,0,.15)}.oat-h::-webkit-details-marker{display:none}.oat-h::marker{content:''}
+  .oat-n{font-family:monospace;font-size:.6rem;font-weight:800;color:#f87171;background:rgba(248,113,113,.1);padding:2px 6px;border-radius:4px;flex-shrink:0}
+  .oat-nm{color:#e2e8f0;font-weight:700;font-size:.75rem;flex:1}.oat-sev{color:#f87171;font-size:.55rem;font-family:monospace}
+  .oat-body{padding:10px 14px}.oat-p{color:#94a3b8;font-size:.7rem;line-height:1.6;margin:0 0 8px}.oat-p code{color:#06b6d4;font-size:.65rem;background:rgba(6,182,212,.08);padding:1px 3px;border-radius:2px}
+  .oat-fix{color:#4ade80;font-size:.68rem;line-height:1.5;padding:6px 10px;background:rgba(74,222,128,.05);border-radius:6px}.oat-fix strong{color:#4ade80}
+</style>

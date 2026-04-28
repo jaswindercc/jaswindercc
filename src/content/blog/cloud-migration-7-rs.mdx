@@ -1,0 +1,49 @@
+---
+title: "Cloud Migration — The 7 Rs Strategy Framework"
+description: "A practical guide to the 7 Rs of cloud migration. Understand when to rehost, replatform, refactor, repurchase, retain, retire, or relocate each application in your portfolio."
+date: 2026-05-13
+---
+
+import MigrationVisual from '../../components/visual/MigrationVisual.astro';
+
+Every cloud migration starts the same way: someone says "let's move to the cloud" and someone else asks "which applications first?" The 7 Rs framework gives you a vocabulary for that conversation. Not every application should be rewritten as cloud-native microservices, and not every application should just be lifted and shifted onto a VM. The right strategy depends on each application's architecture, business value, and remaining lifespan.
+
+## The Seven Strategies
+
+Each R represents a different migration approach with different cost, effort, and benefit profiles. Most enterprise migrations use all seven — different strategies for different applications.
+
+<MigrationVisual />
+
+The most common mistake is applying one strategy to everything. Refactoring a legacy COBOL batch job into serverless functions takes eighteen months and produces something no one can maintain. Rehosting a modern Node.js API onto a VM wastes the opportunity to use managed services that reduce operational overhead by 80%.
+
+## Rehost: Start Here
+
+Rehosting gets workloads into the cloud quickly. You take an on-premises VM, create an equivalent cloud VM, migrate the data, and redirect traffic. Tools like AWS Application Migration Service (MGN) automate most of this process. It's not glamorous, but it works — and it lets you decommission data centers while you plan deeper optimizations.
+
+The hidden benefit of rehosting: once applications are in the cloud, they're easier to refactor incrementally. Swapping an on-premises database for RDS is simple when the application is already on EC2. Migration doesn't have to be a big bang — rehost first, optimize later.
+
+## Replatform: The Sweet Spot
+
+Replatforming makes targeted changes during migration. Replace the self-managed MySQL instance with Aurora. Swap the application server for containers on ECS. Move file storage to S3. Each change reduces operational burden without requiring application rewrites.
+
+The key is limiting changes per migration. Change the database OR the compute layer OR the storage layer, not all three simultaneously. Each change introduces risk, and stacking changes makes debugging failures exponentially harder. Migrate, stabilize, then optimize the next layer.
+
+## Refactor: Only When It Pays
+
+Refactoring — re-architecting for cloud-native patterns — delivers the highest long-term benefit but costs the most. Reserve this for applications that are strategically important and will exist for 5+ years. A customer-facing API processing millions of daily transactions justifies the investment. An internal reporting tool used by twelve people does not.
+
+When you do refactor, think in terms of strangler fig pattern. Don't rewrite the entire application at once. Identify a bounded context — user authentication, payment processing, notification delivery — extract it as a microservice, route traffic through the new service, and retire the old code. Repeat until the monolith is gone or small enough to not matter.
+
+## Retire: The 20% You Forgot About
+
+Portfolio discovery consistently reveals that 10-20% of enterprise applications are unused, redundant, or replaced by other tools. These applications still consume infrastructure, require patching, and create attack surface. The cheapest migration strategy is turning them off.
+
+Before retiring an application, verify it's truly unused. Check access logs, not user surveys — people will claim they use an application daily when logs show zero traffic in six months. Announce the retirement date, wait 30 days for complaints, and then decommission. The money saved on infrastructure and licensing funds the actual migration.
+
+## Building the Migration Plan
+
+Start with portfolio discovery. Catalog every application, its dependencies, its business value, its technical debt, and its data sensitivity. This inventory alone is valuable — most organizations don't know what they're running. Map dependencies to identify migration groups: applications that must move together because they communicate tightly.
+
+Prioritize by business value and migration difficulty. Quick wins go first — applications that are easy to migrate and deliver immediate cost savings. These build momentum and develop the team's cloud skills. Complex, high-value applications go next with the experience gained from earlier waves. Applications with minimal business value and high migration complexity go last — or get retired.
+
+Each migration wave should include applications from different complexity tiers. If every wave is all easy applications, the team never develops the skills for hard ones. If every wave is all hard applications, the team burns out and the project stalls.

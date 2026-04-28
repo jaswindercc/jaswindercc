@@ -1,0 +1,21 @@
+---
+title: "Security Headers Every Web App Needs"
+description: "Visual guide to essential HTTP security headers. Learn CSP, HSTS, and other headers that prevent XSS, clickjacking, and MIME attacks with minimal effort."
+date: 2026-05-22
+---
+
+import SecurityHeadersVisual from '../../components/visual/SecurityHeadersVisual.astro';
+
+Security headers are the easiest security win available. Five HTTP headers, set once in your server configuration, prevent entire categories of attacks. Content-Security-Policy stops XSS. Strict-Transport-Security stops SSL stripping. X-Frame-Options stops clickjacking. And most web apps don't set them.
+
+## The Headers You Need
+
+Each header prevents a specific attack category. They're additive — each one you add closes another attack vector. Start with CSP and HSTS, then add the rest.
+
+<SecurityHeadersVisual />
+
+Content-Security-Policy is the most powerful and the most complex. It lets you specify exactly which sources of content (scripts, styles, images, fonts) are allowed on your pages. A strict CSP prevents all inline scripts, which eliminates the vast majority of XSS attacks. The challenge is that many applications use inline scripts and styles — adopting CSP requires auditing and refactoring those patterns.
+
+Start with CSP in report-only mode. The `Content-Security-Policy-Report-Only` header logs violations without blocking them. Deploy it, monitor the reports for a week, fix the violations, then switch to enforcement mode. This prevents the "deployed CSP, broke everything" scenario.
+
+HSTS is simpler — one header, one rule: all connections must use HTTPS. Once a browser sees this header, it refuses to connect over HTTP for the specified duration. Add `preload` to get included in the browser's built-in HSTS list, which protects even the first visit. There's no reason not to enable HSTS on any production site serving over HTTPS.

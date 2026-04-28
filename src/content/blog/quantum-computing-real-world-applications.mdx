@@ -1,0 +1,87 @@
+---
+title: "Real-World Uses of Quantum Computing — From AI to Cybersecurity"
+description: "Visual guide to real-world quantum computing applications. See which industries are investing, what problems quantum solves, and where AI meets quantum."
+date: 2026-04-22
+---
+
+import QuantumRealWorld from '../../components/visual/QuantumRealWorld.astro';
+import QuantumAI from '../../components/visual/QuantumAI.astro';
+
+The quantum computing hype cycle has a problem: most articles either promise quantum will solve everything or dismiss it as decades away. The truth is more interesting. Real companies are spending real money on quantum projects right now — not for theoretical research, but for competitive advantage. Let's look at what's actually happening.
+
+---
+
+## 1. Industries Betting on Quantum
+
+This isn't theoretical anymore. Fortune 500 companies have active quantum computing programs. Some are running algorithms on real hardware today.
+
+<QuantumRealWorld />
+
+**The pattern:** every industry investing in quantum has the same underlying problem — combinatorial explosion. Too many possible drug molecules to test. Too many financial scenarios to model. Too many delivery routes to optimize. Classical computers can't explore the full space. Quantum computers might.
+
+---
+
+## 2. Quantum + AI — The Emerging Intersection
+
+Quantum computing and artificial intelligence are starting to converge. Each field amplifies the other, though we're still in very early stages.
+
+<QuantumAI />
+
+**The honest assessment:**
+- Quantum ML won't replace GPUs for training LLMs. The architectures don't match.
+- Quantum advantage for ML is most likely in *specific subtasks* — sampling, optimization, kernel evaluation.
+- The biggest near-term impact is AI *helping* quantum — using ML to design better quantum circuits and error correction codes.
+- Long-term? Quantum-enhanced AI training on specialized problems could be transformative.
+
+---
+
+## 3. Drug Discovery — The Most Promising Application
+
+If quantum computing has a "killer app," it's molecular simulation. Here's why:
+
+A molecule with 50 atoms has quantum properties that require tracking $2^{50}$ states. Classical computers approximate — they have to. Quantum computers could simulate the actual quantum behavior, because they're quantum themselves.
+
+**What this enables:**
+- Predict how a drug molecule binds to a protein — without physical experiments
+- Screen billions of candidate molecules computationally
+- Design new catalysts for industrial chemistry
+- Model protein folding more accurately than classical methods
+
+**Where we are today:** small molecules (10–20 atoms) can be simulated on current quantum hardware. Real drug-relevant molecules need 100+ error-corrected qubits. We're not there yet — but the pharmaceutical industry is investing billions because the payoff is enormous.
+
+---
+
+## 4. Cybersecurity — The Quantum Threat and Response
+
+Quantum computing is both a threat to and a tool for cybersecurity:
+
+**The threat (Shor's algorithm):**
+- Breaks RSA, ECC, and Diffie-Hellman key exchange
+- Makes today's public-key encryption eventually obsolete
+- "Harvest now, decrypt later" attacks are already underway
+
+**The response (post-quantum cryptography):**
+- NIST finalized PQC standards in 2024 (Kyber, Dilithium, SPHINCS+)
+- Major browsers and VPNs are already implementing PQC
+- Migration deadline for U.S. federal systems: 2035
+- Every organization handling sensitive long-lived data should start planning now
+
+**The tool (Quantum Key Distribution):**
+- Uses quantum physics to detect eavesdropping
+- Any interception disturbs the quantum state and alerts both parties
+- China's Micius satellite demonstrated QKD over 1,200 km
+- Not a replacement for PQC — complementary
+
+---
+
+## 5. What This Means for You
+
+**If you're a developer:** learn the basics now. The quantum workforce gap is real. Start with Qiskit, build some circuits, take the IBM Quantum Learning courses.
+
+**If you're in security:** start planning your PQC migration. Inventory your cryptographic dependencies. Prioritize long-lived data.
+
+**If you're in leadership:** quantum computing isn't ready to deploy in production — but it's ready to explore. Start a small team, run proof-of-concept experiments, and understand which of your problems have quantum-applicable structure.
+
+**If you're in science or engineering:** molecular simulation is the most impactful near-term application. If you work with computational chemistry, materials science, or drug design, quantum hardware relevant to your work is arriving within the decade.
+
+The worst strategy is to ignore quantum until it's "ready." The companies investing now will have trained teams, validated use cases, and quantum-ready architectures when the hardware catches up. Everyone else will be scrambling.

@@ -1,0 +1,37 @@
+---
+title: "Multi-Cloud Strategy — When It Makes Sense and When It Doesn't"
+description: "Honest visual guide to multi-cloud architecture. Understand real benefits, hidden costs, architecture patterns, and when to stay single-cloud."
+date: 2026-03-29
+---
+
+import MultiCloudProscons from '../../components/visual/MultiCloudProscons.astro';
+import MultiCloudPatterns from '../../components/visual/MultiCloudPatterns.astro';
+import CloudCompare from '../../components/visual/CloudCompare.astro';
+
+"We need multi-cloud for redundancy." That sentence has launched more expensive, slow, and complicated infrastructure projects than any other. Multi-cloud is a legitimate strategy — for specific situations. But it's also the most oversold architecture decision in cloud computing.
+
+Let me say the quiet part loud: most companies advocating multi-cloud are the vendors who sell multi-cloud management tools.
+
+## 1. The Honest Tradeoffs
+
+Multi-cloud has real benefits. It also has costs that proponents conveniently omit from conference talks. Understanding both is essential before committing to a strategy that's nearly impossible to reverse.
+
+<MultiCloudProscons />
+
+The question isn't "is multi-cloud good or bad?" It's "does my specific situation justify 2-3x operational complexity?" For most companies under $100M revenue with a single engineering team, the answer is no. For regulated enterprises with data residency requirements across regions, it might be yes.
+
+## 2. Architecture Patterns
+
+If you do go multi-cloud, how you architect matters enormously. The wrong pattern (identical active-active everywhere) costs 3x and delivers marginal reliability improvement. The right pattern (workload partitioning) gets best-of-breed benefits with manageable complexity.
+
+<MultiCloudPatterns />
+
+Workload partitioning is the pattern that actually works for most organizations. You're not running the same app on two clouds — you're running different things on different clouds based on strengths. Your ML workloads on GCP (best TPU/GPU ecosystem). Your main API on AWS (deepest service catalog). Your enterprise apps on Azure (Active Directory integration). Connected via queues and APIs, not real-time cross-cloud networking.
+
+## 3. Know What Each Cloud Does Best
+
+Each cloud provider has clear strengths. Choosing multi-cloud "for redundancy" means using no provider's strengths. Choosing multi-cloud "for best-of-breed" means deliberately picking each provider for what they do best.
+
+<CloudCompare />
+
+The pattern I recommend: pick a primary cloud for 80% of your workloads. Use secondary clouds for specific strengths where the advantage is measurable (not theoretical). Run BigQuery on GCP because it's genuinely better for analytics. Run your core platform on AWS because the ecosystem is deepest. But don't run your API on both "just in case" — the cloud providers have better redundancy within their own regions than you'll build across clouds.

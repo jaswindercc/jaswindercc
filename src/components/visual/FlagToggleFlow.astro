@@ -1,0 +1,53 @@
+---
+// FlagToggleFlow.astro — Animated feature flag toggle showing on/off paths
+---
+<div class="ftf-wrap">
+  <h3 class="ftf-title">The Feature Flag — One Toggle, Two Paths</h3>
+  <p class="ftf-sub">Same codebase. Same deployment. Different experience based on one boolean.</p>
+  <div class="ftf-demo">
+    <div class="ftf-code">
+      <div class="ftf-line"><span class="ftf-kw">if</span> <span class="ftf-fn">(featureFlags.newCheckout)</span> <span class="ftf-br">&#123;</span></div>
+      <div class="ftf-line ftf-indent"><span class="ftf-cm">// 10% of users see this</span></div>
+      <div class="ftf-line ftf-indent ftf-hl--green">renderNewCheckout();</div>
+      <div class="ftf-line"><span class="ftf-br">&#125;</span> <span class="ftf-kw">else</span> <span class="ftf-br">&#123;</span></div>
+      <div class="ftf-line ftf-indent"><span class="ftf-cm">// 90% see the old version</span></div>
+      <div class="ftf-line ftf-indent ftf-hl--amber">renderOldCheckout();</div>
+      <div class="ftf-line"><span class="ftf-br">&#125;</span></div>
+    </div>
+    <div class="ftf-paths">
+      <div class="ftf-path ftf-path--on ftf-an1">
+        <div class="ftf-toggle ftf-toggle--on"><div class="ftf-knob"></div></div>
+        <span class="ftf-path-label">Flag ON → New checkout</span>
+        <div class="ftf-path-bar ftf-pb--green" style="--w:10%"><span>10%</span></div>
+      </div>
+      <div class="ftf-path ftf-path--off ftf-an2">
+        <div class="ftf-toggle ftf-toggle--off"><div class="ftf-knob"></div></div>
+        <span class="ftf-path-label">Flag OFF → Old checkout</span>
+        <div class="ftf-path-bar ftf-pb--amber" style="--w:90%"><span>90%</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .ftf-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .ftf-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.ftf-sub{color:#64748b;font-size:.8rem;margin:0 0 1.5rem;font-family:monospace}
+  .ftf-demo{display:flex;gap:20px;align-items:flex-start}@media(max-width:640px){.ftf-demo{flex-direction:column}}
+  .ftf-code{flex:1;background:rgba(0,0,0,.3);border:1px solid #334155;border-radius:10px;padding:14px;font-family:monospace;font-size:.68rem;line-height:1.7}
+  .ftf-line{color:#94a3b8}.ftf-indent{padding-left:20px}.ftf-kw{color:#c084fc}.ftf-fn{color:#67e8f9}.ftf-br{color:#64748b}.ftf-cm{color:#475569;font-style:italic}
+  .ftf-hl--green{color:#4ade80;font-weight:700}.ftf-hl--amber{color:#fbbf24;font-weight:700}
+  .ftf-paths{flex:1;display:flex;flex-direction:column;gap:12px}
+  .ftf-path{padding:14px;border-radius:10px;opacity:0;animation:ftfIn .5s ease-out forwards}
+  .ftf-an1{animation-delay:.3s}.ftf-an2{animation-delay:.6s}
+  .ftf-path--on{background:rgba(74,222,128,.04);border:1px solid #4ade8020}
+  .ftf-path--off{background:rgba(245,158,11,.04);border:1px solid #f59e0b20}
+  .ftf-toggle{width:36px;height:20px;border-radius:10px;position:relative;margin-bottom:8px}
+  .ftf-toggle--on{background:#4ade80}.ftf-toggle--off{background:#475569}
+  .ftf-knob{width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:2px;transition:left .3s}
+  .ftf-toggle--on .ftf-knob{left:18px}.ftf-toggle--off .ftf-knob{left:2px}
+  .ftf-path-label{display:block;color:#e2e8f0;font-size:.72rem;font-weight:600;margin-bottom:8px}
+  .ftf-path-bar{height:22px;border-radius:6px;display:flex;align-items:center;padding-left:8px;width:0;animation:ftfBar 1s ease-out 1s forwards}
+  .ftf-pb--green{background:rgba(74,222,128,.2);border:1px solid #4ade8030}.ftf-pb--green span{color:#4ade80;font-size:.6rem;font-weight:700;font-family:monospace}
+  .ftf-pb--amber{background:rgba(245,158,11,.2);border:1px solid #f59e0b30}.ftf-pb--amber span{color:#f59e0b;font-size:.6rem;font-weight:700;font-family:monospace}
+  @keyframes ftfIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+  @keyframes ftfBar{to{width:var(--w)}}
+</style>

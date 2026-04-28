@@ -1,0 +1,40 @@
+---
+// SBOMDiagram.astro — Animated SBOM generation flow
+const sampleCode = `<div class="sb-ln"><span class="sb-k">"name"</span>: <span class="sb-s">"lodash"</span>,</div>
+      <div class="sb-ln"><span class="sb-k">"version"</span>: <span class="sb-s">"4.17.21"</span>,</div>
+      <div class="sb-ln"><span class="sb-k">"purl"</span>: <span class="sb-s">"pkg:npm/lodash@4.17.21"</span>,</div>
+      <div class="sb-ln"><span class="sb-k">"hashes"</span>: [{ <span class="sb-k">"alg"</span>: <span class="sb-s">"SHA-256"</span>, <span class="sb-k">"content"</span>: <span class="sb-s">"ab3f..."</span> }]</div>`;
+---
+<div class="sb-wrap">
+  <h3 class="sb-title">SBOM — Your Ingredient List</h3>
+  <p class="sb-sub">A Software Bill of Materials tells you exactly what's inside your artifact.</p>
+  <div class="sb-flow">
+    <div class="sb-stage sb-stage--src"><div class="sb-dot"></div><span class="sb-lbl">Source Code</span><span class="sb-det">Your code + imports</span></div>
+    <div class="sb-arrow"><svg width="30" height="12" viewBox="0 0 30 12"><path d="M0 6h24M24 6l-5-4M24 6l-5 4" stroke="#4ade80" stroke-width="1.5" fill="none"><animate attributeName="stroke-dashoffset" from="30" to="0" dur="1s" fill="freeze"/></path></svg></div>
+    <div class="sb-stage sb-stage--build"><div class="sb-dot sb-dot--amber"></div><span class="sb-lbl">CI Build</span><span class="sb-det">Resolve all deps</span></div>
+    <div class="sb-arrow"><svg width="30" height="12" viewBox="0 0 30 12"><path d="M0 6h24M24 6l-5-4M24 6l-5 4" stroke="#f59e0b" stroke-width="1.5" fill="none"><animate attributeName="stroke-dashoffset" from="30" to="0" dur="1s" begin=".3s" fill="freeze"/></path></svg></div>
+    <div class="sb-stage sb-stage--gen"><div class="sb-dot sb-dot--cyan"></div><span class="sb-lbl">SBOM Gen</span><span class="sb-det">CycloneDX / SPDX</span></div>
+    <div class="sb-arrow"><svg width="30" height="12" viewBox="0 0 30 12"><path d="M0 6h24M24 6l-5-4M24 6l-5 4" stroke="#06b6d4" stroke-width="1.5" fill="none"><animate attributeName="stroke-dashoffset" from="30" to="0" dur="1s" begin=".6s" fill="freeze"/></path></svg></div>
+    <div class="sb-stage sb-stage--store"><div class="sb-dot sb-dot--purple"></div><span class="sb-lbl">Artifact Store</span><span class="sb-det">SBOM + binary together</span></div>
+  </div>
+  <div class="sb-sample">
+    <span class="sb-sh">sample SBOM entry (CycloneDX JSON)</span>
+    <div class="sb-code">
+      <Fragment set:html={sampleCode} />
+    </div>
+  </div>
+</div>
+<style>
+  .sb-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .sb-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.sb-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem}
+  .sb-flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:1.5rem}
+  .sb-stage{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 14px;background:rgba(0,0,0,.2);border-radius:10px;border:1px solid #334155}
+  .sb-dot{width:8px;height:8px;border-radius:50%;background:#4ade80;animation:sbPulse 2s ease infinite}.sb-dot--amber{background:#f59e0b}.sb-dot--cyan{background:#06b6d4}.sb-dot--purple{background:#818cf8}
+  @keyframes sbPulse{0%,100%{opacity:.5}50%{opacity:1}}
+  .sb-lbl{color:#e2e8f0;font-size:.72rem;font-weight:700}.sb-det{color:#64748b;font-size:.6rem;font-family:monospace}
+  .sb-arrow{flex-shrink:0}
+  .sb-sample{background:rgba(0,0,0,.25);border-radius:10px;padding:12px 16px;border:1px solid #334155}
+  .sb-sh{display:block;color:#64748b;font-size:.6rem;font-family:monospace;margin-bottom:8px}
+  .sb-code{font-family:monospace;font-size:.7rem;line-height:1.7}
+  .sb-ln{color:#94a3b8}.sb-k{color:#06b6d4}.sb-s{color:#4ade80}
+</style>

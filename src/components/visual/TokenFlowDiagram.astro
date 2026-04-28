@@ -1,0 +1,133 @@
+---
+// TokenFlowDiagram.astro — Pure CSS animated token flow showing how prompt structure affects LLM processing
+---
+
+<div class="tf-wrap">
+  <h3 class="tf-title">How the LLM Reads Your Prompt</h3>
+  <p class="tf-sub">Tokens flow left to right. Structure helps the model focus attention on what matters.</p>
+
+  <div class="tf-layout">
+    <div class="tf-flow-box">
+      <svg viewBox="0 0 400 200" class="tf-svg" aria-label="Token flow through LLM attention layers">
+        <defs>
+          <pattern id="tfGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+        <rect width="400" height="200" fill="url(#tfGrid)"/>
+
+        <!-- Input tokens -->
+        <text x="10" y="20" font-size="7" fill="#64748b" font-family="monospace">INPUT TOKENS</text>
+        <rect x="10" y="28" width="55" height="18" rx="4" fill="#1e1e2e" stroke="#f59e0b" stroke-width="1.5" class="tf-tok tf-tok--role"/>
+        <text x="37" y="40" text-anchor="middle" font-size="6" fill="#f59e0b" font-family="monospace">ROLE</text>
+
+        <rect x="70" y="28" width="55" height="18" rx="4" fill="#1e1e2e" stroke="#06b6d4" stroke-width="1.5" class="tf-tok tf-tok--task"/>
+        <text x="97" y="40" text-anchor="middle" font-size="6" fill="#06b6d4" font-family="monospace">TASK</text>
+
+        <rect x="130" y="28" width="55" height="18" rx="4" fill="#1e1e2e" stroke="#818cf8" stroke-width="1.5" class="tf-tok tf-tok--context"/>
+        <text x="157" y="40" text-anchor="middle" font-size="6" fill="#818cf8" font-family="monospace">CONTEXT</text>
+
+        <rect x="190" y="28" width="55" height="18" rx="4" fill="#1e1e2e" stroke="#4ade80" stroke-width="1.5" class="tf-tok tf-tok--format"/>
+        <text x="217" y="40" text-anchor="middle" font-size="6" fill="#4ade80" font-family="monospace">FORMAT</text>
+
+        <!-- Attention layer -->
+        <text x="10" y="80" font-size="7" fill="#64748b" font-family="monospace">ATTENTION LAYER</text>
+        <rect x="10" y="88" width="370" height="40" rx="8" fill="rgba(0,0,0,0.3)" stroke="#334155" stroke-width="1"/>
+
+        <!-- Attention beams -->
+        <line x1="37" y1="46" x2="100" y2="88" stroke="#f59e0b30" stroke-width="8" class="tf-beam"/>
+        <line x1="97" y1="46" x2="180" y2="88" stroke="#06b6d430" stroke-width="12" class="tf-beam"/>
+        <line x1="157" y1="46" x2="260" y2="88" stroke="#818cf830" stroke-width="6" class="tf-beam"/>
+        <line x1="217" y1="46" x2="340" y2="88" stroke="#4ade8030" stroke-width="10" class="tf-beam"/>
+
+        <!-- Attention weights text -->
+        <text x="100" y="112" text-anchor="middle" font-size="7" fill="#f59e0b" font-family="monospace">persona</text>
+        <text x="195" y="112" text-anchor="middle" font-size="7" fill="#06b6d4" font-family="monospace" font-weight="700">HIGH FOCUS</text>
+        <text x="290" y="112" text-anchor="middle" font-size="7" fill="#818cf8" font-family="monospace">context</text>
+        <text x="360" y="112" text-anchor="middle" font-size="7" fill="#4ade80" font-family="monospace">shape</text>
+
+        <!-- Output -->
+        <text x="10" y="150" font-size="7" fill="#64748b" font-family="monospace">OUTPUT</text>
+        <rect x="10" y="158" width="370" height="28" rx="6" fill="rgba(74,222,128,0.06)" stroke="#4ade8030" stroke-width="1"/>
+        <text x="195" y="176" text-anchor="middle" font-size="8" fill="#4ade80" font-family="monospace">Precise, formatted, role-appropriate answer</text>
+
+        <!-- Animated token pulse -->
+        <circle r="4" fill="#f59e0b" opacity="0.7">
+          <animateMotion dur="4s" repeatCount="indefinite">
+            <mpath href="#tfPath"/>
+          </animateMotion>
+          <animate attributeName="fill" values="#f59e0b;#06b6d4;#818cf8;#4ade80;#4ade80" dur="4s" repeatCount="indefinite"/>
+        </circle>
+        <path id="tfPath" d="M37 37 L37 46 L195 108 L195 158 L195 172" fill="none" stroke="none"/>
+      </svg>
+    </div>
+
+    <div class="tf-cards">
+      <div class="tf-card tf-card--amber">
+        <span class="tf-card-tag">ROLE</span>
+        <p class="tf-card-text">Sets the model's expertise level. "You are a senior DevOps engineer" produces vastly different output than no role at all.</p>
+      </div>
+      <div class="tf-card tf-card--cyan">
+        <span class="tf-card-tag">TASK</span>
+        <p class="tf-card-text">The core instruction. Be specific: "List 3 risks" beats "tell me about risks." Verbs matter.</p>
+      </div>
+      <div class="tf-card tf-card--purple">
+        <span class="tf-card-tag">CONTEXT</span>
+        <p class="tf-card-text">Background info the model needs. Paste the actual data, code, or document — don't describe it.</p>
+      </div>
+      <div class="tf-card tf-card--green">
+        <span class="tf-card-tag">FORMAT</span>
+        <p class="tf-card-text">How you want the answer shaped. "Return JSON" or "numbered list with severity ratings" — structure the output.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .tf-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .tf-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .tf-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .tf-layout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.5rem; align-items: start; }
+  @media (max-width: 700px) { .tf-layout { grid-template-columns: 1fr; } }
+
+  .tf-svg { width: 100%; height: auto; }
+
+  .tf-tok--role { animation: tf-pulse 4s infinite 0s; }
+  .tf-tok--task { animation: tf-pulse 4s infinite 0.5s; }
+  .tf-tok--context { animation: tf-pulse 4s infinite 1s; }
+  .tf-tok--format { animation: tf-pulse 4s infinite 1.5s; }
+  @keyframes tf-pulse {
+    0%,20%,100% { filter: drop-shadow(0 0 0 transparent); }
+    10% { filter: drop-shadow(0 0 8px rgba(255,255,255,0.2)); }
+  }
+
+  .tf-beam { animation: tf-beam-fade 4s infinite; }
+  @keyframes tf-beam-fade {
+    0%,100% { opacity: 0.3; } 50% { opacity: 0.8; }
+  }
+
+  .tf-cards { display: flex; flex-direction: column; gap: 6px; }
+  .tf-card {
+    padding: 8px 12px; border-radius: 8px; border: 1px solid #334155;
+    background: rgba(0,0,0,0.2); transition: all 0.3s;
+  }
+  .tf-card:hover { transform: translateX(4px); }
+  .tf-card--amber:hover { border-color: #f59e0b30; }
+  .tf-card--cyan:hover { border-color: #06b6d430; }
+  .tf-card--purple:hover { border-color: #818cf830; }
+  .tf-card--green:hover { border-color: #4ade8030; }
+
+  .tf-card-tag {
+    font-family: monospace; font-size: 0.6rem; font-weight: 700; letter-spacing: 1px;
+    display: inline-block; margin-bottom: 4px;
+  }
+  .tf-card--amber .tf-card-tag { color: #f59e0b; }
+  .tf-card--cyan .tf-card-tag { color: #06b6d4; }
+  .tf-card--purple .tf-card-tag { color: #818cf8; }
+  .tf-card--green .tf-card-tag { color: #4ade80; }
+  .tf-card-text { color: #94a3b8; font-size: 0.7rem; line-height: 1.5; margin: 0; }
+</style>

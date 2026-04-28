@@ -1,0 +1,55 @@
+---
+title: "Serverless vs Containers — When Each One Wins"
+description: "Visual comparison of serverless and container architectures. Understand cold starts, cost crossover points, decision matrices, and hybrid patterns for production workloads."
+date: 2026-04-14
+---
+
+import ServerlessVsContainers from '../../components/visual/ServerlessVsContainers.astro';
+import ColdStartAnatomy from '../../components/visual/ColdStartAnatomy.astro';
+import DecisionMatrix from '../../components/visual/DecisionMatrix.astro';
+import CostComparison from '../../components/visual/CostComparison.astro';
+import HybridArchitecture from '../../components/visual/HybridArchitecture.astro';
+
+"Should we go serverless or use containers?" Wrong question. The right question is "which parts of our system benefit from serverless, and which parts need containers?" Almost every production system of meaningful scale uses both.
+
+But to make that decision well, you need to understand the tradeoffs. Not marketing slides — actual engineering constraints.
+
+## 1. The Honest Comparison
+
+Both are valid. Both have real strengths and real weaknesses. The internet has strong opinions, but the truth is context-dependent. Here's what actually differs:
+
+<ServerlessVsContainers />
+
+Neither is universally better. Serverless gives you zero ops overhead at the cost of constraints (runtime limits, cold starts, statelessness). Containers give you full control at the cost of operational complexity (you patch it, you scale it, you debug it).
+
+## 2. Cold Starts — The Serverless Tax
+
+Cold starts are the number one complaint about serverless. They happen when a new instance must spin up from scratch — no warm container available. Understanding WHAT happens during a cold start tells you WHERE to optimize.
+
+<ColdStartAnatomy />
+
+The math: if your p50 latency is 30ms but your cold start adds 2 seconds, and 5% of requests hit cold starts, your p95 is terrible. For latency-sensitive APIs, this matters. For async processing (queue consumers, event handlers), nobody cares — the user isn't waiting.
+
+## 3. The Decision Matrix
+
+Stop debating architecture religion. Match the workload to the compute model. Some things are obviously serverless (bursty, event-driven, short-lived). Some are obviously containers (long-running, GPU, WebSocket). Most fall somewhere in between.
+
+<DecisionMatrix />
+
+The decision I see teams struggle with most: "our API gets steady traffic but spikes during sales." Answer: containers for baseline + serverless for overflow (using API Gateway with Lambda as fallback). Or use Cloud Run / Knative which gives container convenience with serverless scaling.
+
+## 4. The Cost Question
+
+"Serverless is cheaper" is true until it isn't. At low traffic, you pay per request — essentially free. At high traffic, per-request pricing adds up fast, and always-on containers become dramatically cheaper.
+
+<CostComparison />
+
+The hidden cost people forget: engineer time. A container cluster needs someone maintaining it — security patches, scaling configs, networking. Serverless needs none of that. If your engineering team is small, the operational savings of serverless might outweigh the compute cost premium even at scale.
+
+## 5. The Real Answer — Use Both
+
+The binary choice is a false dilemma. Production architectures of any meaningful scale end up hybrid. The skill is knowing which workloads go where — edge/event processing in serverless, core services in containers, connected via async messaging.
+
+<HybridArchitecture />
+
+The pattern that works: start with serverless for everything. When a specific function hits the cost crossover or needs capabilities serverless can't provide (long runtime, GPU, WebSocket), migrate THAT function to a container. Don't prematurely containerize things that are perfectly happy as Lambda functions at $0.03/month.

@@ -1,0 +1,67 @@
+---
+title: "Multi-Agent Systems — When One AI Isn't Enough"
+description: "See how multi-agent architectures work with animated traces, orchestration patterns, and side-by-side comparisons. Learn when to split one agent into many — and when not to."
+date: 2026-04-28
+---
+
+import SingleVsMultiAgent from '../../components/visual/SingleVsMultiAgent.astro';
+import OrchestratorPatterns from '../../components/visual/OrchestratorPatterns.astro';
+import AgentHandoff from '../../components/visual/AgentHandoff.astro';
+import MultiAgentTrace from '../../components/visual/MultiAgentTrace.astro';
+import MultiAgentMetrics from '../../components/visual/MultiAgentMetrics.astro';
+
+# Multi-Agent Systems — When One AI Isn't Enough
+
+**One agent that does everything eventually does nothing well.**
+
+A single AI agent can handle simple tasks. But give it a 10-step task that requires research, writing, fact-checking, and formatting? It loses context by step 5, starts hallucinating by step 7, and produces garbage by step 10. The fix: split the work across specialized agents.
+
+---
+
+## 1. Single Agent vs Multi-Agent — The Core Difference
+
+A single agent handles every step sequentially in one long context window. A multi-agent system assigns each step to a specialist. Same task, completely different architecture.
+
+<SingleVsMultiAgent />
+
+The multi-agent approach looks more complex — and it is. But each agent has a **focused role**, a **small context window**, and a **clear success criteria**. That's why the quality is higher.
+
+---
+
+## 2. Three Ways to Wire Agents Together
+
+Not all multi-agent systems work the same way. The orchestration pattern you pick changes everything — speed, quality, cost, and debuggability.
+
+<OrchestratorPatterns />
+
+**Start with Hub & Spoke.** It's the easiest to build, the easiest to debug, and handles 80% of real-world use cases. Move to Pipeline for assembly-line workflows. Use Debate only when wrong answers have real consequences.
+
+---
+
+## 3. The Handoff — Making Agents Talk to Each Other
+
+The biggest mistake in multi-agent systems: passing raw conversation history between agents. It fills up context windows with noise. Instead, pass structured data — summaries, key findings, and tagged outputs.
+
+<AgentHandoff />
+
+Think of it like a relay race. You don't pass the entire track history to the next runner — you pass the baton. Clean, minimal, exactly what they need to do their job.
+
+---
+
+## 4. Watch Three Agents Collaborate — Full Trace
+
+Here's a real multi-agent execution trace for writing a technical blog post. Watch how the orchestrator delegates, agents report back, the reviewer catches errors, and the writer fixes them.
+
+<MultiAgentTrace />
+
+Notice the **feedback loop**: the review agent found issues, and the writing agent fixed them. This self-correcting behavior is impossible with a single agent — it can't review its own blind spots.
+
+---
+
+## 5. The Numbers — When Multi-Agent Pays Off
+
+Multi-agent systems cost more and add complexity. They're not always the right call. Here's the data on when they're worth it and when a single agent is better.
+
+<MultiAgentMetrics />
+
+---

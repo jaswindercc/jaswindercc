@@ -1,0 +1,93 @@
+---
+title: "Quantum Algorithms 101 — Grover's and Shor's Explained for Everyone"
+description: "Visual guide to quantum algorithms. Understand Grover's search and Shor's factoring with animations, speedup comparisons, and zero math prerequisites."
+date: 2026-04-23
+---
+
+import GroverVisual from '../../components/visual/GroverVisual.astro';
+import ShorVisual from '../../components/visual/ShorVisual.astro';
+import QuantumSpeedups from '../../components/visual/QuantumSpeedups.astro';
+
+Quantum hardware is impressive. But hardware without algorithms is just an expensive refrigerator. The real power of quantum computing lives in the algorithms — and two of them matter more than all the rest. Grover's algorithm searches faster. Shor's algorithm breaks encryption. Together, they show what quantum computers can actually *do*.
+
+---
+
+## 1. Grover's Algorithm — Quantum Search
+
+Imagine searching a phone book with a million entries for a specific name. Classically, you'd check entries one by one — on average, 500,000 checks. Grover's algorithm does it in about 1,000 checks.
+
+<GroverVisual />
+
+That's a quadratic speedup: from N checks to √N checks. Sounds modest compared to the exponential hype, right? But √1,000,000 = 1,000. And √1,000,000,000 = ~31,000. For big enough problems, this matters enormously.
+
+**How it works (no math version):**
+1. Put all possible answers in superposition — the quantum computer "looks at" all of them at once
+2. The oracle (a special circuit) marks the correct answer by flipping its phase
+3. The amplification step makes the correct answer louder and wrong answers quieter
+4. Repeat about √N times, then measure — you'll get the right answer with high probability
+
+**What Grover's is good for:** unstructured search, optimization problems, database queries, and as a subroutine inside other quantum algorithms.
+
+---
+
+## 2. Shor's Algorithm — The Encryption Breaker
+
+RSA encryption — the system protecting your bank account, your VPN, and most of the internet — relies on one assumption: factoring large numbers is computationally impossible for classical computers.
+
+Shor's algorithm shatters that assumption.
+
+<ShorVisual />
+
+**Why this matters today:**
+- RSA-2048 is safe from classical computers — it would take millions of years
+- Shor's algorithm could break it in hours, given enough stable qubits
+- We don't have enough qubits yet (need ~4,000 error-corrected qubits)
+- But "harvest now, decrypt later" attacks are already happening
+
+The quantum computing community estimates we're 10–15 years away from breaking RSA-2048. The cryptography community isn't waiting — NIST finalized post-quantum standards in 2024.
+
+---
+
+## 3. Speedup Comparison — Where Quantum Wins and Loses
+
+Not every problem gets a quantum speedup. Some get exponential advantage. Some get quadratic. Some get nothing. Knowing which category your problem falls into is the key question in quantum computing.
+
+<QuantumSpeedups />
+
+**The honest picture:** quantum advantage is problem-specific. Don't believe anyone who says "quantum computers are X times faster than classical computers" without specifying the problem. For sorting? No speedup. For factoring? Exponential speedup. For searching? Quadratic speedup. For simulation? Exponential speedup.
+
+---
+
+## 4. Beyond Grover and Shor
+
+These two get all the attention, but the modern quantum algorithm zoo is much larger:
+
+**Variational Quantum Eigensolver (VQE):**
+A hybrid classical-quantum algorithm for finding the ground state energy of molecules. Used in drug discovery and materials science. Works on today's noisy hardware.
+
+**Quantum Approximate Optimization Algorithm (QAOA):**
+Solves combinatorial optimization problems approximately. Think: logistics routing, scheduling, portfolio optimization. Also designed for noisy hardware.
+
+**Quantum Phase Estimation (QPE):**
+The precision machinery inside Shor's algorithm. Estimates eigenvalues of unitary operators. Foundational but needs error-corrected qubits.
+
+**Quantum Fourier Transform (QFT):**
+The quantum equivalent of the classical Fast Fourier Transform. Used inside Shor's algorithm and QPE. Exponentially faster than classical FFT.
+
+---
+
+## 5. How to Start Thinking in Quantum Algorithms
+
+Quantum algorithm design is fundamentally different from classical algorithm design. Here's the mindset shift:
+
+**Classical thinking:** "How do I solve this step by step?"
+**Quantum thinking:** "How do I set up interference so the right answer becomes the most probable?"
+
+Quantum algorithms work by manipulating probability amplitudes. You construct a circuit where the amplitude of the correct answer gets amplified (constructive interference) and wrong answers get suppressed (destructive interference). Then you measure and — most of the time — get the right answer.
+
+**Three resources to go deeper:**
+- **Qiskit Textbook** (free) — interactive Jupyter notebooks for every major algorithm
+- **"Quantum Computing: An Applied Approach" by Hidary** — best practical introduction
+- **IBM Quantum Learning** (free) — structured courses with real hardware access
+
+Start with VQE if you care about chemistry. Start with QAOA if you care about optimization. Both work on real hardware today.

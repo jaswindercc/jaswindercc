@@ -1,0 +1,66 @@
+---
+// QuantumCloudProviders.astro — Cloud quantum computing providers comparison
+---
+
+<div class="qcp-wrap">
+  <h3 class="qcp-title">Quantum Computing in the Cloud — Your Options</h3>
+  <p class="qcp-sub">No cryogenic lab needed. Access real quantum hardware from your browser.</p>
+
+  <div class="qcp-providers">
+    <div class="qcp-provider" style="--i:0;--c:#06b6d4">
+      <div class="qcp-name">IBM Quantum</div>
+      <div class="qcp-details">
+        <div class="qcp-detail"><span class="qcp-key">Hardware:</span> Superconducting qubits (Eagle, Heron)</div>
+        <div class="qcp-detail"><span class="qcp-key">Qubits:</span> 127–1,121+</div>
+        <div class="qcp-detail"><span class="qcp-key">SDK:</span> Qiskit (Python)</div>
+        <div class="qcp-detail"><span class="qcp-key">Free tier:</span> 10 min/month on real hardware</div>
+      </div>
+      <div class="qcp-verdict">Best for: learning and research. Largest free access.</div>
+    </div>
+    <div class="qcp-provider" style="--i:1;--c:#4ade80">
+      <div class="qcp-name">Amazon Braket</div>
+      <div class="qcp-details">
+        <div class="qcp-detail"><span class="qcp-key">Hardware:</span> IonQ (trapped ion), Rigetti (superconducting)</div>
+        <div class="qcp-detail"><span class="qcp-key">Qubits:</span> Varies by provider</div>
+        <div class="qcp-detail"><span class="qcp-key">SDK:</span> Amazon Braket SDK (Python)</div>
+        <div class="qcp-detail"><span class="qcp-key">Free tier:</span> Free simulator hours + $750 credit</div>
+      </div>
+      <div class="qcp-verdict">Best for: multi-hardware comparison. AWS ecosystem.</div>
+    </div>
+    <div class="qcp-provider" style="--i:2;--c:#a78bfa">
+      <div class="qcp-name">Azure Quantum</div>
+      <div class="qcp-details">
+        <div class="qcp-detail"><span class="qcp-key">Hardware:</span> IonQ, Quantinuum, Pasqal</div>
+        <div class="qcp-detail"><span class="qcp-key">Qubits:</span> Varies by provider</div>
+        <div class="qcp-detail"><span class="qcp-key">SDK:</span> Q# and Python</div>
+        <div class="qcp-detail"><span class="qcp-key">Free tier:</span> $500 in credits</div>
+      </div>
+      <div class="qcp-verdict">Best for: enterprise integration. Microsoft ecosystem.</div>
+    </div>
+    <div class="qcp-provider" style="--i:3;--c:#f59e0b">
+      <div class="qcp-name">Google Quantum AI</div>
+      <div class="qcp-details">
+        <div class="qcp-detail"><span class="qcp-key">Hardware:</span> Sycamore (superconducting)</div>
+        <div class="qcp-detail"><span class="qcp-key">Qubits:</span> 72+</div>
+        <div class="qcp-detail"><span class="qcp-key">SDK:</span> Cirq (Python)</div>
+        <div class="qcp-detail"><span class="qcp-key">Free tier:</span> Simulators only (limited hardware access)</div>
+      </div>
+      <div class="qcp-verdict">Best for: research. Bleeding-edge hardware.</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .qcp-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .qcp-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .qcp-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .qcp-providers{display:flex;flex-direction:column;gap:10px}
+  .qcp-provider{background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:12px;padding:1.25rem;opacity:0;animation:qcpIn .4s ease forwards;animation-delay:calc(var(--i)*.12s);transition:border-color .2s}
+  .qcp-provider:hover{border-color:var(--c)}
+  .qcp-name{color:var(--c);font-size:.85rem;font-weight:700;margin-bottom:.5rem}
+  .qcp-details{display:flex;flex-direction:column;gap:3px;margin-bottom:.5rem}
+  .qcp-detail{color:#94a3b8;font-size:.68rem;font-family:monospace}
+  .qcp-key{color:#64748b;min-width:60px;display:inline-block}
+  .qcp-verdict{color:#f1f5f9;font-size:.68rem;padding:6px 10px;background:rgba(0,0,0,.2);border-radius:6px;border-left:2px solid var(--c)}
+  @keyframes qcpIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+</style>

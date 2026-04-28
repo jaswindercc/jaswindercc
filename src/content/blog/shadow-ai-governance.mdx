@@ -1,0 +1,150 @@
+---
+title: "Shadow AI Governance: Unauthorized LLMs in Enterprise"
+description: "Interactive guide to discovering, measuring, and governing unauthorized AI usage across your organization — from engineering to legal — before the data breach forces you to."
+date: 2026-04-25
+---
+
+import ShadowAIMap from '../../components/visual/ShadowAIMap.astro';
+
+# Shadow AI Governance: Unauthorized LLMs in Enterprise
+
+**Your employees are using AI every day. You just don't know which tools, with what data, or where that data ends up.**
+
+Shadow IT was hard enough — people spinning up AWS accounts, using personal Dropbox for company files. Shadow AI is worse. It's invisible, it's instant, and the data leaves your perimeter in a single copy-paste.
+
+Last month I helped a financial services company run an AI usage audit. They had officially approved three AI tools. Their network logs showed traffic to **fourteen** different LLM endpoints. The legal team was pasting merger documents into ChatGPT. Nobody knew.
+
+---
+
+## Where Shadow AI Lives
+
+Every department has found ways to use AI that bypass your approved tool list. The question isn't whether it's happening — it's how much data has already leaked.
+
+<ShadowAIMap />
+
+The scary part isn't that people are using AI. It's that they're using it with the *most sensitive data* — the exact data that justifies using AI in the first place. You don't paste public documentation into ChatGPT. You paste the complex, confidential, hard-to-summarize stuff.
+
+---
+
+## Why "Just Block It" Doesn't Work
+
+I've seen three companies try the ban approach. All three failed within 60 days.
+
+**People route around blocks.** Block ChatGPT at the firewall? They use mobile data. Block the domain? They switch to Claude, Gemini, Perplexity — there are dozens of endpoints now. You're playing whack-a-mole against employee productivity.
+
+**Bans push usage underground.** When you ban AI tools, people don't stop using them — they stop telling you about it. Now you have the same data leakage problem, except you've also lost visibility.
+
+**The productivity gap is real.** Teams using AI are measurably faster. When you ban AI for one team, they fall behind. Their manager notices. Pressure mounts. Exceptions get made. The policy erodes.
+
+---
+
+## The Governance Framework That Actually Ships
+
+Instead of blocking, govern. Here's the four-layer model I deploy:
+
+### Layer 1: Discover — Know What's Happening
+
+```yaml
+# Network monitoring rules
+ai_endpoint_detection:
+  domains:
+    - api.openai.com
+    - api.anthropic.com
+    - generativelanguage.googleapis.com
+    - api.mistral.ai
+    - "*.ollama.ai"
+  action: log_and_classify
+  alert_threshold: 50_requests_per_user_per_day
+  data_classification: auto_detect_pii
+```
+
+You can't govern what you can't see. Deploy network-level detection that identifies LLM API traffic. Don't block it — log it. Classify it. Understand the patterns.
+
+### Layer 2: Classify — Know What Data is Flowing
+
+Not all AI usage is equal. Someone using Claude to fix a regex is different from someone pasting customer SSNs into a summarizer.
+
+**Tier 1 — Public data only:** Blog drafts, public documentation, open-source code. Low risk. Allow freely.
+
+**Tier 2 — Internal data:** Architecture docs, meeting notes, non-sensitive code. Medium risk. Allow with approved tools only.
+
+**Tier 3 — Confidential:** Customer PII, financial data, legal documents, source code with secrets. High risk. Air-gapped models only.
+
+**Tier 4 — Regulated:** Data subject to GDPR, HIPAA, SOX, PCI. Critical risk. No external AI. Ever. Period.
+
+### Layer 3: Route — Push People to Safe Alternatives
+
+```
+┌──────────────────────────────────────────┐
+│         AI Usage Router                   │
+├──────────────────────────────────────────┤
+│ Data Tier 1 → Any approved tool (Claude, │
+│                GPT-4, Gemini)             │
+│ Data Tier 2 → Enterprise Azure OpenAI    │
+│                (no training, DPA signed)  │
+│ Data Tier 3 → Self-hosted Llama/Mistral  │
+│                (on-prem, air-gapped)      │
+│ Data Tier 4 → BLOCKED (route to manual   │
+│                process)                    │
+└──────────────────────────────────────────┘
+```
+
+The key insight: give people a **better** option, not a worse one. If your approved AI tool is slower, dumber, or harder to use than ChatGPT, people will go to ChatGPT. Make the approved path the path of least resistance.
+
+### Layer 4: Enforce — Automated Guardrails
+
+```python
+class AIGateway:
+    def intercept_request(self, prompt, user, tool):
+        # Classify data sensitivity
+        tier = self.classifier.score(prompt)
+        
+        if tier >= 3 and tool.is_external:
+            self.block(reason="Tier 3+ data to external model")
+            self.alert_security(user, prompt_hash=hash(prompt))
+            return self.redirect_to_internal_model(prompt)
+        
+        if tier >= 4:
+            self.block(reason="Tier 4 data — no AI permitted")
+            return self.suggest_manual_process()
+        
+        # Log for audit
+        self.audit_log.record(user, tool, tier, timestamp=now())
+        return self.allow(prompt)
+```
+
+---
+
+## Measuring Shadow AI — The Metrics That Matter
+
+You need a dashboard. Not a quarterly report — a live dashboard. Here's what to track:
+
+- **Unique LLM endpoints per week** — trending up? You have new shadow tools.
+- **Data volume per classification tier** — how much Tier 3+ data is heading external?
+- **Usage by department** — where do you need training vs. enforcement?
+- **Approved vs. unapproved ratio** — target: >90% through approved channels within 90 days.
+- **Incident rate** — how many data exposure events per month?
+
+---
+
+## The 30-Day Implementation Playbook
+
+**Week 1: Discovery.** Deploy network monitoring. Don't block anything yet. Catalog every AI endpoint your employees are hitting.
+
+**Week 2: Classification.** Build your data tier model. Map which departments handle which data tiers. Identify your highest-risk groups.
+
+**Week 3: Alternatives.** Deploy enterprise AI tools that match or exceed the shadow tools. Azure OpenAI, AWS Bedrock, or self-hosted open-source models. Make them easy to access.
+
+**Week 4: Communication + Enforcement.** Roll out the policy. Announce the approved tools. Explain *why* (data protection, not punishment). Then enable the enforcement layer. Gradual ramp — warn first, block after 14 days.
+
+---
+
+## What Good Looks Like
+
+The companies that get this right don't have zero AI usage. They have **visible, governed, auditable** AI usage. They know:
+- Who is using AI
+- With what data
+- Through which tools
+- And whether those tools have appropriate data processing agreements
+
+That's not surveillance — it's the same governance you apply to every other enterprise tool. Your CRM has access controls. Your email has DLP. Your AI should too.

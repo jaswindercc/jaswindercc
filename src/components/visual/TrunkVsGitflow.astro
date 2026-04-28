@@ -1,0 +1,60 @@
+---
+/**
+ * TrunkVsGitflow.astro
+ * Side-by-side branching strategy comparison
+ */
+---
+
+<div class="tvg-wrap">
+  <h3 class="tvg-title">Trunk-Based vs GitFlow</h3>
+  <div class="tvg-grid">
+    <div class="tvg-card" style="--i:0;">
+      <div class="tvg-label" style="color:#4ade80;">Trunk-Based</div>
+      <div class="tvg-branches">
+        <div class="tvg-branch tvg-main">main ━━━━━━━━━━━━━━━━━━━━</div>
+        <div class="tvg-branch tvg-short">╰─ feat (hours) ─╯</div>
+        <div class="tvg-branch tvg-short">╰─ fix (hours) ─╯</div>
+      </div>
+      <div class="tvg-traits">
+        <div class="tvg-t">Short-lived branches (hours, not days)</div>
+        <div class="tvg-t">Merge to main multiple times per day</div>
+        <div class="tvg-t">Feature flags for incomplete work</div>
+        <div class="tvg-t">CI runs on every commit to main</div>
+      </div>
+      <div class="tvg-verdict tvg-good">Best for: CI/CD, fast iteration, experienced teams</div>
+    </div>
+    <div class="tvg-card" style="--i:1;">
+      <div class="tvg-label" style="color:#818cf8;">GitFlow</div>
+      <div class="tvg-branches">
+        <div class="tvg-branch tvg-main">main ━━━━━━━━━━━━━━━━━━━━</div>
+        <div class="tvg-branch tvg-dev">develop ━━━━━━━━━━━━━━━━━</div>
+        <div class="tvg-branch tvg-long">╰─ feature/xyz (weeks) ───────╯</div>
+        <div class="tvg-branch tvg-rel">release/1.2 ────╯</div>
+      </div>
+      <div class="tvg-traits">
+        <div class="tvg-t">Long-lived feature branches (days/weeks)</div>
+        <div class="tvg-t">Separate develop, release, hotfix branches</div>
+        <div class="tvg-t">Merge conflicts are common</div>
+        <div class="tvg-t">Releases are planned ceremonies</div>
+      </div>
+      <div class="tvg-verdict tvg-warn">Best for: versioned software, open source, regulated releases</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .tvg-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .tvg-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .tvg-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+  @media(max-width:640px){.tvg-grid{grid-template-columns:1fr}}
+  .tvg-card{background:rgba(255,255,255,0.03);border:1px solid #334155;border-radius:12px;padding:1.25rem;opacity:0;animation:tvgFade .5s ease forwards;animation-delay:calc(var(--i)*.2s)}
+  @keyframes tvgFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .tvg-label{font-weight:700;font-size:1.05rem;margin-bottom:.75rem}
+  .tvg-branches{background:rgba(0,0,0,.3);border-radius:8px;padding:.75rem;margin-bottom:.75rem;font-family:monospace;font-size:.65rem;line-height:1.8}
+  .tvg-main{color:#4ade80}.tvg-dev{color:#818cf8}.tvg-short{color:#f59e0b}.tvg-long{color:#06b6d4}.tvg-rel{color:#ef4444}
+  .tvg-traits{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.75rem}
+  .tvg-t{color:#94a3b8;font-size:.8rem;padding-left:.75rem;position:relative}.tvg-t::before{content:'•';position:absolute;left:0;color:#64748b}
+  .tvg-verdict{font-size:.8rem;font-weight:600;padding:.5rem .75rem;border-radius:8px}
+  .tvg-good{color:#4ade80;background:rgba(74,222,128,0.08)}
+  .tvg-warn{color:#f59e0b;background:rgba(245,158,11,0.08)}
+</style>

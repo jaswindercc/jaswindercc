@@ -1,0 +1,117 @@
+---
+// AgentSandbox.astro — Interactive sandbox escape visualization
+---
+
+<div class="asb-wrap">
+  <h3 class="asb-title">🏗️ Agent Sandbox Architecture</h3>
+  <p class="asb-sub">Layers of containment that prevent an AI agent from escaping its boundaries. Click each layer.</p>
+
+  <div class="asb-layers">
+    <div class="asb-layer asb-layer--outer" tabindex="0">
+      <div class="asb-layer-head">
+        <span class="asb-num">4</span>
+        <span class="asb-name">Network Egress Control</span>
+        <span class="asb-blocks">Blocks: Data exfiltration, C2 communication</span>
+      </div>
+      <div class="asb-layer-body">
+        <p>Allowlist-only outbound connections. The agent can only reach pre-approved APIs. Everything else is blocked at the network level — not application level.</p>
+        <pre><code># iptables rule for agent container
+-A OUTPUT -d api.internal.corp -j ACCEPT
+-A OUTPUT -d 10.0.0.0/8 -j ACCEPT
+-A OUTPUT -j DROP  # everything else: blocked</code></pre>
+      </div>
+    </div>
+
+    <div class="asb-layer asb-layer--mid2" tabindex="0">
+      <div class="asb-layer-head">
+        <span class="asb-num">3</span>
+        <span class="asb-name">Filesystem Isolation</span>
+        <span class="asb-blocks">Blocks: Privilege escalation, data access</span>
+      </div>
+      <div class="asb-layer-body">
+        <p>Read-only root filesystem. Writable temp only in /tmp with size limits. No access to host paths, secrets mounts, or other container volumes.</p>
+        <pre><code>securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["ALL"]
+volumeMounts:
+  - name: scratch
+    mountPath: /tmp
+    sizeLimit: 100Mi</code></pre>
+      </div>
+    </div>
+
+    <div class="asb-layer asb-layer--mid1" tabindex="0">
+      <div class="asb-layer-head">
+        <span class="asb-num">2</span>
+        <span class="asb-name">Tool Permission Boundary</span>
+        <span class="asb-blocks">Blocks: Unauthorized actions, scope creep</span>
+      </div>
+      <div class="asb-layer-body">
+        <p>Each tool invocation is checked against a permission matrix. The agent can read files but not write. Can query DBs but not modify. Can draft emails but not send.</p>
+        <pre><code>permissions:
+  file_read: { paths: ["/data/public/**"], max_size: 1MB }
+  file_write: DENIED
+  db_query:  { databases: ["analytics"], write: false }
+  email:     { action: "draft_only", send: false }
+  http:      { methods: ["GET"], domains: ["api.internal"] }</code></pre>
+      </div>
+    </div>
+
+    <div class="asb-layer asb-layer--inner" tabindex="0">
+      <div class="asb-layer-head">
+        <span class="asb-num">1</span>
+        <span class="asb-name">Iteration & Budget Limits</span>
+        <span class="asb-blocks">Blocks: Infinite loops, cost runaway</span>
+      </div>
+      <div class="asb-layer-body">
+        <p>Hard caps on iterations, token spend, wall-clock time, and tool call frequency. If any limit is hit, the agent halts immediately with an audit log.</p>
+        <pre><code>limits:
+  max_iterations: 10
+  max_tokens: 50000
+  max_wall_time: 120s
+  max_tool_calls: 25
+  max_cost: $0.50
+  on_exceed: halt_and_alert</code></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .asb-wrap {
+    background: linear-gradient(135deg, #0a1628 0%, #1a0f2e 100%);
+    border-radius: 1rem; padding: 2rem; margin: 2rem 0;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+  }
+  .asb-title { color: #f1f5f9; font-size: 1.25rem; margin: 0 0 0.25rem; }
+  .asb-sub { color: #94a3b8; font-size: 0.875rem; margin: 0 0 1.5rem; }
+  .asb-layers { display: flex; flex-direction: column; gap: 0.5rem; }
+  .asb-layer { border-radius: 0.75rem; overflow: hidden; cursor: pointer; transition: all 0.3s; }
+  .asb-layer:hover, .asb-layer:focus { transform: translateX(4px); }
+  .asb-layer-head {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem 1rem; border-radius: 0.75rem; transition: all 0.3s;
+  }
+  .asb-layer--outer .asb-layer-head { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); }
+  .asb-layer--mid2 .asb-layer-head { background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2); }
+  .asb-layer--mid1 .asb-layer-head { background: rgba(234,179,8,0.08); border: 1px solid rgba(234,179,8,0.2); }
+  .asb-layer--inner .asb-layer-head { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); }
+  .asb-num {
+    width: 1.75rem; height: 1.75rem; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700; color: #e2e8f0;
+    background: rgba(99,102,241,0.2); flex-shrink: 0;
+  }
+  .asb-name { color: #e2e8f0; font-weight: 600; font-size: 0.85rem; flex: 1; }
+  .asb-blocks { font-size: 0.65rem; color: #94a3b8; white-space: nowrap; }
+  .asb-layer-body {
+    max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s;
+    padding: 0 1rem; background: rgba(0,0,0,0.3);
+  }
+  .asb-layer:hover .asb-layer-body, .asb-layer:focus .asb-layer-body { max-height: 300px; padding: 0.75rem 1rem; }
+  .asb-layer-body p { color: #cbd5e1; font-size: 0.8rem; margin: 0 0 0.5rem; line-height: 1.5; }
+  .asb-layer-body pre { margin: 0; background: rgba(0,0,0,0.5); border-radius: 0.375rem; padding: 0.5rem; overflow-x: auto; }
+  .asb-layer-body code { color: #a5b4fc; font-size: 0.7rem; line-height: 1.6; }
+</style>

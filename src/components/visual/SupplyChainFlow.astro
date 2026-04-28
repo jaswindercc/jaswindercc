@@ -1,0 +1,42 @@
+---
+// SupplyChainFlow.astro — Animated dependency chain showing attack injection point
+---
+<div class="scf-wrap">
+  <h3 class="scf-title">The Attack Path — One Dependency, Total Compromise</h3>
+  <p class="scf-sub">Watch how a single malicious package propagates through the dependency tree.</p>
+  <div class="scf-chain">
+    <div class="scf-node scf-n1"><div class="scf-ico scf-ico--green">📦</div><div class="scf-nm">Your App</div><div class="scf-det">v2.4.1 · trusted</div></div>
+    <div class="scf-arrow scf-a1">→</div>
+    <div class="scf-node scf-n2"><div class="scf-ico scf-ico--green">📦</div><div class="scf-nm">auth-lib</div><div class="scf-det">v3.1.0 · 2M downloads</div></div>
+    <div class="scf-arrow scf-a2">→</div>
+    <div class="scf-node scf-n3"><div class="scf-ico scf-ico--green">📦</div><div class="scf-nm">crypto-utils</div><div class="scf-det">v1.8.2 · 500K downloads</div></div>
+    <div class="scf-arrow scf-a3">→</div>
+    <div class="scf-node scf-node--bad scf-n4"><div class="scf-ico scf-ico--red">💀</div><div class="scf-nm">string-format-v2</div><div class="scf-det">v1.0.3 · typosquat · MALICIOUS</div><div class="scf-payload">Exfiltrates .env to attacker API</div></div>
+  </div>
+  <div class="scf-spread">
+    <div class="scf-spread-label">Blast radius</div>
+    <div class="scf-spread-bar"><div class="scf-spread-fill"></div></div>
+    <div class="scf-spread-stats"><span>Your app</span><span>auth-lib users</span><span>crypto-utils users</span><span class="scf-red">2.5M installs affected</span></div>
+  </div>
+</div>
+<style>
+  .scf-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155;overflow-x:auto}
+  .scf-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.scf-sub{color:#64748b;font-size:.8rem;margin:0 0 1.5rem;font-family:monospace}
+  .scf-chain{display:flex;align-items:center;gap:6px;min-width:600px;padding:8px 0}
+  .scf-node{text-align:center;padding:12px;border-radius:10px;background:rgba(0,0,0,.2);border:1px solid #334155;min-width:120px;opacity:0;animation:scfIn .4s ease-out forwards}
+  .scf-node--bad{border-color:#ef444440;background:rgba(239,68,68,.06);animation-name:scfBad}
+  .scf-n1{animation-delay:.1s}.scf-n2{animation-delay:.4s}.scf-n3{animation-delay:.7s}.scf-n4{animation-delay:1s}
+  .scf-ico{font-size:1.3rem;margin-bottom:4px}.scf-nm{color:#e2e8f0;font-size:.75rem;font-weight:700}.scf-det{color:#64748b;font-size:.55rem;font-family:monospace;margin-top:2px}
+  .scf-payload{color:#f87171;font-size:.55rem;font-family:monospace;margin-top:6px;padding:4px 8px;background:rgba(239,68,68,.08);border-radius:4px}
+  .scf-arrow{color:#475569;font-size:1.2rem;font-family:monospace;opacity:0;animation:scfIn .3s ease-out forwards}
+  .scf-a1{animation-delay:.25s}.scf-a2{animation-delay:.55s}.scf-a3{animation-delay:.85s}
+  .scf-spread{margin-top:16px}
+  .scf-spread-label{color:#94a3b8;font-size:.6rem;font-family:monospace;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+  .scf-spread-bar{height:6px;background:rgba(0,0,0,.3);border-radius:3px;overflow:hidden}
+  .scf-spread-fill{height:100%;background:linear-gradient(90deg,#4ade80,#f59e0b,#ef4444);width:0;animation:scfBar 2s ease-out 1.5s forwards;border-radius:3px}
+  .scf-spread-stats{display:flex;justify-content:space-between;margin-top:4px;font-size:.5rem;font-family:monospace;color:#64748b}
+  .scf-red{color:#f87171;font-weight:700}
+  @keyframes scfIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes scfBad{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0);box-shadow:0 0 20px rgba(239,68,68,.15)}}
+  @keyframes scfBar{to{width:100%}}
+</style>

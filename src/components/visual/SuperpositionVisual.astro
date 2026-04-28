@@ -1,0 +1,70 @@
+---
+// SuperpositionVisual.astro — Animated visualization of superposition
+---
+
+<div class="spv-wrap">
+  <h3 class="spv-title">Superposition — Being in Multiple States at Once</h3>
+  <p class="spv-sub">Think of a coin spinning in the air — it's both heads and tails until it lands.</p>
+
+  <div class="spv-demo">
+    <div class="spv-stage" style="--i:0">
+      <div class="spv-step-num">1</div>
+      <div class="spv-label">Prepare</div>
+      <div class="spv-sphere">
+        <div class="spv-ball spv-ball--rest">|0⟩</div>
+      </div>
+      <div class="spv-caption">Qubit starts in state |0⟩. Definite. Boring.</div>
+    </div>
+    <div class="spv-arrow" style="--i:1">→</div>
+    <div class="spv-stage" style="--i:2">
+      <div class="spv-step-num">2</div>
+      <div class="spv-label">Apply H Gate</div>
+      <div class="spv-sphere">
+        <div class="spv-ball spv-ball--super">|ψ⟩</div>
+      </div>
+      <div class="spv-caption">Hadamard gate puts it in superposition. 50% chance of 0 or 1.</div>
+    </div>
+    <div class="spv-arrow" style="--i:3">→</div>
+    <div class="spv-stage" style="--i:4">
+      <div class="spv-step-num">3</div>
+      <div class="spv-label">Measure</div>
+      <div class="spv-sphere">
+        <div class="spv-ball spv-ball--measured">0 or 1</div>
+      </div>
+      <div class="spv-caption">Measurement collapses it. You get 0 or 1 — randomly.</div>
+    </div>
+  </div>
+
+  <div class="spv-analogy">
+    <div class="spv-analogy-title">Real-World Analogy</div>
+    <div class="spv-analogy-body">
+      <div class="spv-ana-item"><span class="spv-ana-icon">🪙</span><span>A spinning coin is in "superposition" of heads and tails</span></div>
+      <div class="spv-ana-item"><span class="spv-ana-icon">👀</span><span>Looking at it (measuring) forces it to be one or the other</span></div>
+      <div class="spv-ana-item"><span class="spv-ana-icon">🔄</span><span>You can't predict which — but you can control the probabilities</span></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .spv-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .spv-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .spv-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .spv-demo{display:flex;align-items:flex-start;gap:10px;justify-content:center;margin-bottom:1.5rem;flex-wrap:wrap}
+  .spv-stage{text-align:center;background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:12px;padding:1rem;min-width:120px;opacity:0;animation:spvIn .4s ease forwards;animation-delay:calc(var(--i)*.15s)}
+  .spv-step-num{width:20px;height:20px;border-radius:50%;background:rgba(129,140,248,.15);color:#818cf8;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto .5rem;font-family:monospace}
+  .spv-label{color:#f1f5f9;font-size:.7rem;font-weight:600;margin-bottom:.75rem}
+  .spv-arrow{color:#475569;font-size:1.2rem;display:flex;align-items:center;opacity:0;animation:spvIn .3s ease forwards;animation-delay:calc(var(--i)*.15s);padding-top:2rem}
+  .spv-sphere{display:flex;justify-content:center;margin-bottom:.5rem}
+  .spv-ball{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:monospace;font-weight:700;font-size:.7rem}
+  .spv-ball--rest{background:rgba(100,116,139,.15);color:#94a3b8;border:2px solid #64748b}
+  .spv-ball--super{background:rgba(167,139,250,.15);color:#a78bfa;border:2px solid #a78bfa;animation:spvGlow 2s ease-in-out infinite}
+  .spv-ball--measured{background:rgba(74,222,128,.15);color:#4ade80;border:2px solid #4ade80;font-size:.55rem}
+  @keyframes spvGlow{0%,100%{box-shadow:0 0 8px rgba(167,139,250,.3)}50%{box-shadow:0 0 25px rgba(167,139,250,.6)}}
+  .spv-caption{color:#94a3b8;font-size:.62rem;line-height:1.4;max-width:130px}
+  .spv-analogy{background:rgba(0,0,0,.15);border:1px solid #334155;border-radius:8px;padding:14px}
+  .spv-analogy-title{color:#f59e0b;font-size:.7rem;font-weight:600;margin-bottom:8px;font-family:monospace}
+  .spv-analogy-body{display:flex;flex-direction:column;gap:6px}
+  .spv-ana-item{display:flex;align-items:center;gap:8px;color:#94a3b8;font-size:.7rem;line-height:1.4}
+  .spv-ana-icon{font-size:1rem;flex-shrink:0}
+  @keyframes spvIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>

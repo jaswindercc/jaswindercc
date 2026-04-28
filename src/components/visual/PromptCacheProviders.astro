@@ -1,0 +1,115 @@
+---
+/**
+ * ContextWindowMap.astro - already exists for token-limits blog
+ * PromptCacheProviders.astro
+ * Comparison of caching across providers: Anthropic, OpenAI, Google
+ * Pure CSS, dark theme
+ */
+---
+
+<div class="pcp-wrap">
+  <h3 class="pcp-title">Prompt Caching by Provider</h3>
+  
+  <div class="pcp-cards">
+    <div class="pcp-card" style="--i:0; --color:#f59e0b;">
+      <div class="pcp-provider">Anthropic</div>
+      <div class="pcp-feature">Cache Prefix</div>
+      <div class="pcp-detail">System prompt + prefix cached. Automatic for repeated prefixes. Up to 90% cost savings.</div>
+      <div class="pcp-specs">
+        <div class="pcp-spec">TTL: 5 min</div>
+        <div class="pcp-spec">Min: 1,024 tokens</div>
+        <div class="pcp-spec">Discount: 90%</div>
+      </div>
+    </div>
+    
+    <div class="pcp-card" style="--i:1; --color:#4ade80;">
+      <div class="pcp-provider">OpenAI</div>
+      <div class="pcp-feature">Automatic Caching</div>
+      <div class="pcp-detail">Automatic for prompts over 1,024 tokens. No API changes needed. Prefix-based matching.</div>
+      <div class="pcp-specs">
+        <div class="pcp-spec">TTL: ~5-10 min</div>
+        <div class="pcp-spec">Min: 1,024 tokens</div>
+        <div class="pcp-spec">Discount: 50%</div>
+      </div>
+    </div>
+    
+    <div class="pcp-card" style="--i:2; --color:#06b6d4;">
+      <div class="pcp-provider">Google</div>
+      <div class="pcp-feature">Context Caching</div>
+      <div class="pcp-detail">Explicit cache creation via API. Cached content billed per hour of storage + reduced per-token cost.</div>
+      <div class="pcp-specs">
+        <div class="pcp-spec">TTL: custom</div>
+        <div class="pcp-spec">Min: 32,768 tokens</div>
+        <div class="pcp-spec">Discount: 75%</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pcp-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+  .pcp-title {
+    color: #f1f5f9;
+    text-align: center;
+    font-size: 1.25rem;
+    margin: 0 0 1.5rem;
+  }
+  .pcp-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  @media (max-width: 700px) {
+    .pcp-cards { grid-template-columns: 1fr; }
+  }
+  .pcp-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--color);
+    border-radius: 12px;
+    padding: 1.25rem;
+    opacity: 0;
+    animation: pcpFade 0.5s ease forwards;
+    animation-delay: calc(var(--i) * 0.15s);
+  }
+  @keyframes pcpFade {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .pcp-provider {
+    color: var(--color);
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+  }
+  .pcp-feature {
+    color: #f1f5f9;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .pcp-detail {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+  }
+  .pcp-specs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .pcp-spec {
+    color: #cbd5e1;
+    font-size: 0.75rem;
+    font-family: monospace;
+    padding: 0.2rem 0.5rem;
+    background: rgba(0,0,0,0.3);
+    border-radius: 4px;
+  }
+</style>

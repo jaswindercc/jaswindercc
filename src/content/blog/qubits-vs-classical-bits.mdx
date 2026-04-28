@@ -1,0 +1,72 @@
+---
+title: "Qubits vs Classical Bits — Understanding the Basics with Animations"
+description: "Interactive visual guide to qubits and classical bits. See how superposition works, why qubits scale exponentially, and what the Bloch sphere actually means."
+date: 2026-04-27
+---
+
+import QubitExplained from '../../components/visual/QubitExplained.astro';
+import SuperpositionVisual from '../../components/visual/SuperpositionVisual.astro';
+import BlochSphere from '../../components/visual/BlochSphere.astro';
+
+Every explanation of quantum computing starts with "a qubit can be 0 and 1 at the same time" and then moves on like that sentence makes sense. It doesn't — not without context. Let's actually unpack what a qubit is, why it's different from a bit, and what "superposition" means in practice.
+
+---
+
+## 1. Bits vs Qubits — The Fundamental Gap
+
+A **classical bit** is the simplest thing in computing. It's either 0 or 1. On or off. True or false. That's the entire story. Every computation your phone, laptop, and the entire internet runs on — built from billions of these binary switches.
+
+A **qubit** plays by different rules. Before you measure it, a qubit exists in a blend of 0 and 1. Not "sometimes 0, sometimes 1" — genuinely both, weighted by probabilities. When you measure it, the superposition collapses and you get a definite 0 or 1.
+
+<QubitExplained />
+
+The scaling is the mind-bending part. 300 qubits can represent more states simultaneously than there are atoms in the observable universe. That's not hyperbole — it's math. $2^{300}$ is a very, very large number.
+
+---
+
+## 2. Superposition — What It Actually Means
+
+Forget Schrödinger's cat for a moment. Superposition is simpler than people make it.
+
+A qubit in superposition isn't "undecided." It's in a mathematically precise combination of |0⟩ and |1⟩. You control the mix by applying quantum gates. The Hadamard gate, for instance, takes a definite |0⟩ and creates an exactly 50/50 superposition.
+
+<SuperpositionVisual />
+
+**The key insight:** superposition isn't useful by itself. A single qubit in superposition just gives you a random bit when measured. The power comes from combining superposition with **entanglement** and **interference** — making the right answers more probable and wrong answers less probable.
+
+---
+
+## 3. The Bloch Sphere — Every Qubit State in One Picture
+
+Physicists represent a qubit's state as a point on a sphere called the Bloch sphere. It's the most useful single diagram in quantum computing.
+
+<BlochSphere />
+
+The north pole is |0⟩. The south pole is |1⟩. The equator represents equal superpositions with different phases. Every point on the sphere is a valid qubit state.
+
+**Why this matters:** quantum gates are rotations on this sphere. The Hadamard gate rotates from the north pole to the equator. The X gate flips from north to south. Understanding the Bloch sphere means understanding what every gate does.
+
+---
+
+## 4. Measurement — The Moment Everything Changes
+
+Here's the part that confuses everyone. Before measurement, a qubit can be in any state on the Bloch sphere. After measurement, it's either 0 or 1. Period.
+
+Measurement isn't passive observation — it fundamentally changes the qubit's state. The superposition is gone. You can't "undo" a measurement. This is why quantum algorithms are designed to manipulate probabilities *before* measuring.
+
+**Practical implications:**
+- You can't copy a qubit (no-cloning theorem)
+- You can't peek at a qubit without destroying its superposition
+- Quantum algorithms must be designed to make the right answer the most probable outcome *before* the final measurement
+
+---
+
+## 5. Why This Matters for Computing
+
+Classical computers are limited by working with one state at a time. Even parallel processors just split work across multiple single-state units.
+
+Quantum computers exploit superposition to process $2^n$ states with $n$ qubits — simultaneously. But "simultaneously" doesn't mean "faster at everything." It means quantum algorithms can explore solution spaces in ways classical algorithms literally cannot.
+
+The trick is designing algorithms that use this exploration effectively. That's why Grover's search gives only a quadratic speedup (√N instead of N), while Shor's factoring gives an exponential speedup — the algorithm's design determines the advantage, not just having qubits.
+
+**Where we are now:** quantum hardware has 100–1,000+ qubits, but they're noisy. Error correction needs about 1,000 physical qubits per 1 logical qubit. We're still building the foundation — but the building is happening fast.

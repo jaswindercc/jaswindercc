@@ -1,0 +1,127 @@
+---
+// MethodTradeoffs.astro — Expandable cards showing when to combine approaches
+---
+
+<div class="mt-wrap">
+  <h3 class="mt-title">The Real Answer: Combine Them</h3>
+  <p class="mt-sub">Most production systems use more than one. Click to see the winning combos.</p>
+
+  <div class="mt-stack">
+    <details class="mt-card mt-card--combo1">
+      <summary class="mt-header">
+        <div class="mt-combo-icons">
+          <span class="mt-badge mt-badge--green">PE</span>
+          <span class="mt-plus">+</span>
+          <span class="mt-badge mt-badge--cyan">RAG</span>
+        </div>
+        <div class="mt-info">
+          <span class="mt-name">Prompt Engineering + RAG</span>
+          <span class="mt-use">Most common. Start here.</span>
+        </div>
+        <span class="mt-arrow">▼</span>
+      </summary>
+      <div class="mt-body">
+        <p>Use prompt engineering to set the format and tone. Use RAG to inject the knowledge. This covers 80% of enterprise use cases — internal search, documentation Q&A, customer support bots.</p>
+        <div class="mt-example">
+          <span class="mt-ex-label">Example</span>
+          <span class="mt-ex-text">Customer support bot that answers from your knowledge base in a friendly tone, with source links.</span>
+        </div>
+      </div>
+    </details>
+
+    <details class="mt-card mt-card--combo2">
+      <summary class="mt-header">
+        <div class="mt-combo-icons">
+          <span class="mt-badge mt-badge--amber">FT</span>
+          <span class="mt-plus">+</span>
+          <span class="mt-badge mt-badge--cyan">RAG</span>
+        </div>
+        <div class="mt-info">
+          <span class="mt-name">Fine-Tuning + RAG</span>
+          <span class="mt-use">When accuracy is everything.</span>
+        </div>
+        <span class="mt-arrow">▼</span>
+      </summary>
+      <div class="mt-body">
+        <p>Fine-tune the model to understand your domain jargon and output format. Use RAG for the actual data. This is what healthcare, legal, and finance companies use when wrong answers have real consequences.</p>
+        <div class="mt-example">
+          <span class="mt-ex-label">Example</span>
+          <span class="mt-ex-text">Legal research tool that understands case law terminology and retrieves from your firm's document store.</span>
+        </div>
+      </div>
+    </details>
+
+    <details class="mt-card mt-card--combo3">
+      <summary class="mt-header">
+        <div class="mt-combo-icons">
+          <span class="mt-badge mt-badge--green">PE</span>
+          <span class="mt-plus">+</span>
+          <span class="mt-badge mt-badge--amber">FT</span>
+        </div>
+        <div class="mt-info">
+          <span class="mt-name">Prompt Engineering + Fine-Tuning</span>
+          <span class="mt-use">When the model needs to act differently.</span>
+        </div>
+        <span class="mt-arrow">▼</span>
+      </summary>
+      <div class="mt-body">
+        <p>Fine-tune for behavior (how the model responds). Use prompts for task-specific instructions (what it responds to). Good for chat personas, code generation in specific frameworks, or branded writing styles.</p>
+        <div class="mt-example">
+          <span class="mt-ex-label">Example</span>
+          <span class="mt-ex-text">Code assistant fine-tuned on your company's coding standards, with prompts for each specific task type.</span>
+        </div>
+      </div>
+    </details>
+  </div>
+</div>
+
+<style>
+  .mt-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .mt-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .mt-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .mt-stack { display: flex; flex-direction: column; gap: 8px; }
+
+  .mt-card { border-radius: 12px; border: 1px solid #334155; overflow: hidden; transition: border-color 0.3s; }
+  .mt-card[open] { border-color: #475569; }
+  .mt-card--combo1[open] { border-color: #06b6d430; }
+  .mt-card--combo2[open] { border-color: #f59e0b30; }
+  .mt-card--combo3[open] { border-color: #818cf830; }
+
+  .mt-header {
+    display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+    cursor: pointer; list-style: none; background: rgba(0,0,0,0.15);
+  }
+  .mt-header::-webkit-details-marker { display: none; }
+  .mt-header::marker { content: ''; }
+
+  .mt-combo-icons { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+  .mt-badge {
+    font-size: 0.55rem; font-weight: 800; font-family: monospace;
+    padding: 3px 8px; border-radius: 6px;
+  }
+  .mt-badge--green { color: #4ade80; background: rgba(74,222,128,0.12); }
+  .mt-badge--cyan { color: #06b6d4; background: rgba(6,182,212,0.12); }
+  .mt-badge--amber { color: #f59e0b; background: rgba(245,158,11,0.12); }
+  .mt-plus { color: #475569; font-size: 0.7rem; font-weight: 700; }
+
+  .mt-info { flex: 1; }
+  .mt-name { display: block; color: #e2e8f0; font-weight: 700; font-size: 0.82rem; }
+  .mt-use { display: block; color: #64748b; font-family: monospace; font-size: 0.6rem; margin-top: 2px; }
+
+  .mt-arrow { color: #475569; font-size: 0.7rem; transition: transform 0.3s; }
+  .mt-card[open] .mt-arrow { transform: rotate(180deg); }
+
+  .mt-body { padding: 16px; }
+  .mt-body p { color: #94a3b8; font-size: 0.78rem; line-height: 1.6; margin: 0 0 12px; }
+
+  .mt-example {
+    display: flex; flex-direction: column; gap: 2px; padding: 10px 12px;
+    border-radius: 8px; background: rgba(0,0,0,0.2); border: 1px solid #334155;
+  }
+  .mt-ex-label { color: #f59e0b; font-size: 0.5rem; font-family: monospace; font-weight: 700; text-transform: uppercase; }
+  .mt-ex-text { color: #cbd5e1; font-size: 0.72rem; line-height: 1.5; }
+</style>

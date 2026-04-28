@@ -1,0 +1,26 @@
+---
+// SupplyChainMetrics.astro — Impact metrics for supply chain attacks
+---
+<div class="scm-wrap">
+  <h3 class="scm-title">The Numbers Don't Lie</h3>
+  <div class="scm-grid">
+    <div class="scm-card"><span class="scm-val scm-val--red">742%</span><span class="scm-lbl">increase in supply chain attacks since 2019</span><span class="scm-src">Sonatype State of Supply Chain 2023</span></div>
+    <div class="scm-card"><span class="scm-val scm-val--amber">245K</span><span class="scm-lbl">malicious packages found on npm, PyPI, RubyGems in 2023</span><span class="scm-src">Sonatype report</span></div>
+    <div class="scm-card"><span class="scm-val scm-val--cyan">80%</span><span class="scm-lbl">of application code comes from open-source dependencies</span><span class="scm-src">Synopsys OSSRA 2024</span></div>
+    <div class="scm-card"><span class="scm-val scm-val--purple">18K</span><span class="scm-lbl">organizations hit by SolarWinds alone</span><span class="scm-src">SEC filings 2021</span></div>
+    <div class="scm-card"><span class="scm-val scm-val--green">6 days</span><span class="scm-lbl">average time between malicious publish and detection</span><span class="scm-src">npm security team data</span></div>
+    <div class="scm-card"><span class="scm-val scm-val--red">$4.5B</span><span class="scm-lbl">estimated annual cost of supply chain attacks globally</span><span class="scm-src">Gartner 2024 projection</span></div>
+  </div>
+</div>
+<style>
+  .scm-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .scm-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem;text-align:center}
+  .scm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .scm-card{display:flex;flex-direction:column;align-items:center;gap:4px;padding:16px 12px;background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155;text-align:center;opacity:0;animation:scmIn .6s ease forwards}
+  .scm-card:nth-child(1){animation-delay:.1s}.scm-card:nth-child(2){animation-delay:.2s}.scm-card:nth-child(3){animation-delay:.3s}.scm-card:nth-child(4){animation-delay:.4s}.scm-card:nth-child(5){animation-delay:.5s}.scm-card:nth-child(6){animation-delay:.6s}
+  @keyframes scmIn{to{opacity:1;transform:translateY(0)}}
+  .scm-card{transform:translateY(8px)}
+  .scm-val{font-size:1.4rem;font-weight:800;font-family:monospace}.scm-val--red{color:#f87171}.scm-val--amber{color:#f59e0b}.scm-val--cyan{color:#06b6d4}.scm-val--purple{color:#818cf8}.scm-val--green{color:#4ade80}
+  .scm-lbl{color:#94a3b8;font-size:.7rem;line-height:1.4}
+  .scm-src{color:#475569;font-size:.55rem;font-family:monospace;margin-top:2px}
+</style>

@@ -1,0 +1,61 @@
+---
+/**
+ * IncidentTimeline.astro
+ * Incident response phases timeline
+ */
+---
+
+<div class="irt-wrap">
+  <h3 class="irt-title">Incident Response — The Four Phases</h3>
+  <div class="irt-phases">
+    <div class="irt-phase" style="--i:0; --color:#ef4444;">
+      <div class="irt-num">1</div>
+      <div class="irt-body">
+        <div class="irt-name">Detect</div>
+        <div class="irt-time">0-5 min</div>
+        <div class="irt-actions">Alert fires → Page on-call → Acknowledge → Open incident channel</div>
+      </div>
+    </div>
+    <div class="irt-conn"></div>
+    <div class="irt-phase" style="--i:1; --color:#f59e0b;">
+      <div class="irt-num">2</div>
+      <div class="irt-body">
+        <div class="irt-name">Triage</div>
+        <div class="irt-time">5-15 min</div>
+        <div class="irt-actions">Assess severity → Assign incident commander → Identify blast radius → Communicate status</div>
+      </div>
+    </div>
+    <div class="irt-conn"></div>
+    <div class="irt-phase" style="--i:2; --color:#06b6d4;">
+      <div class="irt-num">3</div>
+      <div class="irt-body">
+        <div class="irt-name">Mitigate</div>
+        <div class="irt-time">15-60 min</div>
+        <div class="irt-actions">Rollback / scale / failover → Stop the bleeding first → Root cause later</div>
+      </div>
+    </div>
+    <div class="irt-conn"></div>
+    <div class="irt-phase" style="--i:3; --color:#4ade80;">
+      <div class="irt-num">4</div>
+      <div class="irt-body">
+        <div class="irt-name">Review</div>
+        <div class="irt-time">24-72 hrs later</div>
+        <div class="irt-actions">Blameless postmortem → Timeline reconstruction → Action items → Share learnings</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .irt-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .irt-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .irt-phases{display:flex;flex-direction:column;gap:0}
+  .irt-phase{display:flex;align-items:flex-start;gap:1rem;padding:1rem;background:rgba(255,255,255,0.03);border:1px solid var(--color);border-radius:12px;opacity:0;animation:irtSlide .4s ease forwards;animation-delay:calc(var(--i)*.15s)}
+  @keyframes irtSlide{from{opacity:0;transform:translateX(-15px)}to{opacity:1;transform:translateX(0)}}
+  .irt-num{width:30px;height:30px;border-radius:50%;background:var(--color);color:#0f172a;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0;margin-top:.2rem}
+  .irt-body{flex:1}
+  .irt-name{color:var(--color);font-weight:700;font-size:.95rem;display:inline}
+  .irt-time{color:#64748b;font-size:.7rem;display:inline;margin-left:.5rem}
+  .irt-actions{color:#94a3b8;font-size:.8rem;margin-top:.25rem}
+  .irt-conn{width:2px;height:12px;background:#334155;margin-left:22px}
+</style>

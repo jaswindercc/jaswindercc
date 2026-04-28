@@ -1,0 +1,32 @@
+---
+// SelfVsCrossAttention.astro — Self vs cross attention
+---
+<div class="svca-wrap">
+  <h3 class="svca-title">Self-Attention vs Cross-Attention</h3>
+  <div class="svca-grid">
+    <div class="svca-col svca-col--self">
+      <span class="svca-hl svca-hl--cyan">Self-Attention</span>
+      <div class="svca-point"><span class="svca-lbl">Input</span><span class="svca-val">Same sequence for Q, K, and V</span></div>
+      <div class="svca-point"><span class="svca-lbl">Purpose</span><span class="svca-val">Tokens within a sentence attend to each other</span></div>
+      <div class="svca-point"><span class="svca-lbl">Used in</span><span class="svca-val">GPT, BERT, all decoder-only models</span></div>
+      <div class="svca-point"><span class="svca-lbl">Example</span><span class="svca-val">"The cat... it" → "it" attends to "cat"</span></div>
+    </div>
+    <div class="svca-col svca-col--cross">
+      <span class="svca-hl svca-hl--amber">Cross-Attention</span>
+      <div class="svca-point"><span class="svca-lbl">Input</span><span class="svca-val">Q from one sequence, K/V from another</span></div>
+      <div class="svca-point"><span class="svca-lbl">Purpose</span><span class="svca-val">Decoder attends to encoder output</span></div>
+      <div class="svca-point"><span class="svca-lbl">Used in</span><span class="svca-val">Translation models, Whisper, DALL-E</span></div>
+      <div class="svca-point"><span class="svca-lbl">Example</span><span class="svca-val">English→French: French "chat" attends to English "cat"</span></div>
+    </div>
+  </div>
+</div>
+<style>
+  .svca-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .svca-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .svca-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:600px){.svca-grid{grid-template-columns:1fr}}
+  .svca-col{padding:14px;background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155}
+  .svca-col--self{border-top:2px solid #06b6d4}.svca-col--cross{border-top:2px solid #f59e0b}
+  .svca-hl{display:block;font-size:.72rem;font-weight:700;font-family:monospace;margin-bottom:10px}.svca-hl--cyan{color:#06b6d4}.svca-hl--amber{color:#f59e0b}
+  .svca-point{display:flex;flex-direction:column;gap:1px;padding:5px 0;border-bottom:1px solid #1e293b}.svca-point:last-child{border-bottom:none}
+  .svca-lbl{color:#64748b;font-size:.58rem;text-transform:uppercase;letter-spacing:.3px;font-weight:600}.svca-val{color:#e2e8f0;font-size:.68rem}
+</style>

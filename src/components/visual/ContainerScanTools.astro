@@ -1,0 +1,44 @@
+---
+/**
+ * ContainerScanTools.astro
+ * Image scanning tools compared
+ */
+---
+
+<div class="cst-wrap">
+  <h3 class="cst-title">Image Scanning Tools</h3>
+  <div class="cst-grid">
+    <div class="cst-tool" style="--i:0; --color:#06b6d4;">
+      <div class="cst-name">Trivy</div>
+      <div class="cst-type">Open Source</div>
+      <div class="cst-desc">All-in-one scanner: OS packages, language deps, IaC, secrets. Fast and batteries-included.</div>
+    </div>
+    <div class="cst-tool" style="--i:1; --color:#818cf8;">
+      <div class="cst-name">Grype</div>
+      <div class="cst-type">Open Source</div>
+      <div class="cst-desc">Anchore's vulnerability scanner. Pairs with Syft for SBOM generation. CLI-first design.</div>
+    </div>
+    <div class="cst-tool" style="--i:2; --color:#f59e0b;">
+      <div class="cst-name">Snyk Container</div>
+      <div class="cst-type">Commercial</div>
+      <div class="cst-desc">Developer-friendly with IDE plugins. Suggests base image upgrades. Fix-first approach.</div>
+    </div>
+    <div class="cst-tool" style="--i:3; --color:#4ade80;">
+      <div class="cst-name">Falco</div>
+      <div class="cst-type">Runtime</div>
+      <div class="cst-desc">Detects anomalous behavior at runtime using eBPF. Alerts on shell access, file changes, network calls.</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cst-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .cst-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.25rem}
+  .cst-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  @media(max-width:600px){.cst-grid{grid-template-columns:1fr}}
+  .cst-tool{background:rgba(255,255,255,0.03);border:1px solid var(--color);border-radius:12px;padding:1.25rem;opacity:0;animation:cstFade .5s ease forwards;animation-delay:calc(var(--i)*.12s)}
+  @keyframes cstFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .cst-name{color:var(--color);font-weight:700;font-size:.95rem}
+  .cst-type{color:#64748b;font-size:.7rem;margin-bottom:.4rem}
+  .cst-desc{color:#94a3b8;font-size:.8rem;line-height:1.5}
+</style>

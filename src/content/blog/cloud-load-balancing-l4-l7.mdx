@@ -1,0 +1,23 @@
+---
+title: "Cloud Load Balancing — L4 vs L7 and When to Use Each"
+description: "Visual guide to cloud load balancing at Layer 4 and Layer 7. Understand the tradeoffs between transport-level and application-level routing for production architectures."
+date: 2026-06-10
+---
+
+import LBCompare from '../../components/visual/LBCompare.astro';
+
+Every production service needs a load balancer, but "load balancer" means two very different things depending on whether you're talking about Layer 4 or Layer 7. L4 load balancers work at the transport level — they see IP addresses and port numbers, nothing else. L7 load balancers work at the application level — they see HTTP headers, URL paths, cookies, and request bodies. The choice determines what you can route on, how smart your traffic management can be, and how much latency you add.
+
+## L4 vs L7 — The Core Tradeoff
+
+Layer 4 is fast but dumb. Layer 7 is smart but slower. That's the fundamental tradeoff. L4 forwards TCP connections without inspecting them — it's basically a sophisticated network switch. L7 terminates the connection, parses the HTTP request, makes a routing decision, then opens a new connection to the backend.
+
+<LBCompare />
+
+For most web applications and REST APIs, L7 is the right choice. You need path-based routing (/api goes to the backend, /app goes to the frontend), SSL termination, header-based routing for canary deployments, and observability at the HTTP level. The added latency (typically 1-5ms) is negligible compared to the routing intelligence you gain.
+
+For non-HTTP protocols — databases, gRPC streams, game servers, IoT — L4 is often the only option. These protocols don't speak HTTP, so an L7 load balancer can't parse them. L4 passes the raw TCP stream through, letting the application protocol handle everything.
+
+The cloud providers make this decision concrete: AWS has NLB (L4) and ALB (L7). GCP has Network LB (L4) and HTTP(S) LB (L7). Azure has Azure LB (L4) and Application Gateway (L7). In Kubernetes, a Service of type LoadBalancer is typically L4, while an Ingress controller is L7.
+
+A common production pattern: put an L7 load balancer in front of your HTTP services for smart routing, and an L4 load balancer in front of your database replicas for connection distribution. Use both layers where they make sense rather than forcing everything through one.

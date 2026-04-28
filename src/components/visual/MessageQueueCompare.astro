@@ -1,0 +1,56 @@
+---
+/**
+ * MessageQueueCompare.astro
+ * Kafka vs SQS vs RabbitMQ comparison
+ */
+---
+
+<div class="mqc-wrap">
+  <h3 class="mqc-title">Message Queues vs Event Streams</h3>
+  <div class="mqc-cards">
+    <div class="mqc-card" style="--i:0; --color:#f59e0b;">
+      <div class="mqc-name">Apache Kafka</div>
+      <div class="mqc-type">Event Stream</div>
+      <div class="mqc-traits">
+        <div class="mqc-t">Ordered, persistent log. Messages retained for days/weeks.</div>
+        <div class="mqc-t">Multiple consumers can replay from any offset.</div>
+        <div class="mqc-t">High throughput (millions of messages/sec).</div>
+      </div>
+      <div class="mqc-best">Best for: event sourcing, analytics pipelines, audit logs</div>
+    </div>
+    <div class="mqc-card" style="--i:1; --color:#06b6d4;">
+      <div class="mqc-name">Amazon SQS</div>
+      <div class="mqc-type">Message Queue</div>
+      <div class="mqc-traits">
+        <div class="mqc-t">Fully managed. Zero ops. Auto-scales infinitely.</div>
+        <div class="mqc-t">Messages consumed once, then deleted.</div>
+        <div class="mqc-t">Dead letter queues for failed processing.</div>
+      </div>
+      <div class="mqc-best">Best for: task queues, async processing, decoupling services</div>
+    </div>
+    <div class="mqc-card" style="--i:2; --color:#818cf8;">
+      <div class="mqc-name">RabbitMQ</div>
+      <div class="mqc-type">Message Broker</div>
+      <div class="mqc-traits">
+        <div class="mqc-t">Smart routing: exchanges, bindings, topics.</div>
+        <div class="mqc-t">Multiple protocols (AMQP, MQTT, STOMP).</div>
+        <div class="mqc-t">Complex routing patterns (fan-out, topic-based).</div>
+      </div>
+      <div class="mqc-best">Best for: complex routing, multi-protocol, traditional messaging</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .mqc-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .mqc-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.25rem}
+  .mqc-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+  @media(max-width:700px){.mqc-cards{grid-template-columns:1fr}}
+  .mqc-card{background:rgba(255,255,255,0.03);border:1px solid var(--color);border-radius:12px;padding:1.25rem;opacity:0;animation:mqcFade .5s ease forwards;animation-delay:calc(var(--i)*.15s)}
+  @keyframes mqcFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .mqc-name{color:var(--color);font-weight:700;font-size:1rem}
+  .mqc-type{color:#64748b;font-size:.72rem;margin-bottom:.5rem}
+  .mqc-traits{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.75rem}
+  .mqc-t{color:#94a3b8;font-size:.78rem;padding-left:.6rem;position:relative}.mqc-t::before{content:'•';position:absolute;left:0;color:#64748b}
+  .mqc-best{color:var(--color);font-size:.78rem;font-weight:600;padding-top:.5rem;border-top:1px solid #334155}
+</style>

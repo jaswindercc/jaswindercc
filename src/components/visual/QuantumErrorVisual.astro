@@ -1,0 +1,46 @@
+---
+// QuantumErrorVisual.astro — Why quantum error rates matter
+---
+
+<div class="qev-wrap">
+  <h3 class="qev-title">The Biggest Challenge — Quantum Errors</h3>
+  <p class="qev-sub">Qubits are fragile. They lose their quantum state (decohere) in microseconds.</p>
+
+  <div class="qev-types">
+    <div class="qev-type" style="--i:0;--c:#ef4444">
+      <div class="qev-type-name">Bit Flip Error</div>
+      <div class="qev-type-desc">|0⟩ accidentally becomes |1⟩ (or vice versa). Like a classical bit error.</div>
+      <div class="qev-type-rate">Rate: ~0.1% per gate</div>
+    </div>
+    <div class="qev-type" style="--i:1;--c:#f59e0b">
+      <div class="qev-type-name">Phase Flip Error</div>
+      <div class="qev-type-desc">The phase of the qubit flips. Doesn't change the measurement probability, but corrupts computations.</div>
+      <div class="qev-type-rate">Rate: ~0.1% per gate</div>
+    </div>
+    <div class="qev-type" style="--i:2;--c:#a78bfa">
+      <div class="qev-type-name">Decoherence</div>
+      <div class="qev-type-desc">Qubit loses its quantum properties entirely. Like a spinning coin falling over. Happens in microseconds.</div>
+      <div class="qev-type-rate">T₁/T₂ time: ~100μs</div>
+    </div>
+  </div>
+
+  <div class="qev-fix">
+    <div class="qev-fix-title">The Fix: Quantum Error Correction</div>
+    <div class="qev-fix-desc">Use many physical qubits to protect one "logical" qubit. Current ratio: ~1,000 physical qubits = 1 reliable logical qubit. That's why we need millions of qubits for useful computation.</div>
+  </div>
+</div>
+
+<style>
+  .qev-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .qev-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .qev-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .qev-types{display:flex;flex-direction:column;gap:8px;margin-bottom:1.5rem}
+  .qev-type{background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:10px;padding:12px 14px;opacity:0;animation:qevIn .4s ease forwards;animation-delay:calc(var(--i)*.12s);border-left:3px solid var(--c)}
+  .qev-type-name{color:var(--c);font-size:.75rem;font-weight:600;margin-bottom:.2rem}
+  .qev-type-desc{color:#94a3b8;font-size:.68rem;line-height:1.5;margin-bottom:.25rem}
+  .qev-type-rate{color:#475569;font-size:.6rem;font-family:monospace}
+  .qev-fix{background:rgba(74,222,128,.05);border:1px solid rgba(74,222,128,.15);border-radius:8px;padding:14px}
+  .qev-fix-title{color:#4ade80;font-size:.75rem;font-weight:600;margin-bottom:.35rem}
+  .qev-fix-desc{color:#94a3b8;font-size:.7rem;line-height:1.6}
+  @keyframes qevIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+</style>

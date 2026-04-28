@@ -1,0 +1,84 @@
+---
+// SingleVsMultiAgent.astro — Side-by-side single agent vs multi-agent
+---
+
+<div class="svm-wrap">
+  <h3 class="svm-title">One Agent vs Many — The Difference</h3>
+  <p class="svm-sub">A single agent handles everything. A multi-agent system divides and conquers.</p>
+
+  <div class="svm-cols">
+    <div class="svm-col svm-col--single">
+      <div class="svm-col-head svm-ch--amber">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a6.5 6.5 0 0113 0"/></svg>
+        <span>Single Agent</span>
+      </div>
+      <div class="svm-flow">
+        <div class="svm-node svm-an--1">🧠 Planner</div>
+        <div class="svm-arrow-down">↓</div>
+        <div class="svm-node svm-an--2">🔍 Researcher</div>
+        <div class="svm-arrow-down">↓</div>
+        <div class="svm-node svm-an--3">✍️ Writer</div>
+        <div class="svm-arrow-down">↓</div>
+        <div class="svm-node svm-an--4">✅ Reviewer</div>
+      </div>
+      <div class="svm-note svm-note--amber">One agent wears all hats. Context window fills up fast. Quality degrades on step 3+.</div>
+    </div>
+
+    <div class="svm-vs"><span>vs</span></div>
+
+    <div class="svm-col svm-col--multi">
+      <div class="svm-col-head svm-ch--cyan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/><circle cx="17" cy="7" r="4" opacity="0.6"/><path d="M2 21a7 7 0 0114 0"/></svg>
+        <span>Multi-Agent System</span>
+      </div>
+      <div class="svm-flow svm-flow--multi">
+        <div class="svm-node svm-an--1">🎯 Orchestrator</div>
+        <div class="svm-parallel">
+          <div class="svm-p-branch">
+            <div class="svm-arrow-down">↓</div>
+            <div class="svm-node svm-node--sm svm-an--2">🔍 Research Agent</div>
+          </div>
+          <div class="svm-p-branch">
+            <div class="svm-arrow-down">↓</div>
+            <div class="svm-node svm-node--sm svm-an--3">✍️ Writing Agent</div>
+          </div>
+          <div class="svm-p-branch">
+            <div class="svm-arrow-down">↓</div>
+            <div class="svm-node svm-node--sm svm-an--4">✅ Review Agent</div>
+          </div>
+        </div>
+      </div>
+      <div class="svm-note svm-note--cyan">Each agent has a focused role. Clean context. Runs in parallel. Better output.</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .svm-wrap { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155; }
+  .svm-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 .25rem; }
+  .svm-sub { color: #64748b; font-size: .8rem; margin: 0 0 1.5rem; font-family: monospace; }
+  .svm-cols { display: flex; gap: 12px; align-items: flex-start; }
+  @media(max-width:640px){ .svm-cols { flex-direction: column; } }
+  .svm-col { flex: 1; }
+  .svm-col-head { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px 10px 0 0; font-size: .8rem; font-weight: 700; }
+  .svm-col-head svg { width: 16px; height: 16px; }
+  .svm-ch--amber { background: rgba(245,158,11,.08); color: #f59e0b; border: 1px solid #f59e0b20; border-bottom: none; }
+  .svm-ch--amber svg { stroke: #f59e0b; }
+  .svm-ch--cyan { background: rgba(6,182,212,.08); color: #06b6d4; border: 1px solid #06b6d420; border-bottom: none; }
+  .svm-ch--cyan svg { stroke: #06b6d4; }
+  .svm-flow { padding: 14px; border-radius: 0 0 10px 10px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .svm-col--single .svm-flow { background: rgba(245,158,11,.03); border: 1px solid #f59e0b20; border-top: none; }
+  .svm-col--multi .svm-flow { background: rgba(6,182,212,.03); border: 1px solid #06b6d420; border-top: none; }
+  .svm-node { padding: 8px 14px; border-radius: 8px; background: rgba(0,0,0,.2); border: 1px solid #334155; color: #e2e8f0; font-size: .72rem; font-weight: 600; text-align: center; opacity: 0; animation: svmIn .4s ease-out forwards; }
+  .svm-node--sm { font-size: .65rem; padding: 6px 10px; }
+  .svm-an--1 { animation-delay: .2s; } .svm-an--2 { animation-delay: .5s; } .svm-an--3 { animation-delay: .8s; } .svm-an--4 { animation-delay: 1.1s; }
+  .svm-arrow-down { color: #475569; font-size: .7rem; }
+  .svm-parallel { display: flex; gap: 8px; width: 100%; }
+  .svm-p-branch { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .svm-vs { display: flex; align-items: center; padding: 0 4px; }
+  .svm-vs span { color: #475569; font-size: .7rem; font-weight: 800; font-family: monospace; background: rgba(0,0,0,.3); padding: 4px 8px; border-radius: 6px; }
+  .svm-note { padding: 10px 12px; border-radius: 8px; margin-top: 8px; font-size: .68rem; line-height: 1.5; }
+  .svm-note--amber { color: #fbbf24; background: rgba(245,158,11,.04); border: 1px dashed #f59e0b20; }
+  .svm-note--cyan { color: #22d3ee; background: rgba(6,182,212,.04); border: 1px dashed #06b6d420; }
+  @keyframes svmIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+</style>

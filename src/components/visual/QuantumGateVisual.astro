@@ -1,0 +1,72 @@
+---
+// QuantumGateVisual.astro — Common quantum gates explained visually
+---
+
+<div class="qgv-wrap">
+  <h3 class="qgv-title">Quantum Gates — Operations on Qubits</h3>
+  <p class="qgv-sub">Classical gates flip bits. Quantum gates rotate qubits on the Bloch sphere.</p>
+
+  <div class="qgv-grid">
+    <div class="qgv-gate" style="--i:0;--c:#4ade80">
+      <div class="qgv-symbol">X</div>
+      <div class="qgv-name">Pauli-X (NOT)</div>
+      <div class="qgv-action">|0⟩ → |1⟩</div>
+      <div class="qgv-desc">Flips the qubit. Like a classical NOT gate.</div>
+      <div class="qgv-diff">Classical equivalent: bit flip</div>
+    </div>
+    <div class="qgv-gate" style="--i:1;--c:#06b6d4">
+      <div class="qgv-symbol">H</div>
+      <div class="qgv-name">Hadamard</div>
+      <div class="qgv-action">|0⟩ → |+⟩</div>
+      <div class="qgv-desc">Creates superposition. The most important gate in quantum computing.</div>
+      <div class="qgv-diff">No classical equivalent</div>
+    </div>
+    <div class="qgv-gate" style="--i:2;--c:#f59e0b">
+      <div class="qgv-symbol">Z</div>
+      <div class="qgv-name">Pauli-Z (Phase)</div>
+      <div class="qgv-action">|1⟩ → −|1⟩</div>
+      <div class="qgv-desc">Flips the phase. Doesn't change probabilities — changes the "direction."</div>
+      <div class="qgv-diff">No classical equivalent</div>
+    </div>
+    <div class="qgv-gate" style="--i:3;--c:#a78bfa">
+      <div class="qgv-symbol">CNOT</div>
+      <div class="qgv-name">Controlled-NOT</div>
+      <div class="qgv-action">|10⟩ → |11⟩</div>
+      <div class="qgv-desc">Two-qubit gate. Flips the target only if the control qubit is |1⟩. Creates entanglement.</div>
+      <div class="qgv-diff">Creates entanglement</div>
+    </div>
+    <div class="qgv-gate" style="--i:4;--c:#f472b6">
+      <div class="qgv-symbol">T</div>
+      <div class="qgv-name">T Gate (π/8)</div>
+      <div class="qgv-action">Phase shift of π/4</div>
+      <div class="qgv-desc">A precision rotation gate. Essential for building more complex quantum circuits.</div>
+      <div class="qgv-diff">No classical equivalent</div>
+    </div>
+    <div class="qgv-gate" style="--i:5;--c:#38bdf8">
+      <div class="qgv-symbol">S</div>
+      <div class="qgv-name">S Gate (Phase π/2)</div>
+      <div class="qgv-action">Phase shift of π/2</div>
+      <div class="qgv-desc">Quarter-turn rotation. Often used before measurement to change basis.</div>
+      <div class="qgv-diff">No classical equivalent</div>
+    </div>
+  </div>
+
+  <div class="qgv-note">You build quantum programs by wiring these gates together in sequences called <strong>quantum circuits</strong>. It's like building with LEGO bricks — simple pieces, powerful combinations.</div>
+</div>
+
+<style>
+  .qgv-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .qgv-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .qgv-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .qgv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:1.5rem}
+  .qgv-gate{background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:12px;padding:1.25rem;opacity:0;animation:qgvIn .4s ease forwards;animation-delay:calc(var(--i)*.1s);transition:border-color .2s}
+  .qgv-gate:hover{border-color:var(--c)}
+  .qgv-symbol{width:40px;height:40px;border-radius:8px;background:rgba(0,0,0,.3);border:1.5px solid var(--c);color:var(--c);font-family:monospace;font-size:1rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:.75rem}
+  .qgv-name{color:#f1f5f9;font-size:.75rem;font-weight:600;margin-bottom:.25rem}
+  .qgv-action{color:var(--c);font-size:.68rem;font-family:monospace;margin-bottom:.5rem}
+  .qgv-desc{color:#94a3b8;font-size:.68rem;line-height:1.5;margin-bottom:.5rem}
+  .qgv-diff{font-size:.58rem;font-family:monospace;color:#475569;padding:2px 6px;background:rgba(0,0,0,.2);border-radius:4px;display:inline-block}
+  .qgv-note{color:#94a3b8;font-size:.7rem;line-height:1.6;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border:1px solid #334155}
+  .qgv-note strong{color:#f1f5f9}
+  @keyframes qgvIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>

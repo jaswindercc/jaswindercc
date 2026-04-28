@@ -1,0 +1,124 @@
+---
+// AgentMetrics.astro — Performance comparison of agent vs direct LLM
+---
+
+<div class="am-wrap">
+  <h3 class="am-title">Agent vs Direct LLM — When Agents Win</h3>
+  <p class="am-sub">Agents add overhead. Here's when they're worth it — and when they're not.</p>
+
+  <div class="am-grid">
+    <div class="am-scenario">
+      <div class="am-sc-header am-sc--green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+        <span>Agent Wins</span>
+      </div>
+      <div class="am-sc-body">
+        <div class="am-sc-item">
+          <span class="am-sc-task">Multi-step data lookup</span>
+          <div class="am-sc-bars">
+            <div class="am-sc-bar-row"><span class="am-sc-label">Direct</span><div class="am-sc-track"><div class="am-sc-fill am-sf--red" style="--w:25%"></div></div><span class="am-sc-pct am-pct--red">25%</span></div>
+            <div class="am-sc-bar-row"><span class="am-sc-label">Agent</span><div class="am-sc-track"><div class="am-sc-fill am-sf--green" style="--w:94%"></div></div><span class="am-sc-pct am-pct--green">94%</span></div>
+          </div>
+        </div>
+        <div class="am-sc-item">
+          <span class="am-sc-task">Complex calculations</span>
+          <div class="am-sc-bars">
+            <div class="am-sc-bar-row"><span class="am-sc-label">Direct</span><div class="am-sc-track"><div class="am-sc-fill am-sf--red" style="--w:42%"></div></div><span class="am-sc-pct am-pct--red">42%</span></div>
+            <div class="am-sc-bar-row"><span class="am-sc-label">Agent</span><div class="am-sc-track"><div class="am-sc-fill am-sf--green" style="--w:98%"></div></div><span class="am-sc-pct am-pct--green">98%</span></div>
+          </div>
+        </div>
+        <div class="am-sc-item">
+          <span class="am-sc-task">Real-time data access</span>
+          <div class="am-sc-bars">
+            <div class="am-sc-bar-row"><span class="am-sc-label">Direct</span><div class="am-sc-track"><div class="am-sc-fill am-sf--red" style="--w:0%"></div></div><span class="am-sc-pct am-pct--red">0%</span></div>
+            <div class="am-sc-bar-row"><span class="am-sc-label">Agent</span><div class="am-sc-track"><div class="am-sc-fill am-sf--green" style="--w:91%"></div></div><span class="am-sc-pct am-pct--green">91%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="am-scenario">
+      <div class="am-sc-header am-sc--red">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <span>Direct LLM Wins</span>
+      </div>
+      <div class="am-sc-body">
+        <div class="am-sc-item">
+          <span class="am-sc-task">Simple Q&A</span>
+          <div class="am-sc-bars">
+            <div class="am-sc-bar-row"><span class="am-sc-label">Direct</span><div class="am-sc-track"><div class="am-sc-fill am-sf--green" style="--w:92%"></div></div><span class="am-sc-pct am-pct--green">92%</span></div>
+            <div class="am-sc-bar-row"><span class="am-sc-label">Agent</span><div class="am-sc-track"><div class="am-sc-fill am-sf--amber" style="--w:90%"></div></div><span class="am-sc-pct am-pct--amber">90%</span></div>
+          </div>
+        </div>
+        <div class="am-sc-item">
+          <span class="am-sc-task">Creative writing</span>
+          <div class="am-sc-bars">
+            <div class="am-sc-bar-row"><span class="am-sc-label">Direct</span><div class="am-sc-track"><div class="am-sc-fill am-sf--green" style="--w:88%"></div></div><span class="am-sc-pct am-pct--green">88%</span></div>
+            <div class="am-sc-bar-row"><span class="am-sc-label">Agent</span><div class="am-sc-track"><div class="am-sc-fill am-sf--amber" style="--w:85%"></div></div><span class="am-sc-pct am-pct--amber">85%</span></div>
+          </div>
+        </div>
+        <div class="am-sc-item">
+          <span class="am-sc-task">Text summarization</span>
+          <div class="am-sc-bars">
+            <div class="am-sc-bar-row"><span class="am-sc-label">Direct</span><div class="am-sc-track"><div class="am-sc-fill am-sf--green" style="--w:95%"></div></div><span class="am-sc-pct am-pct--green">95%</span></div>
+            <div class="am-sc-bar-row"><span class="am-sc-label">Agent</span><div class="am-sc-track"><div class="am-sc-fill am-sf--amber" style="--w:93%"></div></div><span class="am-sc-pct am-pct--amber">93%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="am-insight">
+    <strong>The rule:</strong> If the task needs external data or multiple steps, use an agent. If the task is pure language (writing, summarizing, translating), a direct LLM call is faster, cheaper, and just as good.
+  </div>
+</div>
+
+<style>
+  .am-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 1px solid #334155;
+  }
+  .am-title { color: #f1f5f9; font-size: 1.15rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .am-sub { color: #64748b; font-size: 0.8rem; margin: 0 0 1.5rem; font-family: monospace; }
+
+  .am-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 640px) { .am-grid { grid-template-columns: 1fr; } }
+
+  .am-scenario { border-radius: 12px; border: 1px solid #334155; overflow: hidden; }
+
+  .am-sc-header {
+    display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+    font-size: 0.8rem; font-weight: 700;
+  }
+  .am-sc-header svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .am-sc--green { background: rgba(74,222,128,0.06); color: #4ade80; } .am-sc--green svg { stroke: #4ade80; }
+  .am-sc--red { background: rgba(239,68,68,0.06); color: #f87171; } .am-sc--red svg { stroke: #f87171; }
+
+  .am-sc-body { padding: 12px 14px; }
+  .am-sc-item { margin-bottom: 12px; }
+  .am-sc-item:last-child { margin-bottom: 0; }
+
+  .am-sc-task { display: block; color: #e2e8f0; font-size: 0.72rem; font-weight: 600; margin-bottom: 6px; }
+
+  .am-sc-bars { display: flex; flex-direction: column; gap: 4px; }
+  .am-sc-bar-row { display: flex; align-items: center; gap: 6px; }
+  .am-sc-label { color: #64748b; font-size: 0.5rem; font-family: monospace; min-width: 34px; text-align: right; }
+  .am-sc-track { flex: 1; height: 10px; background: rgba(0,0,0,0.25); border-radius: 4px; overflow: hidden; }
+  .am-sc-fill { height: 100%; border-radius: 4px; width: 0; animation: amGrow 1s ease-out 0.5s forwards; }
+  .am-sf--green { background: #4ade80; }
+  .am-sf--red { background: #ef4444; }
+  .am-sf--amber { background: #f59e0b; }
+  .am-sc-pct { font-size: 0.55rem; font-family: monospace; font-weight: 700; min-width: 28px; }
+  .am-pct--green { color: #4ade80; }
+  .am-pct--red { color: #f87171; }
+  .am-pct--amber { color: #f59e0b; }
+
+  .am-insight {
+    margin-top: 14px; padding: 12px 14px; border-radius: 10px;
+    background: rgba(129,140,248,0.05); border: 1px solid #818cf820;
+    color: #94a3b8; font-size: 0.75rem; line-height: 1.6;
+  }
+  .am-insight strong { color: #a5b4fc; }
+
+  @keyframes amGrow { to { width: var(--w); } }
+</style>

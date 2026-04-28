@@ -1,0 +1,74 @@
+---
+// QuantumHardwareTypes.astro — Different types of quantum hardware compared
+---
+
+<div class="qht-wrap">
+  <h3 class="qht-title">Quantum Hardware — Not All Qubits Are the Same</h3>
+  <p class="qht-sub">Different physical implementations, different trade-offs.</p>
+
+  <div class="qht-grid">
+    <div class="qht-type" style="--i:0;--c:#06b6d4">
+      <div class="qht-name">Superconducting</div>
+      <div class="qht-who">IBM, Google, Rigetti</div>
+      <div class="qht-pros">
+        <div class="qht-pro">✓ Fast gate operations (~ns)</div>
+        <div class="qht-pro">✓ Mature manufacturing</div>
+      </div>
+      <div class="qht-cons">
+        <div class="qht-con">✗ Needs extreme cooling (15 mK)</div>
+        <div class="qht-con">✗ Short coherence times</div>
+      </div>
+    </div>
+    <div class="qht-type" style="--i:1;--c:#a78bfa">
+      <div class="qht-name">Trapped Ion</div>
+      <div class="qht-who">IonQ, Quantinuum, Alpine</div>
+      <div class="qht-pros">
+        <div class="qht-pro">✓ Long coherence times</div>
+        <div class="qht-pro">✓ High-fidelity gates</div>
+      </div>
+      <div class="qht-cons">
+        <div class="qht-con">✗ Slower gate speeds (~ms)</div>
+        <div class="qht-con">✗ Harder to scale up</div>
+      </div>
+    </div>
+    <div class="qht-type" style="--i:2;--c:#4ade80">
+      <div class="qht-name">Photonic</div>
+      <div class="qht-who">Xanadu, PsiQuantum</div>
+      <div class="qht-pros">
+        <div class="qht-pro">✓ Room temperature</div>
+        <div class="qht-pro">✓ Natural for networking</div>
+      </div>
+      <div class="qht-cons">
+        <div class="qht-con">✗ Hard to make qubits interact</div>
+        <div class="qht-con">✗ Photon loss is a problem</div>
+      </div>
+    </div>
+    <div class="qht-type" style="--i:3;--c:#f59e0b">
+      <div class="qht-name">Neutral Atom</div>
+      <div class="qht-who">QuEra, Pasqal, Atom Computing</div>
+      <div class="qht-pros">
+        <div class="qht-pro">✓ Highly scalable arrays</div>
+        <div class="qht-pro">✓ Flexible connectivity</div>
+      </div>
+      <div class="qht-cons">
+        <div class="qht-con">✗ Relatively new approach</div>
+        <div class="qht-con">✗ Gate fidelity improving</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .qht-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .qht-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .qht-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .qht-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+  .qht-type{background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:12px;padding:1.25rem;opacity:0;animation:qhtIn .4s ease forwards;animation-delay:calc(var(--i)*.1s);transition:border-color .2s}
+  .qht-type:hover{border-color:var(--c)}
+  .qht-name{color:var(--c);font-size:.8rem;font-weight:700;margin-bottom:.15rem}
+  .qht-who{color:#64748b;font-size:.6rem;font-family:monospace;margin-bottom:.5rem}
+  .qht-pros,.qht-cons{display:flex;flex-direction:column;gap:2px;margin-bottom:.35rem}
+  .qht-pro{color:#4ade80;font-size:.65rem;font-family:monospace}
+  .qht-con{color:#f87171;font-size:.65rem;font-family:monospace}
+  @keyframes qhtIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>

@@ -1,0 +1,69 @@
+---
+title: Building AI Agents With Tool Use — From Zero to Working Code
+description: See how AI agents think in loops, call tools, and make decisions — with animated trace views, expandable tool definitions, and a clear architecture you can build today.
+date: 2026-05-16
+---
+
+import AgentLoop from '../../components/visual/AgentLoop.astro';
+import ToolCards from '../../components/visual/ToolCards.astro';
+import AgentTrace from '../../components/visual/AgentTrace.astro';
+import AgentArchitecture from '../../components/visual/AgentArchitecture.astro';
+import AgentMetrics from '../../components/visual/AgentMetrics.astro';
+
+# Building AI Agents With Tool Use — From Zero to Working Code
+
+**An LLM that can call functions is an agent.**
+
+That's it. That's the whole concept. A regular LLM takes text in and gives text out. An AI agent takes text in, decides which tools to use, calls them, reads the results, and generates an answer from real data. No magic. Just a loop with function calls.
+
+---
+
+## 1. The Loop: How Agents Think
+
+Every agent runs the same cycle: Think about what to do. Act by calling a tool. Observe the result. Decide if you're done or need another loop. This is the ReAct pattern — and it's the foundation of every agent framework.
+
+<AgentLoop />
+
+The pink dot orbiting the diagram? That's your agent. Each pass through the loop makes the answer more accurate. A simple question might take one loop. A complex task might take five. The agent decides when it's done.
+
+---
+
+## 2. The Tool Box: What Agents Can Call
+
+Tools are just functions with descriptions. You define them. The LLM reads the descriptions and picks the right one based on the user's question. Click each tool to see its schema.
+
+<ToolCards />
+
+The key insight: **tool descriptions matter more than tool code**. If the description is vague, the agent picks the wrong tool. Write descriptions like you're explaining it to a smart coworker who's never seen the codebase.
+
+---
+
+## 3. Watch an Agent Execute: Full Trace
+
+Here's a real execution trace of an agent handling "What's the status of my order?" Every thought, every tool call, every decision — timestamped and logged.
+
+<AgentTrace />
+
+Notice the two tool calls happened back-to-back. The agent didn't wait for a human — it decided on its own that it needed tracking details after getting the order status. That's the intelligence. Not any single tool call, but the **sequence of decisions**.
+
+---
+
+## 4. The Architecture: Three Layers
+
+Every production agent has three layers. The brain (LLM) decides. The hands (tools) execute. The guardrails (safety) prevent damage. Skip any layer and you'll regret it.
+
+<AgentArchitecture />
+
+**The guardrails layer is non-negotiable.** Without it, an agent can loop forever (burning tokens), call destructive APIs, or generate harmful output. Max iterations, token budgets, and tool allowlists are the minimum.
+
+---
+
+## 5. When Agents Are Worth It — And When They're Not
+
+Agents add latency and cost. Every tool call is another API round-trip. Every think step burns tokens. If the task doesn't need external data or multiple steps, a direct LLM call is better.
+
+<AgentMetrics />
+
+The sweet spot: tasks where the agent needs to **look things up, combine data from multiple sources, or take actions**. Order tracking, data analysis, multi-step workflows — that's where agents shine. For simple Q&A or writing tasks, skip the agent overhead.
+
+---

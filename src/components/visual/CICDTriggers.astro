@@ -1,0 +1,24 @@
+---
+// CICDTriggers.astro — Pipeline trigger types
+---
+<div class="cit-wrap">
+  <h3 class="cit-title">What Triggers a Pipeline?</h3>
+  <div class="cit-grid">
+    <div class="cit-card cit-c1"><span class="cit-icon">🔀</span><span class="cit-nm">Push to Branch</span><span class="cit-d">Every push runs lint + test. Feature branches get partial pipeline. Main gets full deploy.</span><span class="cit-when">on: push</span></div>
+    <div class="cit-card cit-c2"><span class="cit-icon">📋</span><span class="cit-nm">Pull Request</span><span class="cit-d">Run full test suite + preview deploy. Block merge if checks fail. Show status on PR.</span><span class="cit-when">on: pull_request</span></div>
+    <div class="cit-card cit-c3"><span class="cit-icon">🏷️</span><span class="cit-nm">Tag / Release</span><span class="cit-d">Semantic version tag triggers production deploy. Build artifacts, sign, push to prod registry.</span><span class="cit-when">on: push tags: v*</span></div>
+    <div class="cit-card cit-c4"><span class="cit-icon">⏰</span><span class="cit-nm">Schedule (Cron)</span><span class="cit-d">Nightly builds, weekly dependency updates, scheduled security scans.</span><span class="cit-when">on: schedule</span></div>
+    <div class="cit-card cit-c5"><span class="cit-icon">🔘</span><span class="cit-nm">Manual Dispatch</span><span class="cit-d">Button click in UI. For hotfix deploys, one-off migrations, prod rollbacks.</span><span class="cit-when">on: workflow_dispatch</span></div>
+    <div class="cit-card cit-c6"><span class="cit-icon">🔗</span><span class="cit-nm">Webhook / External</span><span class="cit-d">Triggered by external event — Slack command, monitoring alert, dependency update notification.</span><span class="cit-when">on: repository_dispatch</span></div>
+  </div>
+</div>
+<style>
+  .cit-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .cit-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .cit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+  .cit-card{display:flex;flex-direction:column;gap:4px;padding:14px;background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155;opacity:0;animation:citIn .4s ease forwards}
+  .cit-c1{animation-delay:.05s}.cit-c2{animation-delay:.1s}.cit-c3{animation-delay:.15s}.cit-c4{animation-delay:.2s}.cit-c5{animation-delay:.25s}.cit-c6{animation-delay:.3s}
+  @keyframes citIn{to{opacity:1}}
+  .cit-icon{font-size:1.2rem}.cit-nm{color:#e2e8f0;font-weight:700;font-size:.78rem}.cit-d{color:#94a3b8;font-size:.67rem;line-height:1.5;flex:1}
+  .cit-when{color:#06b6d4;font-size:.58rem;font-family:monospace;padding:3px 8px;background:rgba(6,182,212,.08);border-radius:4px;align-self:flex-start}
+</style>

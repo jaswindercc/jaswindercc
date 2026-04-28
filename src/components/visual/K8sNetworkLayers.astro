@@ -1,0 +1,30 @@
+---
+// K8sNetworkLayers.astro — Animated Kubernetes networking layers
+---
+<div class="knl-wrap">
+  <h3 class="knl-title">Kubernetes Networking — 4 Layers Deep</h3>
+  <p class="knl-sub">Every packet traverses these layers. Understanding them is debugging 90% of connectivity issues.</p>
+  <div class="knl-stack">
+    <div class="knl-layer knl-l1"><div class="knl-badge">L4</div><div class="knl-info"><span class="knl-nm">External → Ingress</span><span class="knl-d">LoadBalancer / NodePort exposes cluster to outside world. TLS terminates here.</span></div></div>
+    <div class="knl-conn"><div class="knl-line"></div></div>
+    <div class="knl-layer knl-l2"><div class="knl-badge knl-badge--amber">L3</div><div class="knl-info"><span class="knl-nm">Service → Pod</span><span class="knl-d">ClusterIP routes traffic via kube-proxy iptables/IPVS rules. Virtual IPs, no real interface.</span></div></div>
+    <div class="knl-conn"><div class="knl-line"></div></div>
+    <div class="knl-layer knl-l3"><div class="knl-badge knl-badge--cyan">L2</div><div class="knl-info"><span class="knl-nm">Pod → Pod (cross-node)</span><span class="knl-d">CNI plugin (Calico/Cilium/Flannel) creates overlay or BGP routes between nodes.</span></div></div>
+    <div class="knl-conn"><div class="knl-line"></div></div>
+    <div class="knl-layer knl-l4"><div class="knl-badge knl-badge--green">L1</div><div class="knl-info"><span class="knl-nm">Container → Container (same pod)</span><span class="knl-d">Localhost. Shared network namespace. No routing needed — they're on the same veth pair.</span></div></div>
+  </div>
+</div>
+<style>
+  .knl-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .knl-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}.knl-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem}
+  .knl-stack{display:flex;flex-direction:column;align-items:center;gap:0}
+  .knl-layer{display:flex;align-items:center;gap:12px;padding:14px 18px;background:rgba(0,0,0,.2);border-radius:12px;border:1px solid #334155;width:100%;max-width:460px;opacity:0;animation:knlIn .5s ease forwards}
+  .knl-l1{animation-delay:.1s}.knl-l2{animation-delay:.3s}.knl-l3{animation-delay:.5s}.knl-l4{animation-delay:.7s}
+  @keyframes knlIn{to{opacity:1;transform:translateY(0)}}.knl-layer{transform:translateY(-6px)}
+  .knl-badge{font-family:monospace;font-size:.65rem;font-weight:800;color:#818cf8;background:rgba(129,140,248,.1);padding:4px 8px;border-radius:6px;flex-shrink:0}
+  .knl-badge--amber{color:#f59e0b;background:rgba(245,158,11,.1)}.knl-badge--cyan{color:#06b6d4;background:rgba(6,182,212,.1)}.knl-badge--green{color:#4ade80;background:rgba(74,222,128,.1)}
+  .knl-info{flex:1}.knl-nm{display:block;color:#e2e8f0;font-size:.82rem;font-weight:700}.knl-d{display:block;color:#94a3b8;font-size:.7rem;line-height:1.5;margin-top:2px}
+  .knl-conn{height:18px;display:flex;align-items:center;justify-content:center}
+  .knl-line{width:2px;height:100%;background:linear-gradient(to bottom,#334155,#475569);animation:knlPulse 2s ease infinite}
+  @keyframes knlPulse{0%,100%{opacity:.4}50%{opacity:1}}
+</style>

@@ -1,0 +1,57 @@
+---
+// QuantumThreatTimeline.astro — When will quantum threaten current encryption
+---
+
+<div class="qtt-wrap">
+  <h3 class="qtt-title">The Quantum Threat Timeline</h3>
+  <p class="qtt-sub">When will quantum computers actually break encryption? Nobody knows exactly — but here's the consensus.</p>
+
+  <div class="qtt-track">
+    <div class="qtt-phase" style="--i:0;--c:#4ade80">
+      <div class="qtt-phase-head">
+        <div class="qtt-dot" style="background:var(--c)"></div>
+        <div class="qtt-phase-title">Now (2024–2026)</div>
+      </div>
+      <div class="qtt-phase-body">
+        <div class="qtt-risk">Risk to current encryption: <strong style="color:var(--c)">None</strong></div>
+        <div class="qtt-detail">Current quantum computers have ~1,000 noisy qubits. Breaking RSA-2048 needs ~4,000 stable, error-corrected qubits. We're not close.</div>
+      </div>
+    </div>
+    <div class="qtt-phase" style="--i:1;--c:#f59e0b">
+      <div class="qtt-phase-head">
+        <div class="qtt-dot" style="background:var(--c)"></div>
+        <div class="qtt-phase-title">Near-term (2027–2032)</div>
+      </div>
+      <div class="qtt-phase-body">
+        <div class="qtt-risk">Risk to current encryption: <strong style="color:var(--c)">Low but growing</strong></div>
+        <div class="qtt-detail">Error correction improves. "Harvest now, decrypt later" attacks are the real threat. Attackers store encrypted data today to crack later.</div>
+      </div>
+    </div>
+    <div class="qtt-phase" style="--i:2;--c:#ef4444">
+      <div class="qtt-phase-head">
+        <div class="qtt-dot" style="background:var(--c)"></div>
+        <div class="qtt-phase-title">Cryptographically relevant (2033+?)</div>
+      </div>
+      <div class="qtt-phase-body">
+        <div class="qtt-risk">Risk to current encryption: <strong style="color:var(--c)">High</strong></div>
+        <div class="qtt-detail">Estimates vary wildly. Some experts say 2035, others 2040+. But the migration to PQC needs to start now — it takes years.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .qtt-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .qtt-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 .25rem}
+  .qtt-sub{color:#64748b;font-size:.78rem;margin:0 0 1.5rem;font-family:monospace}
+  .qtt-track{display:flex;flex-direction:column;gap:10px}
+  .qtt-phase{background:rgba(0,0,0,.2);border:1px solid #334155;border-radius:12px;padding:1.25rem;opacity:0;animation:qttIn .5s ease forwards;animation-delay:calc(var(--i)*.15s)}
+  .qtt-phase-head{display:flex;align-items:center;gap:10px;margin-bottom:.5rem}
+  .qtt-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;box-shadow:0 0 8px currentColor}
+  .qtt-phase-title{color:#f1f5f9;font-size:.8rem;font-weight:600}
+  .qtt-phase-body{padding-left:20px}
+  .qtt-risk{color:#94a3b8;font-size:.7rem;margin-bottom:.35rem}
+  .qtt-risk strong{font-weight:700}
+  .qtt-detail{color:#64748b;font-size:.68rem;line-height:1.5}
+  @keyframes qttIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+</style>

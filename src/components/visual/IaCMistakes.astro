@@ -1,0 +1,97 @@
+---
+/**
+ * IaCMistakes.astro
+ * Common IaC anti-patterns
+ * Pure CSS, dark theme
+ */
+---
+
+<div class="iacm-wrap">
+  <h3 class="iacm-title">Common IaC Mistakes</h3>
+  
+  <div class="iacm-list">
+    <div class="iacm-item" style="--i:0;">
+      <div class="iacm-icon">🔥</div>
+      <div class="iacm-content">
+        <div class="iacm-mistake">Hardcoding secrets in config files</div>
+        <div class="iacm-fix">Use secret managers + variable references. Never commit credentials.</div>
+      </div>
+    </div>
+    <div class="iacm-item" style="--i:1;">
+      <div class="iacm-icon">🔥</div>
+      <div class="iacm-content">
+        <div class="iacm-mistake">No remote state backend</div>
+        <div class="iacm-fix">Local state = data loss + team conflicts. Use S3/GCS + state locking from day one.</div>
+      </div>
+    </div>
+    <div class="iacm-item" style="--i:2;">
+      <div class="iacm-icon">🔥</div>
+      <div class="iacm-content">
+        <div class="iacm-mistake">Manual changes alongside IaC</div>
+        <div class="iacm-fix">ClickOps causes drift. If it's not in code, it doesn't exist. Enforce with drift detection.</div>
+      </div>
+    </div>
+    <div class="iacm-item" style="--i:3;">
+      <div class="iacm-icon">🔥</div>
+      <div class="iacm-content">
+        <div class="iacm-mistake">No plan review before apply</div>
+        <div class="iacm-fix">Always run plan in CI. Require human approval for production changes.</div>
+      </div>
+    </div>
+    <div class="iacm-item" style="--i:4;">
+      <div class="iacm-icon">🔥</div>
+      <div class="iacm-content">
+        <div class="iacm-mistake">Copy-pasting between environments</div>
+        <div class="iacm-fix">Use modules with environment-specific variables. Same module, different inputs.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .iacm-wrap {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+  .iacm-title {
+    color: #f1f5f9;
+    text-align: center;
+    font-size: 1.25rem;
+    margin: 0 0 1.25rem;
+  }
+  .iacm-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .iacm-item {
+    display: flex;
+    gap: 0.75rem;
+    background: rgba(239,68,68,0.06);
+    border: 1px solid rgba(239,68,68,0.2);
+    border-radius: 10px;
+    padding: 1rem;
+    opacity: 0;
+    animation: iacmFade 0.4s ease forwards;
+    animation-delay: calc(var(--i) * 0.12s);
+  }
+  @keyframes iacmFade {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .iacm-icon { font-size: 1.25rem; }
+  .iacm-content { flex: 1; }
+  .iacm-mistake {
+    color: #ef4444;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+  }
+  .iacm-fix {
+    color: #94a3b8;
+    font-size: 0.8rem;
+  }
+</style>

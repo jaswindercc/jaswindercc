@@ -1,0 +1,69 @@
+---
+title: How Embeddings Work — The Visual Guide to Semantic Search
+description: See how text becomes vectors, how similarity search finds meaning, and how to pick the right embedding model — all with animated diagrams and zero math prerequisites.
+date: 2026-05-12
+---
+
+import EmbeddingSpace from '../../components/visual/EmbeddingSpace.astro';
+import TextToVector from '../../components/visual/TextToVector.astro';
+import SimilaritySearch from '../../components/visual/SimilaritySearch.astro';
+import EmbeddingModels from '../../components/visual/EmbeddingModels.astro';
+import EmbeddingMetrics from '../../components/visual/EmbeddingMetrics.astro';
+
+# How Embeddings Work — The Visual Guide to Semantic Search
+
+**No linear algebra required. Just pictures.**
+
+Embeddings are the secret behind every AI search system, every RAG pipeline, and every recommendation engine. But most explanations jump straight into cosine similarity formulas and lose everyone. This guide shows you what embeddings actually *look like* and how they work — visually.
+
+---
+
+## 1. The Embedding Space: Where Words Live
+
+Imagine a map where every word has a position. Words with similar meanings are close together. "Cat" and "kitten" are neighbors. "Cat" and "JavaScript" are on opposite ends. That's the embedding space.
+
+<EmbeddingSpace />
+
+Watch the query dot orbit through the space. When it's near the animal cluster, animal-related documents score high. When it drifts to tech, tech docs score high. **Proximity equals relevance.**
+
+---
+
+## 2. From Text to Numbers: The Embedding Process
+
+A sentence goes into an embedding model. A list of 1,536 numbers comes out. Those numbers aren't random — each dimension captures a sliver of meaning. Together, they're a fingerprint of the sentence.
+
+<TextToVector />
+
+You can't interpret a single dimension ("dimension 847 means food sense"), but the model can compare two fingerprints and tell you how similar the meanings are. That's the whole trick.
+
+---
+
+## 3. How Similarity Search Works
+
+Once everything is embedded, search is just finding the nearest neighbors. Your query becomes a vector, and the database returns the closest matches. High similarity score means high relevance.
+
+<SimilaritySearch />
+
+The threshold is your quality knob. Set it too low and you get noisy results. Too high and you miss good answers. **Start at 0.70, adjust based on your data.**
+
+---
+
+## 4. Picking the Right Embedding Model
+
+Not all embedding models are equal. Bigger models give better quality but cost more. Open-source models are free but less accurate. The right choice depends on your volume, budget, and accuracy needs.
+
+<EmbeddingModels />
+
+**Rule of thumb:** start with text-embedding-3-small. If your search quality isn't good enough, upgrade to large. If you need zero API dependency, go open-source. Don't start with the biggest model — you probably don't need it.
+
+---
+
+## 5. How to Know Your Embeddings Are Working
+
+You shipped a search feature. Users are querying it. But how do you know it's actually returning good results? These three metrics tell you everything you need to know.
+
+<EmbeddingMetrics />
+
+The most important one is **Recall@K** — if the right document exists in your database but doesn't show up in the top 5 results, your embeddings aren't doing their job. Fix chunking first, then consider a better model.
+
+---

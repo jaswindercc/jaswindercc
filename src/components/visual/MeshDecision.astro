@@ -1,0 +1,47 @@
+---
+/**
+ * MeshDecision.astro
+ * Do you need a service mesh decision tree
+ */
+---
+
+<div class="md-wrap">
+  <h3 class="md-title">Do You Actually Need a Service Mesh?</h3>
+  <div class="md-tree">
+    <div class="md-q" style="--i:0;">
+      <div class="md-question">Do you have &gt; 10 services talking to each other?</div>
+      <div class="md-branches">
+        <div class="md-branch md-no"><span>No →</span> A mesh is overkill. Use DNS + basic load balancing.</div>
+        <div class="md-branch md-yes"><span>Yes ↓</span></div>
+      </div>
+    </div>
+    <div class="md-q" style="--i:1;">
+      <div class="md-question">Do you need mTLS between all services?</div>
+      <div class="md-branches">
+        <div class="md-branch md-no"><span>No →</span> Consider network policies first. Cheaper and simpler.</div>
+        <div class="md-branch md-yes"><span>Yes ↓</span></div>
+      </div>
+    </div>
+    <div class="md-q" style="--i:2;">
+      <div class="md-question">Can your team manage the operational overhead?</div>
+      <div class="md-branches">
+        <div class="md-branch md-no"><span>No →</span> Start with Linkerd (simplest) or managed mesh.</div>
+        <div class="md-branch md-yes"><span>Yes →</span> Istio or Cilium for full control.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .md-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:16px;padding:2rem;margin:2rem 0}
+  .md-title{color:#f1f5f9;text-align:center;font-size:1.25rem;margin:0 0 1.5rem}
+  .md-tree{display:flex;flex-direction:column;gap:1rem}
+  .md-q{background:rgba(255,255,255,0.03);border:1px solid #334155;border-radius:12px;padding:1.25rem;opacity:0;animation:mdFade .5s ease forwards;animation-delay:calc(var(--i)*.2s)}
+  @keyframes mdFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .md-question{color:#f1f5f9;font-weight:700;font-size:.95rem;margin-bottom:.75rem}
+  .md-branches{display:flex;flex-direction:column;gap:.4rem}
+  .md-branch{font-size:.8rem;padding:.4rem .75rem;border-radius:8px}
+  .md-no{color:#f59e0b;background:rgba(245,158,11,0.08)}
+  .md-yes{color:#4ade80;background:rgba(74,222,128,0.08)}
+  .md-branch span{font-weight:700}
+</style>

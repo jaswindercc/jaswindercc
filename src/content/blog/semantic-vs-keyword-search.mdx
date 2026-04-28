@@ -1,0 +1,53 @@
+---
+title: "Semantic Search vs Keyword Search — How AI Changes Finding Things"
+description: "Visual comparison of semantic and keyword search. Understand embeddings-based retrieval, when semantic search wins, when keywords are still better, and how to build hybrid search systems."
+date: 2026-05-04
+---
+
+import SemanticSearchVisual from '../../components/visual/SemanticSearchVisual.astro';
+
+Keyword search finds documents containing the words you typed. Semantic search finds documents containing the meaning you intended. The difference sounds subtle until you search for "how to fix a slow application" and keyword search returns nothing because your documentation uses "performance optimization" instead. Semantic search understands they mean the same thing.
+
+## The Core Difference
+
+The fundamental difference is what gets compared. Keyword search compares text strings. Semantic search compares meaning vectors.
+
+<SemanticSearchVisual />
+
+Keyword search works by building an inverted index — mapping each word to the list of documents containing it. When you query, the engine looks up each query word and intersects the document lists. BM25 (the standard algorithm) additionally weighs rare words higher than common ones and accounts for document length.
+
+Semantic search works by converting both documents and queries into vectors (embeddings) using neural networks. Documents whose vectors are close to the query vector in embedding space are returned as results. The neural network learned the relationships between words and concepts during training, so "cheap" and "affordable" and "budget" map to nearby points.
+
+## When Semantic Search Wins
+
+Semantic search excels when users describe what they want in different words than the content uses. Support ticket search, knowledge base retrieval, and product search all benefit because users and content creators use different vocabulary.
+
+It also handles multilingual search naturally. Modern embedding models produce similar vectors for the same concept regardless of language. A Spanish query can find English documents — and vice versa — without any translation step.
+
+Semantic search is essential for RAG (Retrieval Augmented Generation) pipelines. When an LLM needs to answer a question based on your documents, semantic retrieval finds the relevant passages even when the question doesn't share keywords with the answer.
+
+## When Keyword Search Wins
+
+Keyword search excels at exact matches — error codes, product SKUs, people's names, specific technical terms. If you search for "ERR_CONNECTION_REFUSED", you want documents containing that exact string, not documents about "network connectivity issues" that semantic search might return.
+
+Keyword search is also faster, cheaper, and more transparent. Elasticsearch serves keyword queries in single-digit milliseconds with well-understood relevance tuning. Semantic search requires GPU inference for embedding generation (10-100ms) plus vector similarity search. The latency and cost difference matters at scale.
+
+Most importantly, keyword search is debuggable. When a document isn't returned, you can inspect the index and understand why — the keyword wasn't present, the BM25 score was too low, a filter excluded it. When semantic search misses a document, debugging requires understanding the embedding space, which is opaque.
+
+## Building Hybrid Search
+
+The best search systems combine both approaches. A hybrid search runs keyword and semantic queries in parallel, then merges results using reciprocal rank fusion or a learned re-ranker.
+
+The practical approach: start with keyword search (Elasticsearch, Meilisearch, Typesense). It covers 80% of use cases and is operationally simple. When you identify specific failure modes — vocabulary mismatch, conceptual queries, multilingual requirements — add semantic search as a complementary signal. Weight the combination based on query type.
+
+For implementation, many vector databases (Weaviate, Qdrant, Pinecone) now support hybrid search natively. Elasticsearch added vector search with dense_vector fields. You don't need separate keyword and vector infrastructure — a single system can serve both.
+
+The re-ranking step is where quality improvements hide. A cross-encoder re-ranker takes the top 50 results from the initial retrieval and re-scores each one by jointly processing the query and document together. This is too slow for the initial search (it can't score millions of documents) but dramatically improves precision when applied to a small candidate set.
+
+## Embedding Model Selection
+
+The embedding model determines semantic search quality more than any other component. Modern options include OpenAI's text-embedding-3-small (1536 dimensions, good balance), Cohere's embed-v3 (excellent multilingual), and open-source models like BGE, E5, and GTE.
+
+Evaluate embedding models on your actual data, not benchmarks. Create a test set of 100 queries with known-relevant documents. Run each query through different models and measure recall@10 (how many relevant documents appear in the top 10). A model that leads MTEB benchmarks might underperform on your specific domain.
+
+Smaller embedding dimensions mean less storage and faster search but lower precision. For most applications, 384-768 dimensions provide a good balance. Only go higher (1536+) if your evaluation shows meaningful quality improvement that justifies the 2-4x storage cost.

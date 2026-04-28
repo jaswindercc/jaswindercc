@@ -1,0 +1,39 @@
+---
+title: "Infrastructure as Code Compared — Terraform vs Pulumi vs CloudFormation vs CDK"
+description: "A visual comparison of the four major IaC tools in 2026. See how Terraform, Pulumi, CloudFormation, and CDK stack up on language, multi-cloud support, and real-world patterns."
+date: 2026-03-23
+---
+
+import IaCToolCompare from '../../components/visual/IaCToolCompare.astro';
+import IaCPatterns from '../../components/visual/IaCPatterns.astro';
+import IaCMistakes from '../../components/visual/IaCMistakes.astro';
+
+Clicking through cloud consoles is fine for prototyping. It's terrible for production. You need infrastructure as code — but which tool? The landscape has four serious contenders: Terraform (the incumbent), Pulumi (the developer favorite), CloudFormation (the AWS native), and CDK (the abstraction layer). Each has genuine strengths and genuine tradeoffs.
+
+I've used all four in production. None of them is universally "best." The right choice depends on your cloud strategy, your team's programming background, and how much vendor lock-in you're willing to accept.
+
+## 1. Tool-by-Tool Comparison
+
+The core question is whether you want a domain-specific language (HCL, YAML) or a general-purpose programming language (TypeScript, Python). DSLs are constrained by design — which prevents complexity but limits expressiveness. General-purpose languages give you loops, conditionals, and abstractions — which makes complex infrastructure easier to express but easier to over-engineer.
+
+<IaCToolCompare />
+
+Terraform dominates market share for a reason: it works everywhere. AWS, Azure, GCP, Cloudflare, Datadog, GitHub — there's a provider for everything. If you're running multi-cloud or hybrid, Terraform is the safe choice. Pulumi is gaining momentum because developers don't need to learn a new language — they write infrastructure in the same TypeScript or Python they already know.
+
+CloudFormation and CDK are AWS-only, but they integrate deeper with AWS services than anything else. New AWS features appear in CloudFormation months before they show up in the Terraform provider. If you're all-in on AWS, that matters.
+
+## 2. How to Structure Your IaC
+
+The tool you pick matters less than how you organize it. A well-structured CloudFormation setup beats a spaghetti Terraform monolith every time. The patterns below apply regardless of which tool you choose.
+
+<IaCPatterns />
+
+Modular composition is worth the upfront investment. You build a VPC module once, test it once, and reuse it across every environment. When a security requirement changes — say, you need to add flow logs — you change one module and every environment inherits the fix. Monoliths require you to find and change every occurrence manually.
+
+## 3. Mistakes That Burn Teams
+
+These aren't theoretical risks. These are the exact problems I've seen cause outages, security incidents, and multi-day cleanup efforts. Every one of them is preventable with basic discipline.
+
+<IaCMistakes />
+
+The number one mistake isn't technical — it's cultural. Teams adopt IaC but keep making manual changes "just this once." That "once" creates drift. Drift creates surprises. Surprises create outages. The rule is simple: if it's not in code, it doesn't exist. Enforce it by running drift detection on a schedule and alerting when reality doesn't match your code.

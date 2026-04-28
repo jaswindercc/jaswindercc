@@ -1,0 +1,23 @@
+---
+title: "Incident Response Playbook — A Step-by-Step Visual"
+description: "Visual guide to incident response for engineering teams. Walk through the four phases: detect, triage, mitigate, and review with actionable steps for each."
+date: 2026-06-07
+---
+
+import IncidentTimeline from '../../components/visual/IncidentTimeline.astro';
+
+At 2 AM, your pager goes off. The checkout service is down and revenue is bleeding. How your team responds in the next 30 minutes determines whether this is a 5-minute blip or a 4-hour catastrophe. The difference isn't technical skill — it's having a practiced, repeatable process that kicks in automatically when brains are foggy and stakes are high.
+
+Incident response isn't about heroics. It's about checklists, roles, and communication. The team that has a boring, predictable incident process recovers faster than the team of brilliant engineers who improvise every time.
+
+## The Four Phases
+
+Every incident follows the same arc: something breaks, you notice, you fix it, you learn from it. The structure below turns that arc into actionable steps with clear ownership and time targets.
+
+<IncidentTimeline />
+
+Phase 3 is where most teams make the critical mistake: they try to find the root cause while the system is still on fire. Stop the bleeding first. Rollback the deploy, scale up the replicas, failover to the backup region — whatever restores service fastest. Root cause analysis happens in phase 4, when the pressure is off and you can think clearly.
+
+The incident commander role is non-negotiable for any incident above severity 3. One person coordinates — they don't debug. They manage communication, delegate work, decide when to escalate, and keep a timeline. Engineers debug. The IC makes sure the right engineers are debugging the right things and that stakeholders know what's happening.
+
+Blameless postmortems aren't about being nice — they're about getting accurate information. If people fear blame, they hide context. If they hide context, you draw the wrong conclusions and the same incident happens again. The question is never "who caused this?" It's "what conditions made this failure possible, and how do we change the conditions?"

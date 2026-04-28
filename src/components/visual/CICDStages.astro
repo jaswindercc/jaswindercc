@@ -1,0 +1,33 @@
+---
+// CICDStages.astro — Animated CI/CD pipeline stages
+---
+<div class="cis-wrap">
+  <h3 class="cis-title">The Pipeline — 6 Stages, Every Commit</h3>
+  <div class="cis-pipeline">
+    <div class="cis-stage cis-s1"><div class="cis-dot"></div><span class="cis-nm">Checkout</span><span class="cis-d">Clone repo, fetch branch</span><span class="cis-time">~5s</span></div>
+    <div class="cis-arrow">→</div>
+    <div class="cis-stage cis-s2"><div class="cis-dot cis-dot--amber"></div><span class="cis-nm">Install</span><span class="cis-d">Dependencies from lockfile</span><span class="cis-time">~30s (cached)</span></div>
+    <div class="cis-arrow">→</div>
+    <div class="cis-stage cis-s3"><div class="cis-dot cis-dot--cyan"></div><span class="cis-nm">Lint + Type Check</span><span class="cis-d">ESLint, tsc --noEmit</span><span class="cis-time">~15s</span></div>
+    <div class="cis-arrow">→</div>
+    <div class="cis-stage cis-s4"><div class="cis-dot cis-dot--green"></div><span class="cis-nm">Test</span><span class="cis-d">Unit + integration suites</span><span class="cis-time">~2min</span></div>
+    <div class="cis-arrow">→</div>
+    <div class="cis-stage cis-s5"><div class="cis-dot cis-dot--purple"></div><span class="cis-nm">Build + Scan</span><span class="cis-d">Docker build, vulnerability scan</span><span class="cis-time">~3min</span></div>
+    <div class="cis-arrow">→</div>
+    <div class="cis-stage cis-s6"><div class="cis-dot cis-dot--green"></div><span class="cis-nm">Deploy</span><span class="cis-d">Push to registry, roll out</span><span class="cis-time">~1min</span></div>
+  </div>
+  <div class="cis-note">Total: ~7 minutes commit-to-production. If yours takes longer than 15 minutes, developers stop waiting and context-switch. Speed is a feature.</div>
+</div>
+<style>
+  .cis-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .cis-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .cis-pipeline{display:flex;align-items:flex-start;gap:4px;flex-wrap:wrap;justify-content:center;margin-bottom:1rem}
+  .cis-stage{display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 12px;background:rgba(0,0,0,.2);border-radius:10px;border:1px solid #334155;min-width:90px;opacity:0;animation:cisIn .4s ease forwards}
+  .cis-s1{animation-delay:.1s}.cis-s2{animation-delay:.2s}.cis-s3{animation-delay:.3s}.cis-s4{animation-delay:.4s}.cis-s5{animation-delay:.5s}.cis-s6{animation-delay:.6s}
+  @keyframes cisIn{to{opacity:1}}
+  .cis-dot{width:8px;height:8px;border-radius:50%;background:#818cf8;animation:cisPulse 2s ease infinite}.cis-dot--amber{background:#f59e0b}.cis-dot--cyan{background:#06b6d4}.cis-dot--green{background:#4ade80}.cis-dot--purple{background:#818cf8}
+  @keyframes cisPulse{0%,100%{opacity:.5}50%{opacity:1}}
+  .cis-nm{color:#e2e8f0;font-size:.7rem;font-weight:700;text-align:center}.cis-d{color:#64748b;font-size:.58rem;text-align:center}.cis-time{color:#475569;font-size:.55rem;font-family:monospace}
+  .cis-arrow{color:#475569;font-size:.8rem;margin-top:16px;flex-shrink:0}
+  .cis-note{color:#94a3b8;font-size:.72rem;line-height:1.6;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border-left:3px solid #f59e0b}
+</style>

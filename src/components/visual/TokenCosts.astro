@@ -1,0 +1,29 @@
+---
+// TokenCosts.astro — Token pricing comparison
+---
+<div class="tco-wrap">
+  <h3 class="tco-title">Token Pricing — The Math That Matters</h3>
+  <div class="tco-table">
+    <div class="tco-row tco-row--h"><span class="tco-c tco-c--nm">Model</span><span class="tco-c">Input $/1M tokens</span><span class="tco-c">Output $/1M tokens</span><span class="tco-c">Cost per 1K conversations</span></div>
+    <div class="tco-row tco-r1"><span class="tco-c tco-c--nm">GPT-4o</span><span class="tco-c">$2.50</span><span class="tco-c">$10</span><span class="tco-c">~$8</span></div>
+    <div class="tco-row tco-r2"><span class="tco-c tco-c--nm">GPT-4o-mini</span><span class="tco-c">$0.15</span><span class="tco-c">$0.60</span><span class="tco-c">~$0.50</span></div>
+    <div class="tco-row tco-r3"><span class="tco-c tco-c--nm">Claude 3.5 Sonnet</span><span class="tco-c">$3</span><span class="tco-c">$15</span><span class="tco-c">~$12</span></div>
+    <div class="tco-row tco-r4"><span class="tco-c tco-c--nm">Claude 3.5 Haiku</span><span class="tco-c">$0.25</span><span class="tco-c">$1.25</span><span class="tco-c">~$1</span></div>
+    <div class="tco-row tco-r5"><span class="tco-c tco-c--nm">Gemini 1.5 Flash</span><span class="tco-c">$0.075</span><span class="tco-c">$0.30</span><span class="tco-c">~$0.25</span></div>
+  </div>
+  <div class="tco-note">Output tokens cost 3-5x more than input tokens. This means verbose responses are expensive. Set max_tokens appropriately. A concise 200-token answer costs 5x less than a rambling 1000-token answer.</div>
+</div>
+<style>
+  .tco-wrap{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:2rem;margin:2rem 0;border:1px solid #334155}
+  .tco-title{color:#f1f5f9;font-size:1.15rem;font-weight:700;margin:0 0 1.5rem}
+  .tco-table{display:flex;flex-direction:column;gap:4px;margin-bottom:1rem;overflow-x:auto}
+  .tco-row{display:grid;grid-template-columns:130px 1fr 1fr 1fr;gap:8px;padding:8px 12px;border-radius:6px;align-items:center}
+  .tco-row--h{border-bottom:1px solid #334155;padding-bottom:10px;margin-bottom:4px}
+  .tco-row--h .tco-c{color:#64748b;font-size:.58rem;text-transform:uppercase;letter-spacing:.3px;font-weight:700}
+  .tco-r1{background:rgba(74,222,128,.02)}.tco-r2{background:rgba(74,222,128,.02)}.tco-r3{background:rgba(6,182,212,.02)}.tco-r4{background:rgba(6,182,212,.02)}.tco-r5{background:rgba(245,158,11,.02)}
+  .tco-row:not(.tco-row--h){opacity:0;animation:tcoIn .3s ease forwards}
+  .tco-r1{animation-delay:.1s}.tco-r2{animation-delay:.15s}.tco-r3{animation-delay:.2s}.tco-r4{animation-delay:.25s}.tco-r5{animation-delay:.3s}
+  @keyframes tcoIn{to{opacity:1}}
+  .tco-c{color:#94a3b8;font-size:.68rem;font-family:monospace}.tco-c--nm{color:#e2e8f0;font-weight:700}
+  .tco-note{color:#94a3b8;font-size:.7rem;line-height:1.6;padding:10px 14px;background:rgba(0,0,0,.15);border-radius:8px;border-left:3px solid #f59e0b}
+</style>
