@@ -60,22 +60,22 @@ volumeMounts:
     </div>
 
     <div class="asb-layer asb-layer--inner" tabindex="0">
-      <div class="asb-layer-head">
-        <span class="asb-num">1</span>
-        <span class="asb-name">Iteration & Budget Limits</span>
-        <span class="asb-blocks">Blocks: Infinite loops, cost runaway</span>
-      </div>
-      <div class="asb-layer-body">
-        <p>Hard caps on iterations, token spend, wall-clock time, and tool call frequency. If any limit is hit, the agent halts immediately with an audit log.</p>
-        <pre><code>limits:
+          <div class="asb-layer-head">
+            <span class="asb-num">1</span>
+            <span class="asb-name">Iteration & Budget Limits</span>
+            <span class="asb-blocks">Blocks: Infinite loops, cost runaway</span>
+          </div>
+          <div class="asb-layer-body">
+            <p>Hard caps on iterations, token spend, wall-clock time, and tool call frequency. If any limit is hit, the agent halts immediately with an audit log.</p>
+            <pre><code>limits:
   max_iterations: 10
   max_tokens: 50000
   max_wall_time: 120s
   max_tool_calls: 25
-  max_cost: $0.50
+  max_cost: "$0.50"
   on_exceed: halt_and_alert</code></pre>
       </div>
-    </div>
+    </div> 
   </div>
 </div>
 
