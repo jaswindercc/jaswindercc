@@ -14,7 +14,7 @@
       </div>
       <div class="vc-bad">
         <span class="vc-label vc-label--bad">❌ AI Generated</span>
-        <pre><code>query = f"SELECT * FROM users WHERE id = {user_id}"
+        <pre><code>query = f"SELECT * FROM users WHERE id = &#123;user_id&#125;"
 cursor.execute(query)</code></pre>
       </div>
       <div class="vc-good">
@@ -31,19 +31,19 @@ cursor.execute(query, (user_id,))</code></pre>
       </div>
       <div class="vc-bad">
         <span class="vc-label vc-label--bad">❌ AI Generated</span>
-        <pre><code>app.get('/file/:name', (req, res) => {
-  res.sendFile(`./uploads/${req.params.name}`);
-});</code></pre>
+        <pre><code>app.get('/file/:name', (req, res) => &#123;
+  res.sendFile(`./uploads/$&#123;req.params.name&#125;`);
+&#125;);</code></pre>
       </div>
       <div class="vc-good">
         <span class="vc-label vc-label--good">✅ Secure Version</span>
-        <pre><code>app.get('/file/:name', (req, res) => {
+        <pre><code>app.get('/file/:name', (req, res) => &#123;
   const safe = path.basename(req.params.name);
   const full = path.resolve('./uploads', safe);
   if (!full.startsWith(path.resolve('./uploads')))
     return res.status(403).send('Blocked');
   res.sendFile(full);
-});</code></pre>
+&#125;);</code></pre>
       </div>
     </div>
 
@@ -54,17 +54,17 @@ cursor.execute(query, (user_id,))</code></pre>
       </div>
       <div class="vc-bad">
         <span class="vc-label vc-label--bad">❌ AI Generated</span>
-        <pre><code>const db = mysql.connect({
+        <pre><code>const db = mysql.connect(&#123;
   host: 'prod-db.internal',
   password: 'admin123!'
-});</code></pre>
+&#125;);</code></pre>
       </div>
       <div class="vc-good">
         <span class="vc-label vc-label--good">✅ Secure Version</span>
-        <pre><code>const db = mysql.connect({
+        <pre><code>const db = mysql.connect(&#123;
   host: process.env.DB_HOST,
   password: await getSecret('db-password')
-});</code></pre>
+&#125;);</code></pre>
       </div>
     </div>
 
@@ -75,18 +75,18 @@ cursor.execute(query, (user_id,))</code></pre>
       </div>
       <div class="vc-bad">
         <span class="vc-label vc-label--bad">❌ AI Generated</span>
-        <pre><code>app.post('/transfer', (req, res) => {
+        <pre><code>app.post('/transfer', (req, res) => &#123;
   transferFunds(req.body.to, req.body.amount);
-  res.json({ success: true });
-});</code></pre>
+  res.json(&#123; success: true &#125;);
+&#125;);</code></pre>
       </div>
       <div class="vc-good">
         <span class="vc-label vc-label--good">✅ Secure Version</span>
-        <pre><code>app.post('/transfer', csrfProtection, (req, res) => {
+        <pre><code>app.post('/transfer', csrfProtection, (req, res) => &#123;
   verifyOrigin(req);
   transferFunds(req.body.to, req.body.amount);
-  res.json({ success: true });
-});</code></pre>
+  res.json(&#123; success: true &#125;);
+&#125;);</code></pre>
       </div>
     </div>
   </div>

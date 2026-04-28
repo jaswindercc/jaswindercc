@@ -37,7 +37,7 @@ qc.measure([0, 1], [0, 1])  # Measure both qubits</code></pre>
 sim = AerSimulator()
 result = sim.run(qc, shots=1000).result()
 print(result.get_counts())
-# {'00': 498, '11': 502}</code></pre>
+# &#123;'00': 498, '11': 502&#125;</code></pre>
         <div class="qsk-why">~50% chance of 00, ~50% chance of 11. Never 01 or 10. That's entanglement.</div>
       </div>
     </div>

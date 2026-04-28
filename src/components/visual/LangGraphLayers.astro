@@ -66,7 +66,7 @@ graph.add_edge("process", "review")`;
       </summary>
       <div class="lg-body">
         <p>Define your state as a TypedDict. Every node sees the same shape. No guessing what data is available.</p>
-        <pre class="lg-code lg-code--green"><code set:html={stateCode} /></pre>
+        <pre class="lg-code lg-code--green"><code set:html=&#123;stateCode&#125; /></pre>
       </div>
     </details>
 
@@ -91,7 +91,7 @@ graph.add_edge("process", "review")`;
       </summary>
       <div class="lg-body">
         <p>Each node is a regular Python function. Takes state, returns updated state. Testable in isolation — no framework dependency.</p>
-        <pre class="lg-code lg-code--purple"><code set:html={nodesCode} /></pre>
+        <pre class="lg-code lg-code--purple"><code set:html=&#123;nodesCode&#125; /></pre>
       </div>
     </details>
 
@@ -116,7 +116,7 @@ graph.add_edge("process", "review")`;
       </summary>
       <div class="lg-body">
         <p>The graph is the orchestrator. Add nodes, connect them with edges, and define conditions for looping. One line creates a loop.</p>
-        <pre class="lg-code lg-code--amber"><code set:html={edgesCode} /></pre>
+        <pre class="lg-code lg-code--amber"><code set:html=&#123;edgesCode&#125; /></pre>
       </div>
     </details>
   </div>

@@ -59,9 +59,9 @@ Every quantum gate is a matrix. Applying a gate means multiplying the qubit's st
 Here's a powerful idea: you only need a small set of gates to build *any* quantum computation. Just like you can build any classical computation from NAND gates alone.
 
 **Common universal sets:**
-- {H, T, CNOT} — the most standard universal gate set
-- {H, Toffoli} — an alternative
-- {Rx, Ry, CNOT} — common for variational circuits
+- `{H, T, CNOT}` — the most standard universal gate set
+- `{H, Toffoli}` — an alternative
+- `{Rx, Ry, CNOT}` — common for variational circuits
 
 This means any quantum algorithm, no matter how complex, can be decomposed into a sequence of these basic gates. Quantum compilers (called transpilers) do this automatically — you write high-level operations, the transpiler converts them into the gate set your hardware supports.
 

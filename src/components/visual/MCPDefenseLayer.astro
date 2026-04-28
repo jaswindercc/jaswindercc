@@ -65,7 +65,7 @@ if schema_hash != pinned_hash:
         <p>Every client connection gets its own ephemeral context. No shared state between sessions. Destroy on disconnect.</p>
         <pre><code>class MCPSession:
     def __init__(self, client_id):
-        self.state = {}  # isolated per client
+        self.state = &#123;&#125;  # isolated per client
         self.ttl = 3600  # auto-destroy after 1hr
     def __del__(self):
         secure_wipe(self.state)</code></pre>

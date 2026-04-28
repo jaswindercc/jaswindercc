@@ -34,7 +34,7 @@ graph.add_node("refine", adjust_strategy)
 
 graph.add_conditional_edges("observe",
   should_refine,
-  {"{"}True: "refine", False: "__end__"{"}"}
+  &#123;"&#123;"&#125;True: "refine", False: "__end__"&#123;"&#125;"&#125;
 )
 graph.add_edge("refine", "plan")  # ← The loop</code></pre>
       </div>
@@ -66,9 +66,9 @@ graph.add_edge("refine", "plan")  # ← The loop</code></pre>
 def check_value(item_id, field, limit):
     """Check if a field exceeds its limit."""
     value = database.get(item_id, field)
-    return {"{"}"value": value,
+    return &#123;"&#123;"&#125;"value": value,
             "limit": limit,
-            "exceeded": value > limit{"}"}  </code></pre>
+            "exceeded": value > limit&#123;"&#125;"&#125;  </code></pre>
       </div>
     </details>
 

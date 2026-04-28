@@ -57,7 +57,7 @@ const dbTool = `{
       </summary>
       <div class="tc-body">
         <p>Searches your vector database or knowledge base. Returns relevant chunks. The most common tool type — almost every agent has one.</p>
-        <pre class="tc-code"><code set:html={searchTool} /></pre>
+        <pre class="tc-code"><code set:html=&#123;searchTool&#125; /></pre>
       </div>
     </details>
 
@@ -74,7 +74,7 @@ const dbTool = `{
       </summary>
       <div class="tc-body">
         <p>Calls external APIs — order lookup, weather, CRM, payments. The agent gets real-time data it couldn't possibly know from training.</p>
-        <pre class="tc-code"><code set:html={apiTool} /></pre>
+        <pre class="tc-code"><code set:html=&#123;apiTool&#125; /></pre>
       </div>
     </details>
 
@@ -91,7 +91,7 @@ const dbTool = `{
       </summary>
       <div class="tc-body">
         <p>Runs code in a sandboxed environment. For math, data processing, chart generation — anything the LLM can write but shouldn't hallucinate.</p>
-        <pre class="tc-code"><code set:html={codeTool} /></pre>
+        <pre class="tc-code"><code set:html=&#123;codeTool&#125; /></pre>
       </div>
     </details>
 
@@ -108,7 +108,7 @@ const dbTool = `{
       </summary>
       <div class="tc-body">
         <p>Runs read-only SQL against your database. The agent generates the query from natural language. Always enforce read-only permissions.</p>
-        <pre class="tc-code"><code set:html={dbTool} /></pre>
+        <pre class="tc-code"><code set:html=&#123;dbTool&#125; /></pre>
       </div>
     </details>
   </div>
